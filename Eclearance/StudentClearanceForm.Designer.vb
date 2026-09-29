@@ -30,53 +30,12 @@ Partial Class StudentClearanceForm
         lblLogoText = New Label()
         lblLogoIcon = New Label()
         pnlMain = New Panel()
-        pnlViewHost = New Panel()
         pnlPagination = New Panel()
         btnNextPage = New Button()
         btnPage2 = New Button()
         btnPage1 = New Button()
         lblShowingOffices = New Label()
         flpOfficesGrid = New FlowLayoutPanel()
-        pnlOfficeCard1 = New Panel()
-        btnAction1 = New Button()
-        pnlFileAttach1 = New Panel()
-        lblFileDate1 = New Label()
-        lblFileName1 = New Label()
-        lblFileIcon1 = New Label()
-        lblOfficeDesc1 = New Label()
-        lblOfficeStatusBadge1 = New Label()
-        lblOfficeTitle1 = New Label()
-        lblOfficeIcon1 = New Label()
-        pnlOfficeCard2 = New Panel()
-        btnAction2 = New Button()
-        pnlFileAttach2 = New Panel()
-        lblFileDate2 = New Label()
-        lblFileName2 = New Label()
-        lblFileIcon2 = New Label()
-        lblOfficeDesc2 = New Label()
-        lblOfficeStatusBadge2 = New Label()
-        lblOfficeTitle2 = New Label()
-        lblOfficeIcon2 = New Label()
-        pnlOfficeCard3 = New Panel()
-        btnAction3 = New Button()
-        pnlFileAttach3 = New Panel()
-        lblFileDate3 = New Label()
-        lblFileName3 = New Label()
-        lblFileIcon3 = New Label()
-        lblOfficeDesc3 = New Label()
-        lblOfficeStatusBadge3 = New Label()
-        lblOfficeTitle3 = New Label()
-        lblOfficeIcon3 = New Label()
-        pnlOfficeCard4 = New Panel()
-        btnAction4 = New Button()
-        pnlFileAttach4 = New Panel()
-        lblFileDate4 = New Label()
-        lblFileName4 = New Label()
-        lblFileIcon4 = New Label()
-        lblOfficeDesc4 = New Label()
-        lblOfficeStatusBadge4 = New Label()
-        lblOfficeTitle4 = New Label()
-        lblOfficeIcon4 = New Label()
         pnlFilterRow = New Panel()
         cmbFilterOffices = New ComboBox()
         lblFilterSection = New Label()
@@ -94,6 +53,86 @@ Partial Class StudentClearanceForm
         lblTermBadge = New Label()
         lblStudentCourseYear = New Label()
         lblHeaderTitle = New Label()
+        pnlOfficeCard1 = New Panel()
+        lblOfficeIcon1 = New Label()
+        lblOfficeTitle1 = New Label()
+        lblOfficeStatusBadge1 = New Label()
+        lblOfficeDesc1 = New Label()
+        pnlFileAttach1 = New Panel()
+        lblFileIcon1 = New Label()
+        lblFileName1 = New Label()
+        lblFileDate1 = New Label()
+        btnAction1 = New Button()
+        pnlOfficeCard2 = New Panel()
+        lblOfficeIcon2 = New Label()
+        lblOfficeTitle2 = New Label()
+        lblOfficeStatusBadge2 = New Label()
+        lblOfficeDesc2 = New Label()
+        pnlFileAttach2 = New Panel()
+        lblFileIcon2 = New Label()
+        lblFileName2 = New Label()
+        lblFileDate2 = New Label()
+        btnAction2 = New Button()
+        pnlOfficeCard3 = New Panel()
+        lblOfficeIcon3 = New Label()
+        lblOfficeTitle3 = New Label()
+        lblOfficeStatusBadge3 = New Label()
+        lblOfficeDesc3 = New Label()
+        pnlFileAttach3 = New Panel()
+        lblFileIcon3 = New Label()
+        lblFileName3 = New Label()
+        lblFileDate3 = New Label()
+        btnAction3 = New Button()
+        pnlOfficeCard4 = New Panel()
+        lblOfficeIcon4 = New Label()
+        lblOfficeTitle4 = New Label()
+        lblOfficeStatusBadge4 = New Label()
+        lblOfficeDesc4 = New Label()
+        pnlFileAttach4 = New Panel()
+        lblFileIcon4 = New Label()
+        lblFileName4 = New Label()
+        lblFileDate4 = New Label()
+        btnAction4 = New Button()
+        pnlOfficeCard5 = New Panel()
+        lblOfficeIcon5 = New Label()
+        lblOfficeTitle5 = New Label()
+        lblOfficeStatusBadge5 = New Label()
+        lblOfficeDesc5 = New Label()
+        pnlFileAttach5 = New Panel()
+        lblFileIcon5 = New Label()
+        lblFileName5 = New Label()
+        lblFileDate5 = New Label()
+        btnAction5 = New Button()
+        pnlOfficeCard6 = New Panel()
+        lblOfficeIcon6 = New Label()
+        lblOfficeTitle6 = New Label()
+        lblOfficeStatusBadge6 = New Label()
+        lblOfficeDesc6 = New Label()
+        pnlFileAttach6 = New Panel()
+        lblFileIcon6 = New Label()
+        lblFileName6 = New Label()
+        lblFileDate6 = New Label()
+        btnAction6 = New Button()
+        pnlOfficeCard7 = New Panel()
+        lblOfficeIcon7 = New Label()
+        lblOfficeTitle7 = New Label()
+        lblOfficeStatusBadge7 = New Label()
+        lblOfficeDesc7 = New Label()
+        pnlFileAttach7 = New Panel()
+        lblFileIcon7 = New Label()
+        lblFileName7 = New Label()
+        lblFileDate7 = New Label()
+        btnAction7 = New Button()
+        pnlOfficeCard8 = New Panel()
+        lblOfficeIcon8 = New Label()
+        lblOfficeTitle8 = New Label()
+        lblOfficeStatusBadge8 = New Label()
+        lblOfficeDesc8 = New Label()
+        pnlFileAttach8 = New Panel()
+        lblFileIcon8 = New Label()
+        lblFileName8 = New Label()
+        lblFileDate8 = New Label()
+        btnAction8 = New Button()
         pnlSidebar.SuspendLayout()
         pnlUserProfile.SuspendLayout()
         pnlLogo.SuspendLayout()
@@ -108,6 +147,14 @@ Partial Class StudentClearanceForm
         pnlFileAttach3.SuspendLayout()
         pnlOfficeCard4.SuspendLayout()
         pnlFileAttach4.SuspendLayout()
+        pnlOfficeCard5.SuspendLayout()
+        pnlFileAttach5.SuspendLayout()
+        pnlOfficeCard6.SuspendLayout()
+        pnlFileAttach6.SuspendLayout()
+        pnlOfficeCard7.SuspendLayout()
+        pnlFileAttach7.SuspendLayout()
+        pnlOfficeCard8.SuspendLayout()
+        pnlFileAttach8.SuspendLayout()
         pnlFilterRow.SuspendLayout()
         pnlProgressCard.SuspendLayout()
         pnlAttentionBox.SuspendLayout()
@@ -280,16 +327,6 @@ Partial Class StudentClearanceForm
         pnlMain.Size = New Size(980, 800)
         pnlMain.TabIndex = 1
         ' 
-        ' pnlViewHost
-        ' 
-        pnlViewHost.BackColor = Color.FromArgb(244, 247, 251)
-        pnlViewHost.Dock = DockStyle.Fill
-        pnlViewHost.Location = New Point(220, 0)
-        pnlViewHost.Name = "pnlViewHost"
-        pnlViewHost.Size = New Size(980, 800)
-        pnlViewHost.TabIndex = 2
-        pnlViewHost.Visible = False
-        ' 
         ' pnlPagination
         ' 
         pnlPagination.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
@@ -359,7 +396,7 @@ Partial Class StudentClearanceForm
         lblShowingOffices.Name = "lblShowingOffices"
         lblShowingOffices.Size = New Size(137, 15)
         lblShowingOffices.TabIndex = 0
-        lblShowingOffices.Text = "Showing 1-4 of 6 offices"
+        lblShowingOffices.Text = "Showing 1-4 of 7 offices"
         ' 
         ' flpOfficesGrid
         ' 
@@ -369,6 +406,10 @@ Partial Class StudentClearanceForm
         flpOfficesGrid.Controls.Add(pnlOfficeCard2)
         flpOfficesGrid.Controls.Add(pnlOfficeCard3)
         flpOfficesGrid.Controls.Add(pnlOfficeCard4)
+        flpOfficesGrid.Controls.Add(pnlOfficeCard5)
+        flpOfficesGrid.Controls.Add(pnlOfficeCard6)
+        flpOfficesGrid.Controls.Add(pnlOfficeCard7)
+        flpOfficesGrid.Controls.Add(pnlOfficeCard8)
         flpOfficesGrid.Location = New Point(28, 275)
         flpOfficesGrid.Name = "flpOfficesGrid"
         flpOfficesGrid.Size = New Size(924, 450)
@@ -384,7 +425,6 @@ Partial Class StudentClearanceForm
         pnlOfficeCard1.Controls.Add(lblOfficeStatusBadge1)
         pnlOfficeCard1.Controls.Add(lblOfficeTitle1)
         pnlOfficeCard1.Controls.Add(lblOfficeIcon1)
-        pnlOfficeCard1.Location = New Point(3, 3)
         pnlOfficeCard1.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard1.Name = "pnlOfficeCard1"
         pnlOfficeCard1.Padding = New Padding(16)
@@ -425,7 +465,7 @@ Partial Class StudentClearanceForm
         lblFileDate1.ForeColor = Color.FromArgb(148, 163, 184)
         lblFileDate1.Location = New Point(42, 26)
         lblFileDate1.Name = "lblFileDate1"
-        lblFileDate1.Size = New Size(168, 13)
+        lblFileDate1.Size = New Size(150, 13)
         lblFileDate1.TabIndex = 2
         lblFileDate1.Text = "Submitted Sep 29, 2026 09:35 pm"
         ' 
@@ -436,7 +476,7 @@ Partial Class StudentClearanceForm
         lblFileName1.ForeColor = Color.FromArgb(30, 41, 59)
         lblFileName1.Location = New Point(42, 8)
         lblFileName1.Name = "lblFileName1"
-        lblFileName1.Size = New Size(183, 15)
+        lblFileName1.Size = New Size(160, 15)
         lblFileName1.TabIndex = 1
         lblFileName1.Text = "Screenshot 2026-01-21 200242.png"
         ' 
@@ -480,7 +520,7 @@ Partial Class StudentClearanceForm
         lblOfficeTitle1.ForeColor = Color.FromArgb(15, 23, 42)
         lblOfficeTitle1.Location = New Point(54, 20)
         lblOfficeTitle1.Name = "lblOfficeTitle1"
-        lblOfficeTitle1.Size = New Size(106, 20)
+        lblOfficeTitle1.Size = New Size(120, 20)
         lblOfficeTitle1.TabIndex = 1
         lblOfficeTitle1.Text = "Finance Office"
         ' 
@@ -505,7 +545,6 @@ Partial Class StudentClearanceForm
         pnlOfficeCard2.Controls.Add(lblOfficeStatusBadge2)
         pnlOfficeCard2.Controls.Add(lblOfficeTitle2)
         pnlOfficeCard2.Controls.Add(lblOfficeIcon2)
-        pnlOfficeCard2.Location = New Point(462, 3)
         pnlOfficeCard2.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard2.Name = "pnlOfficeCard2"
         pnlOfficeCard2.Padding = New Padding(16)
@@ -546,7 +585,7 @@ Partial Class StudentClearanceForm
         lblFileDate2.ForeColor = Color.FromArgb(148, 163, 184)
         lblFileDate2.Location = New Point(42, 26)
         lblFileDate2.Name = "lblFileDate2"
-        lblFileDate2.Size = New Size(168, 13)
+        lblFileDate2.Size = New Size(150, 13)
         lblFileDate2.TabIndex = 2
         lblFileDate2.Text = "Submitted Sep 29, 2026 09:36 pm"
         ' 
@@ -557,7 +596,7 @@ Partial Class StudentClearanceForm
         lblFileName2.ForeColor = Color.FromArgb(30, 41, 59)
         lblFileName2.Location = New Point(42, 8)
         lblFileName2.Name = "lblFileName2"
-        lblFileName2.Size = New Size(183, 15)
+        lblFileName2.Size = New Size(160, 15)
         lblFileName2.TabIndex = 1
         lblFileName2.Text = "Screenshot 2026-01-20 012035.png"
         ' 
@@ -601,7 +640,7 @@ Partial Class StudentClearanceForm
         lblOfficeTitle2.ForeColor = Color.FromArgb(15, 23, 42)
         lblOfficeTitle2.Location = New Point(54, 20)
         lblOfficeTitle2.Name = "lblOfficeTitle2"
-        lblOfficeTitle2.Size = New Size(119, 20)
+        lblOfficeTitle2.Size = New Size(120, 20)
         lblOfficeTitle2.TabIndex = 1
         lblOfficeTitle2.Text = "Guidance Office"
         ' 
@@ -626,7 +665,6 @@ Partial Class StudentClearanceForm
         pnlOfficeCard3.Controls.Add(lblOfficeStatusBadge3)
         pnlOfficeCard3.Controls.Add(lblOfficeTitle3)
         pnlOfficeCard3.Controls.Add(lblOfficeIcon3)
-        pnlOfficeCard3.Location = New Point(3, 237)
         pnlOfficeCard3.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard3.Name = "pnlOfficeCard3"
         pnlOfficeCard3.Padding = New Padding(16)
@@ -667,7 +705,7 @@ Partial Class StudentClearanceForm
         lblFileDate3.ForeColor = Color.FromArgb(148, 163, 184)
         lblFileDate3.Location = New Point(42, 26)
         lblFileDate3.Name = "lblFileDate3"
-        lblFileDate3.Size = New Size(168, 13)
+        lblFileDate3.Size = New Size(150, 13)
         lblFileDate3.TabIndex = 2
         lblFileDate3.Text = "Submitted Sep 29, 2026 09:37 pm"
         ' 
@@ -678,7 +716,7 @@ Partial Class StudentClearanceForm
         lblFileName3.ForeColor = Color.FromArgb(30, 41, 59)
         lblFileName3.Location = New Point(42, 8)
         lblFileName3.Name = "lblFileName3"
-        lblFileName3.Size = New Size(183, 15)
+        lblFileName3.Size = New Size(160, 15)
         lblFileName3.TabIndex = 1
         lblFileName3.Text = "Screenshot 2026-01-21 200242.png"
         ' 
@@ -722,7 +760,7 @@ Partial Class StudentClearanceForm
         lblOfficeTitle3.ForeColor = Color.FromArgb(15, 23, 42)
         lblOfficeTitle3.Location = New Point(54, 20)
         lblOfficeTitle3.Name = "lblOfficeTitle3"
-        lblOfficeTitle3.Size = New Size(57, 20)
+        lblOfficeTitle3.Size = New Size(120, 20)
         lblOfficeTitle3.TabIndex = 1
         lblOfficeTitle3.Text = "Library"
         ' 
@@ -747,7 +785,6 @@ Partial Class StudentClearanceForm
         pnlOfficeCard4.Controls.Add(lblOfficeStatusBadge4)
         pnlOfficeCard4.Controls.Add(lblOfficeTitle4)
         pnlOfficeCard4.Controls.Add(lblOfficeIcon4)
-        pnlOfficeCard4.Location = New Point(462, 237)
         pnlOfficeCard4.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard4.Name = "pnlOfficeCard4"
         pnlOfficeCard4.Padding = New Padding(16)
@@ -788,7 +825,7 @@ Partial Class StudentClearanceForm
         lblFileDate4.ForeColor = Color.FromArgb(148, 163, 184)
         lblFileDate4.Location = New Point(42, 26)
         lblFileDate4.Name = "lblFileDate4"
-        lblFileDate4.Size = New Size(89, 13)
+        lblFileDate4.Size = New Size(150, 13)
         lblFileDate4.TabIndex = 2
         lblFileDate4.Text = "Upload required"
         ' 
@@ -799,7 +836,7 @@ Partial Class StudentClearanceForm
         lblFileName4.ForeColor = Color.FromArgb(30, 41, 59)
         lblFileName4.Location = New Point(42, 8)
         lblFileName4.Name = "lblFileName4"
-        lblFileName4.Size = New Size(127, 15)
+        lblFileName4.Size = New Size(160, 15)
         lblFileName4.TabIndex = 1
         lblFileName4.Text = "No document uploaded"
         ' 
@@ -843,7 +880,7 @@ Partial Class StudentClearanceForm
         lblOfficeTitle4.ForeColor = Color.FromArgb(15, 23, 42)
         lblOfficeTitle4.Location = New Point(54, 20)
         lblOfficeTitle4.Name = "lblOfficeTitle4"
-        lblOfficeTitle4.Size = New Size(41, 20)
+        lblOfficeTitle4.Size = New Size(120, 20)
         lblOfficeTitle4.TabIndex = 1
         lblOfficeTitle4.Text = "OAA"
         ' 
@@ -857,6 +894,486 @@ Partial Class StudentClearanceForm
         lblOfficeIcon4.TabIndex = 0
         lblOfficeIcon4.Text = "🏛"
         lblOfficeIcon4.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlOfficeCard5
+        ' 
+        pnlOfficeCard5.BackColor = Color.White
+        pnlOfficeCard5.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard5.Controls.Add(btnAction5)
+        pnlOfficeCard5.Controls.Add(pnlFileAttach5)
+        pnlOfficeCard5.Controls.Add(lblOfficeDesc5)
+        pnlOfficeCard5.Controls.Add(lblOfficeStatusBadge5)
+        pnlOfficeCard5.Controls.Add(lblOfficeTitle5)
+        pnlOfficeCard5.Controls.Add(lblOfficeIcon5)
+        pnlOfficeCard5.Margin = New Padding(3, 3, 16, 16)
+        pnlOfficeCard5.Name = "pnlOfficeCard5"
+        pnlOfficeCard5.Padding = New Padding(16)
+        pnlOfficeCard5.Size = New Size(440, 215)
+        pnlOfficeCard5.TabIndex = 4
+        ' 
+        ' btnAction5
+        ' 
+        btnAction5.BackColor = Color.FromArgb(11, 99, 229)
+        btnAction5.Cursor = Cursors.Hand
+        btnAction5.FlatAppearance.BorderSize = 0
+        btnAction5.FlatStyle = FlatStyle.Flat
+        btnAction5.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        btnAction5.ForeColor = Color.White
+        btnAction5.Location = New Point(16, 154)
+        btnAction5.Name = "btnAction5"
+        btnAction5.Size = New Size(406, 36)
+        btnAction5.TabIndex = 5
+        btnAction5.Text = "Upload requirement"
+        btnAction5.UseVisualStyleBackColor = False
+        ' 
+        ' pnlFileAttach5
+        ' 
+        pnlFileAttach5.BackColor = Color.FromArgb(248, 250, 252)
+        pnlFileAttach5.BorderStyle = BorderStyle.FixedSingle
+        pnlFileAttach5.Controls.Add(lblFileDate5)
+        pnlFileAttach5.Controls.Add(lblFileName5)
+        pnlFileAttach5.Controls.Add(lblFileIcon5)
+        pnlFileAttach5.Location = New Point(16, 95)
+        pnlFileAttach5.Name = "pnlFileAttach5"
+        pnlFileAttach5.Size = New Size(406, 48)
+        pnlFileAttach5.TabIndex = 4
+        ' 
+        ' lblFileDate5
+        ' 
+        lblFileDate5.AutoSize = True
+        lblFileDate5.Font = New Font("Segoe UI", 8.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblFileDate5.ForeColor = Color.FromArgb(148, 163, 184)
+        lblFileDate5.Location = New Point(42, 26)
+        lblFileDate5.Name = "lblFileDate5"
+        lblFileDate5.Size = New Size(150, 13)
+        lblFileDate5.TabIndex = 2
+        lblFileDate5.Text = "Upload required"
+        ' 
+        ' lblFileName5
+        ' 
+        lblFileName5.AutoSize = True
+        lblFileName5.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblFileName5.ForeColor = Color.FromArgb(30, 41, 59)
+        lblFileName5.Location = New Point(42, 8)
+        lblFileName5.Name = "lblFileName5"
+        lblFileName5.Size = New Size(160, 15)
+        lblFileName5.TabIndex = 1
+        lblFileName5.Text = "No document uploaded"
+        ' 
+        ' lblFileIcon5
+        ' 
+        lblFileIcon5.Font = New Font("Segoe UI Emoji", 14.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblFileIcon5.Location = New Point(8, 8)
+        lblFileIcon5.Name = "lblFileIcon5"
+        lblFileIcon5.Size = New Size(28, 30)
+        lblFileIcon5.TabIndex = 0
+        lblFileIcon5.Text = "📄"
+        lblFileIcon5.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeDesc5
+        ' 
+        lblOfficeDesc5.Font = New Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point)
+        lblOfficeDesc5.ForeColor = Color.FromArgb(100, 116, 139)
+        lblOfficeDesc5.Location = New Point(16, 60)
+        lblOfficeDesc5.Name = "lblOfficeDesc5"
+        lblOfficeDesc5.Size = New Size(406, 28)
+        lblOfficeDesc5.TabIndex = 3
+        lblOfficeDesc5.Text = "Registrar Clearance — Complete all registrar-related clearance requirements."
+        ' 
+        ' lblOfficeStatusBadge5
+        ' 
+        lblOfficeStatusBadge5.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        lblOfficeStatusBadge5.BackColor = Color.FromArgb(254, 243, 199)
+        lblOfficeStatusBadge5.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblOfficeStatusBadge5.ForeColor = Color.FromArgb(146, 64, 14)
+        lblOfficeStatusBadge5.Location = New Point(320, 18)
+        lblOfficeStatusBadge5.Name = "lblOfficeStatusBadge5"
+        lblOfficeStatusBadge5.Size = New Size(102, 26)
+        lblOfficeStatusBadge5.TabIndex = 2
+        lblOfficeStatusBadge5.Text = "Pending"
+        lblOfficeStatusBadge5.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeTitle5
+        ' 
+        lblOfficeTitle5.AutoSize = True
+        lblOfficeTitle5.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblOfficeTitle5.ForeColor = Color.FromArgb(15, 23, 42)
+        lblOfficeTitle5.Location = New Point(54, 20)
+        lblOfficeTitle5.Name = "lblOfficeTitle5"
+        lblOfficeTitle5.Size = New Size(120, 20)
+        lblOfficeTitle5.TabIndex = 1
+        lblOfficeTitle5.Text = "Registrar"
+        ' 
+        ' lblOfficeIcon5
+        ' 
+        lblOfficeIcon5.BackColor = Color.FromArgb(238, 242, 255)
+        lblOfficeIcon5.Font = New Font("Segoe UI Emoji", 14.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblOfficeIcon5.Location = New Point(16, 15)
+        lblOfficeIcon5.Name = "lblOfficeIcon5"
+        lblOfficeIcon5.Size = New Size(32, 32)
+        lblOfficeIcon5.TabIndex = 0
+        lblOfficeIcon5.Text = "🏛"
+        lblOfficeIcon5.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlOfficeCard6
+        ' 
+        pnlOfficeCard6.BackColor = Color.White
+        pnlOfficeCard6.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard6.Controls.Add(btnAction6)
+        pnlOfficeCard6.Controls.Add(pnlFileAttach6)
+        pnlOfficeCard6.Controls.Add(lblOfficeDesc6)
+        pnlOfficeCard6.Controls.Add(lblOfficeStatusBadge6)
+        pnlOfficeCard6.Controls.Add(lblOfficeTitle6)
+        pnlOfficeCard6.Controls.Add(lblOfficeIcon6)
+        pnlOfficeCard6.Margin = New Padding(3, 3, 16, 16)
+        pnlOfficeCard6.Name = "pnlOfficeCard6"
+        pnlOfficeCard6.Padding = New Padding(16)
+        pnlOfficeCard6.Size = New Size(440, 215)
+        pnlOfficeCard6.TabIndex = 5
+        ' 
+        ' btnAction6
+        ' 
+        btnAction6.BackColor = Color.FromArgb(11, 99, 229)
+        btnAction6.Cursor = Cursors.Hand
+        btnAction6.FlatAppearance.BorderSize = 0
+        btnAction6.FlatStyle = FlatStyle.Flat
+        btnAction6.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        btnAction6.ForeColor = Color.White
+        btnAction6.Location = New Point(16, 154)
+        btnAction6.Name = "btnAction6"
+        btnAction6.Size = New Size(406, 36)
+        btnAction6.TabIndex = 5
+        btnAction6.Text = "Upload requirement"
+        btnAction6.UseVisualStyleBackColor = False
+        ' 
+        ' pnlFileAttach6
+        ' 
+        pnlFileAttach6.BackColor = Color.FromArgb(248, 250, 252)
+        pnlFileAttach6.BorderStyle = BorderStyle.FixedSingle
+        pnlFileAttach6.Controls.Add(lblFileDate6)
+        pnlFileAttach6.Controls.Add(lblFileName6)
+        pnlFileAttach6.Controls.Add(lblFileIcon6)
+        pnlFileAttach6.Location = New Point(16, 95)
+        pnlFileAttach6.Name = "pnlFileAttach6"
+        pnlFileAttach6.Size = New Size(406, 48)
+        pnlFileAttach6.TabIndex = 4
+        ' 
+        ' lblFileDate6
+        ' 
+        lblFileDate6.AutoSize = True
+        lblFileDate6.Font = New Font("Segoe UI", 8.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblFileDate6.ForeColor = Color.FromArgb(148, 163, 184)
+        lblFileDate6.Location = New Point(42, 26)
+        lblFileDate6.Name = "lblFileDate6"
+        lblFileDate6.Size = New Size(150, 13)
+        lblFileDate6.TabIndex = 2
+        lblFileDate6.Text = "Upload required"
+        ' 
+        ' lblFileName6
+        ' 
+        lblFileName6.AutoSize = True
+        lblFileName6.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblFileName6.ForeColor = Color.FromArgb(30, 41, 59)
+        lblFileName6.Location = New Point(42, 8)
+        lblFileName6.Name = "lblFileName6"
+        lblFileName6.Size = New Size(160, 15)
+        lblFileName6.TabIndex = 1
+        lblFileName6.Text = "No document uploaded"
+        ' 
+        ' lblFileIcon6
+        ' 
+        lblFileIcon6.Font = New Font("Segoe UI Emoji", 14.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblFileIcon6.Location = New Point(8, 8)
+        lblFileIcon6.Name = "lblFileIcon6"
+        lblFileIcon6.Size = New Size(28, 30)
+        lblFileIcon6.TabIndex = 0
+        lblFileIcon6.Text = "📄"
+        lblFileIcon6.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeDesc6
+        ' 
+        lblOfficeDesc6.Font = New Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point)
+        lblOfficeDesc6.ForeColor = Color.FromArgb(100, 116, 139)
+        lblOfficeDesc6.Location = New Point(16, 60)
+        lblOfficeDesc6.Name = "lblOfficeDesc6"
+        lblOfficeDesc6.Size = New Size(406, 28)
+        lblOfficeDesc6.TabIndex = 3
+        lblOfficeDesc6.Text = "OSA Clearance — Complete all requirements from the Office of Student Affairs."
+        ' 
+        ' lblOfficeStatusBadge6
+        ' 
+        lblOfficeStatusBadge6.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        lblOfficeStatusBadge6.BackColor = Color.FromArgb(254, 243, 199)
+        lblOfficeStatusBadge6.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblOfficeStatusBadge6.ForeColor = Color.FromArgb(146, 64, 14)
+        lblOfficeStatusBadge6.Location = New Point(320, 18)
+        lblOfficeStatusBadge6.Name = "lblOfficeStatusBadge6"
+        lblOfficeStatusBadge6.Size = New Size(102, 26)
+        lblOfficeStatusBadge6.TabIndex = 2
+        lblOfficeStatusBadge6.Text = "Pending"
+        lblOfficeStatusBadge6.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeTitle6
+        ' 
+        lblOfficeTitle6.AutoSize = True
+        lblOfficeTitle6.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblOfficeTitle6.ForeColor = Color.FromArgb(15, 23, 42)
+        lblOfficeTitle6.Location = New Point(54, 20)
+        lblOfficeTitle6.Name = "lblOfficeTitle6"
+        lblOfficeTitle6.Size = New Size(120, 20)
+        lblOfficeTitle6.TabIndex = 1
+        lblOfficeTitle6.Text = "OSA"
+        ' 
+        ' lblOfficeIcon6
+        ' 
+        lblOfficeIcon6.BackColor = Color.FromArgb(238, 242, 255)
+        lblOfficeIcon6.Font = New Font("Segoe UI Emoji", 14.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblOfficeIcon6.Location = New Point(16, 15)
+        lblOfficeIcon6.Name = "lblOfficeIcon6"
+        lblOfficeIcon6.Size = New Size(32, 32)
+        lblOfficeIcon6.TabIndex = 0
+        lblOfficeIcon6.Text = "🏛"
+        lblOfficeIcon6.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlOfficeCard7
+        ' 
+        pnlOfficeCard7.BackColor = Color.White
+        pnlOfficeCard7.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard7.Controls.Add(btnAction7)
+        pnlOfficeCard7.Controls.Add(pnlFileAttach7)
+        pnlOfficeCard7.Controls.Add(lblOfficeDesc7)
+        pnlOfficeCard7.Controls.Add(lblOfficeStatusBadge7)
+        pnlOfficeCard7.Controls.Add(lblOfficeTitle7)
+        pnlOfficeCard7.Controls.Add(lblOfficeIcon7)
+        pnlOfficeCard7.Margin = New Padding(3, 3, 16, 16)
+        pnlOfficeCard7.Name = "pnlOfficeCard7"
+        pnlOfficeCard7.Padding = New Padding(16)
+        pnlOfficeCard7.Size = New Size(440, 215)
+        pnlOfficeCard7.TabIndex = 6
+        ' 
+        ' btnAction7
+        ' 
+        btnAction7.BackColor = Color.FromArgb(11, 99, 229)
+        btnAction7.Cursor = Cursors.Hand
+        btnAction7.FlatAppearance.BorderSize = 0
+        btnAction7.FlatStyle = FlatStyle.Flat
+        btnAction7.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        btnAction7.ForeColor = Color.White
+        btnAction7.Location = New Point(16, 154)
+        btnAction7.Name = "btnAction7"
+        btnAction7.Size = New Size(406, 36)
+        btnAction7.TabIndex = 5
+        btnAction7.Text = "Upload requirement"
+        btnAction7.UseVisualStyleBackColor = False
+        ' 
+        ' pnlFileAttach7
+        ' 
+        pnlFileAttach7.BackColor = Color.FromArgb(248, 250, 252)
+        pnlFileAttach7.BorderStyle = BorderStyle.FixedSingle
+        pnlFileAttach7.Controls.Add(lblFileDate7)
+        pnlFileAttach7.Controls.Add(lblFileName7)
+        pnlFileAttach7.Controls.Add(lblFileIcon7)
+        pnlFileAttach7.Location = New Point(16, 95)
+        pnlFileAttach7.Name = "pnlFileAttach7"
+        pnlFileAttach7.Size = New Size(406, 48)
+        pnlFileAttach7.TabIndex = 4
+        ' 
+        ' lblFileDate7
+        ' 
+        lblFileDate7.AutoSize = True
+        lblFileDate7.Font = New Font("Segoe UI", 8.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblFileDate7.ForeColor = Color.FromArgb(148, 163, 184)
+        lblFileDate7.Location = New Point(42, 26)
+        lblFileDate7.Name = "lblFileDate7"
+        lblFileDate7.Size = New Size(150, 13)
+        lblFileDate7.TabIndex = 2
+        lblFileDate7.Text = "Upload required"
+        ' 
+        ' lblFileName7
+        ' 
+        lblFileName7.AutoSize = True
+        lblFileName7.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblFileName7.ForeColor = Color.FromArgb(30, 41, 59)
+        lblFileName7.Location = New Point(42, 8)
+        lblFileName7.Name = "lblFileName7"
+        lblFileName7.Size = New Size(160, 15)
+        lblFileName7.TabIndex = 1
+        lblFileName7.Text = "No document uploaded"
+        ' 
+        ' lblFileIcon7
+        ' 
+        lblFileIcon7.Font = New Font("Segoe UI Emoji", 14.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblFileIcon7.Location = New Point(8, 8)
+        lblFileIcon7.Name = "lblFileIcon7"
+        lblFileIcon7.Size = New Size(28, 30)
+        lblFileIcon7.TabIndex = 0
+        lblFileIcon7.Text = "📄"
+        lblFileIcon7.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeDesc7
+        ' 
+        lblOfficeDesc7.Font = New Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point)
+        lblOfficeDesc7.ForeColor = Color.FromArgb(100, 116, 139)
+        lblOfficeDesc7.Location = New Point(16, 60)
+        lblOfficeDesc7.Name = "lblOfficeDesc7"
+        lblOfficeDesc7.Size = New Size(406, 28)
+        lblOfficeDesc7.TabIndex = 3
+        lblOfficeDesc7.Text = "NSTP Clearance — Complete the required NSTP clearance."
+        ' 
+        ' lblOfficeStatusBadge7
+        ' 
+        lblOfficeStatusBadge7.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        lblOfficeStatusBadge7.BackColor = Color.FromArgb(254, 243, 199)
+        lblOfficeStatusBadge7.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblOfficeStatusBadge7.ForeColor = Color.FromArgb(146, 64, 14)
+        lblOfficeStatusBadge7.Location = New Point(320, 18)
+        lblOfficeStatusBadge7.Name = "lblOfficeStatusBadge7"
+        lblOfficeStatusBadge7.Size = New Size(102, 26)
+        lblOfficeStatusBadge7.TabIndex = 2
+        lblOfficeStatusBadge7.Text = "Pending"
+        lblOfficeStatusBadge7.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeTitle7
+        ' 
+        lblOfficeTitle7.AutoSize = True
+        lblOfficeTitle7.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblOfficeTitle7.ForeColor = Color.FromArgb(15, 23, 42)
+        lblOfficeTitle7.Location = New Point(54, 20)
+        lblOfficeTitle7.Name = "lblOfficeTitle7"
+        lblOfficeTitle7.Size = New Size(120, 20)
+        lblOfficeTitle7.TabIndex = 1
+        lblOfficeTitle7.Text = "NSTP"
+        ' 
+        ' lblOfficeIcon7
+        ' 
+        lblOfficeIcon7.BackColor = Color.FromArgb(238, 242, 255)
+        lblOfficeIcon7.Font = New Font("Segoe UI Emoji", 14.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblOfficeIcon7.Location = New Point(16, 15)
+        lblOfficeIcon7.Name = "lblOfficeIcon7"
+        lblOfficeIcon7.Size = New Size(32, 32)
+        lblOfficeIcon7.TabIndex = 0
+        lblOfficeIcon7.Text = "🏛"
+        lblOfficeIcon7.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlOfficeCard8
+        ' 
+        pnlOfficeCard8.BackColor = Color.White
+        pnlOfficeCard8.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard8.Controls.Add(btnAction8)
+        pnlOfficeCard8.Controls.Add(pnlFileAttach8)
+        pnlOfficeCard8.Controls.Add(lblOfficeDesc8)
+        pnlOfficeCard8.Controls.Add(lblOfficeStatusBadge8)
+        pnlOfficeCard8.Controls.Add(lblOfficeTitle8)
+        pnlOfficeCard8.Controls.Add(lblOfficeIcon8)
+        pnlOfficeCard8.Margin = New Padding(3, 3, 16, 16)
+        pnlOfficeCard8.Name = "pnlOfficeCard8"
+        pnlOfficeCard8.Padding = New Padding(16)
+        pnlOfficeCard8.Size = New Size(440, 215)
+        pnlOfficeCard8.TabIndex = 7
+        ' 
+        ' btnAction8
+        ' 
+        btnAction8.BackColor = Color.FromArgb(11, 99, 229)
+        btnAction8.Cursor = Cursors.Hand
+        btnAction8.FlatAppearance.BorderSize = 0
+        btnAction8.FlatStyle = FlatStyle.Flat
+        btnAction8.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        btnAction8.ForeColor = Color.White
+        btnAction8.Location = New Point(16, 154)
+        btnAction8.Name = "btnAction8"
+        btnAction8.Size = New Size(406, 36)
+        btnAction8.TabIndex = 5
+        btnAction8.Text = "Upload requirement"
+        btnAction8.UseVisualStyleBackColor = False
+        ' 
+        ' pnlFileAttach8
+        ' 
+        pnlFileAttach8.BackColor = Color.FromArgb(248, 250, 252)
+        pnlFileAttach8.BorderStyle = BorderStyle.FixedSingle
+        pnlFileAttach8.Controls.Add(lblFileDate8)
+        pnlFileAttach8.Controls.Add(lblFileName8)
+        pnlFileAttach8.Controls.Add(lblFileIcon8)
+        pnlFileAttach8.Location = New Point(16, 95)
+        pnlFileAttach8.Name = "pnlFileAttach8"
+        pnlFileAttach8.Size = New Size(406, 48)
+        pnlFileAttach8.TabIndex = 4
+        ' 
+        ' lblFileDate8
+        ' 
+        lblFileDate8.AutoSize = True
+        lblFileDate8.Font = New Font("Segoe UI", 8.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblFileDate8.ForeColor = Color.FromArgb(148, 163, 184)
+        lblFileDate8.Location = New Point(42, 26)
+        lblFileDate8.Name = "lblFileDate8"
+        lblFileDate8.Size = New Size(150, 13)
+        lblFileDate8.TabIndex = 2
+        lblFileDate8.Text = "Upload required"
+        ' 
+        ' lblFileName8
+        ' 
+        lblFileName8.AutoSize = True
+        lblFileName8.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblFileName8.ForeColor = Color.FromArgb(30, 41, 59)
+        lblFileName8.Location = New Point(42, 8)
+        lblFileName8.Name = "lblFileName8"
+        lblFileName8.Size = New Size(160, 15)
+        lblFileName8.TabIndex = 1
+        lblFileName8.Text = "No document uploaded"
+        ' 
+        ' lblFileIcon8
+        ' 
+        lblFileIcon8.Font = New Font("Segoe UI Emoji", 14.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblFileIcon8.Location = New Point(8, 8)
+        lblFileIcon8.Name = "lblFileIcon8"
+        lblFileIcon8.Size = New Size(28, 30)
+        lblFileIcon8.TabIndex = 0
+        lblFileIcon8.Text = "📄"
+        lblFileIcon8.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeDesc8
+        ' 
+        lblOfficeDesc8.Font = New Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point)
+        lblOfficeDesc8.ForeColor = Color.FromArgb(100, 116, 139)
+        lblOfficeDesc8.Location = New Point(16, 60)
+        lblOfficeDesc8.Name = "lblOfficeDesc8"
+        lblOfficeDesc8.Size = New Size(406, 28)
+        lblOfficeDesc8.TabIndex = 3
+        lblOfficeDesc8.Text = "CTHM Stock Room Clearance — Return or settle all required CTHM stock room items."
+        ' 
+        ' lblOfficeStatusBadge8
+        ' 
+        lblOfficeStatusBadge8.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        lblOfficeStatusBadge8.BackColor = Color.FromArgb(254, 243, 199)
+        lblOfficeStatusBadge8.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblOfficeStatusBadge8.ForeColor = Color.FromArgb(146, 64, 14)
+        lblOfficeStatusBadge8.Location = New Point(320, 18)
+        lblOfficeStatusBadge8.Name = "lblOfficeStatusBadge8"
+        lblOfficeStatusBadge8.Size = New Size(102, 26)
+        lblOfficeStatusBadge8.TabIndex = 2
+        lblOfficeStatusBadge8.Text = "Pending"
+        lblOfficeStatusBadge8.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeTitle8
+        ' 
+        lblOfficeTitle8.AutoSize = True
+        lblOfficeTitle8.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblOfficeTitle8.ForeColor = Color.FromArgb(15, 23, 42)
+        lblOfficeTitle8.Location = New Point(54, 20)
+        lblOfficeTitle8.Name = "lblOfficeTitle8"
+        lblOfficeTitle8.Size = New Size(120, 20)
+        lblOfficeTitle8.TabIndex = 1
+        lblOfficeTitle8.Text = "CTHM Stock Room"
+        ' 
+        ' lblOfficeIcon8
+        ' 
+        lblOfficeIcon8.BackColor = Color.FromArgb(238, 242, 255)
+        lblOfficeIcon8.Font = New Font("Segoe UI Emoji", 14.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblOfficeIcon8.Location = New Point(16, 15)
+        lblOfficeIcon8.Name = "lblOfficeIcon8"
+        lblOfficeIcon8.Size = New Size(32, 32)
+        lblOfficeIcon8.TabIndex = 0
+        lblOfficeIcon8.Text = "🏛"
+        lblOfficeIcon8.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' pnlFilterRow
         ' 
@@ -1063,7 +1580,6 @@ Partial Class StudentClearanceForm
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(244, 247, 251)
         ClientSize = New Size(1200, 800)
-        Controls.Add(pnlViewHost)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
@@ -1097,6 +1613,22 @@ Partial Class StudentClearanceForm
         pnlOfficeCard4.PerformLayout()
         pnlFileAttach4.ResumeLayout(False)
         pnlFileAttach4.PerformLayout()
+        pnlOfficeCard5.ResumeLayout(False)
+        pnlOfficeCard5.PerformLayout()
+        pnlFileAttach5.ResumeLayout(False)
+        pnlFileAttach5.PerformLayout()
+        pnlOfficeCard6.ResumeLayout(False)
+        pnlOfficeCard6.PerformLayout()
+        pnlFileAttach6.ResumeLayout(False)
+        pnlFileAttach6.PerformLayout()
+        pnlOfficeCard7.ResumeLayout(False)
+        pnlOfficeCard7.PerformLayout()
+        pnlFileAttach7.ResumeLayout(False)
+        pnlFileAttach7.PerformLayout()
+        pnlOfficeCard8.ResumeLayout(False)
+        pnlOfficeCard8.PerformLayout()
+        pnlFileAttach8.ResumeLayout(False)
+        pnlFileAttach8.PerformLayout()
         pnlFilterRow.ResumeLayout(False)
         pnlFilterRow.PerformLayout()
         pnlProgressCard.ResumeLayout(False)
@@ -1179,11 +1711,50 @@ Partial Class StudentClearanceForm
     Friend WithEvents lblFileName4 As Label
     Friend WithEvents lblFileDate4 As Label
     Friend WithEvents btnAction4 As Button
+    Friend WithEvents pnlOfficeCard5 As Panel
+    Friend WithEvents lblOfficeIcon5 As Label
+    Friend WithEvents lblOfficeTitle5 As Label
+    Friend WithEvents lblOfficeStatusBadge5 As Label
+    Friend WithEvents lblOfficeDesc5 As Label
+    Friend WithEvents pnlFileAttach5 As Panel
+    Friend WithEvents lblFileIcon5 As Label
+    Friend WithEvents lblFileName5 As Label
+    Friend WithEvents lblFileDate5 As Label
+    Friend WithEvents btnAction5 As Button
+    Friend WithEvents pnlOfficeCard6 As Panel
+    Friend WithEvents lblOfficeIcon6 As Label
+    Friend WithEvents lblOfficeTitle6 As Label
+    Friend WithEvents lblOfficeStatusBadge6 As Label
+    Friend WithEvents lblOfficeDesc6 As Label
+    Friend WithEvents pnlFileAttach6 As Panel
+    Friend WithEvents lblFileIcon6 As Label
+    Friend WithEvents lblFileName6 As Label
+    Friend WithEvents lblFileDate6 As Label
+    Friend WithEvents btnAction6 As Button
+    Friend WithEvents pnlOfficeCard7 As Panel
+    Friend WithEvents lblOfficeIcon7 As Label
+    Friend WithEvents lblOfficeTitle7 As Label
+    Friend WithEvents lblOfficeStatusBadge7 As Label
+    Friend WithEvents lblOfficeDesc7 As Label
+    Friend WithEvents pnlFileAttach7 As Panel
+    Friend WithEvents lblFileIcon7 As Label
+    Friend WithEvents lblFileName7 As Label
+    Friend WithEvents lblFileDate7 As Label
+    Friend WithEvents btnAction7 As Button
+    Friend WithEvents pnlOfficeCard8 As Panel
+    Friend WithEvents lblOfficeIcon8 As Label
+    Friend WithEvents lblOfficeTitle8 As Label
+    Friend WithEvents lblOfficeStatusBadge8 As Label
+    Friend WithEvents lblOfficeDesc8 As Label
+    Friend WithEvents pnlFileAttach8 As Panel
+    Friend WithEvents lblFileIcon8 As Label
+    Friend WithEvents lblFileName8 As Label
+    Friend WithEvents lblFileDate8 As Label
+    Friend WithEvents btnAction8 As Button
     Friend WithEvents pnlPagination As Panel
     Friend WithEvents lblShowingOffices As Label
     Friend WithEvents btnPage1 As Button
     Friend WithEvents btnPage2 As Button
     Friend WithEvents btnNextPage As Button
-    Friend WithEvents pnlViewHost As Panel
 
 End Class

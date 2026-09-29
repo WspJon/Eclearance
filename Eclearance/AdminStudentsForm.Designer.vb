@@ -32,7 +32,6 @@ Partial Class AdminStudentsForm
         lblLogoText = New Label()
         lblLogoIcon = New Label()
         pnlMain = New Panel()
-        pnlViewHost = New Panel()
         lblFooterNotice = New Label()
         pnlBottomDetails = New Panel()
         pnlActionsCard = New Panel()
@@ -746,23 +745,12 @@ Partial Class AdminStudentsForm
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "Students"
         ' 
-        ' pnlViewHost
-        ' 
-        pnlViewHost.BackColor = Color.FromArgb(244, 247, 251)
-        pnlViewHost.Dock = DockStyle.Fill
-        pnlViewHost.Location = New Point(220, 0)
-        pnlViewHost.Name = "pnlViewHost"
-        pnlViewHost.Size = New Size(980, 800)
-        pnlViewHost.TabIndex = 2
-        pnlViewHost.Visible = False
-        ' 
         ' AdminStudentsForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(244, 247, 251)
         ClientSize = New Size(1200, 800)
-        Controls.Add(pnlViewHost)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
@@ -849,6 +837,5 @@ Partial Class AdminStudentsForm
     Friend WithEvents btnViewHistory As Button
     Friend WithEvents btnResetTerm As Button
     Friend WithEvents lblFooterNotice As Label
-    Friend WithEvents pnlViewHost As Panel
 
 End Class

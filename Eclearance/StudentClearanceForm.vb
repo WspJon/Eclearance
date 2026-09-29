@@ -345,16 +345,13 @@ Public Class StudentClearanceForm
                 totalRecords
             )
 
-        Dim cardSlot As Integer = 0
-
         For index As Integer =
             startIndex To endIndex - 1
 
             Dim row As DataRow =
                 filteredClearanceRecords.Rows(index)
 
-            PopulateOfficeCard(cardSlot, row)
-            cardSlot += 1
+            PopulateOfficeCard(index, row)
 
         Next
 
@@ -381,6 +378,10 @@ Public Class StudentClearanceForm
         pnlOfficeCard2.Visible = False
         pnlOfficeCard3.Visible = False
         pnlOfficeCard4.Visible = False
+        pnlOfficeCard5.Visible = False
+        pnlOfficeCard6.Visible = False
+        pnlOfficeCard7.Visible = False
+        pnlOfficeCard8.Visible = False
 
     End Sub
 
@@ -452,6 +453,54 @@ Public Class StudentClearanceForm
                 lblFileNm = lblFileName4
                 lblFileDt = lblFileDate4
                 btnAct = btnAction4
+
+            Case 4
+                cardPanel = pnlOfficeCard5
+                lblIcon = lblOfficeIcon5
+                lblTitle = lblOfficeTitle5
+                lblBadge = lblOfficeStatusBadge5
+                lblDesc = lblOfficeDesc5
+                pnlFile = pnlFileAttach5
+                lblFileIco = lblFileIcon5
+                lblFileNm = lblFileName5
+                lblFileDt = lblFileDate5
+                btnAct = btnAction5
+
+            Case 5
+                cardPanel = pnlOfficeCard6
+                lblIcon = lblOfficeIcon6
+                lblTitle = lblOfficeTitle6
+                lblBadge = lblOfficeStatusBadge6
+                lblDesc = lblOfficeDesc6
+                pnlFile = pnlFileAttach6
+                lblFileIco = lblFileIcon6
+                lblFileNm = lblFileName6
+                lblFileDt = lblFileDate6
+                btnAct = btnAction6
+
+            Case 6
+                cardPanel = pnlOfficeCard7
+                lblIcon = lblOfficeIcon7
+                lblTitle = lblOfficeTitle7
+                lblBadge = lblOfficeStatusBadge7
+                lblDesc = lblOfficeDesc7
+                pnlFile = pnlFileAttach7
+                lblFileIco = lblFileIcon7
+                lblFileNm = lblFileName7
+                lblFileDt = lblFileDate7
+                btnAct = btnAction7
+
+            Case 7
+                cardPanel = pnlOfficeCard8
+                lblIcon = lblOfficeIcon8
+                lblTitle = lblOfficeTitle8
+                lblBadge = lblOfficeStatusBadge8
+                lblDesc = lblOfficeDesc8
+                pnlFile = pnlFileAttach8
+                lblFileIco = lblFileIcon8
+                lblFileNm = lblFileName8
+                lblFileDt = lblFileDate8
+                btnAct = btnAction8
 
             Case Else
                 Return
@@ -782,7 +831,7 @@ Public Class StudentClearanceForm
     Private Sub ClearanceActionButton_Click(
         sender As Object,
         e As EventArgs
-    ) Handles btnAction1.Click, btnAction2.Click, btnAction3.Click, btnAction4.Click
+    ) Handles btnAction1.Click, btnAction2.Click, btnAction3.Click, btnAction4.Click, btnAction5.Click, btnAction6.Click, btnAction7.Click, btnAction8.Click
 
         Dim button As Button =
             DirectCast(
@@ -1618,10 +1667,24 @@ Public Class StudentClearanceForm
     ' ============================================================
     ' SPA VIEW SWITCHING (SINGLE PAGE ARCHITECTURE)
     ' ============================================================
+    Private pnlViewHost As Panel = Nothing
+
+    Private Sub EnsureViewHost()
+        If pnlViewHost Is Nothing Then
+            pnlViewHost = New Panel()
+            pnlViewHost.Dock = DockStyle.Fill
+            pnlViewHost.Visible = False
+            pnlViewHost.BackColor = Color.FromArgb(244, 246, 250)
+            Me.Controls.Add(pnlViewHost)
+        End If
+    End Sub
+
     Public Sub ShowMyClearanceView()
         SetActiveNavButton(btnNavMyClearance)
-        pnlViewHost.Visible = False
-        pnlViewHost.Controls.Clear()
+        If pnlViewHost IsNot Nothing Then
+            pnlViewHost.Visible = False
+            pnlViewHost.Controls.Clear()
+        End If
         pnlMain.Visible = True
         pnlMain.BringToFront()
         cmbFilterOffices.SelectedIndex = 0
@@ -1637,6 +1700,7 @@ Public Class StudentClearanceForm
     End Sub
 
     Private Sub LoadChildFormView(childForm As Form)
+        EnsureViewHost()
         childForm.TopLevel = False
         childForm.FormBorderStyle = FormBorderStyle.None
         childForm.Dock = DockStyle.Fill

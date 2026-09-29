@@ -902,10 +902,24 @@ Public Class AdminStudentsForm
     ' ============================================================
     ' SPA VIEW SWITCHING (SINGLE PAGE ARCHITECTURE)
     ' ============================================================
+    Private pnlViewHost As Panel = Nothing
+
+    Private Sub EnsureViewHost()
+        If pnlViewHost Is Nothing Then
+            pnlViewHost = New Panel()
+            pnlViewHost.Dock = DockStyle.Fill
+            pnlViewHost.Visible = False
+            pnlViewHost.BackColor = Color.FromArgb(244, 247, 251)
+            Me.Controls.Add(pnlViewHost)
+        End If
+    End Sub
+
     Public Sub ShowStudentsView()
         SetActiveNavButton(btnNavStudents)
-        pnlViewHost.Visible = False
-        pnlViewHost.Controls.Clear()
+        If pnlViewHost IsNot Nothing Then
+            pnlViewHost.Visible = False
+            pnlViewHost.Controls.Clear()
+        End If
         pnlMain.Visible = True
         pnlMain.BringToFront()
         LoadCurrentTermLabel()
@@ -933,6 +947,7 @@ Public Class AdminStudentsForm
     End Sub
 
     Private Sub LoadChildFormView(childForm As Form)
+        EnsureViewHost()
         childForm.TopLevel = False
         childForm.FormBorderStyle = FormBorderStyle.None
         childForm.Dock = DockStyle.Fill
