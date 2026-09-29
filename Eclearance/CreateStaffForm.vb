@@ -34,12 +34,6 @@ Public Class CreateStaffForm
         End Try
     End Sub
 
-    Private Sub cmbAssignedOffice_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbAssignedOffice.SelectedIndexChanged
-        If cmbAssignedOffice.SelectedItem IsNot Nothing Then
-            lblAssignedBadge.Text = cmbAssignedOffice.SelectedItem.ToString()
-        End If
-    End Sub
-
     Private Sub btnCreateAccount_Click(sender As Object, e As EventArgs) Handles btnCreateAccount.Click
         Dim fullName As String = txtFullName.Text.Trim()
         Dim username As String = txtUsername.Text.Trim()
@@ -47,25 +41,25 @@ Public Class CreateStaffForm
         Dim officeName As String = If(cmbAssignedOffice.SelectedItem IsNot Nothing, cmbAssignedOffice.SelectedItem.ToString(), "")
 
         If String.IsNullOrWhiteSpace(fullName) Then
-            MessageBox.Show("Please enter staff full name.", "Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            ShowWarning("Please enter staff full name.")
             txtFullName.Focus()
             Return
         End If
 
         If String.IsNullOrWhiteSpace(officeName) OrElse Not officeDict.ContainsKey(officeName) Then
-            MessageBox.Show("Please select an assigned office.", "Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            ShowWarning("Please select an assigned office.")
             cmbAssignedOffice.Focus()
             Return
         End If
 
         If String.IsNullOrWhiteSpace(username) Then
-            MessageBox.Show("Please enter a username.", "Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            ShowWarning("Please enter a username.")
             txtUsername.Focus()
             Return
         End If
 
         If String.IsNullOrWhiteSpace(password) Then
-            MessageBox.Show("Please enter a password.", "Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            ShowWarning("Please enter a password.")
             txtPassword.Focus()
             Return
         End If
@@ -76,7 +70,7 @@ Public Class CreateStaffForm
             Dim count As Integer = Convert.ToInt32(db.ExecuteScalar(checkQuery, checkParams))
 
             If count > 0 Then
-                MessageBox.Show("This username is already taken. Please choose another.", "Duplicate Username", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                ShowWarning("This username is already taken. Please choose another.")
                 txtUsername.Focus()
                 Return
             End If
@@ -96,7 +90,15 @@ Public Class CreateStaffForm
 
             db.ExecuteNonQuery(insertQuery, insertParams)
 
-            MessageBox.Show("Staff account created successfully for " & fullName & " (" & officeName & ").", "Staff Created", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show(
+                "Staff account created successfully." & Environment.NewLine & Environment.NewLine &
+                "Name: " & fullName & Environment.NewLine &
+                "Office: " & officeName & Environment.NewLine &
+                "Username: " & username,
+                "Staff Created",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            )
 
             Me.DialogResult = DialogResult.OK
             Me.Close()
@@ -112,6 +114,59 @@ Public Class CreateStaffForm
         txtPassword.Clear()
         If cmbAssignedOffice.Items.Count > 0 Then cmbAssignedOffice.SelectedIndex = 0
         txtFullName.Focus()
+    End Sub
+
+    Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
+        Me.DialogResult = DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub ShowWarning(message As String)
+        MessageBox.Show(
+            message,
+            "Required Information",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Warning
+        )
+    End Sub
+
+    ' Drag modal window
+    Private isDragging As Boolean = False
+    Private dragCursorPoint As Point
+    Private dragFormPoint As Point
+
+    Private Sub ModalHeader_MouseDown(
+        sender As Object,
+        e As MouseEventArgs
+    ) Handles lblModalTitle.MouseDown, pnlCard.MouseDown
+
+        If e.Button = MouseButtons.Left AndAlso e.Y <= 60 Then
+            isDragging = True
+            dragCursorPoint = Cursor.Position
+            dragFormPoint = Me.Location
+        End If
+
+    End Sub
+
+    Private Sub ModalHeader_MouseMove(
+        sender As Object,
+        e As MouseEventArgs
+    ) Handles lblModalTitle.MouseMove, pnlCard.MouseMove
+
+        If isDragging Then
+            Dim diff As Point = Point.Subtract(Cursor.Position, New Size(dragCursorPoint))
+            Me.Location = Point.Add(dragFormPoint, New Size(diff))
+        End If
+
+    End Sub
+
+    Private Sub ModalHeader_MouseUp(
+        sender As Object,
+        e As MouseEventArgs
+    ) Handles lblModalTitle.MouseUp, pnlCard.MouseUp
+
+        isDragging = False
+
     End Sub
 
 End Class
