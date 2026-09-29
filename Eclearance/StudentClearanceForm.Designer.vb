@@ -1570,17 +1570,18 @@ Partial Class StudentClearanceForm
         ' 
         ' btnrmvsub1
         ' 
-        btnrmvsub1.BackColor = Color.Goldenrod
-        btnrmvsub1.Cursor = Cursors.Hand
+        btnrmvsub1.BackColor = Color.FromArgb(226, 232, 240)
+        btnrmvsub1.Cursor = Cursors.Default
+        btnrmvsub1.Enabled = False
         btnrmvsub1.FlatAppearance.BorderSize = 0
         btnrmvsub1.FlatStyle = FlatStyle.Flat
         btnrmvsub1.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub1.ForeColor = Color.White
+        btnrmvsub1.ForeColor = Color.FromArgb(100, 116, 139)
         btnrmvsub1.Location = New Point(225, 154)
         btnrmvsub1.Name = "btnrmvsub1"
         btnrmvsub1.Size = New Size(197, 36)
         btnrmvsub1.TabIndex = 6
-        btnrmvsub1.Text = "Remove submitted document"
+        btnrmvsub1.Text = "No document uploaded"
         btnrmvsub1.UseVisualStyleBackColor = False
         ' 
         ' btnAction4
@@ -1615,107 +1616,114 @@ Partial Class StudentClearanceForm
         ' 
         ' btnrmvsub2
         ' 
-        btnrmvsub2.BackColor = Color.Goldenrod
-        btnrmvsub2.Cursor = Cursors.Hand
+        btnrmvsub2.BackColor = Color.FromArgb(226, 232, 240)
+        btnrmvsub2.Cursor = Cursors.Default
+        btnrmvsub2.Enabled = False
         btnrmvsub2.FlatAppearance.BorderSize = 0
         btnrmvsub2.FlatStyle = FlatStyle.Flat
         btnrmvsub2.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub2.ForeColor = Color.White
+        btnrmvsub2.ForeColor = Color.FromArgb(100, 116, 139)
         btnrmvsub2.Location = New Point(219, 154)
         btnrmvsub2.Name = "btnrmvsub2"
         btnrmvsub2.Size = New Size(203, 36)
         btnrmvsub2.TabIndex = 7
-        btnrmvsub2.Text = "Remove submitted document"
+        btnrmvsub2.Text = "No document uploaded"
         btnrmvsub2.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub3
         ' 
-        btnrmvsub3.BackColor = Color.Goldenrod
-        btnrmvsub3.Cursor = Cursors.Hand
+        btnrmvsub3.BackColor = Color.FromArgb(226, 232, 240)
+        btnrmvsub3.Cursor = Cursors.Default
+        btnrmvsub3.Enabled = False
         btnrmvsub3.FlatAppearance.BorderSize = 0
         btnrmvsub3.FlatStyle = FlatStyle.Flat
         btnrmvsub3.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub3.ForeColor = Color.White
+        btnrmvsub3.ForeColor = Color.FromArgb(100, 116, 139)
         btnrmvsub3.Location = New Point(225, 154)
         btnrmvsub3.Name = "btnrmvsub3"
         btnrmvsub3.Size = New Size(203, 36)
         btnrmvsub3.TabIndex = 6
-        btnrmvsub3.Text = "Remove submitted document"
+        btnrmvsub3.Text = "No document uploaded"
         btnrmvsub3.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub4
         ' 
-        btnrmvsub4.BackColor = Color.Goldenrod
-        btnrmvsub4.Cursor = Cursors.Hand
+        btnrmvsub4.BackColor = Color.FromArgb(226, 232, 240)
+        btnrmvsub4.Cursor = Cursors.Default
+        btnrmvsub4.Enabled = False
         btnrmvsub4.FlatAppearance.BorderSize = 0
         btnrmvsub4.FlatStyle = FlatStyle.Flat
         btnrmvsub4.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub4.ForeColor = Color.White
+        btnrmvsub4.ForeColor = Color.FromArgb(100, 116, 139)
         btnrmvsub4.Location = New Point(219, 154)
         btnrmvsub4.Name = "btnrmvsub4"
         btnrmvsub4.Size = New Size(197, 36)
         btnrmvsub4.TabIndex = 6
-        btnrmvsub4.Text = "Remove submitted document"
+        btnrmvsub4.Text = "No document uploaded"
         btnrmvsub4.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub5
         ' 
-        btnrmvsub5.BackColor = Color.Goldenrod
-        btnrmvsub5.Cursor = Cursors.Hand
+        btnrmvsub5.BackColor = Color.FromArgb(226, 232, 240)
+        btnrmvsub5.Cursor = Cursors.Default
+        btnrmvsub5.Enabled = False
         btnrmvsub5.FlatAppearance.BorderSize = 0
         btnrmvsub5.FlatStyle = FlatStyle.Flat
         btnrmvsub5.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub5.ForeColor = Color.White
+        btnrmvsub5.ForeColor = Color.FromArgb(100, 116, 139)
         btnrmvsub5.Location = New Point(225, 154)
         btnrmvsub5.Name = "btnrmvsub5"
         btnrmvsub5.Size = New Size(203, 36)
         btnrmvsub5.TabIndex = 6
-        btnrmvsub5.Text = "Remove submitted document"
+        btnrmvsub5.Text = "No document uploaded"
         btnrmvsub5.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub6
         ' 
-        btnrmvsub6.BackColor = Color.Goldenrod
-        btnrmvsub6.Cursor = Cursors.Hand
+        btnrmvsub6.BackColor = Color.FromArgb(226, 232, 240)
+        btnrmvsub6.Cursor = Cursors.Default
+        btnrmvsub6.Enabled = False
         btnrmvsub6.FlatAppearance.BorderSize = 0
         btnrmvsub6.FlatStyle = FlatStyle.Flat
         btnrmvsub6.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub6.ForeColor = Color.White
+        btnrmvsub6.ForeColor = Color.FromArgb(100, 116, 139)
         btnrmvsub6.Location = New Point(219, 154)
         btnrmvsub6.Name = "btnrmvsub6"
         btnrmvsub6.Size = New Size(197, 36)
         btnrmvsub6.TabIndex = 6
-        btnrmvsub6.Text = "Remove submitted requirement"
+        btnrmvsub6.Text = "No document uploaded"
         btnrmvsub6.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub7
         ' 
-        btnrmvsub7.BackColor = Color.Goldenrod
-        btnrmvsub7.Cursor = Cursors.Hand
+        btnrmvsub7.BackColor = Color.FromArgb(226, 232, 240)
+        btnrmvsub7.Cursor = Cursors.Default
+        btnrmvsub7.Enabled = False
         btnrmvsub7.FlatAppearance.BorderSize = 0
         btnrmvsub7.FlatStyle = FlatStyle.Flat
         btnrmvsub7.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub7.ForeColor = Color.White
+        btnrmvsub7.ForeColor = Color.FromArgb(100, 116, 139)
         btnrmvsub7.Location = New Point(225, 154)
         btnrmvsub7.Name = "btnrmvsub7"
         btnrmvsub7.Size = New Size(203, 36)
         btnrmvsub7.TabIndex = 6
-        btnrmvsub7.Text = "Remove submitted requirement"
+        btnrmvsub7.Text = "No document uploaded"
         btnrmvsub7.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub8
         ' 
-        btnrmvsub8.BackColor = Color.Goldenrod
-        btnrmvsub8.Cursor = Cursors.Hand
+        btnrmvsub8.BackColor = Color.FromArgb(226, 232, 240)
+        btnrmvsub8.Cursor = Cursors.Default
+        btnrmvsub8.Enabled = False
         btnrmvsub8.FlatAppearance.BorderSize = 0
         btnrmvsub8.FlatStyle = FlatStyle.Flat
         btnrmvsub8.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub8.ForeColor = Color.White
+        btnrmvsub8.ForeColor = Color.FromArgb(100, 116, 139)
         btnrmvsub8.Location = New Point(219, 154)
         btnrmvsub8.Name = "btnrmvsub8"
         btnrmvsub8.Size = New Size(197, 36)
         btnrmvsub8.TabIndex = 6
-        btnrmvsub8.Text = "Remove submitted requirement"
+        btnrmvsub8.Text = "No document uploaded"
         btnrmvsub8.UseVisualStyleBackColor = False
         ' 
         ' StudentClearanceForm

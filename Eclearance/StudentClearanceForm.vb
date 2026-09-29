@@ -881,7 +881,7 @@ Public Class StudentClearanceForm
 
         If Not String.IsNullOrWhiteSpace(filePath) Then
             button.Enabled = True
-            button.BackColor = Color.Goldenrod
+            button.BackColor = Color.FromArgb(220, 38, 38)
             button.ForeColor = Color.White
             button.Text = "Remove submitted document"
             button.Cursor = Cursors.Hand
