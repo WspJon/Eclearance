@@ -13,6 +13,18 @@ Public Class ReviewClearanceForm
     Private currentStatus As String = "Pending"
 
     Private Sub ReviewClearanceForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If Not AppSession.DepartmentID.HasValue Then
+            MessageBox.Show(
+                "Access Denied: You do not have an assigned office/department.",
+                "Security Authorization Required",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+            )
+            Me.DialogResult = DialogResult.Cancel
+            Me.Close()
+            Return
+        End If
+
         InitializeStaffInfo()
         If TargetRecordID > 0 Then
             LoadSubmissionDetails()
@@ -65,11 +77,19 @@ Public Class ReviewClearanceForm
                 "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
                 "INNER JOIN Departments d ON r.DepartmentID = d.DepartmentID " &
                 "INNER JOIN Users u ON cr.StudentID = u.UserID " &
-                "WHERE cr.RecordID = @RecordID LIMIT 1;"
+                "WHERE cr.RecordID = @RecordID AND r.DepartmentID = @DeptID LIMIT 1;"
 
-            Dim dt As DataTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {{"@RecordID", TargetRecordID}})
+            Dim dt As DataTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
+                {"@RecordID", TargetRecordID},
+                {"@DeptID", AppSession.DepartmentID.Value}
+            })
             If dt.Rows.Count = 0 Then
-                MessageBox.Show("Submission record not found.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                MessageBox.Show(
+                    "Access Denied: This submission record does not exist or does not belong to your assigned office.",
+                    "Unauthorized Record Access",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                )
                 Me.DialogResult = DialogResult.Cancel
                 Me.Close()
                 Return
@@ -191,7 +211,9 @@ Public Class ReviewClearanceForm
     End Sub
 
     Private Sub LoadTimeline()
-        flpTimeline.Controls.Clear()
+        If Not AppSession.DepartmentID.HasValue Then Return
+
+        dgvTimeline.Rows.Clear()
         Try
             Dim query As String =
                 "SELECT " &
@@ -202,65 +224,41 @@ Public Class ReviewClearanceForm
                 "  h.ActionAt, " &
                 "  COALESCE(u.FullName, 'System') AS PerformedBy " &
                 "FROM ClearanceHistory h " &
+                "INNER JOIN ClearanceRecords cr ON h.RecordID = cr.RecordID " &
+                "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
                 "LEFT JOIN Users u ON h.ActionBy = u.UserID " &
-                "WHERE h.RecordID = @RecordID " &
+                "WHERE h.RecordID = @RecordID AND r.DepartmentID = @DeptID " &
                 "ORDER BY h.ActionAt DESC;"
 
-            Dim dt As DataTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {{"@RecordID", TargetRecordID}})
+            Dim dt As DataTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
+                {"@RecordID", TargetRecordID},
+                {"@DeptID", AppSession.DepartmentID.Value}
+            })
 
             If dt.Rows.Count = 0 Then
-                Dim lblEmpty As New Label With {
-                    .Text = "No previous activity logged.",
-                    .AutoSize = True,
-                    .ForeColor = Color.FromArgb(100, 116, 139),
-                    .Margin = New Padding(4, 10, 4, 4)
-                }
-                flpTimeline.Controls.Add(lblEmpty)
+                lblTimelineEmpty.Visible = True
+                dgvTimeline.Visible = False
                 Return
             End If
 
+            lblTimelineEmpty.Visible = False
+            dgvTimeline.Visible = True
+
             For Each row As DataRow In dt.Rows
-                Dim pnlItem As New Panel With {
-                    .Width = 230,
-                    .Height = 65,
-                    .Margin = New Padding(0, 0, 0, 8),
-                    .BackColor = Color.FromArgb(248, 250, 252)
-                }
-
-                Dim lblAction As New Label With {
-                    .Text = "• " & row("ActionType").ToString(),
-                    .Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold),
-                    .ForeColor = Color.FromArgb(15, 23, 42),
-                    .Location = New Point(4, 4),
-                    .AutoSize = True
-                }
-
+                Dim actionType As String = row("ActionType").ToString()
                 Dim actionDate As DateTime = Convert.ToDateTime(row("ActionAt"))
-                Dim lblTime As New Label With {
-                    .Text = actionDate.ToString("MMM dd, yyyy hh:mm tt"),
-                    .Font = New Font("Segoe UI", 7.5F),
-                    .ForeColor = Color.FromArgb(100, 116, 139),
-                    .Location = New Point(4, 24),
-                    .AutoSize = True
-                }
-
+                Dim timeText As String = actionDate.ToString("yyyy-MM-dd HH:mm")
                 Dim remarksText As String = If(IsDBNull(row("Remarks")), "", row("Remarks").ToString())
-                Dim lblRem As New Label With {
-                    .Text = If(String.IsNullOrWhiteSpace(remarksText), "By " & row("PerformedBy").ToString(), remarksText),
-                    .Font = New Font("Segoe UI", 7.5F),
-                    .ForeColor = Color.FromArgb(71, 85, 105),
-                    .Location = New Point(4, 42),
-                    .Size = New Size(220, 18)
-                }
+                Dim actorText As String = row("PerformedBy").ToString()
+                Dim detailText As String = If(String.IsNullOrWhiteSpace(remarksText), "By " & actorText, remarksText & " (by " & actorText & ")")
 
-                pnlItem.Controls.Add(lblAction)
-                pnlItem.Controls.Add(lblTime)
-                pnlItem.Controls.Add(lblRem)
-                flpTimeline.Controls.Add(pnlItem)
+                dgvTimeline.Rows.Add(actionType, timeText, detailText)
             Next
 
         Catch ex As Exception
-            ' Timeline error
+            lblTimelineEmpty.Text = "Unable to load activity history."
+            lblTimelineEmpty.Visible = True
+            dgvTimeline.Visible = False
         End Try
     End Sub
 
@@ -276,6 +274,11 @@ Public Class ReviewClearanceForm
 
     ' Decision: Approve / Clear
     Private Sub btnApprove_Click(sender As Object, e As EventArgs) Handles btnApprove.Click
+        If Not AppSession.DepartmentID.HasValue Then
+            MessageBox.Show("Security Error: Your account is not authorized for any department.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+
         Dim remarks As String = txtRemarks.Text.Trim()
         Dim confirm = MessageBox.Show(
             "Are you sure you want to APPROVE and CLEAR this requirement for " & lblStudentNameVal.Text & "?",
@@ -291,6 +294,11 @@ Public Class ReviewClearanceForm
 
     ' Decision: Reject (Remarks REQUIRED!)
     Private Sub btnReject_Click(sender As Object, e As EventArgs) Handles btnReject.Click
+        If Not AppSession.DepartmentID.HasValue Then
+            MessageBox.Show("Security Error: Your account is not authorized for any department.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+
         Dim remarks As String = txtRemarks.Text.Trim()
 
         If String.IsNullOrWhiteSpace(remarks) Then
@@ -318,25 +326,43 @@ Public Class ReviewClearanceForm
     End Sub
 
     Private Sub UpdateClearanceStatus(newStatus As String, remarks As String, actionTypeName As String)
+        If Not AppSession.DepartmentID.HasValue Then
+            MessageBox.Show("Security Error: No assigned department found in session.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+
         Try
             Using conn As MySqlConnection = db.GetConnection()
                 conn.Open()
                 Using transaction As MySqlTransaction = conn.BeginTransaction()
                     Try
                         Dim updateQuery As String =
-                            "UPDATE ClearanceRecords " &
-                            "SET Status = @NewStatus, " &
-                            "    Remarks = @Remarks, " &
-                            "    ReviewedBy = @ReviewedBy, " &
-                            "    ReviewedAt = CURRENT_TIMESTAMP " &
-                            "WHERE RecordID = @RecordID;"
+                            "UPDATE ClearanceRecords cr " &
+                            "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
+                            "SET cr.Status = @NewStatus, " &
+                            "    cr.Remarks = @Remarks, " &
+                            "    cr.ReviewedBy = @ReviewedBy, " &
+                            "    cr.ReviewedAt = CURRENT_TIMESTAMP " &
+                            "WHERE cr.RecordID = @RecordID AND r.DepartmentID = @DeptID;"
 
                         Using updateCmd As New MySqlCommand(updateQuery, conn, transaction)
                             updateCmd.Parameters.AddWithValue("@NewStatus", newStatus)
                             updateCmd.Parameters.AddWithValue("@Remarks", If(String.IsNullOrWhiteSpace(remarks), DBNull.Value, CObj(remarks)))
                             updateCmd.Parameters.AddWithValue("@ReviewedBy", AppSession.UserID)
                             updateCmd.Parameters.AddWithValue("@RecordID", TargetRecordID)
-                            updateCmd.ExecuteNonQuery()
+                            updateCmd.Parameters.AddWithValue("@DeptID", AppSession.DepartmentID.Value)
+
+                            Dim rowsAffected As Integer = updateCmd.ExecuteNonQuery()
+                            If rowsAffected = 0 Then
+                                transaction.Rollback()
+                                MessageBox.Show(
+                                    "Update Failed: You are not authorized to update clearance records for another department.",
+                                    "Unauthorized Action",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error
+                                )
+                                Return
+                            End If
                         End Using
 
                         Dim histQuery As String =

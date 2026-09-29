@@ -5,7 +5,7 @@ Public Class StaffDashboardForm
 
     Private ReadOnly db As New DatabaseHelper()
     Private currentDepartmentName As String = "Assigned Office"
-    Private pnlViewHost As Panel = Nothing
+
 
     Private Sub StaffDashboardForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         InitializeStaffInfo()
@@ -127,15 +127,7 @@ Public Class StaffDashboardForm
     ' ============================================================
     ' SPA VIEW SWITCHING (SINGLE PAGE ARCHITECTURE)
     ' ============================================================
-    Private Sub EnsureViewHost()
-        If pnlViewHost Is Nothing Then
-            pnlViewHost = New Panel()
-            pnlViewHost.Dock = DockStyle.Fill
-            pnlViewHost.Visible = False
-            pnlViewHost.BackColor = Color.FromArgb(244, 247, 251)
-            Me.Controls.Add(pnlViewHost)
-        End If
-    End Sub
+
 
     Public Sub ShowDashboardView()
         SetActiveNavButton(btnNavDashboard)
@@ -188,7 +180,6 @@ Public Class StaffDashboardForm
     End Sub
 
     Private Sub LoadChildFormView(childForm As Form)
-        EnsureViewHost()
         childForm.TopLevel = False
         childForm.FormBorderStyle = FormBorderStyle.None
         childForm.MinimumSize = Size.Empty
@@ -208,19 +199,11 @@ Public Class StaffDashboardForm
     End Sub
 
     Private Sub SetActiveNavButton(activeBtn As Button)
-        Dim navButtons As Button() = {btnNavDashboard, btnNavRequests, btnNavHistory}
-
-        For Each btn In navButtons
-            If btn Is activeBtn Then
-                btn.BackColor = Color.FromArgb(28, 91, 184)
-                btn.ForeColor = Color.White
-                btn.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-            Else
-                btn.BackColor = Color.FromArgb(15, 39, 74)
-                btn.ForeColor = Color.FromArgb(160, 180, 208)
-                btn.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-            End If
-        Next
+        If pnlNavIndicator IsNot Nothing AndAlso activeBtn IsNot Nothing Then
+            pnlNavIndicator.Top = activeBtn.Top
+            pnlNavIndicator.Height = activeBtn.Height
+            pnlNavIndicator.BringToFront()
+        End If
     End Sub
 
     ' Actions in DataGridView

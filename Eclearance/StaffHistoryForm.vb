@@ -158,18 +158,7 @@ Public Class StaffHistoryForm
                 row("Remarks").ToString()
             )
 
-            Dim statusCell As DataGridViewCell = dgvHistory.Rows(newIndex).Cells("colStatus")
-            Dim statusValue As String = row("NewStatus").ToString()
-            If statusValue.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
-                statusCell.Style.ForeColor = Color.FromArgb(22, 163, 74)
-                statusCell.Style.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-            ElseIf statusValue.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
-                statusCell.Style.ForeColor = Color.FromArgb(220, 38, 38)
-                statusCell.Style.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-            ElseIf statusValue.Equals("Under Review", StringComparison.OrdinalIgnoreCase) Then
-                statusCell.Style.ForeColor = Color.FromArgb(37, 99, 235)
-                statusCell.Style.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-            End If
+
 
             rowIndex += 1
         Next
@@ -214,13 +203,6 @@ Public Class StaffHistoryForm
 
             Dim status As String = r("NewStatus").ToString()
             lblDetailStatusVal.Text = status
-            If status.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
-                lblDetailStatusVal.ForeColor = Color.FromArgb(22, 163, 74)
-            ElseIf status.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
-                lblDetailStatusVal.ForeColor = Color.FromArgb(220, 38, 38)
-            Else
-                lblDetailStatusVal.ForeColor = Color.FromArgb(37, 99, 235)
-            End If
 
             Dim remarks As String = r("Remarks").ToString()
             lblDetailRemarksVal.Text = If(String.IsNullOrWhiteSpace(remarks), "No remarks provided.", remarks)
@@ -239,7 +221,6 @@ Public Class StaffHistoryForm
         lblDetailDateVal.Text = "-"
         lblDetailActionVal.Text = "-"
         lblDetailStatusVal.Text = "-"
-        lblDetailStatusVal.ForeColor = Color.FromArgb(15, 23, 42)
         lblDetailRemarksVal.Text = "Select a row from the history table to view details."
         btnReReview.Enabled = False
     End Sub

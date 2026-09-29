@@ -18,6 +18,7 @@ Partial Class StaffHistoryForm
     Private Sub InitializeComponent()
         Dim dataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
         Dim dataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim dataGridViewCellStyleStatus As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         btnNavLogout = New Button()
         btnNavHistory = New Button()
@@ -648,6 +649,8 @@ Partial Class StaffHistoryForm
         ' 
         ' colStatus
         ' 
+        dataGridViewCellStyleStatus.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        colStatus.DefaultCellStyle = dataGridViewCellStyleStatus
         colStatus.HeaderText = "Status"
         colStatus.Name = "colStatus"
         colStatus.ReadOnly = True

@@ -16,6 +16,8 @@ Partial Class ReviewClearanceForm
     Private components As System.ComponentModel.IContainer
 
     Private Sub InitializeComponent()
+        Dim dgvTimelineCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim dgvTimelineCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlCard = New Panel()
         btnClose = New Button()
         lblHeaderTitle = New Label()
@@ -63,7 +65,11 @@ Partial Class ReviewClearanceForm
         lblInfoIcon = New Label()
         pnlRightSection = New Panel()
         pnlTimelineCard = New Panel()
-        flpTimeline = New FlowLayoutPanel()
+        dgvTimeline = New DataGridView()
+        colActivityAction = New DataGridViewTextBoxColumn()
+        colActivityDate = New DataGridViewTextBoxColumn()
+        colActivityRemarks = New DataGridViewTextBoxColumn()
+        lblTimelineEmpty = New Label()
         lblTimelineHeader = New Label()
         pnlDecisionCard = New Panel()
         btnBackToRequests = New Button()
@@ -89,6 +95,7 @@ Partial Class ReviewClearanceForm
         pnlStudentInfoCard.SuspendLayout()
         pnlRightSection.SuspendLayout()
         pnlTimelineCard.SuspendLayout()
+        CType(dgvTimeline, ComponentModel.ISupportInitialize).BeginInit()
         pnlDecisionCard.SuspendLayout()
         pnlCurrentStatusCard.SuspendLayout()
         SuspendLayout()
@@ -662,7 +669,8 @@ Partial Class ReviewClearanceForm
         pnlTimelineCard.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         pnlTimelineCard.BackColor = Color.White
         pnlTimelineCard.BorderStyle = BorderStyle.FixedSingle
-        pnlTimelineCard.Controls.Add(flpTimeline)
+        pnlTimelineCard.Controls.Add(lblTimelineEmpty)
+        pnlTimelineCard.Controls.Add(dgvTimeline)
         pnlTimelineCard.Controls.Add(lblTimelineHeader)
         pnlTimelineCard.Location = New Point(0, 420)
         pnlTimelineCard.Name = "pnlTimelineCard"
@@ -670,16 +678,85 @@ Partial Class ReviewClearanceForm
         pnlTimelineCard.Size = New Size(328, 238)
         pnlTimelineCard.TabIndex = 2
         ' 
-        ' flpTimeline
+
         ' 
-        flpTimeline.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
-        flpTimeline.AutoScroll = True
-        flpTimeline.FlowDirection = FlowDirection.TopDown
-        flpTimeline.Location = New Point(10, 36)
-        flpTimeline.Name = "flpTimeline"
-        flpTimeline.Size = New Size(306, 188)
-        flpTimeline.TabIndex = 1
-        flpTimeline.WrapContents = False
+
+
+
+
+        ' dgvTimeline
+
+        dgvTimeline.AllowUserToAddRows = False
+        dgvTimeline.AllowUserToDeleteRows = False
+        dgvTimeline.AllowUserToResizeRows = False
+        dgvTimeline.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        dgvTimeline.BackgroundColor = Color.White
+        dgvTimeline.BorderStyle = BorderStyle.None
+        dgvTimeline.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
+        dgvTimelineCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
+        dgvTimelineCellStyle1.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        dgvTimelineCellStyle1.Font = New Font("Segoe UI Semibold", 8F, FontStyle.Bold)
+        dgvTimelineCellStyle1.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        dgvTimelineCellStyle1.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        dgvTimelineCellStyle1.SelectionForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        dgvTimelineCellStyle1.WrapMode = DataGridViewTriState.True
+        dgvTimeline.ColumnHeadersDefaultCellStyle = dgvTimelineCellStyle1
+        dgvTimeline.ColumnHeadersHeight = 28
+        dgvTimeline.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        dgvTimeline.Columns.AddRange(New DataGridViewColumn() {colActivityAction, colActivityDate, colActivityRemarks})
+        dgvTimelineCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
+        dgvTimelineCellStyle2.BackColor = Color.White
+        dgvTimelineCellStyle2.Font = New Font("Segoe UI", 8F)
+        dgvTimelineCellStyle2.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        dgvTimelineCellStyle2.SelectionBackColor = Color.FromArgb(CByte(239), CByte(246), CByte(255))
+        dgvTimelineCellStyle2.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        dgvTimelineCellStyle2.WrapMode = DataGridViewTriState.False
+        dgvTimeline.DefaultCellStyle = dgvTimelineCellStyle2
+        dgvTimeline.EnableHeadersVisualStyles = False
+        dgvTimeline.GridColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        dgvTimeline.Location = New Point(10, 36)
+        dgvTimeline.MultiSelect = False
+        dgvTimeline.Name = "dgvTimeline"
+        dgvTimeline.ReadOnly = True
+        dgvTimeline.RowHeadersVisible = False
+        dgvTimeline.RowTemplate.Height = 28
+        dgvTimeline.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        dgvTimeline.Size = New Size(306, 188)
+        dgvTimeline.TabIndex = 1
+        ' 
+        ' colActivityAction
+        ' 
+        colActivityAction.HeaderText = "Action"
+        colActivityAction.Name = "colActivityAction"
+        colActivityAction.ReadOnly = True
+        colActivityAction.Width = 85
+        ' 
+        ' colActivityDate
+        ' 
+        colActivityDate.HeaderText = "Date / Time"
+        colActivityDate.Name = "colActivityDate"
+        colActivityDate.ReadOnly = True
+        colActivityDate.Width = 105
+        ' 
+        ' colActivityRemarks
+        ' 
+        colActivityRemarks.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        colActivityRemarks.HeaderText = "Remarks / Details"
+        colActivityRemarks.Name = "colActivityRemarks"
+        colActivityRemarks.ReadOnly = True
+        ' 
+        ' lblTimelineEmpty
+        ' 
+        lblTimelineEmpty.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblTimelineEmpty.Font = New Font("Segoe UI", 8F)
+        lblTimelineEmpty.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblTimelineEmpty.Location = New Point(10, 45)
+        lblTimelineEmpty.Name = "lblTimelineEmpty"
+        lblTimelineEmpty.Size = New Size(306, 40)
+        lblTimelineEmpty.TabIndex = 2
+        lblTimelineEmpty.Text = "No previous activity logged."
+        lblTimelineEmpty.TextAlign = ContentAlignment.MiddleCenter
+        lblTimelineEmpty.Visible = False
         ' 
         ' lblTimelineHeader
         ' 
@@ -901,6 +978,7 @@ Partial Class ReviewClearanceForm
         pnlRightSection.ResumeLayout(False)
         pnlTimelineCard.ResumeLayout(False)
         pnlTimelineCard.PerformLayout()
+        CType(dgvTimeline, ComponentModel.ISupportInitialize).EndInit()
         pnlDecisionCard.ResumeLayout(False)
         pnlDecisionCard.PerformLayout()
         pnlCurrentStatusCard.ResumeLayout(False)
@@ -969,6 +1047,10 @@ Partial Class ReviewClearanceForm
     Friend WithEvents btnBackToRequests As Button
     Friend WithEvents pnlTimelineCard As Panel
     Friend WithEvents lblTimelineHeader As Label
-    Friend WithEvents flpTimeline As FlowLayoutPanel
+    Friend WithEvents dgvTimeline As DataGridView
+    Friend WithEvents colActivityAction As DataGridViewTextBoxColumn
+    Friend WithEvents colActivityDate As DataGridViewTextBoxColumn
+    Friend WithEvents colActivityRemarks As DataGridViewTextBoxColumn
+    Friend WithEvents lblTimelineEmpty As Label
 
 End Class
