@@ -17,16 +17,6 @@ Partial Class CreateStudentForm
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        pnlSidebar = New Panel()
-        lblNavSection = New Label()
-        btnNavStudents = New Button()
-        btnNavStaff = New Button()
-        btnNavHistory = New Button()
-        btnNavStartTerm = New Button()
-        btnNavLogout = New Button()
-        pnlLogo = New Panel()
-        lblLogoText = New Label()
-        lblLogoIcon = New Label()
         pnlMain = New Panel()
         pnlFormCard = New Panel()
         btnCreateAccount = New Button()
@@ -58,150 +48,10 @@ Partial Class CreateStudentForm
         lblSubHeader = New Label()
         lblHeaderTitle = New Label()
         lblBreadcrumb = New Label()
-        pnlSidebar.SuspendLayout()
-        pnlLogo.SuspendLayout()
         pnlMain.SuspendLayout()
         pnlFormCard.SuspendLayout()
         pnlHeader.SuspendLayout()
         SuspendLayout()
-        ' 
-        ' pnlSidebar
-        ' 
-        pnlSidebar.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
-        pnlSidebar.Controls.Add(lblNavSection)
-        pnlSidebar.Controls.Add(btnNavStudents)
-        pnlSidebar.Controls.Add(btnNavStaff)
-        pnlSidebar.Controls.Add(btnNavHistory)
-        pnlSidebar.Controls.Add(btnNavStartTerm)
-        pnlSidebar.Controls.Add(btnNavLogout)
-        pnlSidebar.Controls.Add(pnlLogo)
-        pnlSidebar.Dock = DockStyle.Left
-        pnlSidebar.Location = New Point(0, 0)
-        pnlSidebar.Name = "pnlSidebar"
-        pnlSidebar.Size = New Size(220, 850)
-        pnlSidebar.TabIndex = 0
-        ' 
-        ' lblNavSection
-        ' 
-        lblNavSection.AutoSize = True
-        lblNavSection.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
-        lblNavSection.ForeColor = Color.FromArgb(CByte(91), CByte(122), CByte(159))
-        lblNavSection.Location = New Point(18, 90)
-        lblNavSection.Name = "lblNavSection"
-        lblNavSection.Size = New Size(93, 12)
-        lblNavSection.TabIndex = 1
-        lblNavSection.Text = "ADMINISTRATION"
-        ' 
-        ' btnNavStudents
-        ' 
-        btnNavStudents.BackColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
-        btnNavStudents.FlatAppearance.BorderSize = 0
-        btnNavStudents.FlatStyle = FlatStyle.Flat
-        btnNavStudents.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        btnNavStudents.ForeColor = Color.White
-        btnNavStudents.Location = New Point(12, 115)
-        btnNavStudents.Name = "btnNavStudents"
-        btnNavStudents.Padding = New Padding(12, 0, 0, 0)
-        btnNavStudents.Size = New Size(196, 42)
-        btnNavStudents.TabIndex = 2
-        btnNavStudents.Text = "👥  Students"
-        btnNavStudents.TextAlign = ContentAlignment.MiddleLeft
-        btnNavStudents.UseVisualStyleBackColor = False
-        ' 
-        ' btnNavStaff
-        ' 
-        btnNavStaff.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
-        btnNavStaff.FlatAppearance.BorderSize = 0
-        btnNavStaff.FlatStyle = FlatStyle.Flat
-        btnNavStaff.Font = New Font("Segoe UI", 9.5F)
-        btnNavStaff.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
-        btnNavStaff.Location = New Point(12, 163)
-        btnNavStaff.Name = "btnNavStaff"
-        btnNavStaff.Padding = New Padding(12, 0, 0, 0)
-        btnNavStaff.Size = New Size(196, 42)
-        btnNavStaff.TabIndex = 3
-        btnNavStaff.Text = "🏛  Staff & offices"
-        btnNavStaff.TextAlign = ContentAlignment.MiddleLeft
-        btnNavStaff.UseVisualStyleBackColor = False
-        ' 
-        ' btnNavHistory
-        ' 
-        btnNavHistory.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
-        btnNavHistory.FlatAppearance.BorderSize = 0
-        btnNavHistory.FlatStyle = FlatStyle.Flat
-        btnNavHistory.Font = New Font("Segoe UI", 9.5F)
-        btnNavHistory.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
-        btnNavHistory.Location = New Point(12, 211)
-        btnNavHistory.Name = "btnNavHistory"
-        btnNavHistory.Padding = New Padding(12, 0, 0, 0)
-        btnNavHistory.Size = New Size(196, 42)
-        btnNavHistory.TabIndex = 4
-        btnNavHistory.Text = "⏱  History"
-        btnNavHistory.TextAlign = ContentAlignment.MiddleLeft
-        btnNavHistory.UseVisualStyleBackColor = False
-        ' 
-        ' btnNavStartTerm
-        ' 
-        btnNavStartTerm.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
-        btnNavStartTerm.FlatAppearance.BorderSize = 0
-        btnNavStartTerm.FlatStyle = FlatStyle.Flat
-        btnNavStartTerm.Font = New Font("Segoe UI", 9.5F)
-        btnNavStartTerm.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
-        btnNavStartTerm.Location = New Point(12, 259)
-        btnNavStartTerm.Name = "btnNavStartTerm"
-        btnNavStartTerm.Padding = New Padding(12, 0, 0, 0)
-        btnNavStartTerm.Size = New Size(196, 42)
-        btnNavStartTerm.TabIndex = 5
-        btnNavStartTerm.Text = "📅  Start new term"
-        btnNavStartTerm.TextAlign = ContentAlignment.MiddleLeft
-        btnNavStartTerm.UseVisualStyleBackColor = False
-        ' 
-        ' btnNavLogout
-        ' 
-        btnNavLogout.Dock = DockStyle.Bottom
-        btnNavLogout.FlatAppearance.BorderSize = 0
-        btnNavLogout.FlatStyle = FlatStyle.Flat
-        btnNavLogout.Font = New Font("Segoe UI", 9.5F)
-        btnNavLogout.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
-        btnNavLogout.Location = New Point(0, 802)
-        btnNavLogout.Name = "btnNavLogout"
-        btnNavLogout.Padding = New Padding(20, 0, 0, 0)
-        btnNavLogout.Size = New Size(220, 48)
-        btnNavLogout.TabIndex = 6
-        btnNavLogout.Text = "↪  Log out"
-        btnNavLogout.TextAlign = ContentAlignment.MiddleLeft
-        btnNavLogout.UseVisualStyleBackColor = False
-        ' 
-        ' pnlLogo
-        ' 
-        pnlLogo.Controls.Add(lblLogoText)
-        pnlLogo.Controls.Add(lblLogoIcon)
-        pnlLogo.Dock = DockStyle.Top
-        pnlLogo.Location = New Point(0, 0)
-        pnlLogo.Name = "pnlLogo"
-        pnlLogo.Size = New Size(220, 75)
-        pnlLogo.TabIndex = 0
-        ' 
-        ' lblLogoText
-        ' 
-        lblLogoText.Font = New Font("Segoe UI", 11.5F, FontStyle.Bold)
-        lblLogoText.ForeColor = Color.White
-        lblLogoText.Location = New Point(55, 18)
-        lblLogoText.Name = "lblLogoText"
-        lblLogoText.Size = New Size(140, 40)
-        lblLogoText.TabIndex = 1
-        lblLogoText.Text = "School" & vbCrLf & "Clearance"
-        ' 
-        ' lblLogoIcon
-        ' 
-        lblLogoIcon.AutoSize = True
-        lblLogoIcon.Font = New Font("Segoe UI Emoji", 18F)
-        lblLogoIcon.ForeColor = Color.White
-        lblLogoIcon.Location = New Point(14, 20)
-        lblLogoIcon.Name = "lblLogoIcon"
-        lblLogoIcon.Size = New Size(47, 32)
-        lblLogoIcon.TabIndex = 0
-        lblLogoIcon.Text = "🎓"
         ' 
         ' pnlMain
         ' 
@@ -210,10 +60,10 @@ Partial Class CreateStudentForm
         pnlMain.Controls.Add(pnlFormCard)
         pnlMain.Controls.Add(pnlHeader)
         pnlMain.Dock = DockStyle.Fill
-        pnlMain.Location = New Point(220, 0)
+        pnlMain.Location = New Point(0, 0)
         pnlMain.Name = "pnlMain"
         pnlMain.Padding = New Padding(28, 16, 28, 20)
-        pnlMain.Size = New Size(864, 850)
+        pnlMain.Size = New Size(1084, 850)
         pnlMain.TabIndex = 1
         ' 
         ' pnlFormCard
@@ -248,7 +98,7 @@ Partial Class CreateStudentForm
         pnlFormCard.Location = New Point(28, 110)
         pnlFormCard.Name = "pnlFormCard"
         pnlFormCard.Padding = New Padding(24)
-        pnlFormCard.Size = New Size(747, 690)
+        pnlFormCard.Size = New Size(967, 690)
         pnlFormCard.TabIndex = 1
         ' 
         ' btnCreateAccount
@@ -260,7 +110,7 @@ Partial Class CreateStudentForm
         btnCreateAccount.FlatStyle = FlatStyle.Flat
         btnCreateAccount.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnCreateAccount.ForeColor = Color.White
-        btnCreateAccount.Location = New Point(466, 574)
+        btnCreateAccount.Location = New Point(686, 574)
         btnCreateAccount.Name = "btnCreateAccount"
         btnCreateAccount.Size = New Size(136, 38)
         btnCreateAccount.TabIndex = 23
@@ -484,7 +334,7 @@ Partial Class CreateStudentForm
         txtStudentNo.Font = New Font("Segoe UI", 9.5F)
         txtStudentNo.Location = New Point(22, 99)
         txtStudentNo.Name = "txtStudentNo"
-        txtStudentNo.Size = New Size(580, 24)
+        txtStudentNo.Size = New Size(800, 24)
         txtStudentNo.TabIndex = 3
         ' 
         ' lblStudentNo
@@ -524,13 +374,14 @@ Partial Class CreateStudentForm
         ' pnlHeader
         ' 
         pnlHeader.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlHeader.BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
         pnlHeader.Controls.Add(lblTermBadge)
         pnlHeader.Controls.Add(lblSubHeader)
         pnlHeader.Controls.Add(lblHeaderTitle)
         pnlHeader.Controls.Add(lblBreadcrumb)
         pnlHeader.Location = New Point(28, 12)
         pnlHeader.Name = "pnlHeader"
-        pnlHeader.Size = New Size(808, 85)
+        pnlHeader.Size = New Size(1028, 90)
         pnlHeader.TabIndex = 0
         ' 
         ' lblTermBadge
@@ -540,7 +391,7 @@ Partial Class CreateStudentForm
         lblTermBadge.BorderStyle = BorderStyle.FixedSingle
         lblTermBadge.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         lblTermBadge.ForeColor = Color.FromArgb(CByte(49), CByte(46), CByte(129))
-        lblTermBadge.Location = New Point(628, 25)
+        lblTermBadge.Location = New Point(848, 25)
         lblTermBadge.Name = "lblTermBadge"
         lblTermBadge.Padding = New Padding(6)
         lblTermBadge.Size = New Size(180, 34)
@@ -585,19 +436,15 @@ Partial Class CreateStudentForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
+        AutoSize = True
         BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         ClientSize = New Size(1084, 850)
         Controls.Add(pnlMain)
-        Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1100, 750)
         Name = "CreateStudentForm"
         StartPosition = FormStartPosition.CenterScreen
         Text = "School Clearance - Create Student Account"
-        pnlSidebar.ResumeLayout(False)
-        pnlSidebar.PerformLayout()
-        pnlLogo.ResumeLayout(False)
-        pnlLogo.PerformLayout()
         pnlMain.ResumeLayout(False)
         pnlFormCard.ResumeLayout(False)
         pnlFormCard.PerformLayout()
@@ -605,17 +452,6 @@ Partial Class CreateStudentForm
         pnlHeader.PerformLayout()
         ResumeLayout(False)
     End Sub
-
-    Friend WithEvents pnlSidebar As Panel
-    Friend WithEvents pnlLogo As Panel
-    Friend WithEvents lblLogoIcon As Label
-    Friend WithEvents lblLogoText As Label
-    Friend WithEvents lblNavSection As Label
-    Friend WithEvents btnNavStudents As Button
-    Friend WithEvents btnNavStaff As Button
-    Friend WithEvents btnNavHistory As Button
-    Friend WithEvents btnNavStartTerm As Button
-    Friend WithEvents btnNavLogout As Button
     Friend WithEvents pnlMain As Panel
     Friend WithEvents pnlHeader As Panel
     Friend WithEvents lblBreadcrumb As Label

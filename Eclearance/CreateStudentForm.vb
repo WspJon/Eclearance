@@ -20,7 +20,6 @@ Public Class CreateStudentForm
     End Sub
 
 
-
     Private Sub LoadCourseOptions()
 
         cmbCourse.Items.Clear()
@@ -52,7 +51,6 @@ Public Class CreateStudentForm
     End Sub
 
 
-
     Private Sub btnCreateAccount_Click(
         sender As Object,
         e As EventArgs
@@ -64,7 +62,6 @@ Public Class CreateStudentForm
 
 
     Private Sub CreateStudent()
-
 
         Dim studentNo As String =
             txtStudentNo.Text.Trim()
@@ -79,21 +76,27 @@ Public Class CreateStudentForm
             txtUsername.Text.Trim()
 
         Dim password As String =
-            txtPassword.Text.Trim()
+            txtPassword.Text
 
         Dim course As String = ""
+
         Dim yearLevel As String = ""
 
 
         If cmbCourse.SelectedItem IsNot Nothing Then
-            course = cmbCourse.SelectedItem.ToString()
+
+            course =
+                cmbCourse.SelectedItem.ToString()
+
         End If
 
 
         If cmbYearLevel.SelectedItem IsNot Nothing Then
-            yearLevel = cmbYearLevel.SelectedItem.ToString()
-        End If
 
+            yearLevel =
+                cmbYearLevel.SelectedItem.ToString()
+
+        End If
 
 
         If String.IsNullOrWhiteSpace(studentNo) Then
@@ -103,6 +106,7 @@ Public Class CreateStudentForm
             )
 
             txtStudentNo.Focus()
+
             Return
 
         End If
@@ -115,6 +119,7 @@ Public Class CreateStudentForm
             )
 
             txtFirstName.Focus()
+
             Return
 
         End If
@@ -127,30 +132,33 @@ Public Class CreateStudentForm
             )
 
             txtLastName.Focus()
+
             Return
 
         End If
 
 
-        If cmbCourse.SelectedIndex = -1 Then
+        If String.IsNullOrWhiteSpace(course) Then
 
             ShowWarning(
                 "Please select the student's course."
             )
 
             cmbCourse.Focus()
+
             Return
 
         End If
 
 
-        If cmbYearLevel.SelectedIndex = -1 Then
+        If String.IsNullOrWhiteSpace(yearLevel) Then
 
             ShowWarning(
                 "Please select the student's year level."
             )
 
             cmbYearLevel.Focus()
+
             Return
 
         End If
@@ -163,6 +171,7 @@ Public Class CreateStudentForm
             )
 
             txtUsername.Focus()
+
             Return
 
         End If
@@ -175,6 +184,7 @@ Public Class CreateStudentForm
             )
 
             txtUsername.Focus()
+
             Return
 
         End If
@@ -187,6 +197,7 @@ Public Class CreateStudentForm
             )
 
             txtPassword.Focus()
+
             Return
 
         End If
@@ -199,6 +210,7 @@ Public Class CreateStudentForm
             )
 
             txtPassword.Focus()
+
             Return
 
         End If
@@ -209,15 +221,14 @@ Public Class CreateStudentForm
             If StudentNumberExists(studentNo) Then
 
                 MessageBox.Show(
-                    "The student number '" &
-                    studentNo &
-                    "' is already registered.",
+                    "The student number is already registered.",
                     "Duplicate Student Number",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 )
 
                 txtStudentNo.Focus()
+
                 Return
 
             End If
@@ -226,32 +237,29 @@ Public Class CreateStudentForm
             If UsernameExists(username) Then
 
                 MessageBox.Show(
-                    "The username '" &
-                    username &
-                    "' is already being used.",
+                    "The username is already being used.",
                     "Duplicate Username",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 )
 
                 txtUsername.Focus()
+
                 Return
 
             End If
 
 
-
-            Dim activeTermID As Integer =
+            Dim termID As Integer =
                 GetActiveTermID()
 
 
-            If activeTermID = 0 Then
+            If termID = 0 Then
 
                 MessageBox.Show(
                     "There is no active academic term." &
                     Environment.NewLine &
-                    Environment.NewLine &
-                    "Please create or activate an academic term first.",
+                    "Please create or activate a term first.",
                     "No Active Term",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
@@ -277,35 +285,16 @@ Public Class CreateStudentForm
 
                     Try
 
-
                         Dim insertStudentQuery As String =
                             "INSERT INTO Users " &
                             "(" &
-                            "Username, " &
-                            "Password, " &
-                            "FullName, " &
-                            "FirstName, " &
-                            "LastName, " &
-                            "Role, " &
-                            "StudentNo, " &
-                            "Course, " &
-                            "YearLevel, " &
-                            "EnrolledInNSTP, " &
-                            "IsActive" &
+                            "Username, Password, FullName, FirstName, LastName, " &
+                            "Role, StudentNo, Course, YearLevel, EnrolledInNSTP, IsActive" &
                             ") " &
                             "VALUES " &
                             "(" &
-                            "@Username, " &
-                            "@Password, " &
-                            "@FullName, " &
-                            "@FirstName, " &
-                            "@LastName, " &
-                            "'Student', " &
-                            "@StudentNo, " &
-                            "@Course, " &
-                            "@YearLevel, " &
-                            "@NSTP, " &
-                            "1" &
+                            "@Username, @Password, @FullName, @FirstName, @LastName, " &
+                            "'Student', @StudentNo, @Course, @YearLevel, @NSTP, 1" &
                             ");"
 
 
@@ -360,16 +349,10 @@ Public Class CreateStudentForm
 
                             cmd.Parameters.AddWithValue(
                                 "@NSTP",
-                                If(
-                                    chkNSTP.Checked,
-                                    1,
-                                    0
-                                )
+                                If(chkNSTP.Checked, 1, 0)
                             )
 
-
                             cmd.ExecuteNonQuery()
-
 
                             newStudentID =
                                 Convert.ToInt32(
@@ -383,11 +366,10 @@ Public Class CreateStudentForm
                             conn,
                             transaction,
                             newStudentID,
-                            activeTermID,
+                            termID,
                             course,
                             chkNSTP.Checked
                         )
-
 
 
                         transaction.Commit()
@@ -397,17 +379,9 @@ Public Class CreateStudentForm
                             "Student account created successfully." &
                             Environment.NewLine &
                             Environment.NewLine &
-                            "Student No.: " &
-                            studentNo &
+                            "Student No.: " & studentNo &
                             Environment.NewLine &
-                            "Name: " &
-                            fullName &
-                            Environment.NewLine &
-                            "Course: " &
-                            course &
-                            Environment.NewLine &
-                            "Year Level: " &
-                            yearLevel,
+                            "Name: " & fullName,
                             "Student Created",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
@@ -417,9 +391,8 @@ Public Class CreateStudentForm
                         ClearForm()
 
 
-                    Catch ex As Exception
+                    Catch
 
-      
                         transaction.Rollback()
 
                         Throw
@@ -434,7 +407,7 @@ Public Class CreateStudentForm
         Catch ex As MySqlException
 
             MessageBox.Show(
-                "A database error occurred while creating the student." &
+                "A database error occurred." &
                 Environment.NewLine &
                 Environment.NewLine &
                 ex.Message,
@@ -469,6 +442,7 @@ Public Class CreateStudentForm
         course As String,
         enrolledInNSTP As Boolean
     )
+
         Dim requirementQuery As String =
             "SELECT RequirementID " &
             "FROM ClearanceRequirements " &
@@ -484,7 +458,7 @@ Public Class CreateStudentForm
             ");"
 
 
-        Dim requirements As New List(Of Integer)
+        Dim requirementIDs As New List(Of Integer)()
 
 
         Using cmd As New MySqlCommand(
@@ -500,11 +474,7 @@ Public Class CreateStudentForm
 
             cmd.Parameters.AddWithValue(
                 "@NSTP",
-                If(
-                    enrolledInNSTP,
-                    1,
-                    0
-                )
+                If(enrolledInNSTP, 1, 0)
             )
 
 
@@ -513,7 +483,7 @@ Public Class CreateStudentForm
 
                 While reader.Read()
 
-                    requirements.Add(
+                    requirementIDs.Add(
                         Convert.ToInt32(
                             reader("RequirementID")
                         )
@@ -526,8 +496,7 @@ Public Class CreateStudentForm
         End Using
 
 
- 
-        If requirements.Count = 0 Then
+        If requirementIDs.Count = 0 Then
 
             Throw New Exception(
                 "No active clearance requirements were found."
@@ -536,27 +505,21 @@ Public Class CreateStudentForm
         End If
 
 
-        For Each requirementID As Integer In requirements
+        For Each requirementID As Integer In requirementIDs
 
-            Dim insertQuery As String =
+            Dim insertRecordQuery As String =
                 "INSERT INTO ClearanceRecords " &
                 "(" &
-                "StudentID, " &
-                "RequirementID, " &
-                "TermID, " &
-                "Status" &
+                "StudentID, RequirementID, TermID, Status" &
                 ") " &
                 "VALUES " &
                 "(" &
-                "@StudentID, " &
-                "@RequirementID, " &
-                "@TermID, " &
-                "'Pending'" &
+                "@StudentID, @RequirementID, @TermID, 'Pending'" &
                 ");"
 
 
             Using cmd As New MySqlCommand(
-                insertQuery,
+                insertRecordQuery,
                 conn,
                 transaction
             )
@@ -595,16 +558,8 @@ Public Class CreateStudentForm
             "WHERE StudentNo = @StudentNo;"
 
 
-        Dim parameters As New Dictionary(
-            Of String,
-            Object
-        ) From {
-
-            {
-                "@StudentNo",
-                studentNo
-            }
-
+        Dim parameters As New Dictionary(Of String, Object) From {
+            {"@StudentNo", studentNo}
         }
 
 
@@ -620,7 +575,6 @@ Public Class CreateStudentForm
     End Function
 
 
-
     Private Function UsernameExists(
         username As String
     ) As Boolean
@@ -631,16 +585,8 @@ Public Class CreateStudentForm
             "WHERE Username = @Username;"
 
 
-        Dim parameters As New Dictionary(
-            Of String,
-            Object
-        ) From {
-
-            {
-                "@Username",
-                username
-            }
-
+        Dim parameters As New Dictionary(Of String, Object) From {
+            {"@Username", username}
         }
 
 
@@ -688,23 +634,22 @@ Public Class CreateStudentForm
         e As EventArgs
     ) Handles btnClearForm.Click
 
-        Dim result As DialogResult =
+        Dim answer As DialogResult =
             MessageBox.Show(
-                "Are you sure you want to clear all entered information?",
+                "Clear all entered information?",
                 "Clear Form",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             )
 
 
-        If result = DialogResult.Yes Then
+        If answer = DialogResult.Yes Then
 
             ClearForm()
 
         End If
 
     End Sub
-
 
 
     Private Sub ClearForm()
@@ -728,7 +673,6 @@ Public Class CreateStudentForm
         txtStudentNo.Focus()
 
     End Sub
-
 
 
     Private Sub ShowWarning(

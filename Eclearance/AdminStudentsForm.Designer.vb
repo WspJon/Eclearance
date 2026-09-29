@@ -17,10 +17,10 @@ Partial Class AdminStudentsForm
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim dataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim dataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim dataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim dataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         lblNavSection = New Label()
         btnNavStudents = New Button()
@@ -32,6 +32,7 @@ Partial Class AdminStudentsForm
         lblLogoText = New Label()
         lblLogoIcon = New Label()
         pnlMain = New Panel()
+        lblFooterNotice = New Label()
         pnlBottomDetails = New Panel()
         pnlActionsCard = New Panel()
         btnResetTerm = New Button()
@@ -72,7 +73,6 @@ Partial Class AdminStudentsForm
         lblTermBadge = New Label()
         lblSubHeader = New Label()
         lblHeaderTitle = New Label()
-        lblFooterNotice = New Label()
         pnlSidebar.SuspendLayout()
         pnlLogo.SuspendLayout()
         pnlMain.SuspendLayout()
@@ -108,11 +108,11 @@ Partial Class AdminStudentsForm
         ' lblNavSection
         ' 
         lblNavSection.AutoSize = True
-        lblNavSection.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblNavSection.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
         lblNavSection.ForeColor = Color.FromArgb(91, 122, 159)
         lblNavSection.Location = New Point(18, 90)
         lblNavSection.Name = "lblNavSection"
-        lblNavSection.Size = New Size(94, 12)
+        lblNavSection.Size = New Size(93, 12)
         lblNavSection.TabIndex = 1
         lblNavSection.Text = "ADMINISTRATION"
         ' 
@@ -121,7 +121,7 @@ Partial Class AdminStudentsForm
         btnNavStudents.BackColor = Color.FromArgb(28, 91, 184)
         btnNavStudents.FlatAppearance.BorderSize = 0
         btnNavStudents.FlatStyle = FlatStyle.Flat
-        btnNavStudents.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
+        btnNavStudents.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnNavStudents.ForeColor = Color.White
         btnNavStudents.Location = New Point(12, 115)
         btnNavStudents.Name = "btnNavStudents"
@@ -137,7 +137,7 @@ Partial Class AdminStudentsForm
         btnNavStaff.BackColor = Color.FromArgb(15, 39, 74)
         btnNavStaff.FlatAppearance.BorderSize = 0
         btnNavStaff.FlatStyle = FlatStyle.Flat
-        btnNavStaff.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        btnNavStaff.Font = New Font("Segoe UI", 9.5F)
         btnNavStaff.ForeColor = Color.FromArgb(160, 180, 208)
         btnNavStaff.Location = New Point(12, 163)
         btnNavStaff.Name = "btnNavStaff"
@@ -153,7 +153,7 @@ Partial Class AdminStudentsForm
         btnNavHistory.BackColor = Color.FromArgb(15, 39, 74)
         btnNavHistory.FlatAppearance.BorderSize = 0
         btnNavHistory.FlatStyle = FlatStyle.Flat
-        btnNavHistory.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        btnNavHistory.Font = New Font("Segoe UI", 9.5F)
         btnNavHistory.ForeColor = Color.FromArgb(160, 180, 208)
         btnNavHistory.Location = New Point(12, 211)
         btnNavHistory.Name = "btnNavHistory"
@@ -169,7 +169,7 @@ Partial Class AdminStudentsForm
         btnNavStartTerm.BackColor = Color.FromArgb(15, 39, 74)
         btnNavStartTerm.FlatAppearance.BorderSize = 0
         btnNavStartTerm.FlatStyle = FlatStyle.Flat
-        btnNavStartTerm.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        btnNavStartTerm.Font = New Font("Segoe UI", 9.5F)
         btnNavStartTerm.ForeColor = Color.FromArgb(160, 180, 208)
         btnNavStartTerm.Location = New Point(12, 259)
         btnNavStartTerm.Name = "btnNavStartTerm"
@@ -185,7 +185,7 @@ Partial Class AdminStudentsForm
         btnNavLogout.Dock = DockStyle.Bottom
         btnNavLogout.FlatAppearance.BorderSize = 0
         btnNavLogout.FlatStyle = FlatStyle.Flat
-        btnNavLogout.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        btnNavLogout.Font = New Font("Segoe UI", 9.5F)
         btnNavLogout.ForeColor = Color.FromArgb(160, 180, 208)
         btnNavLogout.Location = New Point(0, 752)
         btnNavLogout.Name = "btnNavLogout"
@@ -208,22 +208,22 @@ Partial Class AdminStudentsForm
         ' 
         ' lblLogoText
         ' 
-        lblLogoText.Font = New Font("Segoe UI", 11.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblLogoText.Font = New Font("Segoe UI", 11.5F, FontStyle.Bold)
         lblLogoText.ForeColor = Color.White
         lblLogoText.Location = New Point(55, 18)
         lblLogoText.Name = "lblLogoText"
         lblLogoText.Size = New Size(140, 40)
         lblLogoText.TabIndex = 1
-        lblLogoText.Text = "School" & vbCrLf & "Clearance"
+        lblLogoText.Text = "School" + vbCrLf + "Clearance"
         ' 
         ' lblLogoIcon
         ' 
         lblLogoIcon.AutoSize = True
-        lblLogoIcon.Font = New Font("Segoe UI Emoji", 18.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblLogoIcon.Font = New Font("Segoe UI Emoji", 18F)
         lblLogoIcon.ForeColor = Color.White
         lblLogoIcon.Location = New Point(14, 20)
         lblLogoIcon.Name = "lblLogoIcon"
-        lblLogoIcon.Size = New Size(38, 32)
+        lblLogoIcon.Size = New Size(47, 32)
         lblLogoIcon.TabIndex = 0
         lblLogoIcon.Text = "🎓"
         ' 
@@ -243,6 +243,18 @@ Partial Class AdminStudentsForm
         pnlMain.Padding = New Padding(28, 20, 28, 20)
         pnlMain.Size = New Size(980, 800)
         pnlMain.TabIndex = 1
+        ' 
+        ' lblFooterNotice
+        ' 
+        lblFooterNotice.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        lblFooterNotice.AutoSize = True
+        lblFooterNotice.Font = New Font("Segoe UI", 8.5F)
+        lblFooterNotice.ForeColor = Color.FromArgb(148, 163, 184)
+        lblFooterNotice.Location = New Point(28, 765)
+        lblFooterNotice.Name = "lblFooterNotice"
+        lblFooterNotice.Size = New Size(217, 15)
+        lblFooterNotice.TabIndex = 6
+        lblFooterNotice.Text = "Previous submissions remain in History."
         ' 
         ' pnlBottomDetails
         ' 
@@ -275,7 +287,7 @@ Partial Class AdminStudentsForm
         btnResetTerm.Cursor = Cursors.Hand
         btnResetTerm.FlatAppearance.BorderColor = Color.FromArgb(239, 68, 68)
         btnResetTerm.FlatStyle = FlatStyle.Flat
-        btnResetTerm.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        btnResetTerm.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnResetTerm.ForeColor = Color.FromArgb(220, 38, 38)
         btnResetTerm.Location = New Point(16, 160)
         btnResetTerm.Name = "btnResetTerm"
@@ -290,7 +302,7 @@ Partial Class AdminStudentsForm
         btnViewHistory.Cursor = Cursors.Hand
         btnViewHistory.FlatAppearance.BorderSize = 0
         btnViewHistory.FlatStyle = FlatStyle.Flat
-        btnViewHistory.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        btnViewHistory.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnViewHistory.ForeColor = Color.White
         btnViewHistory.Location = New Point(16, 110)
         btnViewHistory.Name = "btnViewHistory"
@@ -301,7 +313,7 @@ Partial Class AdminStudentsForm
         ' 
         ' lblActionsSub
         ' 
-        lblActionsSub.Font = New Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point)
+        lblActionsSub.Font = New Font("Segoe UI", 8.5F)
         lblActionsSub.ForeColor = Color.FromArgb(100, 116, 139)
         lblActionsSub.Location = New Point(16, 45)
         lblActionsSub.Name = "lblActionsSub"
@@ -312,7 +324,7 @@ Partial Class AdminStudentsForm
         ' lblActionsTitle
         ' 
         lblActionsTitle.AutoSize = True
-        lblActionsTitle.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblActionsTitle.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         lblActionsTitle.ForeColor = Color.FromArgb(15, 23, 42)
         lblActionsTitle.Location = New Point(16, 16)
         lblActionsTitle.Name = "lblActionsTitle"
@@ -342,24 +354,24 @@ Partial Class AdminStudentsForm
         dgvClearanceDetails.BorderStyle = BorderStyle.None
         dgvClearanceDetails.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
         dgvClearanceDetails.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
-        dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle1.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        dataGridViewCellStyle1.ForeColor = Color.FromArgb(71, 85, 105)
-        dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(71, 85, 105)
-        dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
-        dgvClearanceDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1
+        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = Color.FromArgb(248, 250, 252)
+        DataGridViewCellStyle1.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        DataGridViewCellStyle1.ForeColor = Color.FromArgb(71, 85, 105)
+        DataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(248, 250, 252)
+        DataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(71, 85, 105)
+        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
+        dgvClearanceDetails.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         dgvClearanceDetails.ColumnHeadersHeight = 32
         dgvClearanceDetails.Columns.AddRange(New DataGridViewColumn() {colDetailOffice, colDetailStatus, colDetailRemarks})
-        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle2.BackColor = Color.White
-        dataGridViewCellStyle2.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        dataGridViewCellStyle2.ForeColor = Color.FromArgb(15, 23, 42)
-        dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(239, 246, 255)
-        dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(15, 23, 42)
-        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
-        dgvClearanceDetails.DefaultCellStyle = dataGridViewCellStyle2
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = Color.White
+        DataGridViewCellStyle2.Font = New Font("Segoe UI", 9F)
+        DataGridViewCellStyle2.ForeColor = Color.FromArgb(15, 23, 42)
+        DataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(239, 246, 255)
+        DataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(15, 23, 42)
+        DataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
+        dgvClearanceDetails.DefaultCellStyle = DataGridViewCellStyle2
         dgvClearanceDetails.EnableHeadersVisualStyles = False
         dgvClearanceDetails.GridColor = Color.FromArgb(241, 245, 249)
         dgvClearanceDetails.Location = New Point(16, 48)
@@ -395,11 +407,11 @@ Partial Class AdminStudentsForm
         ' lblDetailsTitle
         ' 
         lblDetailsTitle.AutoSize = True
-        lblDetailsTitle.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblDetailsTitle.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         lblDetailsTitle.ForeColor = Color.FromArgb(15, 23, 42)
         lblDetailsTitle.Location = New Point(16, 16)
         lblDetailsTitle.Name = "lblDetailsTitle"
-        lblDetailsTitle.Size = New Size(128, 20)
+        lblDetailsTitle.Size = New Size(126, 20)
         lblDetailsTitle.TabIndex = 0
         lblDetailsTitle.Text = "Clearance details"
         ' 
@@ -409,27 +421,26 @@ Partial Class AdminStudentsForm
         dgvStudents.AllowUserToDeleteRows = False
         dgvStudents.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         dgvStudents.BackgroundColor = Color.White
-        dgvStudents.BorderStyle = BorderStyle.FixedSingle
         dgvStudents.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
         dgvStudents.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
-        dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle3.BackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle3.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 85, 105)
-        dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 85, 105)
-        dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True
-        dgvStudents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3
+        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = Color.FromArgb(248, 250, 252)
+        DataGridViewCellStyle3.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        DataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 85, 105)
+        DataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(248, 250, 252)
+        DataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 85, 105)
+        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.True
+        dgvStudents.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
         dgvStudents.ColumnHeadersHeight = 36
         dgvStudents.Columns.AddRange(New DataGridViewColumn() {colStudentNo, colStudentName, colCourse, colYear, colProgress, colStatus})
-        dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle4.BackColor = Color.White
-        dataGridViewCellStyle4.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        dataGridViewCellStyle4.ForeColor = Color.FromArgb(15, 23, 42)
-        dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(224, 238, 255)
-        dataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(15, 23, 42)
-        dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False
-        dgvStudents.DefaultCellStyle = dataGridViewCellStyle4
+        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = Color.White
+        DataGridViewCellStyle4.Font = New Font("Segoe UI", 9F)
+        DataGridViewCellStyle4.ForeColor = Color.FromArgb(15, 23, 42)
+        DataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(224, 238, 255)
+        DataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(15, 23, 42)
+        DataGridViewCellStyle4.WrapMode = DataGridViewTriState.False
+        dgvStudents.DefaultCellStyle = DataGridViewCellStyle4
         dgvStudents.EnableHeadersVisualStyles = False
         dgvStudents.GridColor = Color.FromArgb(241, 245, 249)
         dgvStudents.Location = New Point(28, 260)
@@ -499,7 +510,7 @@ Partial Class AdminStudentsForm
         btnRefresh.BackColor = Color.White
         btnRefresh.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225)
         btnRefresh.FlatStyle = FlatStyle.Flat
-        btnRefresh.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        btnRefresh.Font = New Font("Segoe UI", 9F)
         btnRefresh.ForeColor = Color.FromArgb(51, 65, 85)
         btnRefresh.Location = New Point(824, 4)
         btnRefresh.Name = "btnRefresh"
@@ -512,7 +523,7 @@ Partial Class AdminStudentsForm
         ' 
         txtSearch.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         txtSearch.BorderStyle = BorderStyle.FixedSingle
-        txtSearch.Font = New Font("Segoe UI", 10.0F, FontStyle.Regular, GraphicsUnit.Point)
+        txtSearch.Font = New Font("Segoe UI", 10F)
         txtSearch.ForeColor = Color.FromArgb(15, 23, 42)
         txtSearch.Location = New Point(0, 8)
         txtSearch.Name = "txtSearch"
@@ -546,7 +557,7 @@ Partial Class AdminStudentsForm
         ' lblStatAttentionVal
         ' 
         lblStatAttentionVal.AutoSize = True
-        lblStatAttentionVal.Font = New Font("Segoe UI", 20.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblStatAttentionVal.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
         lblStatAttentionVal.ForeColor = Color.FromArgb(15, 23, 42)
         lblStatAttentionVal.Location = New Point(75, 40)
         lblStatAttentionVal.Name = "lblStatAttentionVal"
@@ -557,18 +568,18 @@ Partial Class AdminStudentsForm
         ' lblStatAttentionTitle
         ' 
         lblStatAttentionTitle.AutoSize = True
-        lblStatAttentionTitle.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblStatAttentionTitle.Font = New Font("Segoe UI", 9F)
         lblStatAttentionTitle.ForeColor = Color.FromArgb(100, 116, 139)
         lblStatAttentionTitle.Location = New Point(75, 18)
         lblStatAttentionTitle.Name = "lblStatAttentionTitle"
-        lblStatAttentionTitle.Size = New Size(88, 15)
+        lblStatAttentionTitle.Size = New Size(91, 15)
         lblStatAttentionTitle.TabIndex = 1
         lblStatAttentionTitle.Text = "Needs attention"
         ' 
         ' lblStatAttentionIcon
         ' 
         lblStatAttentionIcon.BackColor = Color.FromArgb(254, 242, 242)
-        lblStatAttentionIcon.Font = New Font("Segoe UI", 16.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblStatAttentionIcon.Font = New Font("Segoe UI", 16F, FontStyle.Bold)
         lblStatAttentionIcon.ForeColor = Color.FromArgb(239, 68, 68)
         lblStatAttentionIcon.Location = New Point(18, 20)
         lblStatAttentionIcon.Name = "lblStatAttentionIcon"
@@ -592,7 +603,7 @@ Partial Class AdminStudentsForm
         ' lblStatClearedVal
         ' 
         lblStatClearedVal.AutoSize = True
-        lblStatClearedVal.Font = New Font("Segoe UI", 20.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblStatClearedVal.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
         lblStatClearedVal.ForeColor = Color.FromArgb(15, 23, 42)
         lblStatClearedVal.Location = New Point(75, 40)
         lblStatClearedVal.Name = "lblStatClearedVal"
@@ -603,7 +614,7 @@ Partial Class AdminStudentsForm
         ' lblStatClearedTitle
         ' 
         lblStatClearedTitle.AutoSize = True
-        lblStatClearedTitle.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblStatClearedTitle.Font = New Font("Segoe UI", 9F)
         lblStatClearedTitle.ForeColor = Color.FromArgb(100, 116, 139)
         lblStatClearedTitle.Location = New Point(75, 18)
         lblStatClearedTitle.Name = "lblStatClearedTitle"
@@ -614,7 +625,7 @@ Partial Class AdminStudentsForm
         ' lblStatClearedIcon
         ' 
         lblStatClearedIcon.BackColor = Color.FromArgb(240, 253, 244)
-        lblStatClearedIcon.Font = New Font("Segoe UI", 16.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblStatClearedIcon.Font = New Font("Segoe UI", 16F, FontStyle.Bold)
         lblStatClearedIcon.ForeColor = Color.FromArgb(22, 163, 74)
         lblStatClearedIcon.Location = New Point(18, 20)
         lblStatClearedIcon.Name = "lblStatClearedIcon"
@@ -638,7 +649,7 @@ Partial Class AdminStudentsForm
         ' lblStatTotalVal
         ' 
         lblStatTotalVal.AutoSize = True
-        lblStatTotalVal.Font = New Font("Segoe UI", 20.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblStatTotalVal.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
         lblStatTotalVal.ForeColor = Color.FromArgb(15, 23, 42)
         lblStatTotalVal.Location = New Point(75, 40)
         lblStatTotalVal.Name = "lblStatTotalVal"
@@ -649,18 +660,18 @@ Partial Class AdminStudentsForm
         ' lblStatTotalTitle
         ' 
         lblStatTotalTitle.AutoSize = True
-        lblStatTotalTitle.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        lblStatTotalTitle.Font = New Font("Segoe UI", 9F)
         lblStatTotalTitle.ForeColor = Color.FromArgb(100, 116, 139)
         lblStatTotalTitle.Location = New Point(75, 18)
         lblStatTotalTitle.Name = "lblStatTotalTitle"
-        lblStatTotalTitle.Size = New Size(79, 15)
+        lblStatTotalTitle.Size = New Size(81, 15)
         lblStatTotalTitle.TabIndex = 1
         lblStatTotalTitle.Text = "Total students"
         ' 
         ' lblStatTotalIcon
         ' 
         lblStatTotalIcon.BackColor = Color.FromArgb(239, 246, 255)
-        lblStatTotalIcon.Font = New Font("Segoe UI", 16.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblStatTotalIcon.Font = New Font("Segoe UI", 16F, FontStyle.Bold)
         lblStatTotalIcon.ForeColor = Color.FromArgb(11, 99, 229)
         lblStatTotalIcon.Location = New Point(18, 20)
         lblStatTotalIcon.Name = "lblStatTotalIcon"
@@ -688,7 +699,7 @@ Partial Class AdminStudentsForm
         btnAddStudent.Cursor = Cursors.Hand
         btnAddStudent.FlatAppearance.BorderSize = 0
         btnAddStudent.FlatStyle = FlatStyle.Flat
-        btnAddStudent.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
+        btnAddStudent.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnAddStudent.ForeColor = Color.White
         btnAddStudent.Location = New Point(804, 12)
         btnAddStudent.Name = "btnAddStudent"
@@ -702,7 +713,7 @@ Partial Class AdminStudentsForm
         lblTermBadge.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         lblTermBadge.BackColor = Color.FromArgb(238, 242, 255)
         lblTermBadge.BorderStyle = BorderStyle.FixedSingle
-        lblTermBadge.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblTermBadge.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         lblTermBadge.ForeColor = Color.FromArgb(49, 46, 129)
         lblTermBadge.Location = New Point(610, 14)
         lblTermBadge.Name = "lblTermBadge"
@@ -715,46 +726,34 @@ Partial Class AdminStudentsForm
         ' lblSubHeader
         ' 
         lblSubHeader.AutoSize = True
-        lblSubHeader.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        lblSubHeader.Font = New Font("Segoe UI", 9.5F)
         lblSubHeader.ForeColor = Color.FromArgb(100, 116, 139)
         lblSubHeader.Location = New Point(0, 38)
         lblSubHeader.Name = "lblSubHeader"
-        lblSubHeader.Size = New Size(247, 17)
+        lblSubHeader.Size = New Size(262, 17)
         lblSubHeader.TabIndex = 1
         lblSubHeader.Text = "Manage student clearance for current term."
         ' 
         ' lblHeaderTitle
         ' 
         lblHeaderTitle.AutoSize = True
-        lblHeaderTitle.Font = New Font("Segoe UI", 20.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblHeaderTitle.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
         lblHeaderTitle.ForeColor = Color.FromArgb(15, 23, 42)
         lblHeaderTitle.Location = New Point(-3, 0)
         lblHeaderTitle.Name = "lblHeaderTitle"
-        lblHeaderTitle.Size = New Size(128, 37)
+        lblHeaderTitle.Size = New Size(129, 37)
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "Students"
         ' 
-        ' lblFooterNotice
-        ' 
-        lblFooterNotice.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        lblFooterNotice.AutoSize = True
-        lblFooterNotice.Font = New Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point)
-        lblFooterNotice.ForeColor = Color.FromArgb(148, 163, 184)
-        lblFooterNotice.Location = New Point(28, 765)
-        lblFooterNotice.Name = "lblFooterNotice"
-        lblFooterNotice.Size = New Size(207, 15)
-        lblFooterNotice.TabIndex = 6
-        lblFooterNotice.Text = "Previous submissions remain in History."
-        ' 
         ' AdminStudentsForm
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(244, 247, 251)
         ClientSize = New Size(1200, 800)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
-        Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1100, 750)
         Name = "AdminStudentsForm"
         StartPosition = FormStartPosition.CenterScreen

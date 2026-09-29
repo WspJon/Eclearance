@@ -1,6 +1,7 @@
 Imports MySql.Data.MySqlClient
 Imports System.IO
 Imports System.Diagnostics
+Imports System.Linq
 
 Public Class StudentClearanceForm
 
@@ -23,7 +24,6 @@ Public Class StudentClearanceForm
 
         SetupStudentInformation()
         SetupFilter()
-
         LoadClearanceData()
 
     End Sub
@@ -42,7 +42,6 @@ Public Class StudentClearanceForm
             "  •  " &
             AppSession.YearLevel
 
-
         Dim initials As String = ""
 
         If Not String.IsNullOrWhiteSpace(AppSession.FullName) Then
@@ -57,21 +56,16 @@ Public Class StudentClearanceForm
 
                 initials =
                     names(0).Substring(0, 1).ToUpper() &
-                    names(names.Length - 1).
-                    Substring(0, 1).
-                    ToUpper()
+                    names(names.Length - 1).Substring(0, 1).ToUpper()
 
             ElseIf names.Length = 1 Then
 
                 initials =
-                    names(0).
-                    Substring(0, 1).
-                    ToUpper()
+                    names(0).Substring(0, 1).ToUpper()
 
             End If
 
         End If
-
 
         lblUserAvatar.Text = initials
 
@@ -106,19 +100,16 @@ Public Class StudentClearanceForm
             Dim activeTermID As Integer =
                 GetActiveTermID()
 
-
             If activeTermID = 0 Then
 
-                lblTermBadge.Text =
-                    "No Active Term"
+                lblTermBadge.Text = "No Active Term"
 
                 ClearOfficeCards()
 
                 lblProgressSub.Text =
                     "No active clearance term"
 
-                lblProgressPercent.Text =
-                    "0%"
+                lblProgressPercent.Text = "0%"
 
                 pbOverall.Value = 0
 
@@ -132,9 +123,7 @@ Public Class StudentClearanceForm
 
             End If
 
-
             LoadCurrentTerm(activeTermID)
-
 
             Dim query As String =
                 "SELECT " &
@@ -162,31 +151,16 @@ Public Class StudentClearanceForm
                 "AND cr.TermID = @TermID " &
                 "ORDER BY d.DepartmentName ASC;"
 
-
-            Dim parameters As New Dictionary(
-                Of String,
-                Object
-            ) From {
-
-                {
-                    "@StudentID",
-                    AppSession.UserID
-                },
-
-                {
-                    "@TermID",
-                    activeTermID
-                }
-
+            Dim parameters As New Dictionary(Of String, Object) From {
+                {"@StudentID", AppSession.UserID},
+                {"@TermID", activeTermID}
             }
-
 
             allClearanceRecords =
                 db.ExecuteQuery(
                     query,
                     parameters
                 )
-
 
             currentPage = 1
 
@@ -222,10 +196,8 @@ Public Class StudentClearanceForm
             "ORDER BY TermID DESC " &
             "LIMIT 1;"
 
-
         Dim result As Object =
             db.ExecuteScalar(query)
-
 
         If result Is Nothing OrElse
            result Is DBNull.Value Then
@@ -233,7 +205,6 @@ Public Class StudentClearanceForm
             Return 0
 
         End If
-
 
         Return Convert.ToInt32(result)
 
@@ -253,19 +224,9 @@ Public Class StudentClearanceForm
             "WHERE TermID = @TermID " &
             "LIMIT 1;"
 
-
-        Dim parameters As New Dictionary(
-            Of String,
-            Object
-        ) From {
-
-            {
-                "@TermID",
-                termID
-            }
-
+        Dim parameters As New Dictionary(Of String, Object) From {
+            {"@TermID", termID}
         }
-
 
         Dim dt As DataTable =
             db.ExecuteQuery(
@@ -273,12 +234,10 @@ Public Class StudentClearanceForm
                 parameters
             )
 
-
         If dt.Rows.Count > 0 Then
 
             Dim row As DataRow =
                 dt.Rows(0)
-
 
             lblTermBadge.Text =
                 row("AcademicYear").ToString() &
@@ -304,14 +263,11 @@ Public Class StudentClearanceForm
             Return
         End If
 
-
         filteredClearanceRecords =
             allClearanceRecords.Clone()
 
-
         Dim selectedFilter As String =
             "All offices"
-
 
         If cmbFilterOffices.SelectedItem IsNot Nothing Then
 
@@ -320,12 +276,10 @@ Public Class StudentClearanceForm
 
         End If
 
-
         For Each row As DataRow In allClearanceRecords.Rows
 
             Dim status As String =
                 row("Status").ToString()
-
 
             If selectedFilter = "All offices" OrElse
                status.Equals(
@@ -338,7 +292,6 @@ Public Class StudentClearanceForm
             End If
 
         Next
-
 
         currentPage = 1
 
@@ -354,10 +307,8 @@ Public Class StudentClearanceForm
 
         ClearOfficeCards()
 
-
         Dim totalRecords As Integer =
             filteredClearanceRecords.Rows.Count
-
 
         If totalRecords = 0 Then
 
@@ -370,37 +321,29 @@ Public Class StudentClearanceForm
 
         End If
 
-
         Dim totalPages As Integer =
             CInt(
                 Math.Ceiling(
-                    totalRecords /
-                    CDbl(PageSize)
+                    totalRecords / CDbl(PageSize)
                 )
             )
-
 
         If currentPage > totalPages Then
             currentPage = totalPages
         End If
 
-
         If currentPage < 1 Then
             currentPage = 1
         End If
 
-
         Dim startIndex As Integer =
-            (currentPage - 1) *
-            PageSize
-
+            (currentPage - 1) * PageSize
 
         Dim endIndex As Integer =
             Math.Min(
                 startIndex + PageSize,
                 totalRecords
             )
-
 
         For index As Integer =
             startIndex To endIndex - 1
@@ -412,7 +355,6 @@ Public Class StudentClearanceForm
 
         Next
 
-
         lblShowingOffices.Text =
             "Showing " &
             (startIndex + 1).ToString() &
@@ -421,7 +363,6 @@ Public Class StudentClearanceForm
             " of " &
             totalRecords.ToString() &
             " offices"
-
 
         UpdatePaginationButtons()
 
@@ -474,11 +415,9 @@ Public Class StudentClearanceForm
         ) Then
 
             fileName =
-                row("SubmittedFileName").
-                ToString()
+                row("SubmittedFileName").ToString()
 
         End If
-
 
         Dim filePath As String = ""
 
@@ -487,8 +426,7 @@ Public Class StudentClearanceForm
         ) Then
 
             filePath =
-                row("SubmittedFilePath").
-                ToString()
+                row("SubmittedFilePath").ToString()
 
         End If
 
@@ -552,8 +490,7 @@ Public Class StudentClearanceForm
                 32
             )
 
-        lblIcon.Text =
-            "🏢"
+        lblIcon.Text = "🏢"
 
         lblIcon.TextAlign =
             ContentAlignment.MiddleCenter
@@ -789,9 +726,7 @@ Public Class StudentClearanceForm
 
         If requiresFile Then
 
-            If String.IsNullOrWhiteSpace(
-                fileName
-            ) Then
+            If String.IsNullOrWhiteSpace(fileName) Then
 
                 lblFileName.Text =
                     "No document uploaded"
@@ -804,7 +739,6 @@ Public Class StudentClearanceForm
                 lblFileName.Text =
                     fileName
 
-
                 If Not IsDBNull(
                     row("SubmittedAt")
                 ) Then
@@ -814,11 +748,9 @@ Public Class StudentClearanceForm
                             row("SubmittedAt")
                         )
 
-
                     lblFileDate.Text =
                         "Submitted " &
-                        submittedDate.
-                        ToString(
+                        submittedDate.ToString(
                             "MMM dd, yyyy hh:mm tt"
                         )
 
@@ -842,17 +774,9 @@ Public Class StudentClearanceForm
         End If
 
 
-        pnlFile.Controls.Add(
-            lblFileIcon
-        )
-
-        pnlFile.Controls.Add(
-            lblFileName
-        )
-
-        pnlFile.Controls.Add(
-            lblFileDate
-        )
+        pnlFile.Controls.Add(lblFileIcon)
+        pnlFile.Controls.Add(lblFileName)
+        pnlFile.Controls.Add(lblFileDate)
 
 
         ' --------------------------------------------------------
@@ -896,7 +820,6 @@ Public Class StudentClearanceForm
                 .FilePath = filePath
             }
 
-
         ConfigureActionButton(
             btnAction,
             status,
@@ -904,39 +827,17 @@ Public Class StudentClearanceForm
             filePath
         )
 
-
         AddHandler btnAction.Click,
             AddressOf ClearanceActionButton_Click
 
+        card.Controls.Add(lblIcon)
+        card.Controls.Add(lblOffice)
+        card.Controls.Add(lblStatus)
+        card.Controls.Add(lblDescription)
+        card.Controls.Add(pnlFile)
+        card.Controls.Add(btnAction)
 
-        card.Controls.Add(
-            lblIcon
-        )
-
-        card.Controls.Add(
-            lblOffice
-        )
-
-        card.Controls.Add(
-            lblStatus
-        )
-
-        card.Controls.Add(
-            lblDescription
-        )
-
-        card.Controls.Add(
-            pnlFile
-        )
-
-        card.Controls.Add(
-            btnAction
-        )
-
-
-        flpOfficesGrid.Controls.Add(
-            card
-        )
+        flpOfficesGrid.Controls.Add(card)
 
     End Sub
 
@@ -1065,7 +966,7 @@ Public Class StudentClearanceForm
             Case "pending"
 
                 button.Text =
-                    "⬆ Upload requirement"
+                    "Upload requirement"
 
                 button.Enabled =
                     True
@@ -1084,7 +985,7 @@ Public Class StudentClearanceForm
             Case "rejected"
 
                 button.Text =
-                    "↻ Upload corrected document"
+                    "Upload corrected document"
 
                 button.Enabled =
                     True
@@ -1102,12 +1003,10 @@ Public Class StudentClearanceForm
 
             Case "under review"
 
-                If Not String.IsNullOrWhiteSpace(
-                    filePath
-                ) Then
+                If Not String.IsNullOrWhiteSpace(filePath) Then
 
                     button.Text =
-                        "👁 View submitted document"
+                        "View submitted document"
 
                     button.Enabled =
                         True
@@ -1136,12 +1035,10 @@ Public Class StudentClearanceForm
 
             Case "cleared"
 
-                If Not String.IsNullOrWhiteSpace(
-                    filePath
-                ) Then
+                If Not String.IsNullOrWhiteSpace(filePath) Then
 
                     button.Text =
-                        "✓ Cleared — View document"
+                        "Cleared - View document"
 
                     button.Enabled =
                         True
@@ -1149,7 +1046,7 @@ Public Class StudentClearanceForm
                 Else
 
                     button.Text =
-                        "✓ Requirement cleared"
+                        "Requirement cleared"
 
                     button.Enabled =
                         False
@@ -1209,13 +1106,11 @@ Public Class StudentClearanceForm
                 Button
             )
 
-
         Dim info As ClearanceActionInfo =
             DirectCast(
                 button.Tag,
                 ClearanceActionInfo
             )
-
 
         Select Case info.Status.ToLower()
 
@@ -1269,17 +1164,12 @@ Public Class StudentClearanceForm
             Dim selectedFile As String =
                 dialog.FileName
 
-
             Dim fileInfo As New FileInfo(
                 selectedFile
             )
 
-
-            ' Maximum 10 MB
             Const maxFileSize As Long =
-                10L *
-                1024L *
-                1024L
+                10L * 1024L * 1024L
 
 
             If fileInfo.Length >
@@ -1302,7 +1192,6 @@ Public Class StudentClearanceForm
                     selectedFile
                 ).ToLower()
 
-
             Dim allowedExtensions() As String = {
                 ".pdf",
                 ".jpg",
@@ -1311,9 +1200,7 @@ Public Class StudentClearanceForm
             }
 
 
-            If Not allowedExtensions.Contains(
-                extension
-            ) Then
+            If Not allowedExtensions.Contains(extension) Then
 
                 MessageBox.Show(
                     "Only PDF, JPG, JPEG, and PNG files are allowed.",
@@ -1358,9 +1245,7 @@ Public Class StudentClearanceForm
                     )
 
 
-                If Not Directory.Exists(
-                    uploadFolder
-                ) Then
+                If Not Directory.Exists(uploadFolder) Then
 
                     Directory.CreateDirectory(
                         uploadFolder
@@ -1372,8 +1257,7 @@ Public Class StudentClearanceForm
                 Dim savedFileName As String =
                     recordID.ToString() &
                     "_" &
-                    DateTime.Now.
-                    ToString(
+                    DateTime.Now.ToString(
                         "yyyyMMddHHmmss"
                     ) &
                     extension
@@ -1445,7 +1329,6 @@ Public Class StudentClearanceForm
             db.GetConnection()
 
             conn.Open()
-
 
             Using transaction As MySqlTransaction =
                 conn.BeginTransaction()
@@ -1627,7 +1510,6 @@ Public Class StudentClearanceForm
                             originalFileName
                         )
 
-
                         historyCmd.ExecuteNonQuery()
 
                     End Using
@@ -1673,9 +1555,7 @@ Public Class StudentClearanceForm
         End If
 
 
-        If Not File.Exists(
-            filePath
-        ) Then
+        If Not File.Exists(filePath) Then
 
             MessageBox.Show(
                 "The submitted document could not be found." &
@@ -1737,8 +1617,7 @@ Public Class StudentClearanceForm
 
         If total = 0 Then
 
-            pbOverall.Value =
-                0
+            pbOverall.Value = 0
 
             lblProgressPercent.Text =
                 "0%"
@@ -1757,11 +1636,8 @@ Public Class StudentClearanceForm
         End If
 
 
-        Dim clearedCount As Integer =
-            0
-
-        Dim attentionCount As Integer =
-            0
+        Dim clearedCount As Integer = 0
+        Dim attentionCount As Integer = 0
 
 
         For Each row As DataRow In allClearanceRecords.Rows
@@ -1848,7 +1724,6 @@ Public Class StudentClearanceForm
                     " office needs your attention",
                     " offices need your attention"
                 )
-
 
             lblAttentionDesc.Text =
                 "Complete pending or rejected requirements to finalize your clearance."
