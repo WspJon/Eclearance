@@ -345,13 +345,16 @@ Public Class StudentClearanceForm
                 totalRecords
             )
 
+        Dim cardSlot As Integer = 0
+
         For index As Integer =
             startIndex To endIndex - 1
 
             Dim row As DataRow =
                 filteredClearanceRecords.Rows(index)
 
-            CreateOfficeCard(row)
+            PopulateOfficeCard(cardSlot, row)
+            cardSlot += 1
 
         Next
 
@@ -370,26 +373,92 @@ Public Class StudentClearanceForm
 
 
     ' ============================================================
-    ' REMOVE SAMPLE/DYNAMIC CARDS
+    ' HIDE/RESET OFFICE CARDS
     ' ============================================================
     Private Sub ClearOfficeCards()
 
-        flpOfficesGrid.Controls.Clear()
+        pnlOfficeCard1.Visible = False
+        pnlOfficeCard2.Visible = False
+        pnlOfficeCard3.Visible = False
+        pnlOfficeCard4.Visible = False
 
     End Sub
 
 
     ' ============================================================
-    ' CREATE OFFICE CARD
+    ' POPULATE DESIGNER OFFICE CARD
     ' ============================================================
-    Private Sub CreateOfficeCard(
+    Private Sub PopulateOfficeCard(
+        cardIndex As Integer,
         row As DataRow
     )
 
+        Dim cardPanel As Panel = Nothing
+        Dim lblIcon As Label = Nothing
+        Dim lblTitle As Label = Nothing
+        Dim lblBadge As Label = Nothing
+        Dim lblDesc As Label = Nothing
+        Dim pnlFile As Panel = Nothing
+        Dim lblFileIco As Label = Nothing
+        Dim lblFileNm As Label = Nothing
+        Dim lblFileDt As Label = Nothing
+        Dim btnAct As Button = Nothing
+
+        Select Case cardIndex
+            Case 0
+                cardPanel = pnlOfficeCard1
+                lblIcon = lblOfficeIcon1
+                lblTitle = lblOfficeTitle1
+                lblBadge = lblOfficeStatusBadge1
+                lblDesc = lblOfficeDesc1
+                pnlFile = pnlFileAttach1
+                lblFileIco = lblFileIcon1
+                lblFileNm = lblFileName1
+                lblFileDt = lblFileDate1
+                btnAct = btnAction1
+
+            Case 1
+                cardPanel = pnlOfficeCard2
+                lblIcon = lblOfficeIcon2
+                lblTitle = lblOfficeTitle2
+                lblBadge = lblOfficeStatusBadge2
+                lblDesc = lblOfficeDesc2
+                pnlFile = pnlFileAttach2
+                lblFileIco = lblFileIcon2
+                lblFileNm = lblFileName2
+                lblFileDt = lblFileDate2
+                btnAct = btnAction2
+
+            Case 2
+                cardPanel = pnlOfficeCard3
+                lblIcon = lblOfficeIcon3
+                lblTitle = lblOfficeTitle3
+                lblBadge = lblOfficeStatusBadge3
+                lblDesc = lblOfficeDesc3
+                pnlFile = pnlFileAttach3
+                lblFileIco = lblFileIcon3
+                lblFileNm = lblFileName3
+                lblFileDt = lblFileDate3
+                btnAct = btnAction3
+
+            Case 3
+                cardPanel = pnlOfficeCard4
+                lblIcon = lblOfficeIcon4
+                lblTitle = lblOfficeTitle4
+                lblBadge = lblOfficeStatusBadge4
+                lblDesc = lblOfficeDesc4
+                pnlFile = pnlFileAttach4
+                lblFileIco = lblFileIcon4
+                lblFileNm = lblFileName4
+                lblFileDt = lblFileDate4
+                btnAct = btnAction4
+
+            Case Else
+                Return
+        End Select
+
         Dim recordID As Integer =
-            Convert.ToInt32(
-                row("RecordID")
-            )
+            Convert.ToInt32(row("RecordID"))
 
         Dim officeName As String =
             row("DepartmentName").ToString()
@@ -404,415 +473,43 @@ Public Class StudentClearanceForm
             row("Status").ToString()
 
         Dim requiresFile As Boolean =
-            Convert.ToBoolean(
-                row("RequiresFile")
-            )
+            Convert.ToBoolean(row("RequiresFile"))
 
         Dim fileName As String = ""
-
-        If Not IsDBNull(
-            row("SubmittedFileName")
-        ) Then
-
-            fileName =
-                row("SubmittedFileName").ToString()
-
+        If Not IsDBNull(row("SubmittedFileName")) Then
+            fileName = row("SubmittedFileName").ToString()
         End If
 
         Dim filePath As String = ""
-
-        If Not IsDBNull(
-            row("SubmittedFilePath")
-        ) Then
-
-            filePath =
-                row("SubmittedFilePath").ToString()
-
+        If Not IsDBNull(row("SubmittedFilePath")) Then
+            filePath = row("SubmittedFilePath").ToString()
         End If
 
-
-        ' --------------------------------------------------------
-        ' CARD PANEL
-        ' --------------------------------------------------------
-        Dim card As New Panel()
-
-        card.BackColor =
-            Color.White
-
-        card.BorderStyle =
-            BorderStyle.FixedSingle
-
-        card.Margin =
-            New Padding(
-                3,
-                3,
-                16,
-                16
-            )
-
-        card.Padding =
-            New Padding(16)
-
-        card.Size =
-            New Size(
-                440,
-                215
-            )
-
-
-        ' --------------------------------------------------------
-        ' OFFICE ICON
-        ' --------------------------------------------------------
-        Dim lblIcon As New Label()
-
-        lblIcon.BackColor =
-            Color.FromArgb(
-                238,
-                242,
-                255
-            )
-
-        lblIcon.Font =
-            New Font(
-                "Segoe UI Emoji",
-                14.0F
-            )
-
-        lblIcon.Location =
-            New Point(
-                16,
-                15
-            )
-
-        lblIcon.Size =
-            New Size(
-                32,
-                32
-            )
-
-        lblIcon.Text = "🏢"
-
-        lblIcon.TextAlign =
-            ContentAlignment.MiddleCenter
-
-
-        ' --------------------------------------------------------
-        ' OFFICE NAME
-        ' --------------------------------------------------------
-        Dim lblOffice As New Label()
-
-        lblOffice.Font =
-            New Font(
-                "Segoe UI",
-                11.0F,
-                FontStyle.Bold
-            )
-
-        lblOffice.ForeColor =
-            Color.FromArgb(
-                15,
-                23,
-                42
-            )
-
-        lblOffice.Location =
-            New Point(
-                54,
-                17
-            )
-
-        lblOffice.Size =
-            New Size(
-                245,
-                28
-            )
-
-        lblOffice.Text =
-            officeName
-
-
-        ' --------------------------------------------------------
-        ' STATUS BADGE
-        ' --------------------------------------------------------
-        Dim lblStatus As New Label()
-
-        lblStatus.Font =
-            New Font(
-                "Segoe UI Semibold",
-                8.5F,
-                FontStyle.Bold
-            )
-
-        lblStatus.Location =
-            New Point(
-                310,
-                17
-            )
-
-        lblStatus.Size =
-            New Size(
-                112,
-                27
-            )
-
-        lblStatus.Text =
-            status
-
-        lblStatus.TextAlign =
-            ContentAlignment.MiddleCenter
-
-        ApplyStatusStyle(
-            lblStatus,
-            status
-        )
-
-
-        ' --------------------------------------------------------
-        ' REQUIREMENT / INSTRUCTIONS
-        ' --------------------------------------------------------
-        Dim lblDescription As New Label()
-
-        lblDescription.Font =
-            New Font(
-                "Segoe UI",
-                8.5F
-            )
-
-        lblDescription.ForeColor =
-            Color.FromArgb(
-                100,
-                116,
-                139
-            )
-
-        lblDescription.Location =
-            New Point(
-                16,
-                57
-            )
-
-        lblDescription.Size =
-            New Size(
-                406,
-                40
-            )
-
-        If String.IsNullOrWhiteSpace(instructions) Then
-
-            lblDescription.Text =
-                requirementName
-
-        Else
-
-            lblDescription.Text =
-                requirementName &
-                " — " &
-                instructions
-
-        End If
-
-
-        ' --------------------------------------------------------
-        ' FILE PANEL
-        ' --------------------------------------------------------
-        Dim pnlFile As New Panel()
-
-        pnlFile.BackColor =
-            Color.FromArgb(
-                248,
-                250,
-                252
-            )
-
-        pnlFile.BorderStyle =
-            BorderStyle.FixedSingle
-
-        pnlFile.Location =
-            New Point(
-                16,
-                103
-            )
-
-        pnlFile.Size =
-            New Size(
-                406,
-                48
-            )
-
-
-        Dim lblFileIcon As New Label()
-
-        lblFileIcon.Font =
-            New Font(
-                "Segoe UI Emoji",
-                14.0F
-            )
-
-        lblFileIcon.Location =
-            New Point(
-                8,
-                8
-            )
-
-        lblFileIcon.Size =
-            New Size(
-                28,
-                30
-            )
-
-        lblFileIcon.Text =
-            "📄"
-
-        lblFileIcon.TextAlign =
-            ContentAlignment.MiddleCenter
-
-
-        Dim lblFileName As New Label()
-
-        lblFileName.Font =
-            New Font(
-                "Segoe UI Semibold",
-                8.5F,
-                FontStyle.Bold
-            )
-
-        lblFileName.ForeColor =
-            Color.FromArgb(
-                30,
-                41,
-                59
-            )
-
-        lblFileName.Location =
-            New Point(
-                42,
-                6
-            )
-
-        lblFileName.Size =
-            New Size(
-                340,
-                18
-            )
-
-
-        Dim lblFileDate As New Label()
-
-        lblFileDate.Font =
-            New Font(
-                "Segoe UI",
-                8.0F
-            )
-
-        lblFileDate.ForeColor =
-            Color.FromArgb(
-                148,
-                163,
-                184
-            )
-
-        lblFileDate.Location =
-            New Point(
-                42,
-                25
-            )
-
-        lblFileDate.Size =
-            New Size(
-                340,
-                17
-            )
-
-
-        If requiresFile Then
-
-            If String.IsNullOrWhiteSpace(fileName) Then
-
-                lblFileName.Text =
-                    "No document uploaded"
-
-                lblFileDate.Text =
-                    "Upload required"
-
+        cardPanel.Visible = True
+        lblTitle.Text = officeName
+        lblDesc.Text = requirementName & If(Not String.IsNullOrWhiteSpace(instructions), " — " & instructions, "")
+        lblBadge.Text = status
+        ApplyStatusStyle(lblBadge, status)
+        lblIcon.Text = "🏛"
+
+        If Not String.IsNullOrWhiteSpace(fileName) Then
+            pnlFile.Visible = True
+            lblFileNm.Text = fileName
+            Dim submittedAtText As String = ""
+            If Not IsDBNull(row("SubmittedAt")) Then
+                Dim submittedDate As DateTime = Convert.ToDateTime(row("SubmittedAt"))
+                submittedAtText = "Submitted " & submittedDate.ToString("MMM dd, yyyy hh:mm tt").ToLower()
             Else
-
-                lblFileName.Text =
-                    fileName
-
-                If Not IsDBNull(
-                    row("SubmittedAt")
-                ) Then
-
-                    Dim submittedDate As DateTime =
-                        Convert.ToDateTime(
-                            row("SubmittedAt")
-                        )
-
-                    lblFileDate.Text =
-                        "Submitted " &
-                        submittedDate.ToString(
-                            "MMM dd, yyyy hh:mm tt"
-                        )
-
-                Else
-
-                    lblFileDate.Text =
-                        "Submitted"
-
-                End If
-
+                submittedAtText = "Submitted file"
             End If
-
+            lblFileDt.Text = submittedAtText
         Else
-
-            lblFileName.Text =
-                "No document required"
-
-            lblFileDate.Text =
-                "This office will update your status."
-
+            pnlFile.Visible = True
+            lblFileNm.Text = "No document uploaded"
+            lblFileDt.Text = If(requiresFile, "Upload required", "No file required")
         End If
 
-
-        pnlFile.Controls.Add(lblFileIcon)
-        pnlFile.Controls.Add(lblFileName)
-        pnlFile.Controls.Add(lblFileDate)
-
-
-        ' --------------------------------------------------------
-        ' ACTION BUTTON
-        ' --------------------------------------------------------
-        Dim btnAction As New Button()
-
-        btnAction.Cursor =
-            Cursors.Hand
-
-        btnAction.FlatStyle =
-            FlatStyle.Flat
-
-        btnAction.FlatAppearance.BorderSize =
-            0
-
-        btnAction.Font =
-            New Font(
-                "Segoe UI Semibold",
-                9.0F,
-                FontStyle.Bold
-            )
-
-        btnAction.Location =
-            New Point(
-                16,
-                161
-            )
-
-        btnAction.Size =
-            New Size(
-                406,
-                36
-            )
-
-        btnAction.Tag =
+        btnAct.Tag =
             New ClearanceActionInfo With {
                 .RecordID = recordID,
                 .Status = status,
@@ -821,26 +518,13 @@ Public Class StudentClearanceForm
             }
 
         ConfigureActionButton(
-            btnAction,
+            btnAct,
             status,
             requiresFile,
             filePath
         )
 
-        AddHandler btnAction.Click,
-            AddressOf ClearanceActionButton_Click
-
-        card.Controls.Add(lblIcon)
-        card.Controls.Add(lblOffice)
-        card.Controls.Add(lblStatus)
-        card.Controls.Add(lblDescription)
-        card.Controls.Add(pnlFile)
-        card.Controls.Add(btnAction)
-
-        flpOfficesGrid.Controls.Add(card)
-
     End Sub
-
 
     ' ============================================================
     ' STATUS COLORS
@@ -1098,13 +782,17 @@ Public Class StudentClearanceForm
     Private Sub ClearanceActionButton_Click(
         sender As Object,
         e As EventArgs
-    )
+    ) Handles btnAction1.Click, btnAction2.Click, btnAction3.Click, btnAction4.Click
 
         Dim button As Button =
             DirectCast(
                 sender,
                 Button
             )
+
+        If button.Tag Is Nothing OrElse Not (TypeOf button.Tag Is ClearanceActionInfo) Then
+            Return
+        End If
 
         Dim info As ClearanceActionInfo =
             DirectCast(
