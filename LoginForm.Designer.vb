@@ -201,9 +201,9 @@ Partial Class LoginForm
         lblWelcomeTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblWelcomeTitle.Location = New Point(35, 42)
         lblWelcomeTitle.Name = "lblWelcomeTitle"
-        lblWelcomeTitle.Size = New Size(203, 37)
+        lblWelcomeTitle.Size = New Size(136, 37)
         lblWelcomeTitle.TabIndex = 0
-        lblWelcomeTitle.Text = "Welcome back"
+        lblWelcomeTitle.Text = "Welcome"
         ' 
         ' LoginForm
         ' 
