@@ -404,6 +404,7 @@ Public Class StudentClearanceForm
         Dim lblFileNm As Label = Nothing
         Dim lblFileDt As Label = Nothing
         Dim btnAct As Button = Nothing
+        Dim btnRmv As Button = Nothing
 
         Select Case cardIndex
             Case 0
@@ -417,6 +418,7 @@ Public Class StudentClearanceForm
                 lblFileNm = lblFileName1
                 lblFileDt = lblFileDate1
                 btnAct = btnAction1
+                btnRmv = btnrmvsub1
 
             Case 1
                 cardPanel = pnlOfficeCard2
@@ -429,6 +431,7 @@ Public Class StudentClearanceForm
                 lblFileNm = lblFileName2
                 lblFileDt = lblFileDate2
                 btnAct = btnAction2
+                btnRmv = btnrmvsub2
 
             Case 2
                 cardPanel = pnlOfficeCard3
@@ -441,6 +444,7 @@ Public Class StudentClearanceForm
                 lblFileNm = lblFileName3
                 lblFileDt = lblFileDate3
                 btnAct = btnAction3
+                btnRmv = btnrmvsub3
 
             Case 3
                 cardPanel = pnlOfficeCard4
@@ -453,6 +457,7 @@ Public Class StudentClearanceForm
                 lblFileNm = lblFileName4
                 lblFileDt = lblFileDate4
                 btnAct = btnAction4
+                btnRmv = btnrmvsub4
 
             Case 4
                 cardPanel = pnlOfficeCard5
@@ -465,6 +470,7 @@ Public Class StudentClearanceForm
                 lblFileNm = lblFileName5
                 lblFileDt = lblFileDate5
                 btnAct = btnAction5
+                btnRmv = btnrmvsub5
 
             Case 5
                 cardPanel = pnlOfficeCard6
@@ -477,6 +483,7 @@ Public Class StudentClearanceForm
                 lblFileNm = lblFileName6
                 lblFileDt = lblFileDate6
                 btnAct = btnAction6
+                btnRmv = btnrmvsub6
 
             Case 6
                 cardPanel = pnlOfficeCard7
@@ -489,6 +496,7 @@ Public Class StudentClearanceForm
                 lblFileNm = lblFileName7
                 lblFileDt = lblFileDate7
                 btnAct = btnAction7
+                btnRmv = btnrmvsub7
 
             Case 7
                 cardPanel = pnlOfficeCard8
@@ -501,6 +509,7 @@ Public Class StudentClearanceForm
                 lblFileNm = lblFileName8
                 lblFileDt = lblFileDate8
                 btnAct = btnAction8
+                btnRmv = btnrmvsub8
 
             Case Else
                 Return
@@ -572,6 +581,23 @@ Public Class StudentClearanceForm
             requiresFile,
             filePath
         )
+
+        If btnRmv IsNot Nothing Then
+            btnRmv.Tag =
+                New ClearanceActionInfo With {
+                    .RecordID = recordID,
+                    .Status = status,
+                    .RequiresFile = requiresFile,
+                    .FilePath = filePath
+                }
+
+            ConfigureRemoveButton(
+                btnRmv,
+                status,
+                requiresFile,
+                filePath
+            )
+        End If
 
     End Sub
 
@@ -823,6 +849,186 @@ Public Class StudentClearanceForm
         End Select
 
     End Sub
+ 
+    ' ============================================================
+    ' REMOVE BUTTON APPEARANCE
+    ' ============================================================
+    Private Sub ConfigureRemoveButton(
+        button As Button,
+        status As String,
+        requiresFile As Boolean,
+        filePath As String
+    )
+        If button Is Nothing Then Return
+
+        If Not requiresFile Then
+            button.Enabled = False
+            button.BackColor = Color.FromArgb(226, 232, 240)
+            button.ForeColor = Color.FromArgb(148, 163, 184)
+            button.Text = "No file required"
+            button.Cursor = Cursors.Default
+            Return
+        End If
+
+        If status.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
+            button.Enabled = False
+            button.BackColor = Color.FromArgb(226, 232, 240)
+            button.ForeColor = Color.FromArgb(148, 163, 184)
+            button.Text = "Cleared - Locked"
+            button.Cursor = Cursors.Default
+            Return
+        End If
+
+        If Not String.IsNullOrWhiteSpace(filePath) Then
+            button.Enabled = True
+            button.BackColor = Color.Goldenrod
+            button.ForeColor = Color.White
+            button.Text = "Remove submitted document"
+            button.Cursor = Cursors.Hand
+        Else
+            button.Enabled = False
+            button.BackColor = Color.FromArgb(226, 232, 240)
+            button.ForeColor = Color.FromArgb(148, 163, 184)
+            button.Text = "No document uploaded"
+            button.Cursor = Cursors.Default
+        End If
+    End Sub
+
+    ' ============================================================
+    ' CARD REMOVE SUBMITTED DOCUMENT CLICK
+    ' ============================================================
+    Private Sub RemoveSubmittedDocumentButton_Click(
+        sender As Object,
+        e As EventArgs
+    ) Handles btnrmvsub1.Click, btnrmvsub2.Click, btnrmvsub3.Click, btnrmvsub4.Click,
+              btnrmvsub5.Click, btnrmvsub6.Click, btnrmvsub7.Click, btnrmvsub8.Click
+
+        Dim button = DirectCast(sender, Button)
+        If button.Tag Is Nothing OrElse Not (TypeOf button.Tag Is ClearanceActionInfo) Then
+            Return
+        End If
+
+        Dim info = DirectCast(button.Tag, ClearanceActionInfo)
+
+        If info.Status.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
+            MessageBox.Show(
+                "A cleared clearance requirement cannot be removed.",
+                "Cannot Remove",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            )
+            Return
+        End If
+
+        If String.IsNullOrWhiteSpace(info.FilePath) Then
+            MessageBox.Show(
+                "There is no submitted document to remove.",
+                "No Document",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            )
+            Return
+        End If
+
+        Dim confirmResult As DialogResult = MessageBox.Show(
+            "Are you sure you want to remove your submitted document for this office?" & vbCrLf & vbCrLf &
+            "Your submitted file will be deleted and your clearance status will be reset to Pending.",
+            "Remove Submitted Document",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Warning
+        )
+
+        If confirmResult <> DialogResult.Yes Then
+            Return
+        End If
+
+        ExecuteRemoveSubmittedDocument(info.RecordID, info.FilePath, info.Status)
+    End Sub
+
+    Private Sub ExecuteRemoveSubmittedDocument(
+        recordID As Integer,
+        filePath As String,
+        oldStatus As String
+    )
+        Try
+            Using conn As MySqlConnection = db.GetConnection()
+                conn.Open()
+                Using transaction As MySqlTransaction = conn.BeginTransaction()
+                    Try
+                        Dim updateQuery As String =
+                            "UPDATE ClearanceRecords " &
+                            "SET SubmittedFilePath = NULL, " &
+                            "SubmittedFileName = NULL, " &
+                            "SubmittedAt = NULL, " &
+                            "Status = 'Pending', " &
+                            "Remarks = NULL, " &
+                            "ReviewedBy = NULL, " &
+                            "ReviewedAt = NULL " &
+                            "WHERE RecordID = @RecordID AND StudentID = @StudentID;"
+
+                        Using updateCmd As New MySqlCommand(updateQuery, conn, transaction)
+                            updateCmd.Parameters.AddWithValue("@RecordID", recordID)
+                            updateCmd.Parameters.AddWithValue("@StudentID", AppSession.UserID)
+                            Dim affectedRows As Integer = updateCmd.ExecuteNonQuery()
+                            If affectedRows = 0 Then
+                                Throw New Exception("The clearance record could not be updated.")
+                            End If
+                        End Using
+
+                        Dim historyQuery As String =
+                            "INSERT INTO ClearanceHistory " &
+                            "(RecordID, ActionBy, ActionType, OldStatus, NewStatus, Remarks) " &
+                            "VALUES (@RecordID, @ActionBy, 'Document Removed', @OldStatus, 'Pending', 'Student removed submitted document');"
+
+                        Using histCmd As New MySqlCommand(historyQuery, conn, transaction)
+                            histCmd.Parameters.AddWithValue("@RecordID", recordID)
+                            histCmd.Parameters.AddWithValue("@ActionBy", AppSession.UserID)
+                            histCmd.Parameters.AddWithValue("@OldStatus", oldStatus)
+                            histCmd.ExecuteNonQuery()
+                        End Using
+
+                        transaction.Commit()
+
+                    Catch ex As Exception
+                        transaction.Rollback()
+                        Throw
+                    End Try
+                End Using
+            End Using
+
+            ' Delete physical file from disk if it exists
+            If Not String.IsNullOrWhiteSpace(filePath) Then
+                Try
+                    Dim fullPath As String = filePath
+                    If Not Path.IsPathRooted(fullPath) Then
+                        fullPath = Path.Combine(Application.StartupPath, filePath)
+                    End If
+                    If File.Exists(fullPath) Then
+                        File.Delete(fullPath)
+                    End If
+                Catch
+                    ' Physical file delete exception ignored if DB update succeeded
+                End Try
+            End If
+
+            MessageBox.Show(
+                "Your submitted document has been removed successfully. Clearance status is now Pending.",
+                "Document Removed",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            )
+
+            LoadClearanceData()
+
+        Catch ex As Exception
+            MessageBox.Show(
+                "Failed to remove submitted document: " & ex.Message,
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+            )
+        End Try
+    End Sub
 
 
     ' ============================================================
@@ -833,7 +1039,7 @@ Public Class StudentClearanceForm
         e As EventArgs
     ) Handles btnAction1.Click, btnAction2.Click, btnAction3.Click, btnAction4.Click, btnAction5.Click, btnAction6.Click, btnAction7.Click, btnAction8.Click
 
-        Dim button As Button =
+        Dim button =
             DirectCast(
                 sender,
                 Button
@@ -843,13 +1049,13 @@ Public Class StudentClearanceForm
             Return
         End If
 
-        Dim info As ClearanceActionInfo =
+        Dim info =
             DirectCast(
                 button.Tag,
                 ClearanceActionInfo
             )
 
-        Select Case info.Status.ToLower()
+        Select Case info.Status.ToLower
 
             Case "pending",
                  "rejected"
