@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>Eclearance</RootNamespace>
+    <StartupObject>Sub Main</StartupObject>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="LoginForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LoginForm.Designer.vb">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="AdminStudentsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="AdminStudentsForm.Designer.vb">
+      <DependentUpon>AdminStudentsForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="StudentClearanceForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StudentClearanceForm.Designer.vb">
+      <DependentUpon>StudentClearanceForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="CreateStudentForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CreateStudentForm.Designer.vb">
+      <DependentUpon>CreateStudentForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="CreateStaffForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CreateStaffForm.Designer.vb">
+      <DependentUpon>CreateStaffForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="ClearanceHistoryForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ClearanceHistoryForm.Designer.vb">
+      <DependentUpon>ClearanceHistoryForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="StartNewTermForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StartNewTermForm.Designer.vb">
+      <DependentUpon>StartNewTermForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="StaffOfficesForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StaffOfficesForm.Designer.vb">
+      <DependentUpon>StaffOfficesForm.vb</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>
