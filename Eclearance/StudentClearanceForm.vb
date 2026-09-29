@@ -1909,9 +1909,7 @@ Public Class StudentClearanceForm
         e As EventArgs
     ) Handles btnNavMyClearance.Click
 
-        cmbFilterOffices.SelectedIndex = 0
-
-        LoadClearanceData()
+        ShowMyClearanceView()
 
     End Sub
 
@@ -1924,12 +1922,64 @@ Public Class StudentClearanceForm
         e As EventArgs
     ) Handles btnNavHistory.Click
 
-        Using frm As New ClearanceHistoryForm()
+        ShowHistoryView()
 
-            frm.ShowDialog()
+    End Sub
 
-        End Using
 
+    ' ============================================================
+    ' SPA VIEW SWITCHING (SINGLE PAGE ARCHITECTURE)
+    ' ============================================================
+    Public Sub ShowMyClearanceView()
+        SetActiveNavButton(btnNavMyClearance)
+        pnlViewHost.Visible = False
+        pnlViewHost.Controls.Clear()
+        pnlMain.Visible = True
+        pnlMain.BringToFront()
+        cmbFilterOffices.SelectedIndex = 0
+        LoadClearanceData()
+    End Sub
+
+    Public Sub ShowHistoryView()
+        SetActiveNavButton(btnNavHistory)
+        Dim historyForm As New ClearanceHistoryForm()
+        historyForm.StudentIDFilter = AppSession.UserID
+        historyForm.StudentNameFilter = AppSession.FullName
+        LoadChildFormView(historyForm)
+    End Sub
+
+    Private Sub LoadChildFormView(childForm As Form)
+        childForm.TopLevel = False
+        childForm.FormBorderStyle = FormBorderStyle.None
+        childForm.Dock = DockStyle.Fill
+
+        Dim childSidebar As Control = childForm.Controls("pnlSidebar")
+        If childSidebar IsNot Nothing Then
+            childSidebar.Visible = False
+        End If
+
+        pnlViewHost.Controls.Clear()
+        pnlViewHost.Controls.Add(childForm)
+        pnlMain.Visible = False
+        pnlViewHost.Visible = True
+        pnlViewHost.BringToFront()
+        childForm.Show()
+    End Sub
+
+    Private Sub SetActiveNavButton(activeBtn As Button)
+        Dim navButtons As Button() = {btnNavMyClearance, btnNavHistory}
+
+        For Each btn In navButtons
+            If btn Is activeBtn Then
+                btn.BackColor = Color.FromArgb(28, 91, 184)
+                btn.ForeColor = Color.White
+                btn.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+            Else
+                btn.BackColor = Color.FromArgb(15, 39, 74)
+                btn.ForeColor = Color.FromArgb(160, 180, 208)
+                btn.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+            End If
+        Next
     End Sub
 
 

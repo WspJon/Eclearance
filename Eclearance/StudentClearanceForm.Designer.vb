@@ -30,6 +30,7 @@ Partial Class StudentClearanceForm
         lblLogoText = New Label()
         lblLogoIcon = New Label()
         pnlMain = New Panel()
+        pnlViewHost = New Panel()
         pnlPagination = New Panel()
         btnNextPage = New Button()
         btnPage2 = New Button()
@@ -724,12 +725,23 @@ Partial Class StudentClearanceForm
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "My clearance"
         ' 
+        ' pnlViewHost
+        ' 
+        pnlViewHost.BackColor = Color.FromArgb(244, 247, 251)
+        pnlViewHost.Dock = DockStyle.Fill
+        pnlViewHost.Location = New Point(220, 0)
+        pnlViewHost.Name = "pnlViewHost"
+        pnlViewHost.Size = New Size(980, 800)
+        pnlViewHost.TabIndex = 2
+        pnlViewHost.Visible = False
+        ' 
         ' StudentClearanceForm
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(244, 247, 251)
         ClientSize = New Size(1200, 800)
+        Controls.Add(pnlViewHost)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
@@ -816,5 +828,6 @@ Partial Class StudentClearanceForm
     Friend WithEvents btnPage1 As Button
     Friend WithEvents btnPage2 As Button
     Friend WithEvents btnNextPage As Button
+    Friend WithEvents pnlViewHost As Panel
 
 End Class
