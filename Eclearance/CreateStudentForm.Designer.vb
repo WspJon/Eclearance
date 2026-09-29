@@ -349,7 +349,8 @@ Partial Class CreateStudentForm
         lblPwdHelp.Name = "lblPwdHelp"
         lblPwdHelp.Size = New Size(116, 13)
         lblPwdHelp.TabIndex = 23
-        lblPwdHelp.Text = "At least 8 characters."
+        lblPwdHelp.Text = ""
+        lblPwdHelp.Visible = False
         ' 
         ' btnClearForm
         ' 

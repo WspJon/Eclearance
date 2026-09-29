@@ -203,19 +203,6 @@ Public Class CreateStudentForm
         End If
 
 
-        If password.Length < 6 Then
-
-            ShowWarning(
-                "Password must contain at least 6 characters."
-            )
-
-            txtPassword.Focus()
-
-            Return
-
-        End If
-
-
         Try
 
             If StudentNumberExists(studentNo) Then
