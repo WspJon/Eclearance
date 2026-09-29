@@ -635,17 +635,7 @@ Public Class AdminStudentsForm
             Value.ToString()
 
 
-        Using frm As New ClearanceHistoryForm()
-
-            frm.StudentIDFilter =
-                studentID
-
-            frm.StudentNameFilter =
-                studentName
-
-            frm.ShowDialog()
-
-        End Using
+        ShowHistoryView(studentID, studentName)
 
     End Sub
 
@@ -865,7 +855,7 @@ Public Class AdminStudentsForm
         e As EventArgs
     ) Handles btnNavStudents.Click
 
-        LoadStudents()
+        ShowStudentsView()
 
     End Sub
 
@@ -878,17 +868,7 @@ Public Class AdminStudentsForm
         e As EventArgs
     ) Handles btnNavStaff.Click
 
-        Me.Hide()
-
-        Using frm As New StaffOfficesForm()
-
-            frm.ShowDialog()
-
-        End Using
-
-        Me.Show()
-
-        LoadStudents()
+        ShowStaffOfficesView()
 
     End Sub
 
@@ -901,11 +881,7 @@ Public Class AdminStudentsForm
         e As EventArgs
     ) Handles btnNavHistory.Click
 
-        Using frm As New ClearanceHistoryForm()
-
-            frm.ShowDialog()
-
-        End Using
+        ShowHistoryView()
 
     End Sub
 
@@ -918,19 +894,76 @@ Public Class AdminStudentsForm
         e As EventArgs
     ) Handles btnNavStartTerm.Click
 
-        Me.Hide()
+        ShowStartNewTermView()
 
-        Using frm As New StartNewTermForm()
+    End Sub
 
-            frm.ShowDialog()
 
-        End Using
-
-        Me.Show()
-
+    ' ============================================================
+    ' SPA VIEW SWITCHING (SINGLE PAGE ARCHITECTURE)
+    ' ============================================================
+    Public Sub ShowStudentsView()
+        SetActiveNavButton(btnNavStudents)
+        pnlViewHost.Visible = False
+        pnlViewHost.Controls.Clear()
+        pnlMain.Visible = True
+        pnlMain.BringToFront()
         LoadCurrentTermLabel()
         LoadStudents()
+    End Sub
 
+    Public Sub ShowStaffOfficesView()
+        SetActiveNavButton(btnNavStaff)
+        LoadChildFormView(New StaffOfficesForm())
+    End Sub
+
+    Public Sub ShowHistoryView(Optional studentId As Integer? = Nothing, Optional studentName As String = "")
+        SetActiveNavButton(btnNavHistory)
+        Dim historyForm As New ClearanceHistoryForm()
+        If studentId.HasValue Then
+            historyForm.StudentIDFilter = studentId
+            historyForm.StudentNameFilter = studentName
+        End If
+        LoadChildFormView(historyForm)
+    End Sub
+
+    Public Sub ShowStartNewTermView()
+        SetActiveNavButton(btnNavStartTerm)
+        LoadChildFormView(New StartNewTermForm())
+    End Sub
+
+    Private Sub LoadChildFormView(childForm As Form)
+        childForm.TopLevel = False
+        childForm.FormBorderStyle = FormBorderStyle.None
+        childForm.Dock = DockStyle.Fill
+
+        Dim childSidebar As Control = childForm.Controls("pnlSidebar")
+        If childSidebar IsNot Nothing Then
+            childSidebar.Visible = False
+        End If
+
+        pnlViewHost.Controls.Clear()
+        pnlViewHost.Controls.Add(childForm)
+        pnlMain.Visible = False
+        pnlViewHost.Visible = True
+        pnlViewHost.BringToFront()
+        childForm.Show()
+    End Sub
+
+    Private Sub SetActiveNavButton(activeBtn As Button)
+        Dim navButtons As Button() = {btnNavStudents, btnNavStaff, btnNavHistory, btnNavStartTerm}
+
+        For Each btn In navButtons
+            If btn Is activeBtn Then
+                btn.BackColor = Color.FromArgb(28, 91, 184)
+                btn.ForeColor = Color.White
+                btn.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+            Else
+                btn.BackColor = Color.FromArgb(15, 39, 74)
+                btn.ForeColor = Color.FromArgb(160, 180, 208)
+                btn.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+            End If
+        Next
     End Sub
 
 
