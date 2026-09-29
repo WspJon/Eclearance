@@ -22,14 +22,28 @@ Public Class AdminStudentsForm
         e As EventArgs
     ) Handles btnAddStudent.Click
 
-        Using frm As New CreateStudentForm()
+        Dim modalBackdrop As New Form()
 
-            frm.ShowDialog()
+        Try
+            modalBackdrop.FormBorderStyle = FormBorderStyle.None
+            modalBackdrop.BackColor = Color.Black
+            modalBackdrop.Opacity = 0.45R
+            modalBackdrop.ShowInTaskbar = False
+            modalBackdrop.StartPosition = FormStartPosition.Manual
+            modalBackdrop.Location = Me.PointToScreen(Point.Empty)
+            modalBackdrop.Size = Me.ClientSize
+            modalBackdrop.Owner = Me
+            modalBackdrop.Show()
 
-        End Using
+            Using frm As New CreateStudentForm()
+                If frm.ShowDialog(modalBackdrop) = DialogResult.OK Then
+                    LoadStudents()
+                End If
+            End Using
 
-        ' Refresh after closing Create Student form
-        LoadStudents()
+        Finally
+            modalBackdrop.Dispose()
+        End Try
 
     End Sub
 
@@ -947,7 +961,4 @@ Public Class AdminStudentsForm
 
     End Sub
 
-    Private Sub btnAddStudent_Click_1(sender As Object, e As EventArgs) Handles btnAddStudent.Click
-
-    End Sub
 End Class

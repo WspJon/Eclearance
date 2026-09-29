@@ -390,6 +390,8 @@ Public Class CreateStudentForm
 
                         ClearForm()
 
+                        Me.DialogResult = DialogResult.OK
+                        Me.Close()
 
                     Catch
 
@@ -685,6 +687,57 @@ Public Class CreateStudentForm
             MessageBoxButtons.OK,
             MessageBoxIcon.Warning
         )
+
+    End Sub
+
+
+    Private Sub btnClose_Click(
+        sender As Object,
+        e As EventArgs
+    ) Handles btnClose.Click
+
+        Me.DialogResult = DialogResult.Cancel
+        Me.Close()
+
+    End Sub
+
+
+    ' Drag modal window
+    Private isDragging As Boolean = False
+    Private dragCursorPoint As Point
+    Private dragFormPoint As Point
+
+    Private Sub ModalHeader_MouseDown(
+        sender As Object,
+        e As MouseEventArgs
+    ) Handles lblModalTitle.MouseDown, pnlCard.MouseDown
+
+        If e.Button = MouseButtons.Left AndAlso e.Y <= 60 Then
+            isDragging = True
+            dragCursorPoint = Cursor.Position
+            dragFormPoint = Me.Location
+        End If
+
+    End Sub
+
+    Private Sub ModalHeader_MouseMove(
+        sender As Object,
+        e As MouseEventArgs
+    ) Handles lblModalTitle.MouseMove, pnlCard.MouseMove
+
+        If isDragging Then
+            Dim diff As Point = Point.Subtract(Cursor.Position, New Size(dragCursorPoint))
+            Me.Location = Point.Add(dragFormPoint, New Size(diff))
+        End If
+
+    End Sub
+
+    Private Sub ModalHeader_MouseUp(
+        sender As Object,
+        e As MouseEventArgs
+    ) Handles lblModalTitle.MouseUp, pnlCard.MouseUp
+
+        isDragging = False
 
     End Sub
 
