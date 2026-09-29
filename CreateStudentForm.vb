@@ -15,7 +15,11 @@ Public Class CreateStudentForm
 
         txtPassword.UseSystemPasswordChar = True
 
+        txtStudentNo.Focus()
+
     End Sub
+
+
 
     Private Sub LoadCourseOptions()
 
@@ -48,6 +52,7 @@ Public Class CreateStudentForm
     End Sub
 
 
+
     Private Sub btnCreateAccount_Click(
         sender As Object,
         e As EventArgs
@@ -57,7 +62,9 @@ Public Class CreateStudentForm
 
     End Sub
 
+
     Private Sub CreateStudent()
+
 
         Dim studentNo As String =
             txtStudentNo.Text.Trim()
@@ -72,10 +79,9 @@ Public Class CreateStudentForm
             txtUsername.Text.Trim()
 
         Dim password As String =
-            txtPassword.Text
+            txtPassword.Text.Trim()
 
         Dim course As String = ""
-
         Dim yearLevel As String = ""
 
 
@@ -87,6 +93,7 @@ Public Class CreateStudentForm
         If cmbYearLevel.SelectedItem IsNot Nothing Then
             yearLevel = cmbYearLevel.SelectedItem.ToString()
         End If
+
 
 
         If String.IsNullOrWhiteSpace(studentNo) Then
@@ -125,10 +132,10 @@ Public Class CreateStudentForm
         End If
 
 
-        If String.IsNullOrWhiteSpace(course) Then
+        If cmbCourse.SelectedIndex = -1 Then
 
             ShowWarning(
-                "Please select a course."
+                "Please select the student's course."
             )
 
             cmbCourse.Focus()
@@ -137,10 +144,10 @@ Public Class CreateStudentForm
         End If
 
 
-        If String.IsNullOrWhiteSpace(yearLevel) Then
+        If cmbYearLevel.SelectedIndex = -1 Then
 
             ShowWarning(
-                "Please select a year level."
+                "Please select the student's year level."
             )
 
             cmbYearLevel.Focus()
@@ -199,7 +206,6 @@ Public Class CreateStudentForm
 
         Try
 
-
             If StudentNumberExists(studentNo) Then
 
                 MessageBox.Show(
@@ -234,121 +240,195 @@ Public Class CreateStudentForm
             End If
 
 
+
+            Dim activeTermID As Integer =
+                GetActiveTermID()
+
+
+            If activeTermID = 0 Then
+
+                MessageBox.Show(
+                    "There is no active academic term." &
+                    Environment.NewLine &
+                    Environment.NewLine &
+                    "Please create or activate an academic term first.",
+                    "No Active Term",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                )
+
+                Return
+
+            End If
+
+
             Dim fullName As String =
                 firstName & " " & lastName
 
 
-            Dim query As String =
-                "INSERT INTO Users " &
-                "(" &
-                "Username, " &
-                "Password, " &
-                "FullName, " &
-                "FirstName, " &
-                "LastName, " &
-                "Role, " &
-                "StudentNo, " &
-                "Course, " &
-                "YearLevel, " &
-                "EnrolledInNSTP, " &
-                "IsActive" &
-                ") " &
-                "VALUES " &
-                "(" &
-                "@Username, " &
-                "@Password, " &
-                "@FullName, " &
-                "@FirstName, " &
-                "@LastName, " &
-                "'Student', " &
-                "@StudentNo, " &
-                "@Course, " &
-                "@YearLevel, " &
-                "@NSTP, " &
-                "1" &
-                ");"
+            Using conn As MySqlConnection =
+                db.GetConnection()
+
+                conn.Open()
 
 
-            Dim parameters As New Dictionary(
-                Of String,
-                Object
-            ) From {
+                Using transaction As MySqlTransaction =
+                    conn.BeginTransaction()
 
-                {
-                    "@Username",
-                    username
-                },
-                {
-                    "@Password",
-                    password
-                },
-                {
-                    "@FullName",
-                    fullName
-                },
-                {
-                    "@FirstName",
-                    firstName
-                },
-                {
-                    "@LastName",
-                    lastName
-                },
-                {
-                    "@StudentNo",
-                    studentNo
-                },
-                {
-                    "@Course",
-                    course
-                },
-                {
-                    "@YearLevel",
-                    yearLevel
-                },
-                {
-                    "@NSTP",
-                    If(chkNSTP.Checked, 1, 0)
-                }
-
-            }
+                    Try
 
 
-            Dim result As Integer =
-                db.ExecuteNonQuery(
-                    query,
-                    parameters
-                )
+                        Dim insertStudentQuery As String =
+                            "INSERT INTO Users " &
+                            "(" &
+                            "Username, " &
+                            "Password, " &
+                            "FullName, " &
+                            "FirstName, " &
+                            "LastName, " &
+                            "Role, " &
+                            "StudentNo, " &
+                            "Course, " &
+                            "YearLevel, " &
+                            "EnrolledInNSTP, " &
+                            "IsActive" &
+                            ") " &
+                            "VALUES " &
+                            "(" &
+                            "@Username, " &
+                            "@Password, " &
+                            "@FullName, " &
+                            "@FirstName, " &
+                            "@LastName, " &
+                            "'Student', " &
+                            "@StudentNo, " &
+                            "@Course, " &
+                            "@YearLevel, " &
+                            "@NSTP, " &
+                            "1" &
+                            ");"
 
 
-            If result > 0 Then
+                        Dim newStudentID As Integer
 
-                MessageBox.Show(
-                    "Student account created successfully." &
-                    Environment.NewLine &
-                    Environment.NewLine &
-                    "Student No.: " &
-                    studentNo &
-                    Environment.NewLine &
-                    "Name: " &
-                    fullName,
-                    "Student Created",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                )
 
-                ClearForm()
+                        Using cmd As New MySqlCommand(
+                            insertStudentQuery,
+                            conn,
+                            transaction
+                        )
 
-            Else
+                            cmd.Parameters.AddWithValue(
+                                "@Username",
+                                username
+                            )
 
-                MessageBox.Show(
-                    "The student account could not be created.",
-                    "Create Student",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                )
+                            cmd.Parameters.AddWithValue(
+                                "@Password",
+                                password
+                            )
 
-            End If
+                            cmd.Parameters.AddWithValue(
+                                "@FullName",
+                                fullName
+                            )
+
+                            cmd.Parameters.AddWithValue(
+                                "@FirstName",
+                                firstName
+                            )
+
+                            cmd.Parameters.AddWithValue(
+                                "@LastName",
+                                lastName
+                            )
+
+                            cmd.Parameters.AddWithValue(
+                                "@StudentNo",
+                                studentNo
+                            )
+
+                            cmd.Parameters.AddWithValue(
+                                "@Course",
+                                course
+                            )
+
+                            cmd.Parameters.AddWithValue(
+                                "@YearLevel",
+                                yearLevel
+                            )
+
+                            cmd.Parameters.AddWithValue(
+                                "@NSTP",
+                                If(
+                                    chkNSTP.Checked,
+                                    1,
+                                    0
+                                )
+                            )
+
+
+                            cmd.ExecuteNonQuery()
+
+
+                            newStudentID =
+                                Convert.ToInt32(
+                                    cmd.LastInsertedId
+                                )
+
+                        End Using
+
+
+                        CreateClearanceRecords(
+                            conn,
+                            transaction,
+                            newStudentID,
+                            activeTermID,
+                            course,
+                            chkNSTP.Checked
+                        )
+
+
+
+                        transaction.Commit()
+
+
+                        MessageBox.Show(
+                            "Student account created successfully." &
+                            Environment.NewLine &
+                            Environment.NewLine &
+                            "Student No.: " &
+                            studentNo &
+                            Environment.NewLine &
+                            "Name: " &
+                            fullName &
+                            Environment.NewLine &
+                            "Course: " &
+                            course &
+                            Environment.NewLine &
+                            "Year Level: " &
+                            yearLevel,
+                            "Student Created",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        )
+
+
+                        ClearForm()
+
+
+                    Catch ex As Exception
+
+      
+                        transaction.Rollback()
+
+                        Throw
+
+                    End Try
+
+                End Using
+
+            End Using
 
 
         Catch ex As MySqlException
@@ -367,16 +447,140 @@ Public Class CreateStudentForm
         Catch ex As Exception
 
             MessageBox.Show(
-                "An unexpected error occurred." &
+                "The student account could not be created." &
                 Environment.NewLine &
                 Environment.NewLine &
                 ex.Message,
-                "Error",
+                "Create Student Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error
             )
 
         End Try
+
+    End Sub
+
+
+    Private Sub CreateClearanceRecords(
+        conn As MySqlConnection,
+        transaction As MySqlTransaction,
+        studentID As Integer,
+        termID As Integer,
+        course As String,
+        enrolledInNSTP As Boolean
+    )
+        Dim requirementQuery As String =
+            "SELECT RequirementID " &
+            "FROM ClearanceRequirements " &
+            "WHERE IsActive = 1 " &
+            "AND (" &
+            "AppliesToCourse IS NULL " &
+            "OR AppliesToCourse = '' " &
+            "OR AppliesToCourse = @Course" &
+            ") " &
+            "AND (" &
+            "RequiresNSTP = 0 " &
+            "OR @NSTP = 1" &
+            ");"
+
+
+        Dim requirements As New List(Of Integer)
+
+
+        Using cmd As New MySqlCommand(
+            requirementQuery,
+            conn,
+            transaction
+        )
+
+            cmd.Parameters.AddWithValue(
+                "@Course",
+                course
+            )
+
+            cmd.Parameters.AddWithValue(
+                "@NSTP",
+                If(
+                    enrolledInNSTP,
+                    1,
+                    0
+                )
+            )
+
+
+            Using reader As MySqlDataReader =
+                cmd.ExecuteReader()
+
+                While reader.Read()
+
+                    requirements.Add(
+                        Convert.ToInt32(
+                            reader("RequirementID")
+                        )
+                    )
+
+                End While
+
+            End Using
+
+        End Using
+
+
+ 
+        If requirements.Count = 0 Then
+
+            Throw New Exception(
+                "No active clearance requirements were found."
+            )
+
+        End If
+
+
+        For Each requirementID As Integer In requirements
+
+            Dim insertQuery As String =
+                "INSERT INTO ClearanceRecords " &
+                "(" &
+                "StudentID, " &
+                "RequirementID, " &
+                "TermID, " &
+                "Status" &
+                ") " &
+                "VALUES " &
+                "(" &
+                "@StudentID, " &
+                "@RequirementID, " &
+                "@TermID, " &
+                "'Pending'" &
+                ");"
+
+
+            Using cmd As New MySqlCommand(
+                insertQuery,
+                conn,
+                transaction
+            )
+
+                cmd.Parameters.AddWithValue(
+                    "@StudentID",
+                    studentID
+                )
+
+                cmd.Parameters.AddWithValue(
+                    "@RequirementID",
+                    requirementID
+                )
+
+                cmd.Parameters.AddWithValue(
+                    "@TermID",
+                    termID
+                )
+
+                cmd.ExecuteNonQuery()
+
+            End Using
+
+        Next
 
     End Sub
 
@@ -416,6 +620,7 @@ Public Class CreateStudentForm
     End Function
 
 
+
     Private Function UsernameExists(
         username As String
     ) As Boolean
@@ -451,44 +656,80 @@ Public Class CreateStudentForm
     End Function
 
 
+    Private Function GetActiveTermID() As Integer
+
+        Dim query As String =
+            "SELECT TermID " &
+            "FROM AcademicTerms " &
+            "WHERE IsActive = 1 " &
+            "ORDER BY TermID DESC " &
+            "LIMIT 1;"
+
+
+        Dim result As Object =
+            db.ExecuteScalar(query)
+
+
+        If result Is Nothing OrElse
+           result Is DBNull.Value Then
+
+            Return 0
+
+        End If
+
+
+        Return Convert.ToInt32(result)
+
+    End Function
+
 
     Private Sub btnClearForm_Click(
         sender As Object,
         e As EventArgs
     ) Handles btnClearForm.Click
 
-        Dim answer As DialogResult =
+        Dim result As DialogResult =
             MessageBox.Show(
-                "Clear all entered information?",
+                "Are you sure you want to clear all entered information?",
                 "Clear Form",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             )
 
-        If answer = DialogResult.Yes Then
+
+        If result = DialogResult.Yes Then
+
             ClearForm()
+
         End If
 
     End Sub
 
 
+
     Private Sub ClearForm()
 
         txtStudentNo.Clear()
+
         txtFirstName.Clear()
+
         txtLastName.Clear()
 
         cmbCourse.SelectedIndex = -1
+
         cmbYearLevel.SelectedIndex = -1
 
         chkNSTP.Checked = False
 
         txtUsername.Clear()
+
         txtPassword.Clear()
 
         txtStudentNo.Focus()
 
     End Sub
+
+
 
     Private Sub ShowWarning(
         message As String
