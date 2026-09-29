@@ -183,7 +183,7 @@ Partial Class StartNewTermForm
         lblLogoText.Name = "lblLogoText"
         lblLogoText.Size = New Size(140, 40)
         lblLogoText.TabIndex = 1
-        lblLogoText.Text = "School" & vbCrLf & "Clearance"
+        lblLogoText.Text = "School" & Global.System.Environment.NewLine & "Clearance"
         ' 
         ' lblLogoIcon
         ' 
