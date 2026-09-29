@@ -43,10 +43,6 @@ Public Class LoginForm
             txtPassword.Text
 
 
-        ' ================================
-        ' VALIDATION
-        ' ================================
-
         If String.IsNullOrWhiteSpace(username) Then
 
             MessageBox.Show(
@@ -126,9 +122,6 @@ Public Class LoginForm
             Dim row As DataRow = dt.Rows(0)
 
 
-            ' ================================
-            ' SAVE LOGIN SESSION
-            ' ================================
 
             AppSession.UserID =
                 Convert.ToInt32(row("UserID"))
@@ -170,10 +163,6 @@ Public Class LoginForm
 
             End If
 
-
-            ' ================================
-            ' OPEN CORRECT FORM
-            ' ================================
 
             OpenDashboard()
 
