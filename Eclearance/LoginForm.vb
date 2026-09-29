@@ -295,12 +295,15 @@ Public Class LoginForm
             ' ====================================================
             Case "staff"
 
-                MessageBox.Show(
-                    "Staff clearance portal will be added next.",
-                    "Staff Account",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                )
+                Me.Hide()
+
+                Using frm As New StaffDashboardForm()
+
+                    frm.ShowDialog()
+
+                End Using
+
+                LogoutUser()
 
 
                 ' ====================================================

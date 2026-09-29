@@ -37,6 +37,7 @@ Partial Class StudentClearanceForm
         lblShowingOffices = New Label()
         flpOfficesGrid = New FlowLayoutPanel()
         pnlOfficeCard1 = New Panel()
+        btnrmvsub1 = New Button()
         btnAction1 = New Button()
         pnlFileAttach1 = New Panel()
         lblFileDate1 = New Label()
@@ -47,6 +48,8 @@ Partial Class StudentClearanceForm
         lblOfficeTitle1 = New Label()
         lblOfficeIcon1 = New Label()
         pnlOfficeCard2 = New Panel()
+        btnrmvsub2 = New Button()
+        btnAction2 = New Button()
         pnlFileAttach2 = New Panel()
         lblFileDate2 = New Label()
         lblFileName2 = New Label()
@@ -56,6 +59,7 @@ Partial Class StudentClearanceForm
         lblOfficeTitle2 = New Label()
         lblOfficeIcon2 = New Label()
         pnlOfficeCard3 = New Panel()
+        btnrmvsub3 = New Button()
         btnAction3 = New Button()
         pnlFileAttach3 = New Panel()
         lblFileDate3 = New Label()
@@ -66,6 +70,8 @@ Partial Class StudentClearanceForm
         lblOfficeTitle3 = New Label()
         lblOfficeIcon3 = New Label()
         pnlOfficeCard4 = New Panel()
+        btnrmvsub4 = New Button()
+        btnAction4 = New Button()
         pnlFileAttach4 = New Panel()
         lblFileDate4 = New Label()
         lblFileName4 = New Label()
@@ -75,6 +81,7 @@ Partial Class StudentClearanceForm
         lblOfficeTitle4 = New Label()
         lblOfficeIcon4 = New Label()
         pnlOfficeCard5 = New Panel()
+        btnrmvsub5 = New Button()
         btnAction5 = New Button()
         pnlFileAttach5 = New Panel()
         lblFileDate5 = New Label()
@@ -85,6 +92,7 @@ Partial Class StudentClearanceForm
         lblOfficeTitle5 = New Label()
         lblOfficeIcon5 = New Label()
         pnlOfficeCard6 = New Panel()
+        btnrmvsub6 = New Button()
         btnAction6 = New Button()
         pnlFileAttach6 = New Panel()
         lblFileDate6 = New Label()
@@ -95,6 +103,7 @@ Partial Class StudentClearanceForm
         lblOfficeTitle6 = New Label()
         lblOfficeIcon6 = New Label()
         pnlOfficeCard7 = New Panel()
+        btnrmvsub7 = New Button()
         btnAction7 = New Button()
         pnlFileAttach7 = New Panel()
         lblFileDate7 = New Label()
@@ -105,6 +114,7 @@ Partial Class StudentClearanceForm
         lblOfficeTitle7 = New Label()
         lblOfficeIcon7 = New Label()
         pnlOfficeCard8 = New Panel()
+        btnrmvsub8 = New Button()
         btnAction8 = New Button()
         pnlFileAttach8 = New Panel()
         lblFileDate8 = New Label()
@@ -131,16 +141,6 @@ Partial Class StudentClearanceForm
         lblTermBadge = New Label()
         lblStudentCourseYear = New Label()
         lblHeaderTitle = New Label()
-        btnrmvsub1 = New Button()
-        btnAction4 = New Button()
-        btnAction2 = New Button()
-        btnrmvsub2 = New Button()
-        btnrmvsub3 = New Button()
-        btnrmvsub4 = New Button()
-        btnrmvsub5 = New Button()
-        btnrmvsub6 = New Button()
-        btnrmvsub7 = New Button()
-        btnrmvsub8 = New Button()
         pnlSidebar.SuspendLayout()
         pnlUserProfile.SuspendLayout()
         pnlLogo.SuspendLayout()
@@ -441,6 +441,21 @@ Partial Class StudentClearanceForm
         pnlOfficeCard1.Size = New Size(440, 215)
         pnlOfficeCard1.TabIndex = 0
         ' 
+        ' btnrmvsub1
+        ' 
+        btnrmvsub1.BackColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
+        btnrmvsub1.Enabled = False
+        btnrmvsub1.FlatAppearance.BorderSize = 0
+        btnrmvsub1.FlatStyle = FlatStyle.Flat
+        btnrmvsub1.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnrmvsub1.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnrmvsub1.Location = New Point(225, 154)
+        btnrmvsub1.Name = "btnrmvsub1"
+        btnrmvsub1.Size = New Size(197, 36)
+        btnrmvsub1.TabIndex = 6
+        btnrmvsub1.Text = "No document uploaded"
+        btnrmvsub1.UseVisualStyleBackColor = False
+        ' 
         ' btnAction1
         ' 
         btnAction1.BackColor = Color.FromArgb(CByte(59), CByte(130), CByte(246))
@@ -506,9 +521,9 @@ Partial Class StudentClearanceForm
         lblOfficeDesc1.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblOfficeDesc1.Location = New Point(16, 60)
         lblOfficeDesc1.Name = "lblOfficeDesc1"
-        lblOfficeDesc1.Size = New Size(406, 28)
+        lblOfficeDesc1.Size = New Size(406, 59)
         lblOfficeDesc1.TabIndex = 3
-        lblOfficeDesc1.Text = "Finance Clearance — Settle all outstanding balances and submit the required proof if requested."
+        lblOfficeDesc1.Text = "Finance — Settle all outstanding balances and submit the required proof if requested."
         ' 
         ' lblOfficeStatusBadge1
         ' 
@@ -563,6 +578,36 @@ Partial Class StudentClearanceForm
         pnlOfficeCard2.Size = New Size(440, 215)
         pnlOfficeCard2.TabIndex = 1
         ' 
+        ' btnrmvsub2
+        ' 
+        btnrmvsub2.BackColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
+        btnrmvsub2.Enabled = False
+        btnrmvsub2.FlatAppearance.BorderSize = 0
+        btnrmvsub2.FlatStyle = FlatStyle.Flat
+        btnrmvsub2.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnrmvsub2.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnrmvsub2.Location = New Point(219, 154)
+        btnrmvsub2.Name = "btnrmvsub2"
+        btnrmvsub2.Size = New Size(203, 36)
+        btnrmvsub2.TabIndex = 7
+        btnrmvsub2.Text = "No document uploaded"
+        btnrmvsub2.UseVisualStyleBackColor = False
+        ' 
+        ' btnAction2
+        ' 
+        btnAction2.BackColor = Color.FromArgb(CByte(59), CByte(130), CByte(246))
+        btnAction2.Cursor = Cursors.Hand
+        btnAction2.FlatAppearance.BorderSize = 0
+        btnAction2.FlatStyle = FlatStyle.Flat
+        btnAction2.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnAction2.ForeColor = Color.White
+        btnAction2.Location = New Point(16, 154)
+        btnAction2.Name = "btnAction2"
+        btnAction2.Size = New Size(197, 36)
+        btnAction2.TabIndex = 5
+        btnAction2.Text = "View submitted document"
+        btnAction2.UseVisualStyleBackColor = False
+        ' 
         ' pnlFileAttach2
         ' 
         pnlFileAttach2.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
@@ -613,9 +658,9 @@ Partial Class StudentClearanceForm
         lblOfficeDesc2.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblOfficeDesc2.Location = New Point(16, 60)
         lblOfficeDesc2.Name = "lblOfficeDesc2"
-        lblOfficeDesc2.Size = New Size(406, 28)
+        lblOfficeDesc2.Size = New Size(406, 44)
         lblOfficeDesc2.TabIndex = 3
-        lblOfficeDesc2.Text = "Guidance Clearance — Complete the required non-confidential clearance requirement."
+        lblOfficeDesc2.Text = "Complete the required evaluation. Old students must also update their personal information before clearance approval."
         ' 
         ' lblOfficeStatusBadge2
         ' 
@@ -669,6 +714,21 @@ Partial Class StudentClearanceForm
         pnlOfficeCard3.Padding = New Padding(16)
         pnlOfficeCard3.Size = New Size(440, 215)
         pnlOfficeCard3.TabIndex = 2
+        ' 
+        ' btnrmvsub3
+        ' 
+        btnrmvsub3.BackColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
+        btnrmvsub3.Enabled = False
+        btnrmvsub3.FlatAppearance.BorderSize = 0
+        btnrmvsub3.FlatStyle = FlatStyle.Flat
+        btnrmvsub3.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnrmvsub3.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnrmvsub3.Location = New Point(225, 154)
+        btnrmvsub3.Name = "btnrmvsub3"
+        btnrmvsub3.Size = New Size(203, 36)
+        btnrmvsub3.TabIndex = 6
+        btnrmvsub3.Text = "No document uploaded"
+        btnrmvsub3.UseVisualStyleBackColor = False
         ' 
         ' btnAction3
         ' 
@@ -731,13 +791,14 @@ Partial Class StudentClearanceForm
         ' 
         ' lblOfficeDesc3
         ' 
+        lblOfficeDesc3.FlatStyle = FlatStyle.System
         lblOfficeDesc3.Font = New Font("Segoe UI", 8.5F)
         lblOfficeDesc3.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblOfficeDesc3.Location = New Point(16, 60)
         lblOfficeDesc3.Name = "lblOfficeDesc3"
         lblOfficeDesc3.Size = New Size(406, 28)
         lblOfficeDesc3.TabIndex = 3
-        lblOfficeDesc3.Text = "Library Clearance — Return all borrowed books and settle any library obligations."
+        lblOfficeDesc3.Text = "Library — Submit a screenshot of the completed library survey for verification and clearance approval."
         ' 
         ' lblOfficeStatusBadge3
         ' 
@@ -792,6 +853,36 @@ Partial Class StudentClearanceForm
         pnlOfficeCard4.Size = New Size(440, 215)
         pnlOfficeCard4.TabIndex = 3
         ' 
+        ' btnrmvsub4
+        ' 
+        btnrmvsub4.BackColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
+        btnrmvsub4.Enabled = False
+        btnrmvsub4.FlatAppearance.BorderSize = 0
+        btnrmvsub4.FlatStyle = FlatStyle.Flat
+        btnrmvsub4.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnrmvsub4.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnrmvsub4.Location = New Point(219, 154)
+        btnrmvsub4.Name = "btnrmvsub4"
+        btnrmvsub4.Size = New Size(197, 36)
+        btnrmvsub4.TabIndex = 6
+        btnrmvsub4.Text = "No document uploaded"
+        btnrmvsub4.UseVisualStyleBackColor = False
+        ' 
+        ' btnAction4
+        ' 
+        btnAction4.BackColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
+        btnAction4.Cursor = Cursors.Hand
+        btnAction4.FlatAppearance.BorderSize = 0
+        btnAction4.FlatStyle = FlatStyle.Flat
+        btnAction4.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnAction4.ForeColor = Color.White
+        btnAction4.Location = New Point(16, 154)
+        btnAction4.Name = "btnAction4"
+        btnAction4.Size = New Size(197, 36)
+        btnAction4.TabIndex = 5
+        btnAction4.Text = "Upload document"
+        btnAction4.UseVisualStyleBackColor = False
+        ' 
         ' pnlFileAttach4
         ' 
         pnlFileAttach4.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
@@ -842,9 +933,9 @@ Partial Class StudentClearanceForm
         lblOfficeDesc4.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblOfficeDesc4.Location = New Point(16, 60)
         lblOfficeDesc4.Name = "lblOfficeDesc4"
-        lblOfficeDesc4.Size = New Size(406, 28)
+        lblOfficeDesc4.Size = New Size(406, 32)
         lblOfficeDesc4.TabIndex = 3
-        lblOfficeDesc4.Text = "OAA Clearance — Complete all academic affairs clearance requirements."
+        lblOfficeDesc4.Text = "Obtain required academic/department approval, especially for graduating students."
         ' 
         ' lblOfficeStatusBadge4
         ' 
@@ -898,6 +989,21 @@ Partial Class StudentClearanceForm
         pnlOfficeCard5.Padding = New Padding(16)
         pnlOfficeCard5.Size = New Size(440, 215)
         pnlOfficeCard5.TabIndex = 4
+        ' 
+        ' btnrmvsub5
+        ' 
+        btnrmvsub5.BackColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
+        btnrmvsub5.Enabled = False
+        btnrmvsub5.FlatAppearance.BorderSize = 0
+        btnrmvsub5.FlatStyle = FlatStyle.Flat
+        btnrmvsub5.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnrmvsub5.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnrmvsub5.Location = New Point(225, 154)
+        btnrmvsub5.Name = "btnrmvsub5"
+        btnrmvsub5.Size = New Size(203, 36)
+        btnrmvsub5.TabIndex = 6
+        btnrmvsub5.Text = "No document uploaded"
+        btnrmvsub5.UseVisualStyleBackColor = False
         ' 
         ' btnAction5
         ' 
@@ -962,11 +1068,11 @@ Partial Class StudentClearanceForm
         ' 
         lblOfficeDesc5.Font = New Font("Segoe UI", 8.5F)
         lblOfficeDesc5.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblOfficeDesc5.Location = New Point(16, 60)
+        lblOfficeDesc5.Location = New Point(19, 56)
         lblOfficeDesc5.Name = "lblOfficeDesc5"
-        lblOfficeDesc5.Size = New Size(406, 28)
+        lblOfficeDesc5.Size = New Size(406, 32)
         lblOfficeDesc5.TabIndex = 3
-        lblOfficeDesc5.Text = "Registrar Clearance — Complete all registrar-related clearance requirements."
+        lblOfficeDesc5.Text = "Student must have no outstanding balance or pending obligation required by the Registrar before clearance approval."
         ' 
         ' lblOfficeStatusBadge5
         ' 
@@ -1020,6 +1126,21 @@ Partial Class StudentClearanceForm
         pnlOfficeCard6.Padding = New Padding(16)
         pnlOfficeCard6.Size = New Size(440, 215)
         pnlOfficeCard6.TabIndex = 5
+        ' 
+        ' btnrmvsub6
+        ' 
+        btnrmvsub6.BackColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
+        btnrmvsub6.Enabled = False
+        btnrmvsub6.FlatAppearance.BorderSize = 0
+        btnrmvsub6.FlatStyle = FlatStyle.Flat
+        btnrmvsub6.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnrmvsub6.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnrmvsub6.Location = New Point(219, 154)
+        btnrmvsub6.Name = "btnrmvsub6"
+        btnrmvsub6.Size = New Size(197, 36)
+        btnrmvsub6.TabIndex = 6
+        btnrmvsub6.Text = "No document uploaded"
+        btnrmvsub6.UseVisualStyleBackColor = False
         ' 
         ' btnAction6
         ' 
@@ -1084,11 +1205,11 @@ Partial Class StudentClearanceForm
         ' 
         lblOfficeDesc6.Font = New Font("Segoe UI", 8.5F)
         lblOfficeDesc6.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblOfficeDesc6.Location = New Point(16, 60)
+        lblOfficeDesc6.Location = New Point(16, 56)
         lblOfficeDesc6.Name = "lblOfficeDesc6"
         lblOfficeDesc6.Size = New Size(406, 28)
         lblOfficeDesc6.TabIndex = 3
-        lblOfficeDesc6.Text = "OSA Clearance — Complete all requirements from the Office of Student Affairs."
+        lblOfficeDesc6.Text = "Clear all pending records or obligations."
         ' 
         ' lblOfficeStatusBadge6
         ' 
@@ -1142,6 +1263,21 @@ Partial Class StudentClearanceForm
         pnlOfficeCard7.Padding = New Padding(16)
         pnlOfficeCard7.Size = New Size(440, 215)
         pnlOfficeCard7.TabIndex = 6
+        ' 
+        ' btnrmvsub7
+        ' 
+        btnrmvsub7.BackColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
+        btnrmvsub7.Enabled = False
+        btnrmvsub7.FlatAppearance.BorderSize = 0
+        btnrmvsub7.FlatStyle = FlatStyle.Flat
+        btnrmvsub7.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnrmvsub7.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnrmvsub7.Location = New Point(225, 154)
+        btnrmvsub7.Name = "btnrmvsub7"
+        btnrmvsub7.Size = New Size(203, 36)
+        btnrmvsub7.TabIndex = 6
+        btnrmvsub7.Text = "No document uploaded"
+        btnrmvsub7.UseVisualStyleBackColor = False
         ' 
         ' btnAction7
         ' 
@@ -1210,7 +1346,7 @@ Partial Class StudentClearanceForm
         lblOfficeDesc7.Name = "lblOfficeDesc7"
         lblOfficeDesc7.Size = New Size(406, 28)
         lblOfficeDesc7.TabIndex = 3
-        lblOfficeDesc7.Text = "NSTP Clearance — Complete the required NSTP clearance."
+        lblOfficeDesc7.Text = "NSTP — Complete the required NSTP clearance."
         ' 
         ' lblOfficeStatusBadge7
         ' 
@@ -1264,6 +1400,21 @@ Partial Class StudentClearanceForm
         pnlOfficeCard8.Padding = New Padding(16)
         pnlOfficeCard8.Size = New Size(440, 215)
         pnlOfficeCard8.TabIndex = 7
+        ' 
+        ' btnrmvsub8
+        ' 
+        btnrmvsub8.BackColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
+        btnrmvsub8.Enabled = False
+        btnrmvsub8.FlatAppearance.BorderSize = 0
+        btnrmvsub8.FlatStyle = FlatStyle.Flat
+        btnrmvsub8.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnrmvsub8.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnrmvsub8.Location = New Point(219, 154)
+        btnrmvsub8.Name = "btnrmvsub8"
+        btnrmvsub8.Size = New Size(197, 36)
+        btnrmvsub8.TabIndex = 6
+        btnrmvsub8.Text = "No document uploaded"
+        btnrmvsub8.UseVisualStyleBackColor = False
         ' 
         ' btnAction8
         ' 
@@ -1328,11 +1479,11 @@ Partial Class StudentClearanceForm
         ' 
         lblOfficeDesc8.Font = New Font("Segoe UI", 8.5F)
         lblOfficeDesc8.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblOfficeDesc8.Location = New Point(16, 60)
+        lblOfficeDesc8.Location = New Point(16, 56)
         lblOfficeDesc8.Name = "lblOfficeDesc8"
-        lblOfficeDesc8.Size = New Size(406, 28)
+        lblOfficeDesc8.Size = New Size(406, 32)
         lblOfficeDesc8.TabIndex = 3
-        lblOfficeDesc8.Text = "CTHM Stock Room Clearance — Return or settle all required CTHM stock room items."
+        lblOfficeDesc8.Text = "Complete required CTHM fees, organization, and applicable year-level requirements."
         ' 
         ' lblOfficeStatusBadge8
         ' 
@@ -1567,164 +1718,6 @@ Partial Class StudentClearanceForm
         lblHeaderTitle.Size = New Size(165, 32)
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "My clearance"
-        ' 
-        ' btnrmvsub1
-        ' 
-        btnrmvsub1.BackColor = Color.FromArgb(226, 232, 240)
-        btnrmvsub1.Cursor = Cursors.Default
-        btnrmvsub1.Enabled = False
-        btnrmvsub1.FlatAppearance.BorderSize = 0
-        btnrmvsub1.FlatStyle = FlatStyle.Flat
-        btnrmvsub1.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub1.ForeColor = Color.FromArgb(100, 116, 139)
-        btnrmvsub1.Location = New Point(225, 154)
-        btnrmvsub1.Name = "btnrmvsub1"
-        btnrmvsub1.Size = New Size(197, 36)
-        btnrmvsub1.TabIndex = 6
-        btnrmvsub1.Text = "No document uploaded"
-        btnrmvsub1.UseVisualStyleBackColor = False
-        ' 
-        ' btnAction4
-        ' 
-        btnAction4.BackColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
-        btnAction4.Cursor = Cursors.Hand
-        btnAction4.FlatAppearance.BorderSize = 0
-        btnAction4.FlatStyle = FlatStyle.Flat
-        btnAction4.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnAction4.ForeColor = Color.White
-        btnAction4.Location = New Point(16, 154)
-        btnAction4.Name = "btnAction4"
-        btnAction4.Size = New Size(197, 36)
-        btnAction4.TabIndex = 5
-        btnAction4.Text = "Upload document"
-        btnAction4.UseVisualStyleBackColor = False
-        ' 
-        ' btnAction2
-        ' 
-        btnAction2.BackColor = Color.FromArgb(CByte(59), CByte(130), CByte(246))
-        btnAction2.Cursor = Cursors.Hand
-        btnAction2.FlatAppearance.BorderSize = 0
-        btnAction2.FlatStyle = FlatStyle.Flat
-        btnAction2.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnAction2.ForeColor = Color.White
-        btnAction2.Location = New Point(16, 154)
-        btnAction2.Name = "btnAction2"
-        btnAction2.Size = New Size(197, 36)
-        btnAction2.TabIndex = 5
-        btnAction2.Text = "View submitted document"
-        btnAction2.UseVisualStyleBackColor = False
-        ' 
-        ' btnrmvsub2
-        ' 
-        btnrmvsub2.BackColor = Color.FromArgb(226, 232, 240)
-        btnrmvsub2.Cursor = Cursors.Default
-        btnrmvsub2.Enabled = False
-        btnrmvsub2.FlatAppearance.BorderSize = 0
-        btnrmvsub2.FlatStyle = FlatStyle.Flat
-        btnrmvsub2.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub2.ForeColor = Color.FromArgb(100, 116, 139)
-        btnrmvsub2.Location = New Point(219, 154)
-        btnrmvsub2.Name = "btnrmvsub2"
-        btnrmvsub2.Size = New Size(203, 36)
-        btnrmvsub2.TabIndex = 7
-        btnrmvsub2.Text = "No document uploaded"
-        btnrmvsub2.UseVisualStyleBackColor = False
-        ' 
-        ' btnrmvsub3
-        ' 
-        btnrmvsub3.BackColor = Color.FromArgb(226, 232, 240)
-        btnrmvsub3.Cursor = Cursors.Default
-        btnrmvsub3.Enabled = False
-        btnrmvsub3.FlatAppearance.BorderSize = 0
-        btnrmvsub3.FlatStyle = FlatStyle.Flat
-        btnrmvsub3.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub3.ForeColor = Color.FromArgb(100, 116, 139)
-        btnrmvsub3.Location = New Point(225, 154)
-        btnrmvsub3.Name = "btnrmvsub3"
-        btnrmvsub3.Size = New Size(203, 36)
-        btnrmvsub3.TabIndex = 6
-        btnrmvsub3.Text = "No document uploaded"
-        btnrmvsub3.UseVisualStyleBackColor = False
-        ' 
-        ' btnrmvsub4
-        ' 
-        btnrmvsub4.BackColor = Color.FromArgb(226, 232, 240)
-        btnrmvsub4.Cursor = Cursors.Default
-        btnrmvsub4.Enabled = False
-        btnrmvsub4.FlatAppearance.BorderSize = 0
-        btnrmvsub4.FlatStyle = FlatStyle.Flat
-        btnrmvsub4.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub4.ForeColor = Color.FromArgb(100, 116, 139)
-        btnrmvsub4.Location = New Point(219, 154)
-        btnrmvsub4.Name = "btnrmvsub4"
-        btnrmvsub4.Size = New Size(197, 36)
-        btnrmvsub4.TabIndex = 6
-        btnrmvsub4.Text = "No document uploaded"
-        btnrmvsub4.UseVisualStyleBackColor = False
-        ' 
-        ' btnrmvsub5
-        ' 
-        btnrmvsub5.BackColor = Color.FromArgb(226, 232, 240)
-        btnrmvsub5.Cursor = Cursors.Default
-        btnrmvsub5.Enabled = False
-        btnrmvsub5.FlatAppearance.BorderSize = 0
-        btnrmvsub5.FlatStyle = FlatStyle.Flat
-        btnrmvsub5.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub5.ForeColor = Color.FromArgb(100, 116, 139)
-        btnrmvsub5.Location = New Point(225, 154)
-        btnrmvsub5.Name = "btnrmvsub5"
-        btnrmvsub5.Size = New Size(203, 36)
-        btnrmvsub5.TabIndex = 6
-        btnrmvsub5.Text = "No document uploaded"
-        btnrmvsub5.UseVisualStyleBackColor = False
-        ' 
-        ' btnrmvsub6
-        ' 
-        btnrmvsub6.BackColor = Color.FromArgb(226, 232, 240)
-        btnrmvsub6.Cursor = Cursors.Default
-        btnrmvsub6.Enabled = False
-        btnrmvsub6.FlatAppearance.BorderSize = 0
-        btnrmvsub6.FlatStyle = FlatStyle.Flat
-        btnrmvsub6.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub6.ForeColor = Color.FromArgb(100, 116, 139)
-        btnrmvsub6.Location = New Point(219, 154)
-        btnrmvsub6.Name = "btnrmvsub6"
-        btnrmvsub6.Size = New Size(197, 36)
-        btnrmvsub6.TabIndex = 6
-        btnrmvsub6.Text = "No document uploaded"
-        btnrmvsub6.UseVisualStyleBackColor = False
-        ' 
-        ' btnrmvsub7
-        ' 
-        btnrmvsub7.BackColor = Color.FromArgb(226, 232, 240)
-        btnrmvsub7.Cursor = Cursors.Default
-        btnrmvsub7.Enabled = False
-        btnrmvsub7.FlatAppearance.BorderSize = 0
-        btnrmvsub7.FlatStyle = FlatStyle.Flat
-        btnrmvsub7.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub7.ForeColor = Color.FromArgb(100, 116, 139)
-        btnrmvsub7.Location = New Point(225, 154)
-        btnrmvsub7.Name = "btnrmvsub7"
-        btnrmvsub7.Size = New Size(203, 36)
-        btnrmvsub7.TabIndex = 6
-        btnrmvsub7.Text = "No document uploaded"
-        btnrmvsub7.UseVisualStyleBackColor = False
-        ' 
-        ' btnrmvsub8
-        ' 
-        btnrmvsub8.BackColor = Color.FromArgb(226, 232, 240)
-        btnrmvsub8.Cursor = Cursors.Default
-        btnrmvsub8.Enabled = False
-        btnrmvsub8.FlatAppearance.BorderSize = 0
-        btnrmvsub8.FlatStyle = FlatStyle.Flat
-        btnrmvsub8.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        btnrmvsub8.ForeColor = Color.FromArgb(100, 116, 139)
-        btnrmvsub8.Location = New Point(219, 154)
-        btnrmvsub8.Name = "btnrmvsub8"
-        btnrmvsub8.Size = New Size(197, 36)
-        btnrmvsub8.TabIndex = 6
-        btnrmvsub8.Text = "No document uploaded"
-        btnrmvsub8.UseVisualStyleBackColor = False
         ' 
         ' StudentClearanceForm
         ' 
