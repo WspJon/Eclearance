@@ -139,7 +139,24 @@ Public Class StaffHistoryForm
         lblRecordCount.Text = $"Showing {_historyTable.Rows.Count} of {_historyTable.Rows.Count} records"
 
         Dim rowIndex As Integer = 1
+        Dim lastRecordID As Integer = -1
+        Dim lastActionType As String = ""
+        Dim lastNewStatus As String = ""
+
         For Each row As DataRow In _historyTable.Rows
+            Dim recID As Integer = Convert.ToInt32(row("RecordID"))
+            Dim actType As String = row("ActionType").ToString()
+            Dim st As String = row("NewStatus").ToString()
+
+            ' Skip consecutive duplicates for the same record
+            If recID = lastRecordID AndAlso actType.Equals(lastActionType, StringComparison.OrdinalIgnoreCase) AndAlso st.Equals(lastNewStatus, StringComparison.OrdinalIgnoreCase) Then
+                Continue For
+            End If
+
+            lastRecordID = recID
+            lastActionType = actType
+            lastNewStatus = st
+
             Dim dtStr As String = ""
             If Not DBNull.Value.Equals(row("ActionAt")) Then
                 dtStr = Convert.ToDateTime(row("ActionAt")).ToString("yyyy-MM-dd HH:mm")

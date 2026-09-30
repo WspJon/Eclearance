@@ -124,6 +124,26 @@ Partial Class StudentClearanceForm
         lblOfficeStatusBadge8 = New Label()
         lblOfficeTitle8 = New Label()
         lblOfficeIcon8 = New Label()
+        pnlOfficeCard9 = New Panel()
+        btnrmvsub9 = New Button()
+        btnAction9 = New Button()
+        pnlFileAttach9 = New Panel()
+        lblFileDate9 = New Label()
+        lblFileName9 = New Label()
+        lblFileIcon9 = New Label()
+        lblOfficeDesc9 = New Label()
+        lblOfficeStatusBadge9 = New Label()
+        lblOfficeTitle9 = New Label()
+        lblOfficeIcon9 = New Label()
+        btnViewReq1 = New Button()
+        btnViewReq2 = New Button()
+        btnViewReq3 = New Button()
+        btnViewReq4 = New Button()
+        btnViewReq5 = New Button()
+        btnViewReq6 = New Button()
+        btnViewReq7 = New Button()
+        btnViewReq8 = New Button()
+        btnViewReq9 = New Button()
         pnlFilterRow = New Panel()
         cmbFilterOffices = New ComboBox()
         lblFilterSection = New Label()
@@ -162,6 +182,8 @@ Partial Class StudentClearanceForm
         pnlOfficeCard7.SuspendLayout()
         pnlFileAttach7.SuspendLayout()
         pnlOfficeCard8.SuspendLayout()
+        pnlOfficeCard9.SuspendLayout()
+        pnlFileAttach9.SuspendLayout()
         pnlFileAttach8.SuspendLayout()
         pnlFilterRow.SuspendLayout()
         pnlProgressCard.SuspendLayout()
@@ -418,6 +440,7 @@ Partial Class StudentClearanceForm
         flpOfficesGrid.Controls.Add(pnlOfficeCard6)
         flpOfficesGrid.Controls.Add(pnlOfficeCard7)
         flpOfficesGrid.Controls.Add(pnlOfficeCard8)
+        flpOfficesGrid.Controls.Add(pnlOfficeCard9)
         flpOfficesGrid.Location = New Point(28, 275)
         flpOfficesGrid.Name = "flpOfficesGrid"
         flpOfficesGrid.Size = New Size(924, 450)
@@ -427,6 +450,7 @@ Partial Class StudentClearanceForm
         ' 
         pnlOfficeCard1.BackColor = Color.White
         pnlOfficeCard1.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard1.Controls.Add(btnViewReq1)
         pnlOfficeCard1.Controls.Add(btnrmvsub1)
         pnlOfficeCard1.Controls.Add(btnAction1)
         pnlOfficeCard1.Controls.Add(pnlFileAttach1)
@@ -438,8 +462,23 @@ Partial Class StudentClearanceForm
         pnlOfficeCard1.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard1.Name = "pnlOfficeCard1"
         pnlOfficeCard1.Padding = New Padding(16)
-        pnlOfficeCard1.Size = New Size(440, 215)
+        pnlOfficeCard1.Size = New Size(440, 245)
         pnlOfficeCard1.TabIndex = 0
+        ' 
+        ' btnViewReq1
+        ' 
+        btnViewReq1.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewReq1.Cursor = Cursors.Hand
+        btnViewReq1.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq1.FlatStyle = FlatStyle.Flat
+        btnViewReq1.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewReq1.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        btnViewReq1.Location = New Point(16, 196)
+        btnViewReq1.Name = "btnViewReq1"
+        btnViewReq1.Size = New Size(406, 34)
+        btnViewReq1.TabIndex = 7
+        btnViewReq1.Text = "📋 View Requirements"
+        btnViewReq1.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub1
         ' 
@@ -564,6 +603,7 @@ Partial Class StudentClearanceForm
         ' 
         pnlOfficeCard2.BackColor = Color.White
         pnlOfficeCard2.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard2.Controls.Add(btnViewReq2)
         pnlOfficeCard2.Controls.Add(btnrmvsub2)
         pnlOfficeCard2.Controls.Add(btnAction2)
         pnlOfficeCard2.Controls.Add(pnlFileAttach2)
@@ -575,8 +615,23 @@ Partial Class StudentClearanceForm
         pnlOfficeCard2.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard2.Name = "pnlOfficeCard2"
         pnlOfficeCard2.Padding = New Padding(16)
-        pnlOfficeCard2.Size = New Size(440, 215)
+        pnlOfficeCard2.Size = New Size(440, 245)
         pnlOfficeCard2.TabIndex = 1
+        ' 
+        ' btnViewReq2
+        ' 
+        btnViewReq2.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewReq2.Cursor = Cursors.Hand
+        btnViewReq2.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq2.FlatStyle = FlatStyle.Flat
+        btnViewReq2.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewReq2.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        btnViewReq2.Location = New Point(16, 196)
+        btnViewReq2.Name = "btnViewReq2"
+        btnViewReq2.Size = New Size(406, 34)
+        btnViewReq2.TabIndex = 7
+        btnViewReq2.Text = "📋 View Requirements"
+        btnViewReq2.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub2
         ' 
@@ -701,6 +756,7 @@ Partial Class StudentClearanceForm
         ' 
         pnlOfficeCard3.BackColor = Color.White
         pnlOfficeCard3.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard3.Controls.Add(btnViewReq3)
         pnlOfficeCard3.Controls.Add(btnrmvsub3)
         pnlOfficeCard3.Controls.Add(btnAction3)
         pnlOfficeCard3.Controls.Add(pnlFileAttach3)
@@ -712,8 +768,23 @@ Partial Class StudentClearanceForm
         pnlOfficeCard3.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard3.Name = "pnlOfficeCard3"
         pnlOfficeCard3.Padding = New Padding(16)
-        pnlOfficeCard3.Size = New Size(440, 215)
+        pnlOfficeCard3.Size = New Size(440, 245)
         pnlOfficeCard3.TabIndex = 2
+        ' 
+        ' btnViewReq3
+        ' 
+        btnViewReq3.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewReq3.Cursor = Cursors.Hand
+        btnViewReq3.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq3.FlatStyle = FlatStyle.Flat
+        btnViewReq3.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewReq3.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        btnViewReq3.Location = New Point(16, 196)
+        btnViewReq3.Name = "btnViewReq3"
+        btnViewReq3.Size = New Size(406, 34)
+        btnViewReq3.TabIndex = 7
+        btnViewReq3.Text = "📋 View Requirements"
+        btnViewReq3.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub3
         ' 
@@ -839,6 +910,7 @@ Partial Class StudentClearanceForm
         ' 
         pnlOfficeCard4.BackColor = Color.White
         pnlOfficeCard4.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard4.Controls.Add(btnViewReq4)
         pnlOfficeCard4.Controls.Add(btnrmvsub4)
         pnlOfficeCard4.Controls.Add(btnAction4)
         pnlOfficeCard4.Controls.Add(pnlFileAttach4)
@@ -850,8 +922,23 @@ Partial Class StudentClearanceForm
         pnlOfficeCard4.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard4.Name = "pnlOfficeCard4"
         pnlOfficeCard4.Padding = New Padding(16)
-        pnlOfficeCard4.Size = New Size(440, 215)
+        pnlOfficeCard4.Size = New Size(440, 245)
         pnlOfficeCard4.TabIndex = 3
+        ' 
+        ' btnViewReq4
+        ' 
+        btnViewReq4.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewReq4.Cursor = Cursors.Hand
+        btnViewReq4.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq4.FlatStyle = FlatStyle.Flat
+        btnViewReq4.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewReq4.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        btnViewReq4.Location = New Point(16, 196)
+        btnViewReq4.Name = "btnViewReq4"
+        btnViewReq4.Size = New Size(406, 34)
+        btnViewReq4.TabIndex = 7
+        btnViewReq4.Text = "📋 View Requirements"
+        btnViewReq4.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub4
         ' 
@@ -976,6 +1063,7 @@ Partial Class StudentClearanceForm
         ' 
         pnlOfficeCard5.BackColor = Color.White
         pnlOfficeCard5.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard5.Controls.Add(btnViewReq5)
         pnlOfficeCard5.Controls.Add(btnrmvsub5)
         pnlOfficeCard5.Controls.Add(btnAction5)
         pnlOfficeCard5.Controls.Add(pnlFileAttach5)
@@ -987,8 +1075,23 @@ Partial Class StudentClearanceForm
         pnlOfficeCard5.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard5.Name = "pnlOfficeCard5"
         pnlOfficeCard5.Padding = New Padding(16)
-        pnlOfficeCard5.Size = New Size(440, 215)
+        pnlOfficeCard5.Size = New Size(440, 245)
         pnlOfficeCard5.TabIndex = 4
+        ' 
+        ' btnViewReq5
+        ' 
+        btnViewReq5.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewReq5.Cursor = Cursors.Hand
+        btnViewReq5.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq5.FlatStyle = FlatStyle.Flat
+        btnViewReq5.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewReq5.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        btnViewReq5.Location = New Point(16, 196)
+        btnViewReq5.Name = "btnViewReq5"
+        btnViewReq5.Size = New Size(406, 34)
+        btnViewReq5.TabIndex = 7
+        btnViewReq5.Text = "📋 View Requirements"
+        btnViewReq5.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub5
         ' 
@@ -1113,6 +1216,7 @@ Partial Class StudentClearanceForm
         ' 
         pnlOfficeCard6.BackColor = Color.White
         pnlOfficeCard6.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard6.Controls.Add(btnViewReq6)
         pnlOfficeCard6.Controls.Add(btnrmvsub6)
         pnlOfficeCard6.Controls.Add(btnAction6)
         pnlOfficeCard6.Controls.Add(pnlFileAttach6)
@@ -1124,8 +1228,23 @@ Partial Class StudentClearanceForm
         pnlOfficeCard6.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard6.Name = "pnlOfficeCard6"
         pnlOfficeCard6.Padding = New Padding(16)
-        pnlOfficeCard6.Size = New Size(440, 215)
+        pnlOfficeCard6.Size = New Size(440, 245)
         pnlOfficeCard6.TabIndex = 5
+        ' 
+        ' btnViewReq6
+        ' 
+        btnViewReq6.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewReq6.Cursor = Cursors.Hand
+        btnViewReq6.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq6.FlatStyle = FlatStyle.Flat
+        btnViewReq6.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewReq6.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        btnViewReq6.Location = New Point(16, 196)
+        btnViewReq6.Name = "btnViewReq6"
+        btnViewReq6.Size = New Size(406, 34)
+        btnViewReq6.TabIndex = 7
+        btnViewReq6.Text = "📋 View Requirements"
+        btnViewReq6.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub6
         ' 
@@ -1250,6 +1369,7 @@ Partial Class StudentClearanceForm
         ' 
         pnlOfficeCard7.BackColor = Color.White
         pnlOfficeCard7.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard7.Controls.Add(btnViewReq7)
         pnlOfficeCard7.Controls.Add(btnrmvsub7)
         pnlOfficeCard7.Controls.Add(btnAction7)
         pnlOfficeCard7.Controls.Add(pnlFileAttach7)
@@ -1261,8 +1381,23 @@ Partial Class StudentClearanceForm
         pnlOfficeCard7.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard7.Name = "pnlOfficeCard7"
         pnlOfficeCard7.Padding = New Padding(16)
-        pnlOfficeCard7.Size = New Size(440, 215)
+        pnlOfficeCard7.Size = New Size(440, 245)
         pnlOfficeCard7.TabIndex = 6
+        ' 
+        ' btnViewReq7
+        ' 
+        btnViewReq7.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewReq7.Cursor = Cursors.Hand
+        btnViewReq7.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq7.FlatStyle = FlatStyle.Flat
+        btnViewReq7.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewReq7.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        btnViewReq7.Location = New Point(16, 196)
+        btnViewReq7.Name = "btnViewReq7"
+        btnViewReq7.Size = New Size(406, 34)
+        btnViewReq7.TabIndex = 7
+        btnViewReq7.Text = "📋 View Requirements"
+        btnViewReq7.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub7
         ' 
@@ -1387,6 +1522,7 @@ Partial Class StudentClearanceForm
         ' 
         pnlOfficeCard8.BackColor = Color.White
         pnlOfficeCard8.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard8.Controls.Add(btnViewReq8)
         pnlOfficeCard8.Controls.Add(btnrmvsub8)
         pnlOfficeCard8.Controls.Add(btnAction8)
         pnlOfficeCard8.Controls.Add(pnlFileAttach8)
@@ -1398,8 +1534,23 @@ Partial Class StudentClearanceForm
         pnlOfficeCard8.Margin = New Padding(3, 3, 16, 16)
         pnlOfficeCard8.Name = "pnlOfficeCard8"
         pnlOfficeCard8.Padding = New Padding(16)
-        pnlOfficeCard8.Size = New Size(440, 215)
+        pnlOfficeCard8.Size = New Size(440, 245)
         pnlOfficeCard8.TabIndex = 7
+        ' 
+        ' btnViewReq8
+        ' 
+        btnViewReq8.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewReq8.Cursor = Cursors.Hand
+        btnViewReq8.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq8.FlatStyle = FlatStyle.Flat
+        btnViewReq8.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewReq8.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        btnViewReq8.Location = New Point(16, 196)
+        btnViewReq8.Name = "btnViewReq8"
+        btnViewReq8.Size = New Size(406, 34)
+        btnViewReq8.TabIndex = 7
+        btnViewReq8.Text = "📋 View Requirements"
+        btnViewReq8.UseVisualStyleBackColor = False
         ' 
         ' btnrmvsub8
         ' 
@@ -1519,7 +1670,161 @@ Partial Class StudentClearanceForm
         lblOfficeIcon8.TabIndex = 0
         lblOfficeIcon8.Text = "🏛"
         lblOfficeIcon8.TextAlign = ContentAlignment.MiddleCenter
+        
         ' 
+        ' pnlOfficeCard9
+        ' 
+        pnlOfficeCard9.BackColor = Color.White
+        pnlOfficeCard9.BorderStyle = BorderStyle.FixedSingle
+        pnlOfficeCard9.Controls.Add(btnViewReq9)
+        pnlOfficeCard9.Controls.Add(btnrmvsub9)
+        pnlOfficeCard9.Controls.Add(btnAction9)
+        pnlOfficeCard9.Controls.Add(pnlFileAttach9)
+        pnlOfficeCard9.Controls.Add(lblOfficeDesc9)
+        pnlOfficeCard9.Controls.Add(lblOfficeStatusBadge9)
+        pnlOfficeCard9.Controls.Add(lblOfficeTitle9)
+        pnlOfficeCard9.Controls.Add(lblOfficeIcon9)
+        pnlOfficeCard9.Location = New Point(3, 940)
+        pnlOfficeCard9.Margin = New Padding(3, 3, 16, 16)
+        pnlOfficeCard9.Name = "pnlOfficeCard9"
+        pnlOfficeCard9.Padding = New Padding(16)
+        pnlOfficeCard9.Size = New Size(440, 245)
+        pnlOfficeCard9.TabIndex = 8
+        ' 
+        ' btnViewReq9
+        ' 
+        btnViewReq9.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewReq9.Cursor = Cursors.Hand
+        btnViewReq9.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq9.FlatStyle = FlatStyle.Flat
+        btnViewReq9.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewReq9.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        btnViewReq9.Location = New Point(16, 196)
+        btnViewReq9.Name = "btnViewReq9"
+        btnViewReq9.Size = New Size(406, 34)
+        btnViewReq9.TabIndex = 7
+        btnViewReq9.Text = "📋 View Requirements"
+        btnViewReq9.UseVisualStyleBackColor = False
+        ' 
+        ' btnrmvsub9
+        ' 
+        btnrmvsub9.BackColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
+        btnrmvsub9.Enabled = False
+        btnrmvsub9.FlatAppearance.BorderSize = 0
+        btnrmvsub9.FlatStyle = FlatStyle.Flat
+        btnrmvsub9.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold)
+        btnrmvsub9.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnrmvsub9.Location = New Point(222, 152)
+        btnrmvsub9.Name = "btnrmvsub9"
+        btnrmvsub9.Size = New Size(200, 36)
+        btnrmvsub9.TabIndex = 6
+        btnrmvsub9.Text = "No document uploaded"
+        btnrmvsub9.UseVisualStyleBackColor = False
+        ' 
+        ' btnAction9
+        ' 
+        btnAction9.BackColor = Color.FromArgb(CByte(59), CByte(130), CByte(246))
+        btnAction9.Cursor = Cursors.Hand
+        btnAction9.FlatAppearance.BorderSize = 0
+        btnAction9.FlatStyle = FlatStyle.Flat
+        btnAction9.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold)
+        btnAction9.ForeColor = Color.White
+        btnAction9.Location = New Point(16, 152)
+        btnAction9.Name = "btnAction9"
+        btnAction9.Size = New Size(200, 36)
+        btnAction9.TabIndex = 5
+        btnAction9.Text = "View submitted document"
+        btnAction9.UseVisualStyleBackColor = False
+        ' 
+        ' pnlFileAttach9
+        ' 
+        pnlFileAttach9.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        pnlFileAttach9.BorderStyle = BorderStyle.FixedSingle
+        pnlFileAttach9.Controls.Add(lblFileDate9)
+        pnlFileAttach9.Controls.Add(lblFileName9)
+        pnlFileAttach9.Controls.Add(lblFileIcon9)
+        pnlFileAttach9.Location = New Point(16, 95)
+        pnlFileAttach9.Name = "pnlFileAttach9"
+        pnlFileAttach9.Size = New Size(406, 48)
+        pnlFileAttach9.TabIndex = 4
+        ' 
+        ' lblFileDate9
+        ' 
+        lblFileDate9.AutoSize = True
+        lblFileDate9.Font = New Font("Segoe UI", 8.0F)
+        lblFileDate9.ForeColor = Color.FromArgb(CByte(148), CByte(163), CByte(184))
+        lblFileDate9.Location = New Point(42, 26)
+        lblFileDate9.Name = "lblFileDate9"
+        lblFileDate9.Size = New Size(176, 13)
+        lblFileDate9.TabIndex = 2
+        lblFileDate9.Text = "Submitted file"
+        ' 
+        ' lblFileName9
+        ' 
+        lblFileName9.AutoSize = True
+        lblFileName9.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblFileName9.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        lblFileName9.Location = New Point(42, 8)
+        lblFileName9.Name = "lblFileName9"
+        lblFileName9.Size = New Size(200, 15)
+        lblFileName9.TabIndex = 1
+        lblFileName9.Text = "document.png"
+        ' 
+        ' lblFileIcon9
+        ' 
+        lblFileIcon9.Font = New Font("Segoe UI Emoji", 14.0F)
+        lblFileIcon9.Location = New Point(8, 8)
+        lblFileIcon9.Name = "lblFileIcon9"
+        lblFileIcon9.Size = New Size(28, 30)
+        lblFileIcon9.TabIndex = 0
+        lblFileIcon9.Text = "📄"
+        lblFileIcon9.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeDesc9
+        ' 
+        lblOfficeDesc9.Font = New Font("Segoe UI", 8.5F)
+        lblOfficeDesc9.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblOfficeDesc9.Location = New Point(16, 44)
+        lblOfficeDesc9.Name = "lblOfficeDesc9"
+        lblOfficeDesc9.Size = New Size(406, 44)
+        lblOfficeDesc9.TabIndex = 3
+        lblOfficeDesc9.Text = "Office clearance requirement instructions."
+        ' 
+        ' lblOfficeStatusBadge9
+        ' 
+        lblOfficeStatusBadge9.BackColor = Color.FromArgb(CByte(219), CByte(234), CByte(254))
+        lblOfficeStatusBadge9.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblOfficeStatusBadge9.ForeColor = Color.FromArgb(CByte(30), CByte(64), CByte(175))
+        lblOfficeStatusBadge9.Location = New Point(322, 14)
+        lblOfficeStatusBadge9.Name = "lblOfficeStatusBadge9"
+        lblOfficeStatusBadge9.Size = New Size(100, 24)
+        lblOfficeStatusBadge9.TabIndex = 2
+        lblOfficeStatusBadge9.Text = "Pending"
+        lblOfficeStatusBadge9.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOfficeTitle9
+        ' 
+        lblOfficeTitle9.AutoSize = True
+        lblOfficeTitle9.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
+        lblOfficeTitle9.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblOfficeTitle9.Location = New Point(48, 16)
+        lblOfficeTitle9.Name = "lblOfficeTitle9"
+        lblOfficeTitle9.Size = New Size(100, 20)
+        lblOfficeTitle9.TabIndex = 1
+        lblOfficeTitle9.Text = "Office 9"
+        ' 
+        ' lblOfficeIcon9
+        ' 
+        lblOfficeIcon9.AutoSize = True
+        lblOfficeIcon9.Font = New Font("Segoe UI Emoji", 12.0F)
+        lblOfficeIcon9.ForeColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
+        lblOfficeIcon9.Location = New Point(16, 16)
+        lblOfficeIcon9.Name = "lblOfficeIcon9"
+        lblOfficeIcon9.Size = New Size(24, 21)
+        lblOfficeIcon9.TabIndex = 0
+        lblOfficeIcon9.Text = "🏛"
+
+' 
         ' pnlFilterRow
         ' 
         pnlFilterRow.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
@@ -1772,6 +2077,11 @@ Partial Class StudentClearanceForm
         pnlFileAttach7.PerformLayout()
         pnlOfficeCard8.ResumeLayout(False)
         pnlOfficeCard8.PerformLayout()
+        pnlOfficeCard9.ResumeLayout(False)
+        pnlOfficeCard9.PerformLayout()
+        pnlFileAttach9.ResumeLayout(False)
+        pnlFileAttach9.PerformLayout()
+        pnlOfficeCard8.PerformLayout()
         pnlFileAttach8.ResumeLayout(False)
         pnlFileAttach8.PerformLayout()
         pnlFilterRow.ResumeLayout(False)
@@ -1909,5 +2219,25 @@ Partial Class StudentClearanceForm
     Friend WithEvents btnrmvsub6 As Button
     Friend WithEvents btnrmvsub7 As Button
     Friend WithEvents btnrmvsub8 As Button
+    Friend WithEvents pnlOfficeCard9 As Panel
+    Friend WithEvents lblOfficeIcon9 As Label
+    Friend WithEvents lblOfficeTitle9 As Label
+    Friend WithEvents lblOfficeStatusBadge9 As Label
+    Friend WithEvents lblOfficeDesc9 As Label
+    Friend WithEvents pnlFileAttach9 As Panel
+    Friend WithEvents lblFileIcon9 As Label
+    Friend WithEvents lblFileName9 As Label
+    Friend WithEvents lblFileDate9 As Label
+    Friend WithEvents btnAction9 As Button
+    Friend WithEvents btnrmvsub9 As Button
+    Friend WithEvents btnViewReq1 As Button
+    Friend WithEvents btnViewReq2 As Button
+    Friend WithEvents btnViewReq3 As Button
+    Friend WithEvents btnViewReq4 As Button
+    Friend WithEvents btnViewReq5 As Button
+    Friend WithEvents btnViewReq6 As Button
+    Friend WithEvents btnViewReq7 As Button
+    Friend WithEvents btnViewReq8 As Button
+    Friend WithEvents btnViewReq9 As Button
 
 End Class

@@ -349,10 +349,10 @@ Partial Class StartNewTermForm
         ' cmbSemester
         ' 
         cmbSemester.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        cmbSemester.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbSemester.DropDownStyle = ComboBoxStyle.DropDown
         cmbSemester.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
         cmbSemester.FormattingEnabled = True
-        cmbSemester.Items.AddRange(New Object() {"1st Semester", "2nd Semester", "Summer Term"})
+        cmbSemester.Items.AddRange(New Object() {"1st Semester", "2nd Semester", "Summer Term", "Term 1", "Term 2", "Term 3", "Term 4"})
         cmbSemester.Location = New Point(32, 265)
         cmbSemester.Name = "cmbSemester"
         cmbSemester.Size = New Size(474, 24)

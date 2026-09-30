@@ -33,6 +33,7 @@ Partial Class ReviewClearanceForm
         lblDateTimeBadge = New Label()
         pnlLeftSection = New Panel()
         pnlDocumentCard = New Panel()
+        cmbSubmittedFiles = New ComboBox()
         btnOpenExternal = New Button()
         lblDocFileName = New Label()
         lblDocTitle = New Label()
@@ -276,6 +277,7 @@ Partial Class ReviewClearanceForm
         pnlDocumentCard.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         pnlDocumentCard.BackColor = Color.White
         pnlDocumentCard.BorderStyle = BorderStyle.FixedSingle
+        pnlDocumentCard.Controls.Add(cmbSubmittedFiles)
         pnlDocumentCard.Controls.Add(btnOpenExternal)
         pnlDocumentCard.Controls.Add(lblDocFileName)
         pnlDocumentCard.Controls.Add(lblDocTitle)
@@ -289,6 +291,18 @@ Partial Class ReviewClearanceForm
         ' 
         ' btnOpenExternal
         ' 
+        ' 
+        ' cmbSubmittedFiles
+        ' 
+        cmbSubmittedFiles.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        cmbSubmittedFiles.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbSubmittedFiles.Font = New Font("Segoe UI", 8.5F)
+        cmbSubmittedFiles.FormattingEnabled = True
+        cmbSubmittedFiles.Location = New Point(265, 12)
+        cmbSubmittedFiles.Name = "cmbSubmittedFiles"
+        cmbSubmittedFiles.Size = New Size(215, 23)
+        cmbSubmittedFiles.TabIndex = 4
+        cmbSubmittedFiles.Visible = False
         btnOpenExternal.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnOpenExternal.BackColor = Color.FromArgb(CByte(239), CByte(246), CByte(255))
         btnOpenExternal.Cursor = Cursors.Hand
@@ -1053,4 +1067,5 @@ Partial Class ReviewClearanceForm
     Friend WithEvents colActivityRemarks As DataGridViewTextBoxColumn
     Friend WithEvents lblTimelineEmpty As Label
 
+    Friend WithEvents cmbSubmittedFiles As ComboBox
 End Class

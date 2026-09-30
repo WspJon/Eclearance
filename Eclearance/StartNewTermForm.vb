@@ -13,6 +13,10 @@ Public Class StartNewTermForm
             cmbSemester.Items.Add("1st Semester")
             cmbSemester.Items.Add("2nd Semester")
             cmbSemester.Items.Add("Summer Term")
+            cmbSemester.Items.Add("Term 1")
+            cmbSemester.Items.Add("Term 2")
+            cmbSemester.Items.Add("Term 3")
+            cmbSemester.Items.Add("Term 4")
         End If
 
         Try
@@ -101,16 +105,14 @@ Public Class StartNewTermForm
                             newTermID = Convert.ToInt32(cmdTerm.LastInsertedId)
                         End Using
 
-                        ' Batch generate clearance records for all active students matching requirement course & NSTP
+                        ' Batch generate clearance records for all active students and active requirements
                         Dim generateRecordsSql As String =
                             "INSERT INTO ClearanceRecords (StudentID, RequirementID, TermID, Status) " &
                             "SELECT u.UserID, r.RequirementID, @TermID, 'Pending' " &
                             "FROM Users u " &
                             "CROSS JOIN ClearanceRequirements r " &
                             "WHERE u.Role = 'Student' AND u.IsActive = 1 " &
-                            "AND r.IsActive = 1 " &
-                            "AND (r.AppliesToCourse IS NULL OR r.AppliesToCourse = '' OR r.AppliesToCourse = u.Course) " &
-                            "AND (r.RequiresNSTP = 0 OR u.EnrolledInNSTP = 1);"
+                            "AND r.IsActive = 1;"
 
                         Using cmdRecords As New MySqlCommand(generateRecordsSql, conn, transaction)
                             cmdRecords.Parameters.AddWithValue("@TermID", newTermID)

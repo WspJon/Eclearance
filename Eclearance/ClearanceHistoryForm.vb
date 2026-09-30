@@ -156,7 +156,23 @@ Public Class ClearanceHistoryForm
                 )
 
 
+            Dim lastRecordID As Integer = -1
+            Dim lastActionType As String = ""
+            Dim lastNewStatus As String = ""
+
             For Each row As DataRow In table.Rows
+                Dim recID As Integer = Convert.ToInt32(row("RecordID"))
+                Dim actType As String = If(IsDBNull(row("ActionType")), "", row("ActionType").ToString())
+                Dim st As String = If(IsDBNull(row("NewStatus")), "", row("NewStatus").ToString())
+
+                ' Filter out consecutive duplicate events for the same record and status
+                If recID = lastRecordID AndAlso actType.Equals(lastActionType, StringComparison.OrdinalIgnoreCase) AndAlso st.Equals(lastNewStatus, StringComparison.OrdinalIgnoreCase) Then
+                    Continue For
+                End If
+
+                lastRecordID = recID
+                lastActionType = actType
+                lastNewStatus = st
 
                 AddHistoryRow(row)
 

@@ -51,6 +51,55 @@ Public Class CreateStudentForm
     End Sub
 
 
+    Private Sub cmbCourse_SelectedIndexChanged(
+        sender As Object,
+        e As EventArgs
+    ) Handles cmbCourse.SelectedIndexChanged
+
+        LoadSectionsForCourse()
+
+    End Sub
+
+
+    Private Sub LoadSectionsForCourse()
+
+        cmbSection.Items.Clear()
+
+        If cmbCourse.SelectedItem Is Nothing Then
+            cmbSection.SelectedIndex = -1
+            Return
+        End If
+
+        Dim selectedCourse As String = cmbCourse.SelectedItem.ToString()
+
+        Try
+            Dim query As String =
+                "SELECT SectionName FROM Sections WHERE CourseName = @Course AND IsActive = 1 ORDER BY SectionName ASC;"
+
+            Dim dt As DataTable = db.ExecuteQuery(
+                query,
+                New Dictionary(Of String, Object) From {{"@Course", selectedCourse}}
+            )
+
+            For Each row As DataRow In dt.Rows
+                cmbSection.Items.Add(row("SectionName").ToString())
+            Next
+        Catch ex As Exception
+            cmbSection.Items.Add(selectedCourse & "-1A")
+            cmbSection.Items.Add(selectedCourse & "-2A")
+            cmbSection.Items.Add(selectedCourse & "-3A")
+            cmbSection.Items.Add(selectedCourse & "-4A")
+        End Try
+
+        If cmbSection.Items.Count > 0 Then
+            cmbSection.SelectedIndex = 0
+        Else
+            cmbSection.SelectedIndex = -1
+        End If
+
+    End Sub
+
+
     Private Sub btnCreateAccount_Click(
         sender As Object,
         e As EventArgs
@@ -92,75 +141,48 @@ Public Class CreateStudentForm
 
 
         If cmbYearLevel.SelectedItem IsNot Nothing Then
-
-            yearLevel =
-                cmbYearLevel.SelectedItem.ToString()
-
+            yearLevel = cmbYearLevel.SelectedItem.ToString()
         End If
 
+        Dim section As String = ""
+        If cmbSection.SelectedItem IsNot Nothing Then
+            section = cmbSection.SelectedItem.ToString()
+        End If
 
         If String.IsNullOrWhiteSpace(studentNo) Then
-
-            ShowWarning(
-                "Please enter the student number."
-            )
-
+            ShowWarning("Please enter the student number.")
             txtStudentNo.Focus()
-
             Return
-
         End If
-
 
         If String.IsNullOrWhiteSpace(firstName) Then
-
-            ShowWarning(
-                "Please enter the student's first name."
-            )
-
+            ShowWarning("Please enter the student's first name.")
             txtFirstName.Focus()
-
             Return
-
         End If
-
 
         If String.IsNullOrWhiteSpace(lastName) Then
-
-            ShowWarning(
-                "Please enter the student's last name."
-            )
-
+            ShowWarning("Please enter the student's last name.")
             txtLastName.Focus()
-
             Return
-
         End If
-
 
         If String.IsNullOrWhiteSpace(course) Then
-
-            ShowWarning(
-                "Please select the student's course."
-            )
-
+            ShowWarning("Please select the student's course.")
             cmbCourse.Focus()
-
             Return
-
         End If
 
-
         If String.IsNullOrWhiteSpace(yearLevel) Then
-
-            ShowWarning(
-                "Please select the student's year level."
-            )
-
+            ShowWarning("Please select the student's year level.")
             cmbYearLevel.Focus()
-
             Return
+        End If
 
+        If String.IsNullOrWhiteSpace(section) Then
+            ShowWarning("Please select the student's section.")
+            cmbSection.Focus()
+            Return
         End If
 
 
@@ -260,12 +282,22 @@ Public Class CreateStudentForm
             Dim fullName As String =
                 firstName & " " & lastName
 
+            ' Confirmation Dialog
+            Dim confirmResult As DialogResult = MessageBox.Show(
+                "Are you sure the student details are correct?",
+                "Confirm Student Details",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            )
+
+            If confirmResult <> DialogResult.Yes Then
+                Return
+            End If
 
             Using conn As MySqlConnection =
                 db.GetConnection()
 
                 conn.Open()
-
 
                 Using transaction As MySqlTransaction =
                     conn.BeginTransaction()
@@ -276,17 +308,15 @@ Public Class CreateStudentForm
                             "INSERT INTO Users " &
                             "(" &
                             "Username, Password, FullName, FirstName, LastName, " &
-                            "Role, StudentNo, Course, YearLevel, EnrolledInNSTP, IsActive" &
+                            "Role, StudentNo, Course, Section, YearLevel, EnrolledInNSTP, IsActive" &
                             ") " &
                             "VALUES " &
                             "(" &
                             "@Username, @Password, @FullName, @FirstName, @LastName, " &
-                            "'Student', @StudentNo, @Course, @YearLevel, @NSTP, 1" &
+                            "'Student', @StudentNo, @Course, @Section, @YearLevel, @NSTP, 1" &
                             ");"
 
-
                         Dim newStudentID As Integer
-
 
                         Using cmd As New MySqlCommand(
                             insertStudentQuery,
@@ -327,6 +357,11 @@ Public Class CreateStudentForm
                             cmd.Parameters.AddWithValue(
                                 "@Course",
                                 course
+                            )
+
+                            cmd.Parameters.AddWithValue(
+                                "@Section",
+                                section
                             )
 
                             cmd.Parameters.AddWithValue(
@@ -436,35 +471,15 @@ Public Class CreateStudentForm
             "SELECT RequirementID " &
             "FROM ClearanceRequirements " &
             "WHERE IsActive = 1 " &
-            "AND (" &
-            "AppliesToCourse IS NULL " &
-            "OR AppliesToCourse = '' " &
-            "OR AppliesToCourse = @Course" &
-            ") " &
-            "AND (" &
-            "RequiresNSTP = 0 " &
-            "OR @NSTP = 1" &
-            ");"
-
+            "ORDER BY SequenceOrder ASC;"
 
         Dim requirementIDs As New List(Of Integer)()
-
 
         Using cmd As New MySqlCommand(
             requirementQuery,
             conn,
             transaction
         )
-
-            cmd.Parameters.AddWithValue(
-                "@Course",
-                course
-            )
-
-            cmd.Parameters.AddWithValue(
-                "@NSTP",
-                If(enrolledInNSTP, 1, 0)
-            )
 
 
             Using reader As MySqlDataReader =
@@ -650,6 +665,9 @@ Public Class CreateStudentForm
         txtLastName.Clear()
 
         cmbCourse.SelectedIndex = -1
+
+        cmbSection.Items.Clear()
+        cmbSection.SelectedIndex = -1
 
         cmbYearLevel.SelectedIndex = -1
 

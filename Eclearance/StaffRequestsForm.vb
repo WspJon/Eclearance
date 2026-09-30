@@ -5,7 +5,7 @@ Public Class StaffRequestsForm
 
     Private ReadOnly db As New DatabaseHelper()
     Private currentDepartmentName As String = "Assigned Office"
-    Private currentFilterStatus As String = "All"
+    Private currentFilterStatus As String = "Active"
     Private allRequestsTable As DataTable = Nothing
 
     Private Sub StaffRequestsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -92,7 +92,9 @@ Public Class StaffRequestsForm
         Dim filteredRows = allRequestsTable.AsEnumerable()
 
         ' Status filter
-        If Not currentFilterStatus.Equals("All", StringComparison.OrdinalIgnoreCase) Then
+        If currentFilterStatus.Equals("Active", StringComparison.OrdinalIgnoreCase) Then
+            filteredRows = filteredRows.Where(Function(r) r("Status").ToString().Equals("Pending", StringComparison.OrdinalIgnoreCase) OrElse r("Status").ToString().Equals("Under Review", StringComparison.OrdinalIgnoreCase))
+        ElseIf Not currentFilterStatus.Equals("All", StringComparison.OrdinalIgnoreCase) Then
             filteredRows = filteredRows.Where(Function(r) r("Status").ToString().Equals(currentFilterStatus, StringComparison.OrdinalIgnoreCase))
         End If
 
@@ -128,7 +130,7 @@ Public Class StaffRequestsForm
             num += 1
         Next
 
-        lblRecordCount.Text = "Showing " & dgvRequests.Rows.Count.ToString() & " of " & allRequestsTable.Rows.Count.ToString() & " records"
+        lblRecordCount.Text = "Showing " & dgvRequests.Rows.Count.ToString() & " of " & allRequestsTable.Rows.Count.ToString() & " records" & If(currentFilterStatus.Equals("Active", StringComparison.OrdinalIgnoreCase), " (Active: Pending & Under Review)", "")
     End Sub
 
     ' Search and filter events
@@ -137,7 +139,11 @@ Public Class StaffRequestsForm
     End Sub
 
     Private Sub btnFilterAll_Click(sender As Object, e As EventArgs) Handles btnFilterAll.Click
-        currentFilterStatus = "All"
+        If currentFilterStatus.Equals("All", StringComparison.OrdinalIgnoreCase) Then
+            currentFilterStatus = "Active"
+        Else
+            currentFilterStatus = "All"
+        End If
         ApplyFilters()
     End Sub
 

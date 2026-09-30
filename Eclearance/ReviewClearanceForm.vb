@@ -130,7 +130,39 @@ Public Class ReviewClearanceForm
             lblFileVal.Text = fileName
             lblDocFileName.Text = fileName
 
-            LoadDocumentPreview()
+            ' Load all files for this record
+            cmbSubmittedFiles.Items.Clear()
+            Try
+                Dim filesQuery As String =
+                    "SELECT StoredFilePath, OriginalFileName FROM ClearanceRecordFiles WHERE RecordID = @RecordID ORDER BY FileID ASC;"
+                Dim dtFiles As DataTable = db.ExecuteQuery(filesQuery, New Dictionary(Of String, Object) From {{"@RecordID", TargetRecordID}})
+
+                If dtFiles.Rows.Count > 0 Then
+                    For Each fRow As DataRow In dtFiles.Rows
+                        Dim fPath = fRow("StoredFilePath").ToString()
+                        Dim fName = fRow("OriginalFileName").ToString()
+                        cmbSubmittedFiles.Items.Add(New SubmittedFileItem With {.OriginalFileName = fName, .StoredFilePath = fPath})
+                    Next
+
+                    If dtFiles.Rows.Count > 1 Then
+                        cmbSubmittedFiles.Visible = True
+                        lblDocFileName.Visible = False
+                    Else
+                        cmbSubmittedFiles.Visible = False
+                        lblDocFileName.Visible = True
+                    End If
+
+                    cmbSubmittedFiles.SelectedIndex = 0
+                Else
+                    cmbSubmittedFiles.Visible = False
+                    lblDocFileName.Visible = True
+                    LoadDocumentPreview()
+                End If
+            Catch exFiles As Exception
+                cmbSubmittedFiles.Visible = False
+                lblDocFileName.Visible = True
+                LoadDocumentPreview()
+            End Try
 
         Catch ex As Exception
             MessageBox.Show("Failed to load submission: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -412,4 +444,23 @@ Public Class ReviewClearanceForm
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click, btnBackToRequests.Click
         ReturnToRequests()
     End Sub
+
+    Private Sub cmbSubmittedFiles_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSubmittedFiles.SelectedIndexChanged
+        If cmbSubmittedFiles.SelectedItem IsNot Nothing Then
+            Dim fItem = DirectCast(cmbSubmittedFiles.SelectedItem, SubmittedFileItem)
+            currentFilePath = fItem.StoredFilePath
+            lblDocFileName.Text = fItem.OriginalFileName
+            LoadDocumentPreview()
+        End If
+    End Sub
+
+    Private Class SubmittedFileItem
+        Public Property OriginalFileName As String
+        Public Property StoredFilePath As String
+
+        Public Overrides Function ToString() As String
+            Return OriginalFileName
+        End Function
+    End Class
+
 End Class

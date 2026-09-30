@@ -35,6 +35,8 @@ Partial Class CreateStudentForm
         lblYearLevel = New Label()
         cmbYearLevel = New ComboBox()
         chkNSTP = New CheckBox()
+        lblSection = New Label()
+        cmbSection = New ComboBox()
         lblBadge03 = New Label()
         lblSec03 = New Label()
         lblUsername = New Label()
@@ -68,6 +70,8 @@ Partial Class CreateStudentForm
         pnlCard.Controls.Add(lblYearLevel)
         pnlCard.Controls.Add(cmbYearLevel)
         pnlCard.Controls.Add(chkNSTP)
+        pnlCard.Controls.Add(lblSection)
+        pnlCard.Controls.Add(cmbSection)
         pnlCard.Controls.Add(lblBadge03)
         pnlCard.Controls.Add(lblSec03)
         pnlCard.Controls.Add(lblUsername)
@@ -262,15 +266,36 @@ Partial Class CreateStudentForm
         cmbYearLevel.Size = New Size(254, 25)
         cmbYearLevel.TabIndex = 15
         ' 
+        ' lblSection
+        ' 
+        lblSection.AutoSize = True
+        lblSection.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        lblSection.ForeColor = Color.FromArgb(51, 65, 85)
+        lblSection.Location = New Point(24, 318)
+        lblSection.Name = "lblSection"
+        lblSection.Size = New Size(46, 15)
+        lblSection.TabIndex = 16
+        lblSection.Text = "Section"
+        ' 
+        ' cmbSection
+        ' 
+        cmbSection.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbSection.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        cmbSection.FormattingEnabled = True
+        cmbSection.Location = New Point(24, 338)
+        cmbSection.Name = "cmbSection"
+        cmbSection.Size = New Size(254, 25)
+        cmbSection.TabIndex = 17
+        ' 
         ' chkNSTP
         ' 
         chkNSTP.AutoSize = True
         chkNSTP.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
         chkNSTP.ForeColor = Color.FromArgb(51, 65, 85)
-        chkNSTP.Location = New Point(24, 318)
+        chkNSTP.Location = New Point(298, 340)
         chkNSTP.Name = "chkNSTP"
         chkNSTP.Size = New Size(117, 19)
-        chkNSTP.TabIndex = 16
+        chkNSTP.TabIndex = 18
         chkNSTP.Text = "Enrolled in NSTP"
         chkNSTP.UseVisualStyleBackColor = True
         ' 
@@ -279,10 +304,10 @@ Partial Class CreateStudentForm
         lblBadge03.BackColor = Color.FromArgb(219, 234, 254)
         lblBadge03.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
         lblBadge03.ForeColor = Color.FromArgb(29, 78, 216)
-        lblBadge03.Location = New Point(24, 356)
+        lblBadge03.Location = New Point(24, 380)
         lblBadge03.Name = "lblBadge03"
         lblBadge03.Size = New Size(26, 24)
-        lblBadge03.TabIndex = 17
+        lblBadge03.TabIndex = 19
         lblBadge03.Text = "03"
         lblBadge03.TextAlign = ContentAlignment.MiddleCenter
         ' 
@@ -291,10 +316,10 @@ Partial Class CreateStudentForm
         lblSec03.AutoSize = True
         lblSec03.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
         lblSec03.ForeColor = Color.FromArgb(15, 23, 42)
-        lblSec03.Location = New Point(58, 358)
+        lblSec03.Location = New Point(58, 382)
         lblSec03.Name = "lblSec03"
         lblSec03.Size = New Size(117, 20)
-        lblSec03.TabIndex = 18
+        lblSec03.TabIndex = 20
         lblSec03.Text = "Account details"
         ' 
         ' lblUsername
@@ -302,10 +327,10 @@ Partial Class CreateStudentForm
         lblUsername.AutoSize = True
         lblUsername.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
         lblUsername.ForeColor = Color.FromArgb(51, 65, 85)
-        lblUsername.Location = New Point(24, 390)
+        lblUsername.Location = New Point(24, 414)
         lblUsername.Name = "lblUsername"
         lblUsername.Size = New Size(60, 15)
-        lblUsername.TabIndex = 19
+        lblUsername.TabIndex = 21
         lblUsername.Text = "Username"
         ' 
         ' txtUsername
@@ -313,7 +338,7 @@ Partial Class CreateStudentForm
         txtUsername.BorderStyle = BorderStyle.FixedSingle
         txtUsername.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
         txtUsername.ForeColor = Color.FromArgb(15, 23, 42)
-        txtUsername.Location = New Point(24, 410)
+        txtUsername.Location = New Point(24, 434)
         txtUsername.Name = "txtUsername"
         txtUsername.Size = New Size(254, 24)
         txtUsername.TabIndex = 20
@@ -323,10 +348,10 @@ Partial Class CreateStudentForm
         lblPassword.AutoSize = True
         lblPassword.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
         lblPassword.ForeColor = Color.FromArgb(51, 65, 85)
-        lblPassword.Location = New Point(298, 390)
+        lblPassword.Location = New Point(298, 414)
         lblPassword.Name = "lblPassword"
         lblPassword.Size = New Size(57, 15)
-        lblPassword.TabIndex = 21
+        lblPassword.TabIndex = 22
         lblPassword.Text = "Password"
         ' 
         ' txtPassword
@@ -334,10 +359,10 @@ Partial Class CreateStudentForm
         txtPassword.BorderStyle = BorderStyle.FixedSingle
         txtPassword.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
         txtPassword.ForeColor = Color.FromArgb(15, 23, 42)
-        txtPassword.Location = New Point(298, 410)
+        txtPassword.Location = New Point(298, 434)
         txtPassword.Name = "txtPassword"
         txtPassword.Size = New Size(254, 24)
-        txtPassword.TabIndex = 22
+        txtPassword.TabIndex = 23
         txtPassword.UseSystemPasswordChar = True
         ' 
         ' lblPwdHelp
@@ -345,10 +370,10 @@ Partial Class CreateStudentForm
         lblPwdHelp.AutoSize = True
         lblPwdHelp.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point)
         lblPwdHelp.ForeColor = Color.FromArgb(100, 116, 139)
-        lblPwdHelp.Location = New Point(298, 440)
+        lblPwdHelp.Location = New Point(298, 464)
         lblPwdHelp.Name = "lblPwdHelp"
         lblPwdHelp.Size = New Size(116, 13)
-        lblPwdHelp.TabIndex = 23
+        lblPwdHelp.TabIndex = 24
         lblPwdHelp.Text = ""
         lblPwdHelp.Visible = False
         ' 
@@ -360,10 +385,10 @@ Partial Class CreateStudentForm
         btnClearForm.FlatStyle = FlatStyle.Flat
         btnClearForm.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
         btnClearForm.ForeColor = Color.FromArgb(71, 85, 105)
-        btnClearForm.Location = New Point(24, 500)
+        btnClearForm.Location = New Point(24, 520)
         btnClearForm.Name = "btnClearForm"
         btnClearForm.Size = New Size(120, 38)
-        btnClearForm.TabIndex = 24
+        btnClearForm.TabIndex = 25
         btnClearForm.Text = "Clear form"
         btnClearForm.UseVisualStyleBackColor = False
         ' 
@@ -376,10 +401,10 @@ Partial Class CreateStudentForm
         btnCreateAccount.FlatStyle = FlatStyle.Flat
         btnCreateAccount.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
         btnCreateAccount.ForeColor = Color.White
-        btnCreateAccount.Location = New Point(402, 500)
+        btnCreateAccount.Location = New Point(402, 520)
         btnCreateAccount.Name = "btnCreateAccount"
         btnCreateAccount.Size = New Size(150, 38)
-        btnCreateAccount.TabIndex = 25
+        btnCreateAccount.TabIndex = 26
         btnCreateAccount.Text = "Create account"
         btnCreateAccount.UseVisualStyleBackColor = False
         ' 
@@ -388,7 +413,7 @@ Partial Class CreateStudentForm
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.White
-        ClientSize = New Size(580, 565)
+        ClientSize = New Size(580, 580)
         Controls.Add(pnlCard)
         Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
         FormBorderStyle = FormBorderStyle.None
@@ -421,6 +446,8 @@ Partial Class CreateStudentForm
     Friend WithEvents lblYearLevel As Label
     Friend WithEvents cmbYearLevel As ComboBox
     Friend WithEvents chkNSTP As CheckBox
+    Friend WithEvents lblSection As Label
+    Friend WithEvents cmbSection As ComboBox
     Friend WithEvents lblBadge03 As Label
     Friend WithEvents lblSec03 As Label
     Friend WithEvents lblUsername As Label
