@@ -71,8 +71,18 @@ Public Class ReviewClearanceForm
                 "  u.FullName AS StudentName, " &
                 "  u.Course, " &
                 "  u.YearLevel, " &
+                "  u.ContactNo, " &
+                "  u.Address, " &
+                "  u.Email, " &
+                "  u.CivilStatus, " &
+                "  u.EmergencyContactName, " &
+                "  u.Relationship, " &
+                "  u.EmergencyContactNo, " &
+                "  u.AdditionalNotes, " &
+                "  d.DepartmentID, " &
                 "  d.DepartmentName, " &
-                "  r.RequirementName " &
+                "  r.RequirementName, " &
+                "  r.RequiresFile " &
                 "FROM ClearanceRecords cr " &
                 "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
                 "INNER JOIN Departments d ON r.DepartmentID = d.DepartmentID " &
@@ -118,55 +128,123 @@ Public Class ReviewClearanceForm
                 lblCharCount.Text = txtRemarks.Text.Length.ToString() & " / 500"
             End If
 
-            currentFilePath = ""
-            If Not IsDBNull(row("SubmittedFilePath")) Then
-                currentFilePath = row("SubmittedFilePath").ToString()
-            End If
+            Dim deptID As Integer = Convert.ToInt32(row("DepartmentID"))
+            Dim deptName As String = row("DepartmentName").ToString()
+            Dim requiresFile As Boolean = Convert.ToBoolean(row("RequiresFile"))
+            Dim isGuidanceOffice As Boolean = (deptID = 6 OrElse deptName.ToLowerInvariant().Contains("guidance"))
 
-            Dim fileName As String = "No document attached"
-            If Not IsDBNull(row("SubmittedFileName")) Then
-                fileName = row("SubmittedFileName").ToString()
-            End If
-            lblFileVal.Text = fileName
-            lblDocFileName.Text = fileName
+            If isGuidanceOffice Then
+                ' Guidance non-file mode: Show Guidance Information Update panel, hide document preview
+                pnlDocumentCard.Visible = False
+                pnlGuidanceInfo.Visible = True
 
-            ' Load all files for this record
-            cmbSubmittedFiles.Items.Clear()
-            Try
-                Dim filesQuery As String =
-                    "SELECT StoredFilePath, OriginalFileName FROM ClearanceRecordFiles WHERE RecordID = @RecordID ORDER BY FileID ASC;"
-                Dim dtFiles As DataTable = db.ExecuteQuery(filesQuery, New Dictionary(Of String, Object) From {{"@RecordID", TargetRecordID}})
+                ' In student info header: show Status pill badge instead of File Name
+                lblFileTitle.Visible = False
+                lblFileVal.Visible = False
+                lblStatusTitle.Visible = True
+                lblStatusVal.Visible = True
+                lblStatusVal.Text = currentStatus
+                ApplyStatusBadgeStyle(lblStatusVal, currentStatus)
 
-                If dtFiles.Rows.Count > 0 Then
-                    For Each fRow As DataRow In dtFiles.Rows
-                        Dim fPath = fRow("StoredFilePath").ToString()
-                        Dim fName = fRow("OriginalFileName").ToString()
-                        cmbSubmittedFiles.Items.Add(New SubmittedFileItem With {.OriginalFileName = fName, .StoredFilePath = fPath})
-                    Next
+                ' Populate student Guidance personal info matching screenshot layout
+                FormatGuidanceField(lblAddressValue, If(IsDBNull(row("Address")), "", row("Address").ToString()))
+                FormatGuidanceField(lblContactValue, If(IsDBNull(row("ContactNo")), "", row("ContactNo").ToString()))
+                FormatGuidanceField(lblEmailValue, If(IsDBNull(row("Email")), "", row("Email").ToString()))
+                FormatGuidanceField(lblCivilStatusValue, If(IsDBNull(row("CivilStatus")), "", row("CivilStatus").ToString()))
+                FormatGuidanceField(lblEmergencyNameValue, If(IsDBNull(row("EmergencyContactName")), "", row("EmergencyContactName").ToString()))
+                FormatGuidanceField(lblRelationshipValue, If(IsDBNull(row("Relationship")), "", row("Relationship").ToString()))
+                FormatGuidanceField(lblEmergencyContactValue, If(IsDBNull(row("EmergencyContactNo")), "", row("EmergencyContactNo").ToString()))
+                FormatGuidanceField(lblNotesValue, If(IsDBNull(row("AdditionalNotes")), "", row("AdditionalNotes").ToString()))
 
-                    If dtFiles.Rows.Count > 1 Then
-                        cmbSubmittedFiles.Visible = True
-                        lblDocFileName.Visible = False
+            Else
+                ' Standard file-based offices: Show document preview, hide guidance panel
+                pnlGuidanceInfo.Visible = False
+                pnlDocumentCard.Visible = True
+
+                lblStatusTitle.Visible = False
+                lblStatusVal.Visible = False
+                lblFileTitle.Visible = True
+                lblFileVal.Visible = True
+
+                currentFilePath = ""
+                If Not IsDBNull(row("SubmittedFilePath")) Then
+                    currentFilePath = row("SubmittedFilePath").ToString()
+                End If
+
+                Dim fileName As String = "No document attached"
+                If Not IsDBNull(row("SubmittedFileName")) Then
+                    fileName = row("SubmittedFileName").ToString()
+                End If
+                lblFileVal.Text = fileName
+                lblDocFileName.Text = fileName
+
+                ' Load all files for this record
+                cmbSubmittedFiles.Items.Clear()
+                Try
+                    Dim filesQuery As String =
+                        "SELECT StoredFilePath, OriginalFileName FROM ClearanceRecordFiles WHERE RecordID = @RecordID ORDER BY FileID ASC;"
+                    Dim dtFiles As DataTable = db.ExecuteQuery(filesQuery, New Dictionary(Of String, Object) From {{"@RecordID", TargetRecordID}})
+
+                    If dtFiles.Rows.Count > 0 Then
+                        For Each fRow As DataRow In dtFiles.Rows
+                            Dim fPath = fRow("StoredFilePath").ToString()
+                            Dim fName = fRow("OriginalFileName").ToString()
+                            cmbSubmittedFiles.Items.Add(New SubmittedFileItem With {.OriginalFileName = fName, .StoredFilePath = fPath})
+                        Next
+
+                        If dtFiles.Rows.Count > 1 Then
+                            cmbSubmittedFiles.Visible = True
+                            lblDocFileName.Visible = False
+                        Else
+                            cmbSubmittedFiles.Visible = False
+                            lblDocFileName.Visible = True
+                        End If
+
+                        cmbSubmittedFiles.SelectedIndex = 0
                     Else
                         cmbSubmittedFiles.Visible = False
                         lblDocFileName.Visible = True
+                        LoadDocumentPreview()
                     End If
-
-                    cmbSubmittedFiles.SelectedIndex = 0
-                Else
+                Catch exFiles As Exception
                     cmbSubmittedFiles.Visible = False
                     lblDocFileName.Visible = True
                     LoadDocumentPreview()
-                End If
-            Catch exFiles As Exception
-                cmbSubmittedFiles.Visible = False
-                lblDocFileName.Visible = True
-                LoadDocumentPreview()
-            End Try
+                End Try
+            End If
 
         Catch ex As Exception
             MessageBox.Show("Failed to load submission: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+    End Sub
+
+    Private Sub FormatGuidanceField(lbl As Label, value As String)
+        If String.IsNullOrWhiteSpace(value) Then
+            lbl.Text = "Not provided"
+            lbl.ForeColor = Color.FromArgb(148, 163, 184)
+            lbl.Font = New Font(lbl.Font.FontFamily, lbl.Font.Size, FontStyle.Italic)
+        Else
+            lbl.Text = value.Trim()
+            lbl.ForeColor = Color.FromArgb(15, 23, 42)
+            lbl.Font = New Font(lbl.Font.FontFamily, lbl.Font.Size, FontStyle.Regular)
+        End If
+    End Sub
+
+    Private Sub ApplyStatusBadgeStyle(lbl As Label, status As String)
+        Select Case status.ToLowerInvariant()
+            Case "cleared"
+                lbl.BackColor = Color.FromArgb(220, 252, 231)
+                lbl.ForeColor = Color.FromArgb(22, 101, 52)
+            Case "under review"
+                lbl.BackColor = Color.FromArgb(219, 234, 254)
+                lbl.ForeColor = Color.FromArgb(30, 64, 175)
+            Case "rejected"
+                lbl.BackColor = Color.FromArgb(254, 226, 226)
+                lbl.ForeColor = Color.FromArgb(185, 28, 28)
+            Case Else
+                lbl.BackColor = Color.FromArgb(254, 243, 199)
+                lbl.ForeColor = Color.FromArgb(146, 64, 14)
+        End Select
     End Sub
 
     Private Sub LoadDocumentPreview()

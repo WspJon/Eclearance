@@ -32,6 +32,33 @@ Partial Class ReviewClearanceForm
         lblStaffRole = New Label()
         lblDateTimeBadge = New Label()
         pnlLeftSection = New Panel()
+        pnlGuidanceInfo = New Panel()
+        pnlGuidanceHeader = New Panel()
+        lblGuidanceIcon = New Label()
+        lblGuidanceInfoTitle = New Label()
+        lblGuidanceInfoSubtitle = New Label()
+        pnlGuidanceBody = New Panel()
+        lblAddressTitle = New Label()
+        lblAddressValue = New Label()
+        lblContactTitle = New Label()
+        lblContactValue = New Label()
+        lblEmailTitle = New Label()
+        lblEmailValue = New Label()
+        lblCivilStatusTitle = New Label()
+        lblCivilStatusValue = New Label()
+        lblEmergencyNameTitle = New Label()
+        lblEmergencyNameValue = New Label()
+        lblRelationshipTitle = New Label()
+        lblRelationshipValue = New Label()
+        lblEmergencyContactTitle = New Label()
+        lblEmergencyContactValue = New Label()
+        lblNotesTitle = New Label()
+        lblNotesValue = New Label()
+        pnlGuidanceInfoNote = New Panel()
+        lblGuidanceNoteIcon = New Label()
+        lblGuidanceInfoNote = New Label()
+        lblStatusTitle = New Label()
+        lblStatusVal = New Label()
         pnlDocumentCard = New Panel()
         cmbSubmittedFiles = New ComboBox()
         btnOpenExternal = New Button()
@@ -89,6 +116,10 @@ Partial Class ReviewClearanceForm
         pnlOfficeBadge.SuspendLayout()
         pnlStaffBadge.SuspendLayout()
         pnlLeftSection.SuspendLayout()
+        pnlGuidanceInfo.SuspendLayout()
+        pnlGuidanceHeader.SuspendLayout()
+        pnlGuidanceBody.SuspendLayout()
+        pnlGuidanceInfoNote.SuspendLayout()
         pnlDocumentCard.SuspendLayout()
         pnlDocPreview.SuspendLayout()
         CType(picPreview, ComponentModel.ISupportInitialize).BeginInit()
@@ -265,6 +296,7 @@ Partial Class ReviewClearanceForm
         ' pnlLeftSection
         ' 
         pnlLeftSection.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlLeftSection.Controls.Add(pnlGuidanceInfo)
         pnlLeftSection.Controls.Add(pnlDocumentCard)
         pnlLeftSection.Controls.Add(pnlStudentInfoCard)
         pnlLeftSection.Location = New Point(20, 72)
@@ -272,9 +304,329 @@ Partial Class ReviewClearanceForm
         pnlLeftSection.Size = New Size(620, 658)
         pnlLeftSection.TabIndex = 6
         ' 
+        ' pnlGuidanceInfo
+        ' 
+        pnlGuidanceInfo.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlGuidanceInfo.BackColor = Color.White
+        pnlGuidanceInfo.BorderStyle = BorderStyle.FixedSingle
+        pnlGuidanceInfo.Controls.Add(pnlGuidanceBody)
+        pnlGuidanceInfo.Controls.Add(pnlGuidanceHeader)
+        pnlGuidanceInfo.Location = New Point(0, 172)
+        pnlGuidanceInfo.Name = "pnlGuidanceInfo"
+        pnlGuidanceInfo.Size = New Size(620, 486)
+        pnlGuidanceInfo.TabIndex = 2
+        pnlGuidanceInfo.Visible = False
+        ' 
+        ' pnlGuidanceHeader
+        ' 
+        pnlGuidanceHeader.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        pnlGuidanceHeader.Controls.Add(lblGuidanceInfoSubtitle)
+        pnlGuidanceHeader.Controls.Add(lblGuidanceInfoTitle)
+        pnlGuidanceHeader.Controls.Add(lblGuidanceIcon)
+        pnlGuidanceHeader.Dock = DockStyle.Top
+        pnlGuidanceHeader.Location = New Point(0, 0)
+        pnlGuidanceHeader.Name = "pnlGuidanceHeader"
+        pnlGuidanceHeader.Size = New Size(618, 56)
+        pnlGuidanceHeader.TabIndex = 0
+        ' 
+        ' lblGuidanceIcon
+        ' 
+        lblGuidanceIcon.AutoSize = True
+        lblGuidanceIcon.Font = New Font("Segoe UI Emoji", 14F)
+        lblGuidanceIcon.ForeColor = Color.FromArgb(CByte(2), CByte(132), CByte(199))
+        lblGuidanceIcon.Location = New Point(14, 12)
+        lblGuidanceIcon.Name = "lblGuidanceIcon"
+        lblGuidanceIcon.Size = New Size(30, 25)
+        lblGuidanceIcon.TabIndex = 0
+        lblGuidanceIcon.Text = "📄"
+        ' 
+        ' lblGuidanceInfoTitle
+        ' 
+        lblGuidanceInfoTitle.AutoSize = True
+        lblGuidanceInfoTitle.Font = New Font("Segoe UI", 10.5F, FontStyle.Bold)
+        lblGuidanceInfoTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblGuidanceInfoTitle.Location = New Point(44, 9)
+        lblGuidanceInfoTitle.Name = "lblGuidanceInfoTitle"
+        lblGuidanceInfoTitle.Size = New Size(205, 19)
+        lblGuidanceInfoTitle.TabIndex = 1
+        lblGuidanceInfoTitle.Text = "Guidance Information Update"
+        ' 
+        ' lblGuidanceInfoSubtitle
+        ' 
+        lblGuidanceInfoSubtitle.AutoSize = True
+        lblGuidanceInfoSubtitle.Font = New Font("Segoe UI", 8F)
+        lblGuidanceInfoSubtitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblGuidanceInfoSubtitle.Location = New Point(45, 29)
+        lblGuidanceInfoSubtitle.Name = "lblGuidanceInfoSubtitle"
+        lblGuidanceInfoSubtitle.Size = New Size(385, 13)
+        lblGuidanceInfoSubtitle.TabIndex = 2
+        lblGuidanceInfoSubtitle.Text = "Below is the updated information submitted by the student for Guidance clearance."
+        ' 
+        ' pnlGuidanceBody
+        ' 
+        pnlGuidanceBody.BackColor = Color.White
+        pnlGuidanceBody.Controls.Add(pnlGuidanceInfoNote)
+        pnlGuidanceBody.Controls.Add(lblNotesValue)
+        pnlGuidanceBody.Controls.Add(lblNotesTitle)
+        pnlGuidanceBody.Controls.Add(lblEmergencyContactValue)
+        pnlGuidanceBody.Controls.Add(lblEmergencyContactTitle)
+        pnlGuidanceBody.Controls.Add(lblRelationshipValue)
+        pnlGuidanceBody.Controls.Add(lblRelationshipTitle)
+        pnlGuidanceBody.Controls.Add(lblEmergencyNameValue)
+        pnlGuidanceBody.Controls.Add(lblEmergencyNameTitle)
+        pnlGuidanceBody.Controls.Add(lblCivilStatusValue)
+        pnlGuidanceBody.Controls.Add(lblCivilStatusTitle)
+        pnlGuidanceBody.Controls.Add(lblEmailValue)
+        pnlGuidanceBody.Controls.Add(lblEmailTitle)
+        pnlGuidanceBody.Controls.Add(lblContactValue)
+        pnlGuidanceBody.Controls.Add(lblContactTitle)
+        pnlGuidanceBody.Controls.Add(lblAddressValue)
+        pnlGuidanceBody.Controls.Add(lblAddressTitle)
+        pnlGuidanceBody.Dock = DockStyle.Fill
+        pnlGuidanceBody.Location = New Point(0, 56)
+        pnlGuidanceBody.Name = "pnlGuidanceBody"
+        pnlGuidanceBody.Padding = New Padding(20)
+        pnlGuidanceBody.Size = New Size(618, 428)
+        pnlGuidanceBody.TabIndex = 1
+        ' 
+        ' lblAddressTitle
+        ' 
+        lblAddressTitle.AutoSize = True
+        lblAddressTitle.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblAddressTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblAddressTitle.Location = New Point(20, 14)
+        lblAddressTitle.Name = "lblAddressTitle"
+        lblAddressTitle.Size = New Size(89, 15)
+        lblAddressTitle.TabIndex = 0
+        lblAddressTitle.Text = "Current Address"
+        ' 
+        ' lblAddressValue
+        ' 
+        lblAddressValue.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        lblAddressValue.BorderStyle = BorderStyle.FixedSingle
+        lblAddressValue.Font = New Font("Segoe UI", 9F)
+        lblAddressValue.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblAddressValue.Location = New Point(20, 32)
+        lblAddressValue.Name = "lblAddressValue"
+        lblAddressValue.Padding = New Padding(8, 4, 8, 4)
+        lblAddressValue.Size = New Size(275, 34)
+        lblAddressValue.TabIndex = 1
+        lblAddressValue.Text = "Not provided"
+        lblAddressValue.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' lblContactTitle
+        ' 
+        lblContactTitle.AutoSize = True
+        lblContactTitle.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblContactTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblContactTitle.Location = New Point(20, 74)
+        lblContactTitle.Name = "lblContactTitle"
+        lblContactTitle.Size = New Size(95, 15)
+        lblContactTitle.TabIndex = 2
+        lblContactTitle.Text = "Contact Number"
+        ' 
+        ' lblContactValue
+        ' 
+        lblContactValue.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        lblContactValue.BorderStyle = BorderStyle.FixedSingle
+        lblContactValue.Font = New Font("Segoe UI", 9F)
+        lblContactValue.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblContactValue.Location = New Point(20, 92)
+        lblContactValue.Name = "lblContactValue"
+        lblContactValue.Padding = New Padding(8, 4, 8, 4)
+        lblContactValue.Size = New Size(275, 34)
+        lblContactValue.TabIndex = 3
+        lblContactValue.Text = "Not provided"
+        lblContactValue.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' lblEmailTitle
+        ' 
+        lblEmailTitle.AutoSize = True
+        lblEmailTitle.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblEmailTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblEmailTitle.Location = New Point(20, 134)
+        lblEmailTitle.Name = "lblEmailTitle"
+        lblEmailTitle.Size = New Size(81, 15)
+        lblEmailTitle.TabIndex = 4
+        lblEmailTitle.Text = "Email Address"
+        ' 
+        ' lblEmailValue
+        ' 
+        lblEmailValue.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        lblEmailValue.BorderStyle = BorderStyle.FixedSingle
+        lblEmailValue.Font = New Font("Segoe UI", 9F)
+        lblEmailValue.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblEmailValue.Location = New Point(20, 152)
+        lblEmailValue.Name = "lblEmailValue"
+        lblEmailValue.Padding = New Padding(8, 4, 8, 4)
+        lblEmailValue.Size = New Size(275, 34)
+        lblEmailValue.TabIndex = 5
+        lblEmailValue.Text = "Not provided"
+        lblEmailValue.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' lblCivilStatusTitle
+        ' 
+        lblCivilStatusTitle.AutoSize = True
+        lblCivilStatusTitle.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblCivilStatusTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblCivilStatusTitle.Location = New Point(20, 194)
+        lblCivilStatusTitle.Name = "lblCivilStatusTitle"
+        lblCivilStatusTitle.Size = New Size(65, 15)
+        lblCivilStatusTitle.TabIndex = 6
+        lblCivilStatusTitle.Text = "Civil Status"
+        ' 
+        ' lblCivilStatusValue
+        ' 
+        lblCivilStatusValue.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        lblCivilStatusValue.BorderStyle = BorderStyle.FixedSingle
+        lblCivilStatusValue.Font = New Font("Segoe UI", 9F)
+        lblCivilStatusValue.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblCivilStatusValue.Location = New Point(20, 212)
+        lblCivilStatusValue.Name = "lblCivilStatusValue"
+        lblCivilStatusValue.Padding = New Padding(8, 4, 8, 4)
+        lblCivilStatusValue.Size = New Size(275, 34)
+        lblCivilStatusValue.TabIndex = 7
+        lblCivilStatusValue.Text = "Not provided"
+        lblCivilStatusValue.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' lblEmergencyNameTitle
+        ' 
+        lblEmergencyNameTitle.AutoSize = True
+        lblEmergencyNameTitle.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblEmergencyNameTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblEmergencyNameTitle.Location = New Point(315, 14)
+        lblEmergencyNameTitle.Name = "lblEmergencyNameTitle"
+        lblEmergencyNameTitle.Size = New Size(140, 15)
+        lblEmergencyNameTitle.TabIndex = 8
+        lblEmergencyNameTitle.Text = "Emergency Contact Name"
+        ' 
+        ' lblEmergencyNameValue
+        ' 
+        lblEmergencyNameValue.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        lblEmergencyNameValue.BorderStyle = BorderStyle.FixedSingle
+        lblEmergencyNameValue.Font = New Font("Segoe UI", 9F)
+        lblEmergencyNameValue.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblEmergencyNameValue.Location = New Point(315, 32)
+        lblEmergencyNameValue.Name = "lblEmergencyNameValue"
+        lblEmergencyNameValue.Padding = New Padding(8, 4, 8, 4)
+        lblEmergencyNameValue.Size = New Size(275, 34)
+        lblEmergencyNameValue.TabIndex = 9
+        lblEmergencyNameValue.Text = "Not provided"
+        lblEmergencyNameValue.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' lblRelationshipTitle
+        ' 
+        lblRelationshipTitle.AutoSize = True
+        lblRelationshipTitle.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblRelationshipTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblRelationshipTitle.Location = New Point(315, 74)
+        lblRelationshipTitle.Name = "lblRelationshipTitle"
+        lblRelationshipTitle.Size = New Size(73, 15)
+        lblRelationshipTitle.TabIndex = 10
+        lblRelationshipTitle.Text = "Relationship"
+        ' 
+        ' lblRelationshipValue
+        ' 
+        lblRelationshipValue.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        lblRelationshipValue.BorderStyle = BorderStyle.FixedSingle
+        lblRelationshipValue.Font = New Font("Segoe UI", 9F)
+        lblRelationshipValue.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblRelationshipValue.Location = New Point(315, 92)
+        lblRelationshipValue.Name = "lblRelationshipValue"
+        lblRelationshipValue.Padding = New Padding(8, 4, 8, 4)
+        lblRelationshipValue.Size = New Size(275, 34)
+        lblRelationshipValue.TabIndex = 11
+        lblRelationshipValue.Text = "Not provided"
+        lblRelationshipValue.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' lblEmergencyContactTitle
+        ' 
+        lblEmergencyContactTitle.AutoSize = True
+        lblEmergencyContactTitle.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblEmergencyContactTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblEmergencyContactTitle.Location = New Point(315, 134)
+        lblEmergencyContactTitle.Name = "lblEmergencyContactTitle"
+        lblEmergencyContactTitle.Size = New Size(155, 15)
+        lblEmergencyContactTitle.TabIndex = 12
+        lblEmergencyContactTitle.Text = "Emergency Contact Number"
+        ' 
+        ' lblEmergencyContactValue
+        ' 
+        lblEmergencyContactValue.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        lblEmergencyContactValue.BorderStyle = BorderStyle.FixedSingle
+        lblEmergencyContactValue.Font = New Font("Segoe UI", 9F)
+        lblEmergencyContactValue.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblEmergencyContactValue.Location = New Point(315, 152)
+        lblEmergencyContactValue.Name = "lblEmergencyContactValue"
+        lblEmergencyContactValue.Padding = New Padding(8, 4, 8, 4)
+        lblEmergencyContactValue.Size = New Size(275, 34)
+        lblEmergencyContactValue.TabIndex = 13
+        lblEmergencyContactValue.Text = "Not provided"
+        lblEmergencyContactValue.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' lblNotesTitle
+        ' 
+        lblNotesTitle.AutoSize = True
+        lblNotesTitle.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblNotesTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblNotesTitle.Location = New Point(315, 194)
+        lblNotesTitle.Name = "lblNotesTitle"
+        lblNotesTitle.Size = New Size(99, 15)
+        lblNotesTitle.TabIndex = 14
+        lblNotesTitle.Text = "Additional Notes"
+        ' 
+        ' lblNotesValue
+        ' 
+        lblNotesValue.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        lblNotesValue.BorderStyle = BorderStyle.FixedSingle
+        lblNotesValue.Font = New Font("Segoe UI", 9F)
+        lblNotesValue.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblNotesValue.Location = New Point(315, 212)
+        lblNotesValue.Name = "lblNotesValue"
+        lblNotesValue.Padding = New Padding(8, 4, 8, 4)
+        lblNotesValue.Size = New Size(275, 34)
+        lblNotesValue.TabIndex = 15
+        lblNotesValue.Text = "Not provided"
+        lblNotesValue.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' pnlGuidanceInfoNote
+        ' 
+        pnlGuidanceInfoNote.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlGuidanceInfoNote.BackColor = Color.FromArgb(CByte(239), CByte(246), CByte(255))
+        pnlGuidanceInfoNote.BorderStyle = BorderStyle.FixedSingle
+        pnlGuidanceInfoNote.Controls.Add(lblGuidanceInfoNote)
+        pnlGuidanceInfoNote.Controls.Add(lblGuidanceNoteIcon)
+        pnlGuidanceInfoNote.Location = New Point(20, 360)
+        pnlGuidanceInfoNote.Name = "pnlGuidanceInfoNote"
+        pnlGuidanceInfoNote.Padding = New Padding(8, 6, 8, 6)
+        pnlGuidanceInfoNote.Size = New Size(570, 52)
+        pnlGuidanceInfoNote.TabIndex = 16
+        ' 
+        ' lblGuidanceNoteIcon
+        ' 
+        lblGuidanceNoteIcon.AutoSize = True
+        lblGuidanceNoteIcon.Font = New Font("Segoe UI Emoji", 13F)
+        lblGuidanceNoteIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
+        lblGuidanceNoteIcon.Location = New Point(8, 12)
+        lblGuidanceNoteIcon.Name = "lblGuidanceNoteIcon"
+        lblGuidanceNoteIcon.Size = New Size(20, 24)
+        lblGuidanceNoteIcon.TabIndex = 0
+        lblGuidanceNoteIcon.Text = "ℹ"
+        ' 
+        ' lblGuidanceInfoNote
+        ' 
+        lblGuidanceInfoNote.Font = New Font("Segoe UI", 8.25F)
+        lblGuidanceInfoNote.ForeColor = Color.FromArgb(CByte(30), CByte(58), CByte(138))
+        lblGuidanceInfoNote.Location = New Point(34, 8)
+        lblGuidanceInfoNote.Name = "lblGuidanceInfoNote"
+        lblGuidanceInfoNote.Size = New Size(524, 34)
+        lblGuidanceInfoNote.TabIndex = 1
+        lblGuidanceInfoNote.Text = "This information was provided by the student as part of the Guidance Office requirement." & vbCrLf & "Please review the details before approving or rejecting this clearance."
+        ' 
+        '         ' 
         ' pnlDocumentCard
         ' 
-        pnlDocumentCard.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+pnlDocumentCard.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         pnlDocumentCard.BackColor = Color.White
         pnlDocumentCard.BorderStyle = BorderStyle.FixedSingle
         pnlDocumentCard.Controls.Add(cmbSubmittedFiles)
@@ -441,6 +793,8 @@ Partial Class ReviewClearanceForm
         pnlStudentInfoCard.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         pnlStudentInfoCard.BackColor = Color.White
         pnlStudentInfoCard.BorderStyle = BorderStyle.FixedSingle
+        pnlStudentInfoCard.Controls.Add(lblStatusVal)
+        pnlStudentInfoCard.Controls.Add(lblStatusTitle)
         pnlStudentInfoCard.Controls.Add(lblFileVal)
         pnlStudentInfoCard.Controls.Add(lblFileTitle)
         pnlStudentInfoCard.Controls.Add(lblDateVal)
@@ -464,6 +818,32 @@ Partial Class ReviewClearanceForm
         pnlStudentInfoCard.Padding = New Padding(14)
         pnlStudentInfoCard.Size = New Size(620, 160)
         pnlStudentInfoCard.TabIndex = 0
+        ' 
+        ' lblStatusTitle
+        ' 
+        lblStatusTitle.AutoSize = True
+        lblStatusTitle.Font = New Font("Segoe UI", 8F)
+        lblStatusTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblStatusTitle.Location = New Point(310, 126)
+        lblStatusTitle.Name = "lblStatusTitle"
+        lblStatusTitle.Size = New Size(42, 13)
+        lblStatusTitle.TabIndex = 18
+        lblStatusTitle.Text = "Status :"
+        lblStatusTitle.Visible = False
+        ' 
+        ' lblStatusVal
+        ' 
+        lblStatusVal.BackColor = Color.FromArgb(CByte(219), CByte(234), CByte(254))
+        lblStatusVal.Font = New Font("Segoe UI Semibold", 8F, FontStyle.Bold)
+        lblStatusVal.ForeColor = Color.FromArgb(CByte(30), CByte(64), CByte(175))
+        lblStatusVal.Location = New Point(400, 122)
+        lblStatusVal.Name = "lblStatusVal"
+        lblStatusVal.Size = New Size(110, 22)
+        lblStatusVal.TabIndex = 19
+        lblStatusVal.Text = "Under Review"
+        lblStatusVal.TextAlign = ContentAlignment.MiddleCenter
+        lblStatusVal.Visible = False
+        ' 
         ' 
         ' lblFileVal
         ' 
@@ -982,6 +1362,13 @@ Partial Class ReviewClearanceForm
         pnlStaffBadge.ResumeLayout(False)
         pnlStaffBadge.PerformLayout()
         pnlLeftSection.ResumeLayout(False)
+        pnlGuidanceInfoNote.ResumeLayout(False)
+        pnlGuidanceInfoNote.PerformLayout()
+        pnlGuidanceBody.ResumeLayout(False)
+        pnlGuidanceBody.PerformLayout()
+        pnlGuidanceHeader.ResumeLayout(False)
+        pnlGuidanceHeader.PerformLayout()
+        pnlGuidanceInfo.ResumeLayout(False)
         pnlDocumentCard.ResumeLayout(False)
         pnlDocumentCard.PerformLayout()
         pnlDocPreview.ResumeLayout(False)
@@ -1068,4 +1455,31 @@ Partial Class ReviewClearanceForm
     Friend WithEvents lblTimelineEmpty As Label
 
     Friend WithEvents cmbSubmittedFiles As ComboBox
+    Friend WithEvents pnlGuidanceInfo As Panel
+    Friend WithEvents pnlGuidanceHeader As Panel
+    Friend WithEvents lblGuidanceIcon As Label
+    Friend WithEvents lblGuidanceInfoTitle As Label
+    Friend WithEvents lblGuidanceInfoSubtitle As Label
+    Friend WithEvents pnlGuidanceBody As Panel
+    Friend WithEvents lblAddressTitle As Label
+    Friend WithEvents lblAddressValue As Label
+    Friend WithEvents lblContactTitle As Label
+    Friend WithEvents lblContactValue As Label
+    Friend WithEvents lblEmailTitle As Label
+    Friend WithEvents lblEmailValue As Label
+    Friend WithEvents lblCivilStatusTitle As Label
+    Friend WithEvents lblCivilStatusValue As Label
+    Friend WithEvents lblEmergencyNameTitle As Label
+    Friend WithEvents lblEmergencyNameValue As Label
+    Friend WithEvents lblRelationshipTitle As Label
+    Friend WithEvents lblRelationshipValue As Label
+    Friend WithEvents lblEmergencyContactTitle As Label
+    Friend WithEvents lblEmergencyContactValue As Label
+    Friend WithEvents lblNotesTitle As Label
+    Friend WithEvents lblNotesValue As Label
+    Friend WithEvents pnlGuidanceInfoNote As Panel
+    Friend WithEvents lblGuidanceNoteIcon As Label
+    Friend WithEvents lblGuidanceInfoNote As Label
+    Friend WithEvents lblStatusTitle As Label
+    Friend WithEvents lblStatusVal As Label
 End Class

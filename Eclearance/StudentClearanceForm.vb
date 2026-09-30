@@ -480,24 +480,53 @@ Public Class StudentClearanceForm
 
         Dim hasFile As Boolean = (Not String.IsNullOrWhiteSpace(item.SubmittedFileName) OrElse item.FileCount > 0)
 
-        If hasFile Then
+        If item.RequiresFile Then
             pnlFile.Visible = True
-            Dim displayFileName As String = item.SubmittedFileName
-            If item.FileCount > 1 Then
-                displayFileName &= " (+" & (item.FileCount - 1).ToString() & " more)"
-            End If
-            lblFileNm.Text = displayFileName
+            pnlFile.BackColor = Color.FromArgb(248, 250, 252)
 
-            Dim submittedAtText As String = "Submitted file"
-            If item.SubmittedAt IsNot Nothing AndAlso Not IsDBNull(item.SubmittedAt) Then
-                Dim submittedDate As DateTime = Convert.ToDateTime(item.SubmittedAt)
-                submittedAtText = "Submitted " & submittedDate.ToString("MMM dd, yyyy hh:mm tt")
+            If hasFile Then
+                Dim displayFileName As String = item.SubmittedFileName
+                If item.FileCount > 1 Then
+                    displayFileName &= " (+" & (item.FileCount - 1).ToString() & " more)"
+                End If
+                lblFileIco.Text = "📄"
+                lblFileNm.Text = displayFileName
+
+                Dim submittedAtText As String = "Submitted file"
+                If item.SubmittedAt IsNot Nothing AndAlso Not IsDBNull(item.SubmittedAt) Then
+                    Dim submittedDate As DateTime = Convert.ToDateTime(item.SubmittedAt)
+                    submittedAtText = "Submitted " & submittedDate.ToString("MMM dd, yyyy hh:mm tt")
+                End If
+                lblFileDt.Text = submittedAtText
+                lblFileDt.ForeColor = Color.FromArgb(148, 163, 184)
+            Else
+                lblFileIco.Text = "📄"
+                lblFileNm.Text = "No document uploaded"
+                lblFileDt.Text = "Upload required"
+                lblFileDt.ForeColor = Color.FromArgb(148, 163, 184)
             End If
-            lblFileDt.Text = submittedAtText
+
+            If item.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
+                pnlFile.BackColor = Color.FromArgb(254, 242, 242)
+                lblFileIco.Text = "⚠️"
+                If Not String.IsNullOrWhiteSpace(item.Remarks) Then
+                    lblFileNm.Text = "Remarks: " & item.Remarks
+                    lblFileDt.Text = "Please upload corrected document"
+                    lblFileDt.ForeColor = Color.FromArgb(220, 38, 38)
+                End If
+            End If
         Else
-            pnlFile.Visible = True
-            lblFileNm.Text = "No document uploaded"
-            lblFileDt.Text = If(item.RequiresFile, "Upload required", "No file required")
+            ' RequiresFile = False: Hide empty document box, or show rejection remarks if rejected
+            If item.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
+                pnlFile.Visible = True
+                pnlFile.BackColor = Color.FromArgb(254, 242, 242)
+                lblFileIco.Text = "⚠️"
+                lblFileNm.Text = If(Not String.IsNullOrWhiteSpace(item.Remarks), "Remarks: " & item.Remarks, "Remarks: Requirement not approved by office.")
+                lblFileDt.Text = "Action required to proceed with re-evaluation"
+                lblFileDt.ForeColor = Color.FromArgb(220, 38, 38)
+            Else
+                pnlFile.Visible = False
+            End If
         End If
 
         btnAct.Tag = item
@@ -576,7 +605,7 @@ Public Class StudentClearanceForm
                 button.ForeColor = Color.FromArgb(148, 163, 184)
 
             Case "cleared"
-                If hasFile Then
+                If item.RequiresFile AndAlso hasFile Then
                     button.Text = "Cleared - View document"
                     button.Enabled = True
                     button.BackColor = Color.FromArgb(22, 163, 74)
@@ -589,7 +618,7 @@ Public Class StudentClearanceForm
                 End If
 
             Case "under review"
-                If hasFile Then
+                If item.RequiresFile AndAlso hasFile Then
                     button.Text = "View submitted document"
                     button.Enabled = True
                     button.BackColor = Color.FromArgb(59, 130, 246)
@@ -602,10 +631,17 @@ Public Class StudentClearanceForm
                 End If
 
             Case "rejected"
-                button.Text = "Upload corrected document"
-                button.Enabled = True
-                button.BackColor = Color.FromArgb(220, 38, 38)
-                button.ForeColor = Color.White
+                If item.RequiresFile Then
+                    button.Text = "Upload corrected document"
+                    button.Enabled = True
+                    button.BackColor = Color.FromArgb(220, 38, 38)
+                    button.ForeColor = Color.White
+                Else
+                    button.Text = "🔄 Request Re-evaluation"
+                    button.Enabled = True
+                    button.BackColor = Color.FromArgb(11, 99, 229)
+                    button.ForeColor = Color.White
+                End If
 
             Case Else ' "pending"
                 If Not item.RequiresFile Then
@@ -636,13 +672,22 @@ Public Class StudentClearanceForm
 
         If button Is Nothing Then Return
 
+        Dim isGuidance As Boolean = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
+
         If Not item.RequiresFile Then
-            button.Enabled = False
-            button.BackColor = Color.FromArgb(226, 232, 240)
-            button.ForeColor = Color.FromArgb(148, 163, 184)
-            button.Text = "No file required"
+            If isGuidance Then
+                button.Visible = True
+                button.Enabled = True
+                button.Text = "✏️ Update Information"
+                button.BackColor = Color.FromArgb(241, 245, 249)
+                button.ForeColor = Color.FromArgb(30, 41, 59)
+            Else
+                button.Visible = False
+            End If
             Return
         End If
+
+        button.Visible = True
 
         If item.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
             button.Enabled = False
@@ -744,17 +789,23 @@ Public Class StudentClearanceForm
             Return
         End If
 
+        ' If Rejected and RequiresFile = False -> Request Re-evaluation
+        If item.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) AndAlso Not item.RequiresFile Then
+            RequestReevaluation(item)
+            Return
+        End If
+
         ' If Under Review or Cleared with file, open file viewer
-        If item.EffectiveStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase) OrElse
-           item.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
+        If (item.EffectiveStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase) OrElse
+            item.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase)) AndAlso item.RequiresFile Then
             If Not String.IsNullOrWhiteSpace(item.SubmittedFilePath) Then
                 OpenSubmittedDocument(item.SubmittedFilePath)
             End If
             Return
         End If
 
-        ' Upload requirement (Pending or Rejected)
-        If item.CanSubmit Then
+        ' Upload requirement (Pending or Rejected) for file-based requirements
+        If item.RequiresFile AndAlso item.CanSubmit Then
             Using uploadModal As New UploadClearanceModalForm()
                 uploadModal.RecordID = item.RecordID
                 uploadModal.DepartmentName = item.DepartmentName
@@ -784,6 +835,14 @@ Public Class StudentClearanceForm
         End If
 
         Dim item = DirectCast(button.Tag, ClearanceWorkflowHelper.ClearanceItemInfo)
+
+        ' If button is "Update Information" for Guidance
+        If Not item.RequiresFile Then
+            If item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance") Then
+                OpenGuidanceUpdateModal(item)
+            End If
+            Return
+        End If
 
         If item.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
             MessageBox.Show("A cleared clearance requirement cannot be removed.", "Cannot Remove", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -924,6 +983,71 @@ Public Class StudentClearanceForm
     End Sub
 
 
+    Private Sub OpenGuidanceUpdateModal(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+        Using modal As New ViewRequirementModalForm()
+            modal.DepartmentName = item.DepartmentName
+            modal.RequirementName = item.RequirementName
+            modal.SequenceOrder = item.SequenceOrder
+            modal.EffectiveStatus = item.EffectiveStatus
+            modal.InstructionsText = item.Instructions
+            modal.RequiresFile = item.RequiresFile
+            modal.RequirementLink = item.RequirementLink
+            modal.IsGuidanceOffice = True
+
+            modal.ShowDialog(Me)
+        End Using
+
+        LoadClearanceData()
+    End Sub
+
+
+    Private Sub RequestReevaluation(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+        Dim msg As String =
+            "Have you completed the required evaluation and updated any necessary information for " & item.DepartmentName & "?" & Environment.NewLine & Environment.NewLine &
+            "Click Yes to submit a request for re-evaluation to the office."
+
+        Dim res As DialogResult = MessageBox.Show(msg, "Request Re-evaluation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        If res <> DialogResult.Yes Then Return
+
+        Try
+            ' 1. Update ClearanceRecords Status to 'Under Review'
+            Dim updateSql As String =
+                "UPDATE ClearanceRecords " &
+                "SET Status = 'Under Review', " &
+                "    SubmittedAt = NOW() " &
+                "WHERE RecordID = @RecordID AND StudentID = @StudentID;"
+
+            db.ExecuteNonQuery(updateSql, New Dictionary(Of String, Object) From {
+                {"@RecordID", item.RecordID},
+                {"@StudentID", AppSession.UserID}
+            })
+
+            ' 2. Log History
+            Dim histSql As String =
+                "INSERT INTO ClearanceHistory (RecordID, ActionType, OldStatus, NewStatus, Remarks, ActionAt, ActionBy) " &
+                "VALUES (@RecordID, 'Re-evaluation Requested', 'Rejected', 'Under Review', 'Student requested re-evaluation after addressing remarks.', NOW(), @StudentID);"
+
+            db.ExecuteNonQuery(histSql, New Dictionary(Of String, Object) From {
+                {"@RecordID", item.RecordID},
+                {"@StudentID", AppSession.UserID}
+            })
+
+            MessageBox.Show(
+                "Your request for re-evaluation has been submitted to " & item.DepartmentName & "." & Environment.NewLine &
+                "The clearing officer will review your request.",
+                "Re-evaluation Requested",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            )
+
+            LoadClearanceData()
+
+        Catch ex As Exception
+            MessageBox.Show("Unable to submit re-evaluation request: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+
     ' ============================================================
     ' UPDATE PROGRESS (BASED ON APPLICABLE REQUIREMENTS ONLY)
     ' ============================================================
@@ -967,7 +1091,11 @@ Public Class StudentClearanceForm
             If currentStep IsNot Nothing Then
                 lblAttentionTitle.Text = "Current Step: " & currentStep.DepartmentName & " (" & currentStep.EffectiveStatus & ")"
                 If currentStep.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
-                    lblAttentionDesc.Text = "Your submission was rejected by the office. Please review the remarks and upload a corrected document."
+                    If currentStep.RequiresFile Then
+                        lblAttentionDesc.Text = "Your submission was rejected by the office. Please review the remarks and upload a corrected document."
+                    Else
+                        lblAttentionDesc.Text = "Your clearance was rejected by the office. Please review the remarks and request re-evaluation."
+                    End If
                 ElseIf currentStep.EffectiveStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase) Then
                     lblAttentionDesc.Text = "Your submission is currently under review by " & currentStep.DepartmentName & "."
                 Else
