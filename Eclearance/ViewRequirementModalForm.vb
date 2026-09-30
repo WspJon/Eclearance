@@ -1,4 +1,5 @@
 Imports System.Diagnostics
+Imports System.Text.RegularExpressions
 Imports MySql.Data.MySqlClient
 
 Public Class ViewRequirementModalForm
@@ -73,7 +74,7 @@ Public Class ViewRequirementModalForm
     Private Sub LoadGuidanceStudentInfo()
         Try
             Dim query As String =
-                "SELECT ContactNo, Address, EmergencyContactName, EmergencyContactNo " &
+                "SELECT ContactNo, Email, Address, CivilStatus, EmergencyContactName, Relationship, EmergencyContactNo, AdditionalNotes " &
                 "FROM Users WHERE UserID = @UserID LIMIT 1;"
 
             Dim dt = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
@@ -83,9 +84,27 @@ Public Class ViewRequirementModalForm
             If dt.Rows.Count > 0 Then
                 Dim row = dt.Rows(0)
                 txtContactNo.Text = If(IsDBNull(row("ContactNo")), "", row("ContactNo").ToString())
+                txtEmail.Text = If(IsDBNull(row("Email")), "", row("Email").ToString())
                 txtAddress.Text = If(IsDBNull(row("Address")), "", row("Address").ToString())
+
+                Dim civil = If(IsDBNull(row("CivilStatus")), "", row("CivilStatus").ToString())
+                If Not String.IsNullOrWhiteSpace(civil) AndAlso cmbCivilStatus.Items.Contains(civil) Then
+                    cmbCivilStatus.SelectedItem = civil
+                Else
+                    cmbCivilStatus.SelectedIndex = -1
+                End If
+
                 txtEmergencyContactName.Text = If(IsDBNull(row("EmergencyContactName")), "", row("EmergencyContactName").ToString())
+
+                Dim rel = If(IsDBNull(row("Relationship")), "", row("Relationship").ToString())
+                If Not String.IsNullOrWhiteSpace(rel) AndAlso cmbRelationship.Items.Contains(rel) Then
+                    cmbRelationship.SelectedItem = rel
+                Else
+                    cmbRelationship.SelectedIndex = -1
+                End If
+
                 txtEmergencyContactNo.Text = If(IsDBNull(row("EmergencyContactNo")), "", row("EmergencyContactNo").ToString())
+                txtAdditionalNotes.Text = If(IsDBNull(row("AdditionalNotes")), "", row("AdditionalNotes").ToString())
             End If
         Catch ex As Exception
             ' Keep blank fallback
@@ -94,12 +113,79 @@ Public Class ViewRequirementModalForm
 
     Private Sub btnSaveGuidanceInfo_Click(sender As Object, e As EventArgs) Handles btnSaveGuidanceInfo.Click
         Dim contact = txtContactNo.Text.Trim()
+        Dim email = txtEmail.Text.Trim()
         Dim address = txtAddress.Text.Trim()
+        Dim civil = If(cmbCivilStatus.SelectedItem, "").ToString().Trim()
         Dim emName = txtEmergencyContactName.Text.Trim()
+        Dim relationship = If(cmbRelationship.SelectedItem, "").ToString().Trim()
         Dim emNo = txtEmergencyContactNo.Text.Trim()
+        Dim notes = txtAdditionalNotes.Text.Trim()
 
-        If String.IsNullOrWhiteSpace(contact) OrElse String.IsNullOrWhiteSpace(address) Then
-            MessageBox.Show("Please provide at least your Contact Number and Current Address.", "Information Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        ' 1. Validate Student Contact Number: Required, 11 digits, numbers only, starts with 09
+        If Not Regex.IsMatch(contact, "^09\d{9}$") Then
+            MessageBox.Show("Student contact number must be exactly 11 digits and start with '09' (e.g., 09123456789).", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtContactNo.Focus()
+            Return
+        End If
+
+        ' 2. Validate Email: Required, basic email format
+        If Not Regex.IsMatch(email, "^[^@\s]+@[^@\s]+\.[^@\s]+$") Then
+            MessageBox.Show("Please enter a valid email address (e.g., student@email.com).", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtEmail.Focus()
+            Return
+        End If
+
+        ' 3. Validate Address: Required, minimum 5 characters
+        If address.Length < 5 Then
+            MessageBox.Show("Please enter a valid current address (at least 5 characters).", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtAddress.Focus()
+            Return
+        End If
+
+        ' 4. Validate Civil Status: Required selection
+        If String.IsNullOrWhiteSpace(civil) OrElse cmbCivilStatus.SelectedIndex < 0 Then
+            MessageBox.Show("Please select a Civil Status from the dropdown.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            cmbCivilStatus.Focus()
+            Return
+        End If
+
+        ' 5. Validate Emergency Contact Person: Required, letters/spaces/hyphens/periods/apostrophes
+        If String.IsNullOrWhiteSpace(emName) OrElse Not Regex.IsMatch(emName, "^[a-zA-Z\s\.\-']+$") Then
+            MessageBox.Show("Please enter a valid emergency contact person name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtEmergencyContactName.Focus()
+            Return
+        End If
+
+        ' 6. Validate Relationship: Required selection
+        If String.IsNullOrWhiteSpace(relationship) OrElse cmbRelationship.SelectedIndex < 0 Then
+            MessageBox.Show("Please select the relationship to the emergency contact person.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            cmbRelationship.Focus()
+            Return
+        End If
+
+        ' 7. Validate Emergency Contact Number: Required, 11 digits, numbers only, starts with 09
+        If Not Regex.IsMatch(emNo, "^09\d{9}$") Then
+            MessageBox.Show("Emergency contact number must be exactly 11 digits and start with '09' (e.g., 09123456789).", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtEmergencyContactNo.Focus()
+            Return
+        End If
+
+        ' 8. Additional Notes: Max 500 characters
+        If notes.Length > 500 Then
+            MessageBox.Show("Additional notes cannot exceed 500 characters.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtAdditionalNotes.Focus()
+            Return
+        End If
+
+        ' Confirmation Dialog
+        Dim confirmResult = MessageBox.Show(
+            "Are you sure the information you entered is correct?",
+            "Confirm Guidance Information Update",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question
+        )
+
+        If confirmResult <> DialogResult.Yes Then
             Return
         End If
 
@@ -107,21 +193,47 @@ Public Class ViewRequirementModalForm
             Dim updateSql As String =
                 "UPDATE Users SET " &
                 "  ContactNo = @ContactNo, " &
+                "  Email = @Email, " &
                 "  Address = @Address, " &
+                "  CivilStatus = @CivilStatus, " &
                 "  EmergencyContactName = @EmergencyContactName, " &
+                "  Relationship = @Relationship, " &
                 "  EmergencyContactNo = @EmergencyContactNo, " &
+                "  AdditionalNotes = @AdditionalNotes, " &
                 "  GuidanceInfoUpdated = 1 " &
                 "WHERE UserID = @UserID;"
 
             Dim params As New Dictionary(Of String, Object) From {
                 {"@ContactNo", contact},
+                {"@Email", email},
                 {"@Address", address},
+                {"@CivilStatus", civil},
                 {"@EmergencyContactName", emName},
+                {"@Relationship", relationship},
                 {"@EmergencyContactNo", emNo},
+                {"@AdditionalNotes", notes},
                 {"@UserID", AppSession.UserID}
             }
 
             db.ExecuteNonQuery(updateSql, params)
+
+            ' Also update student's active Guidance clearance record to 'Under Review' so staff can review it
+            Try
+                Dim updateRecordSql As String =
+                    "UPDATE ClearanceRecords cr " &
+                    "INNER JOIN ClearanceRequirements req ON cr.RequirementID = req.RequirementID " &
+                    "SET cr.Status = 'Under Review', cr.SubmittedAt = NOW() " &
+                    "WHERE cr.StudentID = @UserID " &
+                    "  AND (req.DepartmentID = 6 OR req.RequirementName LIKE '%Guidance%') " &
+                    "  AND cr.Status IN ('Pending', 'Rejected');"
+
+                db.ExecuteNonQuery(updateRecordSql, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
+
+                EffectiveStatus = "Under Review"
+                lblStatusBadge.Text = "Under Review"
+                ApplyStatusStyle(lblStatusBadge, "Under Review")
+            Catch
+            End Try
 
             MessageBox.Show("Student personal information updated successfully for Guidance records.", "Guidance Updated", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Catch ex As Exception

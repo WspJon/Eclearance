@@ -256,6 +256,7 @@ Partial Class StaffRequestsForm
         dgvRequests.AllowUserToDeleteRows = False
         dgvRequests.AllowUserToResizeRows = False
         dgvRequests.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        dgvRequests.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvRequests.BackgroundColor = Color.White
         dgvRequests.BorderStyle = BorderStyle.None
         dgvRequests.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
@@ -292,9 +293,11 @@ Partial Class StaffRequestsForm
         ' 
         ' colReqNum
         ' 
+        colReqNum.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
         colReqNum.HeaderText = "#"
         colReqNum.Name = "colReqNum"
         colReqNum.ReadOnly = True
+        colReqNum.Resizable = DataGridViewTriState.False
         colReqNum.Width = 40
         ' 
         ' colReqRecordID
@@ -306,48 +309,48 @@ Partial Class StaffRequestsForm
         ' 
         ' colReqStudentNo
         ' 
+        colReqStudentNo.FillWeight = 15.0F
         colReqStudentNo.HeaderText = "Student No."
         colReqStudentNo.Name = "colReqStudentNo"
         colReqStudentNo.ReadOnly = True
-        colReqStudentNo.Width = 110
         ' 
         ' colReqStudentName
         ' 
+        colReqStudentName.FillWeight = 25.0F
         colReqStudentName.HeaderText = "Student Name"
         colReqStudentName.Name = "colReqStudentName"
         colReqStudentName.ReadOnly = True
-        colReqStudentName.Width = 180
         ' 
         ' colReqRequirement
         ' 
+        colReqRequirement.FillWeight = 25.0F
         colReqRequirement.HeaderText = "Requirement"
         colReqRequirement.Name = "colReqRequirement"
         colReqRequirement.ReadOnly = True
-        colReqRequirement.Width = 160
         ' 
         ' colReqSubmittedAt
         ' 
+        colReqSubmittedAt.FillWeight = 20.0F
         colReqSubmittedAt.HeaderText = "Submitted At"
         colReqSubmittedAt.Name = "colReqSubmittedAt"
         colReqSubmittedAt.ReadOnly = True
-        colReqSubmittedAt.Width = 150
         ' 
         ' colReqStatus
         ' 
+        colReqStatus.FillWeight = 15.0F
         colReqStatus.HeaderText = "Status"
         colReqStatus.Name = "colReqStatus"
         colReqStatus.ReadOnly = True
-        colReqStatus.Width = 110
         ' 
         ' colReqAction
         ' 
+        colReqAction.FillWeight = 15.0F
         colReqAction.FlatStyle = FlatStyle.Flat
         colReqAction.HeaderText = "Action"
         colReqAction.Name = "colReqAction"
         colReqAction.ReadOnly = True
         colReqAction.Text = "Review"
         colReqAction.UseColumnTextForButtonValue = True
-        colReqAction.Width = 100
         ' 
         ' lblRecordCount
         ' 

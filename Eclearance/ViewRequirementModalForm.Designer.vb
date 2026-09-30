@@ -28,10 +28,18 @@ Partial Class ViewRequirementModalForm
         lblEmergencyContactNo = New Label()
         txtEmergencyContactName = New TextBox()
         lblEmergencyContactName = New Label()
+        lblRelationship = New Label()
+        cmbRelationship = New ComboBox()
+        lblCivilStatus = New Label()
+        cmbCivilStatus = New ComboBox()
         txtAddress = New TextBox()
         lblAddress = New Label()
+        lblEmail = New Label()
+        txtEmail = New TextBox()
         txtContactNo = New TextBox()
         lblContactNo = New Label()
+        lblAdditionalNotes = New Label()
+        txtAdditionalNotes = New TextBox()
         lblGuidanceHeader = New Label()
         pnlLinkSection = New Panel()
         btnOpenLink = New Button()
@@ -123,19 +131,27 @@ Partial Class ViewRequirementModalForm
         pnlGuidanceSection.BorderStyle = BorderStyle.FixedSingle
         pnlGuidanceSection.Controls.Add(lblGuidanceNotice)
         pnlGuidanceSection.Controls.Add(btnSaveGuidanceInfo)
+        pnlGuidanceSection.Controls.Add(txtAdditionalNotes)
+        pnlGuidanceSection.Controls.Add(lblAdditionalNotes)
         pnlGuidanceSection.Controls.Add(txtEmergencyContactNo)
         pnlGuidanceSection.Controls.Add(lblEmergencyContactNo)
         pnlGuidanceSection.Controls.Add(txtEmergencyContactName)
         pnlGuidanceSection.Controls.Add(lblEmergencyContactName)
+        pnlGuidanceSection.Controls.Add(cmbRelationship)
+        pnlGuidanceSection.Controls.Add(lblRelationship)
+        pnlGuidanceSection.Controls.Add(cmbCivilStatus)
+        pnlGuidanceSection.Controls.Add(lblCivilStatus)
         pnlGuidanceSection.Controls.Add(txtAddress)
         pnlGuidanceSection.Controls.Add(lblAddress)
+        pnlGuidanceSection.Controls.Add(txtEmail)
+        pnlGuidanceSection.Controls.Add(lblEmail)
         pnlGuidanceSection.Controls.Add(txtContactNo)
         pnlGuidanceSection.Controls.Add(lblContactNo)
         pnlGuidanceSection.Controls.Add(lblGuidanceHeader)
         pnlGuidanceSection.Location = New Point(16, 260)
         pnlGuidanceSection.Name = "pnlGuidanceSection"
         pnlGuidanceSection.Padding = New Padding(12)
-        pnlGuidanceSection.Size = New Size(470, 290)
+        pnlGuidanceSection.Size = New Size(470, 385)
         pnlGuidanceSection.TabIndex = 6
         pnlGuidanceSection.Visible = False
         ' 
@@ -147,8 +163,186 @@ Partial Class ViewRequirementModalForm
         lblGuidanceNotice.Location = New Point(12, 32)
         lblGuidanceNotice.Name = "lblGuidanceNotice"
         lblGuidanceNotice.Size = New Size(362, 13)
-        lblGuidanceNotice.TabIndex = 10
+        lblGuidanceNotice.TabIndex = 18
         lblGuidanceNotice.Text = "Old students are required to update student personal information for records."
+        ' 
+        ' lblContactNo
+        ' 
+        lblContactNo.AutoSize = True
+        lblContactNo.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblContactNo.ForeColor = Color.FromArgb(71, 85, 105)
+        lblContactNo.Location = New Point(12, 54)
+        lblContactNo.Name = "lblContactNo"
+        lblContactNo.Size = New Size(122, 15)
+        lblContactNo.TabIndex = 1
+        lblContactNo.Text = "Student Contact No. *"
+        ' 
+        ' txtContactNo
+        ' 
+        txtContactNo.BorderStyle = BorderStyle.FixedSingle
+        txtContactNo.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        txtContactNo.Location = New Point(12, 72)
+        txtContactNo.MaxLength = 11
+        txtContactNo.Name = "txtContactNo"
+        txtContactNo.PlaceholderText = "09xxxxxxxxx"
+        txtContactNo.Size = New Size(215, 23)
+        txtContactNo.TabIndex = 2
+        ' 
+        ' lblEmail
+        ' 
+        lblEmail.AutoSize = True
+        lblEmail.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblEmail.ForeColor = Color.FromArgb(71, 85, 105)
+        lblEmail.Location = New Point(241, 54)
+        lblEmail.Name = "lblEmail"
+        lblEmail.Size = New Size(88, 15)
+        lblEmail.TabIndex = 3
+        lblEmail.Text = "Email Address *"
+        ' 
+        ' txtEmail
+        ' 
+        txtEmail.BorderStyle = BorderStyle.FixedSingle
+        txtEmail.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        txtEmail.Location = New Point(241, 72)
+        txtEmail.MaxLength = 100
+        txtEmail.Name = "txtEmail"
+        txtEmail.PlaceholderText = "student@email.com"
+        txtEmail.Size = New Size(215, 23)
+        txtEmail.TabIndex = 4
+        ' 
+        ' lblAddress
+        ' 
+        lblAddress.AutoSize = True
+        lblAddress.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblAddress.ForeColor = Color.FromArgb(71, 85, 105)
+        lblAddress.Location = New Point(12, 102)
+        lblAddress.Name = "lblAddress"
+        lblAddress.Size = New Size(100, 15)
+        lblAddress.TabIndex = 5
+        lblAddress.Text = "Current Address *"
+        ' 
+        ' txtAddress
+        ' 
+        txtAddress.BorderStyle = BorderStyle.FixedSingle
+        txtAddress.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        txtAddress.Location = New Point(12, 120)
+        txtAddress.MaxLength = 255
+        txtAddress.Name = "txtAddress"
+        txtAddress.PlaceholderText = "House No., Street, Barangay, City/Municipality"
+        txtAddress.Size = New Size(444, 23)
+        txtAddress.TabIndex = 6
+        ' 
+        ' lblCivilStatus
+        ' 
+        lblCivilStatus.AutoSize = True
+        lblCivilStatus.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblCivilStatus.ForeColor = Color.FromArgb(71, 85, 105)
+        lblCivilStatus.Location = New Point(12, 150)
+        lblCivilStatus.Name = "lblCivilStatus"
+        lblCivilStatus.Size = New Size(73, 15)
+        lblCivilStatus.TabIndex = 7
+        lblCivilStatus.Text = "Civil Status *"
+        ' 
+        ' cmbCivilStatus
+        ' 
+        cmbCivilStatus.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbCivilStatus.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        cmbCivilStatus.FormattingEnabled = True
+        cmbCivilStatus.Items.AddRange(New Object() {"Single", "Married", "Widowed", "Separated", "Other"})
+        cmbCivilStatus.Location = New Point(12, 168)
+        cmbCivilStatus.Name = "cmbCivilStatus"
+        cmbCivilStatus.Size = New Size(215, 23)
+        cmbCivilStatus.TabIndex = 8
+        ' 
+        ' lblRelationship
+        ' 
+        lblRelationship.AutoSize = True
+        lblRelationship.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblRelationship.ForeColor = Color.FromArgb(71, 85, 105)
+        lblRelationship.Location = New Point(241, 150)
+        lblRelationship.Name = "lblRelationship"
+        lblRelationship.Size = New Size(140, 15)
+        lblRelationship.TabIndex = 9
+        lblRelationship.Text = "Relationship to Contact *"
+        ' 
+        ' cmbRelationship
+        ' 
+        cmbRelationship.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbRelationship.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        cmbRelationship.FormattingEnabled = True
+        cmbRelationship.Items.AddRange(New Object() {"Mother", "Father", "Guardian", "Sibling", "Relative", "Other"})
+        cmbRelationship.Location = New Point(241, 168)
+        cmbRelationship.Name = "cmbRelationship"
+        cmbRelationship.Size = New Size(215, 23)
+        cmbRelationship.TabIndex = 10
+        ' 
+        ' lblEmergencyContactName
+        ' 
+        lblEmergencyContactName.AutoSize = True
+        lblEmergencyContactName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblEmergencyContactName.ForeColor = Color.FromArgb(71, 85, 105)
+        lblEmergencyContactName.Location = New Point(12, 198)
+        lblEmergencyContactName.Name = "lblEmergencyContactName"
+        lblEmergencyContactName.Size = New Size(157, 15)
+        lblEmergencyContactName.TabIndex = 11
+        lblEmergencyContactName.Text = "Emergency Contact Person *"
+        ' 
+        ' txtEmergencyContactName
+        ' 
+        txtEmergencyContactName.BorderStyle = BorderStyle.FixedSingle
+        txtEmergencyContactName.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        txtEmergencyContactName.Location = New Point(12, 216)
+        txtEmergencyContactName.MaxLength = 100
+        txtEmergencyContactName.Name = "txtEmergencyContactName"
+        txtEmergencyContactName.PlaceholderText = "Full Name of Contact Person"
+        txtEmergencyContactName.Size = New Size(215, 23)
+        txtEmergencyContactName.TabIndex = 12
+        ' 
+        ' lblEmergencyContactNo
+        ' 
+        lblEmergencyContactNo.AutoSize = True
+        lblEmergencyContactNo.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblEmergencyContactNo.ForeColor = Color.FromArgb(71, 85, 105)
+        lblEmergencyContactNo.Location = New Point(241, 198)
+        lblEmergencyContactNo.Name = "lblEmergencyContactNo"
+        lblEmergencyContactNo.Size = New Size(143, 15)
+        lblEmergencyContactNo.TabIndex = 13
+        lblEmergencyContactNo.Text = "Emergency Contact No. *"
+        ' 
+        ' txtEmergencyContactNo
+        ' 
+        txtEmergencyContactNo.BorderStyle = BorderStyle.FixedSingle
+        txtEmergencyContactNo.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        txtEmergencyContactNo.Location = New Point(241, 216)
+        txtEmergencyContactNo.MaxLength = 11
+        txtEmergencyContactNo.Name = "txtEmergencyContactNo"
+        txtEmergencyContactNo.PlaceholderText = "09xxxxxxxxx"
+        txtEmergencyContactNo.Size = New Size(215, 23)
+        txtEmergencyContactNo.TabIndex = 14
+        ' 
+        ' lblAdditionalNotes
+        ' 
+        lblAdditionalNotes.AutoSize = True
+        lblAdditionalNotes.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblAdditionalNotes.ForeColor = Color.FromArgb(71, 85, 105)
+        lblAdditionalNotes.Location = New Point(12, 246)
+        lblAdditionalNotes.Name = "lblAdditionalNotes"
+        lblAdditionalNotes.Size = New Size(149, 15)
+        lblAdditionalNotes.TabIndex = 15
+        lblAdditionalNotes.Text = "Additional Notes (Optional)"
+        ' 
+        ' txtAdditionalNotes
+        ' 
+        txtAdditionalNotes.BorderStyle = BorderStyle.FixedSingle
+        txtAdditionalNotes.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        txtAdditionalNotes.Location = New Point(12, 264)
+        txtAdditionalNotes.MaxLength = 500
+        txtAdditionalNotes.Multiline = True
+        txtAdditionalNotes.Name = "txtAdditionalNotes"
+        txtAdditionalNotes.PlaceholderText = "Any medical conditions, remarks, or notes..."
+        txtAdditionalNotes.ScrollBars = ScrollBars.Vertical
+        txtAdditionalNotes.Size = New Size(444, 55)
+        txtAdditionalNotes.TabIndex = 16
         ' 
         ' btnSaveGuidanceInfo
         ' 
@@ -158,92 +352,12 @@ Partial Class ViewRequirementModalForm
         btnSaveGuidanceInfo.FlatStyle = FlatStyle.Flat
         btnSaveGuidanceInfo.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
         btnSaveGuidanceInfo.ForeColor = Color.White
-        btnSaveGuidanceInfo.Location = New Point(12, 245)
+        btnSaveGuidanceInfo.Location = New Point(12, 332)
         btnSaveGuidanceInfo.Name = "btnSaveGuidanceInfo"
-        btnSaveGuidanceInfo.Size = New Size(190, 32)
-        btnSaveGuidanceInfo.TabIndex = 9
+        btnSaveGuidanceInfo.Size = New Size(200, 34)
+        btnSaveGuidanceInfo.TabIndex = 17
         btnSaveGuidanceInfo.Text = "Save & Update Information"
         btnSaveGuidanceInfo.UseVisualStyleBackColor = False
-        ' 
-        ' txtEmergencyContactNo
-        ' 
-        txtEmergencyContactNo.BorderStyle = BorderStyle.FixedSingle
-        txtEmergencyContactNo.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        txtEmergencyContactNo.Location = New Point(238, 206)
-        txtEmergencyContactNo.Name = "txtEmergencyContactNo"
-        txtEmergencyContactNo.Size = New Size(218, 23)
-        txtEmergencyContactNo.TabIndex = 8
-        ' 
-        ' lblEmergencyContactNo
-        ' 
-        lblEmergencyContactNo.AutoSize = True
-        lblEmergencyContactNo.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblEmergencyContactNo.ForeColor = Color.FromArgb(71, 85, 105)
-        lblEmergencyContactNo.Location = New Point(238, 188)
-        lblEmergencyContactNo.Name = "lblEmergencyContactNo"
-        lblEmergencyContactNo.Size = New Size(136, 15)
-        lblEmergencyContactNo.TabIndex = 7
-        lblEmergencyContactNo.Text = "Emergency Contact No."
-        ' 
-        ' txtEmergencyContactName
-        ' 
-        txtEmergencyContactName.BorderStyle = BorderStyle.FixedSingle
-        txtEmergencyContactName.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        txtEmergencyContactName.Location = New Point(12, 206)
-        txtEmergencyContactName.Name = "txtEmergencyContactName"
-        txtEmergencyContactName.Size = New Size(218, 23)
-        txtEmergencyContactName.TabIndex = 6
-        ' 
-        ' lblEmergencyContactName
-        ' 
-        lblEmergencyContactName.AutoSize = True
-        lblEmergencyContactName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblEmergencyContactName.ForeColor = Color.FromArgb(71, 85, 105)
-        lblEmergencyContactName.Location = New Point(12, 188)
-        lblEmergencyContactName.Name = "lblEmergencyContactName"
-        lblEmergencyContactName.Size = New Size(150, 15)
-        lblEmergencyContactName.TabIndex = 5
-        lblEmergencyContactName.Text = "Emergency Contact Person"
-        ' 
-        ' txtAddress
-        ' 
-        txtAddress.BorderStyle = BorderStyle.FixedSingle
-        txtAddress.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        txtAddress.Location = New Point(12, 154)
-        txtAddress.Name = "txtAddress"
-        txtAddress.Size = New Size(444, 23)
-        txtAddress.TabIndex = 4
-        ' 
-        ' lblAddress
-        ' 
-        lblAddress.AutoSize = True
-        lblAddress.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblAddress.ForeColor = Color.FromArgb(71, 85, 105)
-        lblAddress.Location = New Point(12, 136)
-        lblAddress.Name = "lblAddress"
-        lblAddress.Size = New Size(93, 15)
-        lblAddress.TabIndex = 3
-        lblAddress.Text = "Current Address"
-        ' 
-        ' txtContactNo
-        ' 
-        txtContactNo.BorderStyle = BorderStyle.FixedSingle
-        txtContactNo.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        txtContactNo.Location = New Point(12, 74)
-        txtContactNo.Name = "txtContactNo"
-        txtContactNo.Size = New Size(218, 23)
-        txtContactNo.TabIndex = 2
-        ' 
-        ' lblContactNo
-        ' 
-        lblContactNo.AutoSize = True
-        lblContactNo.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblContactNo.ForeColor = Color.FromArgb(71, 85, 105)
-        lblContactNo.Location = New Point(12, 56)
-        lblContactNo.Name = "lblContactNo"
-        lblContactNo.Size = New Size(116, 15)
-        lblContactNo.TabIndex = 1
-        lblContactNo.Text = "Student Contact No."
         ' 
         ' lblGuidanceHeader
         ' 
@@ -479,12 +593,20 @@ Partial Class ViewRequirementModalForm
     Friend WithEvents lblGuidanceNotice As Label
     Friend WithEvents lblContactNo As Label
     Friend WithEvents txtContactNo As TextBox
+    Friend WithEvents lblEmail As Label
+    Friend WithEvents txtEmail As TextBox
     Friend WithEvents lblAddress As Label
     Friend WithEvents txtAddress As TextBox
+    Friend WithEvents lblCivilStatus As Label
+    Friend WithEvents cmbCivilStatus As ComboBox
+    Friend WithEvents lblRelationship As Label
+    Friend WithEvents cmbRelationship As ComboBox
     Friend WithEvents lblEmergencyContactName As Label
     Friend WithEvents txtEmergencyContactName As TextBox
     Friend WithEvents lblEmergencyContactNo As Label
     Friend WithEvents txtEmergencyContactNo As TextBox
+    Friend WithEvents lblAdditionalNotes As Label
+    Friend WithEvents txtAdditionalNotes As TextBox
     Friend WithEvents btnSaveGuidanceInfo As Button
     Friend WithEvents btnDismiss As Button
 

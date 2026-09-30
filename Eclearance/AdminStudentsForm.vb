@@ -1,5 +1,7 @@
 Public Class AdminStudentsForm
 
+    Private _isLoadingFilters As Boolean = False
+
     ' ============================================================
     ' FORM LOAD
     ' ============================================================
@@ -9,8 +11,172 @@ Public Class AdminStudentsForm
     ) Handles MyBase.Load
 
         LoadCurrentTermLabel()
+        InitializeFilters()
         LoadStudents()
 
+    End Sub
+
+    ' ============================================================
+    ' INITIALIZE FILTERS
+    ' ============================================================
+    Private Sub InitializeFilters()
+        _isLoadingFilters = True
+
+        Try
+            ' 1. Course Filter
+            cmbFilterCourse.Items.Clear()
+            cmbFilterCourse.Items.Add("All Courses")
+
+            Dim db As New DatabaseHelper()
+            Dim coursesFound As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
+
+            Try
+                Dim dtSections As DataTable = db.ExecuteQuery(
+                    "SELECT DISTINCT CourseName FROM Sections WHERE IsActive = 1 ORDER BY CourseName ASC;"
+                )
+                For Each r As DataRow In dtSections.Rows
+                    Dim cName As String = If(IsDBNull(r("CourseName")), "", r("CourseName").ToString().Trim())
+                    If Not String.IsNullOrWhiteSpace(cName) AndAlso coursesFound.Add(cName) Then
+                        cmbFilterCourse.Items.Add(cName)
+                    End If
+                Next
+            Catch
+            End Try
+
+            Try
+                Dim dtUsers As DataTable = db.ExecuteQuery(
+                    "SELECT DISTINCT Course FROM Users WHERE Role = 'Student' AND Course IS NOT NULL AND Course <> '' ORDER BY Course ASC;"
+                )
+                For Each r As DataRow In dtUsers.Rows
+                    Dim cName As String = If(IsDBNull(r("Course")), "", r("Course").ToString().Trim())
+                    If Not String.IsNullOrWhiteSpace(cName) AndAlso coursesFound.Add(cName) Then
+                        cmbFilterCourse.Items.Add(cName)
+                    End If
+                Next
+            Catch
+            End Try
+
+            If coursesFound.Count = 0 Then
+                Dim fallbackCourses As String() = {"BSIT", "BSBA", "BSA", "BSTM", "BSCpE", "BSHM", "CTHM"}
+                For Each c In fallbackCourses
+                    cmbFilterCourse.Items.Add(c)
+                Next
+            End If
+
+            cmbFilterCourse.SelectedIndex = 0
+
+            ' 2. Year Level Filter
+            cmbFilterYear.Items.Clear()
+            cmbFilterYear.Items.AddRange(New Object() {"All Year Levels", "1st Year", "2nd Year", "3rd Year", "4th Year"})
+            cmbFilterYear.SelectedIndex = 0
+
+            ' 3. Section Filter
+            PopulateSectionFilter()
+
+            ' 4. Status Filter
+            cmbFilterStatus.Items.Clear()
+            cmbFilterStatus.Items.AddRange(New Object() {"All Statuses", "Cleared", "In Progress", "Needs Attention"})
+            cmbFilterStatus.SelectedIndex = 0
+
+        Finally
+            _isLoadingFilters = False
+        End Try
+    End Sub
+
+    Private Sub PopulateSectionFilter()
+        cmbFilterSection.Items.Clear()
+        cmbFilterSection.Items.Add("All Sections")
+
+        Dim db As New DatabaseHelper()
+        Dim sectionsFound As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
+
+        Try
+            Dim selectedCourse As String = If(cmbFilterCourse.SelectedIndex > 0, cmbFilterCourse.SelectedItem.ToString(), "")
+
+            If String.IsNullOrWhiteSpace(selectedCourse) OrElse selectedCourse.Equals("All Courses", StringComparison.OrdinalIgnoreCase) Then
+                Dim dtSec As DataTable = db.ExecuteQuery(
+                    "SELECT DISTINCT SectionName FROM Sections WHERE IsActive = 1 ORDER BY SectionName ASC;"
+                )
+                For Each r As DataRow In dtSec.Rows
+                    Dim sName As String = If(IsDBNull(r("SectionName")), "", r("SectionName").ToString().Trim())
+                    If Not String.IsNullOrWhiteSpace(sName) AndAlso sectionsFound.Add(sName) Then
+                        cmbFilterSection.Items.Add(sName)
+                    End If
+                Next
+
+                Dim dtUserSec As DataTable = db.ExecuteQuery(
+                    "SELECT DISTINCT Section FROM Users WHERE Role = 'Student' AND Section IS NOT NULL AND Section <> '' ORDER BY Section ASC;"
+                )
+                For Each r As DataRow In dtUserSec.Rows
+                    Dim sName As String = If(IsDBNull(r("Section")), "", r("Section").ToString().Trim())
+                    If Not String.IsNullOrWhiteSpace(sName) AndAlso sectionsFound.Add(sName) Then
+                        cmbFilterSection.Items.Add(sName)
+                    End If
+                Next
+            Else
+                Dim dtSec As DataTable = db.ExecuteQuery(
+                    "SELECT SectionName FROM Sections WHERE CourseName = @Course AND IsActive = 1 ORDER BY SectionName ASC;",
+                    New Dictionary(Of String, Object) From {{"@Course", selectedCourse}}
+                )
+                For Each r As DataRow In dtSec.Rows
+                    Dim sName As String = If(IsDBNull(r("SectionName")), "", r("SectionName").ToString().Trim())
+                    If Not String.IsNullOrWhiteSpace(sName) AndAlso sectionsFound.Add(sName) Then
+                        cmbFilterSection.Items.Add(sName)
+                    End If
+                Next
+
+                Dim dtUserSec As DataTable = db.ExecuteQuery(
+                    "SELECT DISTINCT Section FROM Users WHERE Role = 'Student' AND Course = @Course AND Section IS NOT NULL AND Section <> '' ORDER BY Section ASC;",
+                    New Dictionary(Of String, Object) From {{"@Course", selectedCourse}}
+                )
+                For Each r As DataRow In dtUserSec.Rows
+                    Dim sName As String = If(IsDBNull(r("Section")), "", r("Section").ToString().Trim())
+                    If Not String.IsNullOrWhiteSpace(sName) AndAlso sectionsFound.Add(sName) Then
+                        cmbFilterSection.Items.Add(sName)
+                    End If
+                Next
+            End If
+        Catch
+        End Try
+
+        cmbFilterSection.SelectedIndex = 0
+    End Sub
+
+    ' ============================================================
+    ' FILTER EVENT HANDLERS
+    ' ============================================================
+    Private Sub cmbFilterCourse_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFilterCourse.SelectedIndexChanged
+        If _isLoadingFilters Then Return
+        _isLoadingFilters = True
+        PopulateSectionFilter()
+        _isLoadingFilters = False
+        LoadStudents()
+    End Sub
+
+    Private Sub cmbFilterYear_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFilterYear.SelectedIndexChanged
+        If _isLoadingFilters Then Return
+        LoadStudents()
+    End Sub
+
+    Private Sub cmbFilterSection_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFilterSection.SelectedIndexChanged
+        If _isLoadingFilters Then Return
+        LoadStudents()
+    End Sub
+
+    Private Sub cmbFilterStatus_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFilterStatus.SelectedIndexChanged
+        If _isLoadingFilters Then Return
+        LoadStudents()
+    End Sub
+
+    Private Sub btnResetFilters_Click(sender As Object, e As EventArgs) Handles btnResetFilters.Click
+        _isLoadingFilters = True
+        txtSearch.Text = ""
+        cmbFilterCourse.SelectedIndex = 0
+        cmbFilterYear.SelectedIndex = 0
+        PopulateSectionFilter()
+        cmbFilterStatus.SelectedIndex = 0
+        _isLoadingFilters = False
+        LoadStudents()
     End Sub
 
 
@@ -83,9 +249,11 @@ Public Class AdminStudentsForm
 
             dgvStudents.Rows.Clear()
 
-            Dim searchText As String =
-                txtSearch.Text.Trim()
-
+            Dim searchText As String = txtSearch.Text.Trim()
+            Dim selectedCourse As String = If(cmbFilterCourse.SelectedIndex > 0, cmbFilterCourse.SelectedItem.ToString(), "")
+            Dim selectedYear As String = If(cmbFilterYear.SelectedIndex > 0, cmbFilterYear.SelectedItem.ToString(), "")
+            Dim selectedSection As String = If(cmbFilterSection.SelectedIndex > 0, cmbFilterSection.SelectedItem.ToString(), "")
+            Dim selectedStatus As String = If(cmbFilterStatus.SelectedIndex > 0, cmbFilterStatus.SelectedItem.ToString(), "")
 
             Dim query As String =
                 "SELECT " &
@@ -93,34 +261,39 @@ Public Class AdminStudentsForm
                 "StudentNo, " &
                 "FullName, " &
                 "Course, " &
-                "YearLevel " &
+                "YearLevel, " &
+                "Section " &
                 "FROM Users " &
                 "WHERE Role = 'Student' " &
                 "AND IsActive = 1 "
 
-
             Dim parameters As New Dictionary(Of String, Object)()
 
-
             If Not String.IsNullOrWhiteSpace(searchText) Then
-
                 query &=
                     "AND (" &
                     "FullName LIKE @Search " &
                     "OR StudentNo LIKE @Search" &
                     ") "
-
-                parameters.Add(
-                    "@Search",
-                    "%" & searchText & "%"
-                )
-
+                parameters.Add("@Search", "%" & searchText & "%")
             End If
 
+            If Not String.IsNullOrWhiteSpace(selectedCourse) AndAlso Not selectedCourse.Equals("All Courses", StringComparison.OrdinalIgnoreCase) Then
+                query &= "AND Course = @Course "
+                parameters.Add("@Course", selectedCourse)
+            End If
 
-            query &=
-                "ORDER BY FullName ASC;"
+            If Not String.IsNullOrWhiteSpace(selectedYear) AndAlso Not selectedYear.Equals("All Year Levels", StringComparison.OrdinalIgnoreCase) Then
+                query &= "AND YearLevel = @YearLevel "
+                parameters.Add("@YearLevel", selectedYear)
+            End If
 
+            If Not String.IsNullOrWhiteSpace(selectedSection) AndAlso Not selectedSection.Equals("All Sections", StringComparison.OrdinalIgnoreCase) Then
+                query &= "AND Section = @Section "
+                parameters.Add("@Section", selectedSection)
+            End If
+
+            query &= "ORDER BY FullName ASC;"
 
             Dim db As New DatabaseHelper()
 
@@ -130,7 +303,6 @@ Public Class AdminStudentsForm
                     parameters
                 )
 
-
             For Each row As DataRow In table.Rows
 
                 Dim userID As Integer =
@@ -138,30 +310,41 @@ Public Class AdminStudentsForm
                         row("UserID")
                     )
 
-
                 Dim studentNo As String =
                     row("StudentNo").ToString()
-
 
                 Dim fullName As String =
                     row("FullName").ToString()
 
-
                 Dim course As String =
                     row("Course").ToString()
-
 
                 Dim yearLevel As String =
                     row("YearLevel").ToString()
 
-
                 Dim progressText As String =
                     GetStudentProgress(userID)
-
 
                 Dim statusText As String =
                     GetOverallStatus(userID)
 
+                ' Clearance Status Filter
+                If Not String.IsNullOrWhiteSpace(selectedStatus) AndAlso Not selectedStatus.Equals("All Statuses", StringComparison.OrdinalIgnoreCase) Then
+                    Select Case selectedStatus
+                        Case "Cleared"
+                            If Not statusText.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
+                                Continue For
+                            End If
+                        Case "In Progress"
+                            If Not (statusText.Equals("Pending", StringComparison.OrdinalIgnoreCase) OrElse statusText.Equals("Under Review", StringComparison.OrdinalIgnoreCase)) Then
+                                Continue For
+                            End If
+                        Case "Needs Attention"
+                            If Not statusText.Equals("Needs Attention", StringComparison.OrdinalIgnoreCase) Then
+                                Continue For
+                            End If
+                    End Select
+                End If
 
                 Dim rowIndex As Integer =
                     dgvStudents.Rows.Add(
@@ -173,17 +356,14 @@ Public Class AdminStudentsForm
                         statusText
                     )
 
-
                 dgvStudents.Rows(rowIndex).Tag =
                     userID
 
             Next
 
-
             UpdateStatistics()
 
             dgvClearanceDetails.Rows.Clear()
-
 
         Catch ex As Exception
 

@@ -67,9 +67,7 @@
     <Compile Update="StaffOfficesForm.Designer.vb">
       <DependentUpon>StaffOfficesForm.vb</DependentUpon>
     </Compile>
-    <Compile Update="StaffDashboardForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="StaffDashboardForm.vb" />
     <Compile Update="StaffDashboardForm.Designer.vb">
       <DependentUpon>StaffDashboardForm.vb</DependentUpon>
     </Compile>

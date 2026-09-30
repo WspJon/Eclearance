@@ -8,8 +8,6 @@ Public Class StudentClearanceForm
     Private ReadOnly db As New DatabaseHelper()
 
     Private allClearanceItems As New List(Of ClearanceWorkflowHelper.ClearanceItemInfo)()
-    Private filteredClearanceItems As New List(Of ClearanceWorkflowHelper.ClearanceItemInfo)()
-
 
     ' ============================================================
     ' FORM LOAD
@@ -20,99 +18,38 @@ Public Class StudentClearanceForm
     ) Handles MyBase.Load
 
         SetupStudentInformation()
-        SetupFilter()
         LoadClearanceData()
 
     End Sub
-
 
     ' ============================================================
     ' STUDENT INFORMATION
     ' ============================================================
     Private Sub SetupStudentInformation()
 
-        lblUserName.Text = AppSession.FullName
-        lblUserRole.Text = "Student"
-
-        lblStudentCourseYear.Text =
+        lblStudentName.Text = AppSession.FullName & "  ▾"
+        lblStudentDetails.Text =
+            AppSession.StudentNo &
+            " | " &
             AppSession.Course &
-            "  •  " &
+            " - " &
             AppSession.YearLevel
 
-        Dim initials As String = ""
-
-        If Not String.IsNullOrWhiteSpace(AppSession.FullName) Then
-
-            Dim names() As String =
-                AppSession.FullName.Split(
-                    " "c,
-                    StringSplitOptions.RemoveEmptyEntries
-                )
-
-            If names.Length >= 2 Then
-
-                initials =
-                    names(0).Substring(0, 1).ToUpper() &
-                    names(names.Length - 1).Substring(0, 1).ToUpper()
-
-            ElseIf names.Length = 1 Then
-
-                initials =
-                    names(0).Substring(0, 1).ToUpper()
-
-            End If
-
-        End If
-
-        lblUserAvatar.Text = initials
-
     End Sub
-
-
-    ' ============================================================
-    ' FILTER OPTIONS
-    ' ============================================================
-    Private Sub SetupFilter()
-
-        cmbFilterOffices.Items.Clear()
-
-        cmbFilterOffices.Items.Add("All offices")
-        cmbFilterOffices.Items.Add("Pending")
-        cmbFilterOffices.Items.Add("Under Review")
-        cmbFilterOffices.Items.Add("Cleared")
-        cmbFilterOffices.Items.Add("Rejected")
-        cmbFilterOffices.Items.Add("Locked")
-        cmbFilterOffices.Items.Add("Not Applicable")
-
-        cmbFilterOffices.SelectedIndex = 0
-
-    End Sub
-
 
     ' ============================================================
     ' LOAD ALL CLEARANCE DATA
     ' ============================================================
-    Private Sub LoadClearanceData()
+    Public Sub LoadClearanceData()
 
         Try
 
-            Dim activeTermID As Integer =
-                GetActiveTermID()
+            Dim activeTermID As Integer = GetActiveTermID()
 
             If activeTermID = 0 Then
-
-                lblTermBadge.Text = "No Active Term"
-                ClearOfficeCards()
-
-                lblProgressSub.Text = "No active clearance term"
-                lblProgressPercent.Text = "0%"
-                pbOverall.Value = 0
-
-                lblAttentionTitle.Text = "No clearance term available"
-                lblAttentionDesc.Text = "Please contact the administrator."
-
+                lblTermText.Text = "No Active Term"
+                ClearRows()
                 Return
-
             End If
 
             LoadCurrentTerm(activeTermID)
@@ -182,8 +119,7 @@ Public Class StudentClearanceForm
             ' Evaluate strict sequential clearance workflow
             ClearanceWorkflowHelper.EvaluateSequentialWorkflow(allClearanceItems, AppSession.Course, AppSession.YearLevel)
 
-            ApplyFilter()
-            UpdateProgress()
+            DisplayClearanceTable()
 
         Catch ex As Exception
 
@@ -200,7 +136,6 @@ Public Class StudentClearanceForm
         End Try
 
     End Sub
-
 
     ' ============================================================
     ' GET ACTIVE TERM ID
@@ -224,7 +159,6 @@ Public Class StudentClearanceForm
 
     End Function
 
-
     ' ============================================================
     ' DISPLAY CURRENT TERM
     ' ============================================================
@@ -244,308 +178,280 @@ Public Class StudentClearanceForm
 
         If dt.Rows.Count > 0 Then
             Dim row As DataRow = dt.Rows(0)
-            lblTermBadge.Text = row("AcademicYear").ToString() & " • " & row("Semester").ToString()
+            lblTermText.Text = "Academic Year: " & row("AcademicYear").ToString() & "  |  Semester: " & row("Semester").ToString()
         Else
-            lblTermBadge.Text = "Current Term"
+            lblTermText.Text = "Current Term"
         End If
 
     End Sub
 
-
     ' ============================================================
-    ' APPLY STATUS FILTER
+    ' DISPLAY CLEARANCE TABLE
     ' ============================================================
-    Private Sub ApplyFilter()
+    Private Sub DisplayClearanceTable()
 
-        filteredClearanceItems.Clear()
+        ClearRows()
 
-        Dim selectedFilter As String = "All offices"
+        Dim count As Integer = allClearanceItems.Count
 
-        If cmbFilterOffices.SelectedItem IsNot Nothing Then
-            selectedFilter = cmbFilterOffices.SelectedItem.ToString()
-        End If
-
-        For Each item In allClearanceItems
-            If selectedFilter = "All offices" OrElse
-               item.EffectiveStatus.Equals(selectedFilter, StringComparison.OrdinalIgnoreCase) Then
-                filteredClearanceItems.Add(item)
-            End If
+        For i As Integer = 0 To Math.Min(count - 1, 8)
+            PopulateRow(i, allClearanceItems(i))
         Next
 
-        DisplayOfficeCards()
+    End Sub
+
+    ' ============================================================
+    ' HIDE ALL ROWS
+    ' ============================================================
+    Private Sub ClearRows()
+
+        pnlRow1.Visible = False
+        pnlRow2.Visible = False
+        pnlRow3.Visible = False
+        pnlRow4.Visible = False
+        pnlRow5.Visible = False
+        pnlRow6.Visible = False
+        pnlRow7.Visible = False
+        pnlRow8.Visible = False
+        pnlRow9.Visible = False
 
     End Sub
 
-
     ' ============================================================
-    ' DISPLAY OFFICE CARDS (NATURAL SCROLLING)
+    ' POPULATE TABLE ROW
     ' ============================================================
-    Private Sub DisplayOfficeCards()
-
-        ClearOfficeCards()
-
-        Dim totalCount As Integer = allClearanceItems.Count
-        Dim filteredCount As Integer = filteredClearanceItems.Count
-
-        If filteredCount = 0 Then
-            lblShowingOffices.Text = "Showing 0 of " & totalCount.ToString() & " offices"
-            Return
-        End If
-
-        For i As Integer = 0 To Math.Min(filteredCount - 1, 8)
-            PopulateOfficeCard(i, filteredClearanceItems(i))
-        Next
-
-        lblShowingOffices.Text =
-            "Showing " & filteredCount.ToString() & " of " & totalCount.ToString() & " offices (Sequential Clearance)"
-
-    End Sub
-
-
-    ' ============================================================
-    ' HIDE/RESET OFFICE CARDS
-    ' ============================================================
-    Private Sub ClearOfficeCards()
-
-        pnlOfficeCard1.Visible = False
-        pnlOfficeCard2.Visible = False
-        pnlOfficeCard3.Visible = False
-        pnlOfficeCard4.Visible = False
-        pnlOfficeCard5.Visible = False
-        pnlOfficeCard6.Visible = False
-        pnlOfficeCard7.Visible = False
-        pnlOfficeCard8.Visible = False
-        pnlOfficeCard9.Visible = False
-
-    End Sub
-
-
-    ' ============================================================
-    ' POPULATE DESIGNER OFFICE CARD
-    ' ============================================================
-    Private Sub PopulateOfficeCard(
-        cardIndex As Integer,
+    Private Sub PopulateRow(
+        rowIndex As Integer,
         item As ClearanceWorkflowHelper.ClearanceItemInfo
     )
 
-        Dim cardPanel As Panel = Nothing
-        Dim lblIcon As Label = Nothing
-        Dim lblTitle As Label = Nothing
-        Dim lblBadge As Label = Nothing
-        Dim lblDesc As Label = Nothing
-        Dim pnlFile As Panel = Nothing
-        Dim lblFileIco As Label = Nothing
-        Dim lblFileNm As Label = Nothing
-        Dim lblFileDt As Label = Nothing
+        Dim rowPanel As Panel = Nothing
+        Dim lblNum As Label = Nothing
+        Dim lblDept As Label = Nothing
+        Dim lblReq As Label = Nothing
+        Dim lblStatus As Label = Nothing
         Dim btnAct As Button = Nothing
-        Dim btnRmv As Button = Nothing
         Dim btnViewReq As Button = Nothing
+        Dim lblDash As Label = Nothing
 
-        Select Case cardIndex
+        Select Case rowIndex
             Case 0
-                cardPanel = pnlOfficeCard1
-                lblIcon = lblOfficeIcon1
-                lblTitle = lblOfficeTitle1
-                lblBadge = lblOfficeStatusBadge1
-                lblDesc = lblOfficeDesc1
-                pnlFile = pnlFileAttach1
-                lblFileIco = lblFileIcon1
-                lblFileNm = lblFileName1
-                lblFileDt = lblFileDate1
+                rowPanel = pnlRow1
+                lblNum = lblNum1
+                lblDept = lblDept1
+                lblReq = lblReq1
+                lblStatus = lblStatus1
                 btnAct = btnAction1
-                btnRmv = btnrmvsub1
                 btnViewReq = btnViewReq1
-
+                lblDash = lblDash1
             Case 1
-                cardPanel = pnlOfficeCard2
-                lblIcon = lblOfficeIcon2
-                lblTitle = lblOfficeTitle2
-                lblBadge = lblOfficeStatusBadge2
-                lblDesc = lblOfficeDesc2
-                pnlFile = pnlFileAttach2
-                lblFileIco = lblFileIcon2
-                lblFileNm = lblFileName2
-                lblFileDt = lblFileDate2
+                rowPanel = pnlRow2
+                lblNum = lblNum2
+                lblDept = lblDept2
+                lblReq = lblReq2
+                lblStatus = lblStatus2
                 btnAct = btnAction2
-                btnRmv = btnrmvsub2
                 btnViewReq = btnViewReq2
-
+                lblDash = lblDash2
             Case 2
-                cardPanel = pnlOfficeCard3
-                lblIcon = lblOfficeIcon3
-                lblTitle = lblOfficeTitle3
-                lblBadge = lblOfficeStatusBadge3
-                lblDesc = lblOfficeDesc3
-                pnlFile = pnlFileAttach3
-                lblFileIco = lblFileIcon3
-                lblFileNm = lblFileName3
-                lblFileDt = lblFileDate3
+                rowPanel = pnlRow3
+                lblNum = lblNum3
+                lblDept = lblDept3
+                lblReq = lblReq3
+                lblStatus = lblStatus3
                 btnAct = btnAction3
-                btnRmv = btnrmvsub3
                 btnViewReq = btnViewReq3
-
+                lblDash = lblDash3
             Case 3
-                cardPanel = pnlOfficeCard4
-                lblIcon = lblOfficeIcon4
-                lblTitle = lblOfficeTitle4
-                lblBadge = lblOfficeStatusBadge4
-                lblDesc = lblOfficeDesc4
-                pnlFile = pnlFileAttach4
-                lblFileIco = lblFileIcon4
-                lblFileNm = lblFileName4
-                lblFileDt = lblFileDate4
+                rowPanel = pnlRow4
+                lblNum = lblNum4
+                lblDept = lblDept4
+                lblReq = lblReq4
+                lblStatus = lblStatus4
                 btnAct = btnAction4
-                btnRmv = btnrmvsub4
                 btnViewReq = btnViewReq4
-
+                lblDash = lblDash4
             Case 4
-                cardPanel = pnlOfficeCard5
-                lblIcon = lblOfficeIcon5
-                lblTitle = lblOfficeTitle5
-                lblBadge = lblOfficeStatusBadge5
-                lblDesc = lblOfficeDesc5
-                pnlFile = pnlFileAttach5
-                lblFileIco = lblFileIcon5
-                lblFileNm = lblFileName5
-                lblFileDt = lblFileDate5
+                rowPanel = pnlRow5
+                lblNum = lblNum5
+                lblDept = lblDept5
+                lblReq = lblReq5
+                lblStatus = lblStatus5
                 btnAct = btnAction5
-                btnRmv = btnrmvsub5
                 btnViewReq = btnViewReq5
-
+                lblDash = lblDash5
             Case 5
-                cardPanel = pnlOfficeCard6
-                lblIcon = lblOfficeIcon6
-                lblTitle = lblOfficeTitle6
-                lblBadge = lblOfficeStatusBadge6
-                lblDesc = lblOfficeDesc6
-                pnlFile = pnlFileAttach6
-                lblFileIco = lblFileIcon6
-                lblFileNm = lblFileName6
-                lblFileDt = lblFileDate6
+                rowPanel = pnlRow6
+                lblNum = lblNum6
+                lblDept = lblDept6
+                lblReq = lblReq6
+                lblStatus = lblStatus6
                 btnAct = btnAction6
-                btnRmv = btnrmvsub6
                 btnViewReq = btnViewReq6
-
+                lblDash = lblDash6
             Case 6
-                cardPanel = pnlOfficeCard7
-                lblIcon = lblOfficeIcon7
-                lblTitle = lblOfficeTitle7
-                lblBadge = lblOfficeStatusBadge7
-                lblDesc = lblOfficeDesc7
-                pnlFile = pnlFileAttach7
-                lblFileIco = lblFileIcon7
-                lblFileNm = lblFileName7
-                lblFileDt = lblFileDate7
+                rowPanel = pnlRow7
+                lblNum = lblNum7
+                lblDept = lblDept7
+                lblReq = lblReq7
+                lblStatus = lblStatus7
                 btnAct = btnAction7
-                btnRmv = btnrmvsub7
                 btnViewReq = btnViewReq7
-
+                lblDash = lblDash7
             Case 7
-                cardPanel = pnlOfficeCard8
-                lblIcon = lblOfficeIcon8
-                lblTitle = lblOfficeTitle8
-                lblBadge = lblOfficeStatusBadge8
-                lblDesc = lblOfficeDesc8
-                pnlFile = pnlFileAttach8
-                lblFileIco = lblFileIcon8
-                lblFileNm = lblFileName8
-                lblFileDt = lblFileDate8
+                rowPanel = pnlRow8
+                lblNum = lblNum8
+                lblDept = lblDept8
+                lblReq = lblReq8
+                lblStatus = lblStatus8
                 btnAct = btnAction8
-                btnRmv = btnrmvsub8
                 btnViewReq = btnViewReq8
-
+                lblDash = lblDash8
             Case 8
-                cardPanel = pnlOfficeCard9
-                lblIcon = lblOfficeIcon9
-                lblTitle = lblOfficeTitle9
-                lblBadge = lblOfficeStatusBadge9
-                lblDesc = lblOfficeDesc9
-                pnlFile = pnlFileAttach9
-                lblFileIco = lblFileIcon9
-                lblFileNm = lblFileName9
-                lblFileDt = lblFileDate9
+                rowPanel = pnlRow9
+                lblNum = lblNum9
+                lblDept = lblDept9
+                lblReq = lblReq9
+                lblStatus = lblStatus9
                 btnAct = btnAction9
-                btnRmv = btnrmvsub9
                 btnViewReq = btnViewReq9
-
+                lblDash = lblDash9
             Case Else
                 Return
         End Select
 
-        cardPanel.Visible = True
-        lblTitle.Text = item.SequenceOrder.ToString() & ". " & item.DepartmentName
-        lblDesc.Text = item.RequirementName & If(Not String.IsNullOrWhiteSpace(item.Instructions), " — " & item.Instructions, "")
-        lblBadge.Text = item.EffectiveStatus
-        ApplyStatusStyle(lblBadge, item.EffectiveStatus)
-
-        Dim hasFile As Boolean = (Not String.IsNullOrWhiteSpace(item.SubmittedFileName) OrElse item.FileCount > 0)
-
-        If item.RequiresFile Then
-            pnlFile.Visible = True
-            pnlFile.BackColor = Color.FromArgb(248, 250, 252)
-
-            If hasFile Then
-                Dim displayFileName As String = item.SubmittedFileName
-                If item.FileCount > 1 Then
-                    displayFileName &= " (+" & (item.FileCount - 1).ToString() & " more)"
-                End If
-                lblFileIco.Text = "📄"
-                lblFileNm.Text = displayFileName
-
-                Dim submittedAtText As String = "Submitted file"
-                If item.SubmittedAt IsNot Nothing AndAlso Not IsDBNull(item.SubmittedAt) Then
-                    Dim submittedDate As DateTime = Convert.ToDateTime(item.SubmittedAt)
-                    submittedAtText = "Submitted " & submittedDate.ToString("MMM dd, yyyy hh:mm tt")
-                End If
-                lblFileDt.Text = submittedAtText
-                lblFileDt.ForeColor = Color.FromArgb(148, 163, 184)
-            Else
-                lblFileIco.Text = "📄"
-                lblFileNm.Text = "No document uploaded"
-                lblFileDt.Text = "Upload required"
-                lblFileDt.ForeColor = Color.FromArgb(148, 163, 184)
-            End If
-
-            If item.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
-                pnlFile.BackColor = Color.FromArgb(254, 242, 242)
-                lblFileIco.Text = "⚠️"
-                If Not String.IsNullOrWhiteSpace(item.Remarks) Then
-                    lblFileNm.Text = "Remarks: " & item.Remarks
-                    lblFileDt.Text = "Please upload corrected document"
-                    lblFileDt.ForeColor = Color.FromArgb(220, 38, 38)
-                End If
-            End If
-        Else
-            ' RequiresFile = False: Hide empty document box, or show rejection remarks if rejected
-            If item.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
-                pnlFile.Visible = True
-                pnlFile.BackColor = Color.FromArgb(254, 242, 242)
-                lblFileIco.Text = "⚠️"
-                lblFileNm.Text = If(Not String.IsNullOrWhiteSpace(item.Remarks), "Remarks: " & item.Remarks, "Remarks: Requirement not approved by office.")
-                lblFileDt.Text = "Action required to proceed with re-evaluation"
-                lblFileDt.ForeColor = Color.FromArgb(220, 38, 38)
-            Else
-                pnlFile.Visible = False
-            End If
-        End If
+        rowPanel.Visible = True
+        lblNum.Text = (rowIndex + 1).ToString()
+        lblDept.Text = item.DepartmentName
+        lblReq.Text = If(String.IsNullOrWhiteSpace(item.Instructions), item.RequirementName, item.RequirementName & " — " & item.Instructions)
+        lblStatus.Text = item.EffectiveStatus
+        ApplyStatusStyle(lblStatus, item.EffectiveStatus)
 
         btnAct.Tag = item
-        ConfigureActionButton(btnAct, item, hasFile)
+        btnViewReq.Tag = item
 
-        If btnRmv IsNot Nothing Then
-            btnRmv.Tag = item
-            ConfigureRemoveButton(btnRmv, item, hasFile)
-        End If
+        Dim isGuidance As Boolean = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
+        Dim hasFile As Boolean = (Not String.IsNullOrWhiteSpace(item.SubmittedFileName) OrElse item.FileCount > 0)
 
-        If btnViewReq IsNot Nothing Then
-            btnViewReq.Tag = item
-        End If
+        Select Case item.EffectiveStatus.ToLowerInvariant()
+
+            Case "cleared"
+                btnAct.Visible = True
+                btnAct.Enabled = True
+                btnAct.Text = "View Details"
+                btnAct.BackColor = Color.FromArgb(226, 232, 240)
+                btnAct.ForeColor = Color.FromArgb(30, 41, 59)
+                btnAct.Size = New Size(110, 32)
+                btnAct.Location = New Point(0, 0)
+                btnViewReq.Visible = False
+                lblDash.Visible = False
+
+            Case "under review"
+                btnAct.Visible = True
+                btnAct.Enabled = True
+                btnAct.Text = "View Details"
+                btnAct.BackColor = Color.FromArgb(226, 232, 240)
+                btnAct.ForeColor = Color.FromArgb(30, 41, 59)
+                btnAct.Size = New Size(110, 32)
+                btnAct.Location = New Point(0, 0)
+                btnViewReq.Visible = False
+                lblDash.Visible = False
+
+            Case "pending"
+                If item.RequiresFile Then
+                    btnAct.Visible = True
+                    btnAct.Enabled = True
+                    btnAct.Text = "Upload Requirement"
+                    btnAct.BackColor = Color.FromArgb(2, 132, 199)
+                    btnAct.ForeColor = Color.White
+                    btnAct.Size = New Size(110, 32)
+                    btnAct.Location = New Point(0, 0)
+
+                    btnViewReq.Visible = True
+                    btnViewReq.Text = "View Requirements"
+                    btnViewReq.Location = New Point(116, 0)
+                    btnViewReq.Size = New Size(114, 32)
+
+                    lblDash.Visible = False
+                Else
+                    If isGuidance Then
+                        btnAct.Visible = True
+                        btnAct.Enabled = True
+                        btnAct.Text = "Update Information"
+                        btnAct.BackColor = Color.FromArgb(2, 132, 199)
+                        btnAct.ForeColor = Color.White
+                        btnAct.Size = New Size(110, 32)
+                        btnAct.Location = New Point(0, 0)
+
+                        btnViewReq.Visible = True
+                        btnViewReq.Text = "View Requirements"
+                        btnViewReq.Location = New Point(116, 0)
+                        btnViewReq.Size = New Size(114, 32)
+
+                        lblDash.Visible = False
+                    Else
+                        btnAct.Visible = False
+
+                        btnViewReq.Visible = True
+                        btnViewReq.Text = "View Requirements"
+                        btnViewReq.Location = New Point(0, 0)
+                        btnViewReq.Size = New Size(130, 32)
+
+                        lblDash.Visible = False
+                    End If
+                End If
+
+            Case "rejected"
+                If item.RequiresFile Then
+                    btnAct.Visible = True
+                    btnAct.Enabled = True
+                    btnAct.Text = "Upload Corrected"
+                    btnAct.BackColor = Color.FromArgb(220, 38, 38)
+                    btnAct.ForeColor = Color.White
+                    btnAct.Size = New Size(110, 32)
+                    btnAct.Location = New Point(0, 0)
+
+                    btnViewReq.Visible = True
+                    btnViewReq.Text = "View Requirements"
+                    btnViewReq.Location = New Point(116, 0)
+                    btnViewReq.Size = New Size(114, 32)
+
+                    lblDash.Visible = False
+                Else
+                    btnAct.Visible = True
+                    btnAct.Enabled = True
+                    btnAct.Text = "Request Re-evaluation"
+                    btnAct.BackColor = Color.FromArgb(2, 132, 199)
+                    btnAct.ForeColor = Color.White
+                    btnAct.Size = New Size(122, 32)
+                    btnAct.Location = New Point(0, 0)
+
+                    btnViewReq.Visible = True
+                    btnViewReq.Text = If(isGuidance, "Update Information", "View Requirements")
+                    btnViewReq.Location = New Point(126, 0)
+                    btnViewReq.Size = New Size(106, 32)
+
+                    lblDash.Visible = False
+                End If
+
+            Case "locked", "not applicable"
+                btnAct.Visible = False
+                btnViewReq.Visible = False
+                lblDash.Visible = True
+                lblDash.Text = "-"
+                lblDash.TextAlign = ContentAlignment.MiddleCenter
+
+            Case Else
+                btnAct.Visible = False
+                btnViewReq.Visible = True
+                lblDash.Visible = False
+
+        End Select
 
     End Sub
 
-
     ' ============================================================
-    ' STATUS COLORS
+    ' STATUS STYLING
     ' ============================================================
     Private Sub ApplyStatusStyle(
         lblStatus As Label,
@@ -555,7 +461,7 @@ Public Class StudentClearanceForm
         Select Case status.ToLowerInvariant()
             Case "cleared"
                 lblStatus.BackColor = Color.FromArgb(220, 252, 231)
-                lblStatus.ForeColor = Color.FromArgb(22, 101, 52)
+                lblStatus.ForeColor = Color.FromArgb(21, 128, 61)
 
             Case "under review"
                 lblStatus.BackColor = Color.FromArgb(219, 234, 254)
@@ -570,201 +476,18 @@ Public Class StudentClearanceForm
                 lblStatus.ForeColor = Color.FromArgb(100, 116, 139)
 
             Case "not applicable"
-                lblStatus.BackColor = Color.FromArgb(243, 244, 246)
-                lblStatus.ForeColor = Color.FromArgb(107, 114, 128)
+                lblStatus.BackColor = Color.FromArgb(241, 245, 249)
+                lblStatus.ForeColor = Color.FromArgb(100, 116, 139)
 
-            Case Else
+            Case Else ' Pending
                 lblStatus.BackColor = Color.FromArgb(254, 243, 199)
-                lblStatus.ForeColor = Color.FromArgb(146, 64, 14)
+                lblStatus.ForeColor = Color.FromArgb(180, 83, 9)
         End Select
 
     End Sub
 
-
     ' ============================================================
-    ' ACTION BUTTON APPEARANCE
-    ' ============================================================
-    Private Sub ConfigureActionButton(
-        button As Button,
-        item As ClearanceWorkflowHelper.ClearanceItemInfo,
-        hasFile As Boolean
-    )
-
-        Select Case item.EffectiveStatus.ToLowerInvariant()
-
-            Case "locked"
-                button.Text = "🔒 Locked"
-                button.Enabled = False
-                button.BackColor = Color.FromArgb(226, 232, 240)
-                button.ForeColor = Color.FromArgb(100, 116, 139)
-
-            Case "not applicable"
-                button.Text = "Not Applicable"
-                button.Enabled = False
-                button.BackColor = Color.FromArgb(243, 244, 246)
-                button.ForeColor = Color.FromArgb(148, 163, 184)
-
-            Case "cleared"
-                If item.RequiresFile AndAlso hasFile Then
-                    button.Text = "Cleared - View document"
-                    button.Enabled = True
-                    button.BackColor = Color.FromArgb(22, 163, 74)
-                    button.ForeColor = Color.White
-                Else
-                    button.Text = "Requirement cleared"
-                    button.Enabled = False
-                    button.BackColor = Color.FromArgb(220, 252, 231)
-                    button.ForeColor = Color.FromArgb(22, 101, 52)
-                End If
-
-            Case "under review"
-                If item.RequiresFile AndAlso hasFile Then
-                    button.Text = "View submitted document"
-                    button.Enabled = True
-                    button.BackColor = Color.FromArgb(59, 130, 246)
-                    button.ForeColor = Color.White
-                Else
-                    button.Text = "Under Review"
-                    button.Enabled = False
-                    button.BackColor = Color.FromArgb(219, 234, 254)
-                    button.ForeColor = Color.FromArgb(30, 64, 175)
-                End If
-
-            Case "rejected"
-                If item.RequiresFile Then
-                    button.Text = "Upload corrected document"
-                    button.Enabled = True
-                    button.BackColor = Color.FromArgb(220, 38, 38)
-                    button.ForeColor = Color.White
-                Else
-                    button.Text = "🔄 Request Re-evaluation"
-                    button.Enabled = True
-                    button.BackColor = Color.FromArgb(11, 99, 229)
-                    button.ForeColor = Color.White
-                End If
-
-            Case Else ' "pending"
-                If Not item.RequiresFile Then
-                    button.Text = "Waiting for office clearance"
-                    button.Enabled = False
-                    button.BackColor = Color.FromArgb(226, 232, 240)
-                    button.ForeColor = Color.FromArgb(100, 116, 139)
-                Else
-                    button.Text = "Upload requirement"
-                    button.Enabled = True
-                    button.BackColor = Color.FromArgb(11, 99, 229)
-                    button.ForeColor = Color.White
-                End If
-
-        End Select
-
-    End Sub
-
-
-    ' ============================================================
-    ' REMOVE BUTTON APPEARANCE
-    ' ============================================================
-    Private Sub ConfigureRemoveButton(
-        button As Button,
-        item As ClearanceWorkflowHelper.ClearanceItemInfo,
-        hasFile As Boolean
-    )
-
-        If button Is Nothing Then Return
-
-        Dim isGuidance As Boolean = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
-
-        If Not item.RequiresFile Then
-            If isGuidance Then
-                button.Visible = True
-                button.Enabled = True
-                button.Text = "✏️ Update Information"
-                button.BackColor = Color.FromArgb(241, 245, 249)
-                button.ForeColor = Color.FromArgb(30, 41, 59)
-            Else
-                button.Visible = False
-            End If
-            Return
-        End If
-
-        button.Visible = True
-
-        If item.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
-            button.Enabled = False
-            button.BackColor = Color.FromArgb(226, 232, 240)
-            button.ForeColor = Color.FromArgb(148, 163, 184)
-            button.Text = "Cleared - Locked"
-            Return
-        End If
-
-        If item.EffectiveStatus.Equals("Locked", StringComparison.OrdinalIgnoreCase) Then
-            button.Enabled = False
-            button.BackColor = Color.FromArgb(226, 232, 240)
-            button.ForeColor = Color.FromArgb(148, 163, 184)
-            button.Text = "🔒 Locked"
-            Return
-        End If
-
-        If item.EffectiveStatus.Equals("Not Applicable", StringComparison.OrdinalIgnoreCase) Then
-            button.Enabled = False
-            button.BackColor = Color.FromArgb(243, 244, 246)
-            button.ForeColor = Color.FromArgb(148, 163, 184)
-            button.Text = "Not Applicable"
-            Return
-        End If
-
-        If hasFile Then
-            button.Enabled = True
-            button.BackColor = Color.FromArgb(220, 38, 38)
-            button.ForeColor = Color.White
-            button.Text = "Remove submitted document"
-        Else
-            button.Enabled = False
-            button.BackColor = Color.FromArgb(226, 232, 240)
-            button.ForeColor = Color.FromArgb(148, 163, 184)
-            button.Text = "No document uploaded"
-        End If
-
-    End Sub
-
-
-    ' ============================================================
-    ' CARD VIEW REQUIREMENTS BUTTON CLICK
-    ' ============================================================
-    Private Sub ViewRequirementButton_Click(
-        sender As Object,
-        e As EventArgs
-    ) Handles btnViewReq1.Click, btnViewReq2.Click, btnViewReq3.Click, btnViewReq4.Click,
-              btnViewReq5.Click, btnViewReq6.Click, btnViewReq7.Click, btnViewReq8.Click, btnViewReq9.Click
-
-        Dim button = DirectCast(sender, Button)
-        If button.Tag Is Nothing OrElse Not (TypeOf button.Tag Is ClearanceWorkflowHelper.ClearanceItemInfo) Then
-            Return
-        End If
-
-        Dim item = DirectCast(button.Tag, ClearanceWorkflowHelper.ClearanceItemInfo)
-
-        Using modal As New ViewRequirementModalForm()
-            modal.DepartmentName = item.DepartmentName
-            modal.RequirementName = item.RequirementName
-            modal.SequenceOrder = item.SequenceOrder
-            modal.EffectiveStatus = item.EffectiveStatus
-            modal.InstructionsText = item.Instructions
-            modal.RequiresFile = item.RequiresFile
-            modal.RequirementLink = item.RequirementLink
-            modal.IsGuidanceOffice = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
-
-            modal.ShowDialog(Me)
-        End Using
-
-        ' Refresh data in case personal information was updated
-        LoadClearanceData()
-
-    End Sub
-
-
-    ' ============================================================
-    ' CARD ACTION BUTTON CLICK
+    ' PRIMARY ACTION BUTTON CLICK
     ' ============================================================
     Private Sub ClearanceActionButton_Click(
         sender As Object,
@@ -778,6 +501,7 @@ Public Class StudentClearanceForm
         End If
 
         Dim item = DirectCast(button.Tag, ClearanceWorkflowHelper.ClearanceItemInfo)
+        Dim isGuidance As Boolean = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
 
         If item.EffectiveStatus.Equals("Locked", StringComparison.OrdinalIgnoreCase) Then
             MessageBox.Show("This clearance step is currently locked. Complete the preceding applicable step to unlock it.", "Requirement Locked", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -789,22 +513,33 @@ Public Class StudentClearanceForm
             Return
         End If
 
-        ' If Rejected and RequiresFile = False -> Request Re-evaluation
-        If item.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) AndAlso Not item.RequiresFile Then
-            RequestReevaluation(item)
-            Return
-        End If
-
-        ' If Under Review or Cleared with file, open file viewer
-        If (item.EffectiveStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase) OrElse
-            item.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase)) AndAlso item.RequiresFile Then
-            If Not String.IsNullOrWhiteSpace(item.SubmittedFilePath) Then
-                OpenSubmittedDocument(item.SubmittedFilePath)
+        ' View Details (for Cleared or Under Review)
+        If button.Text.Equals("View Details", StringComparison.OrdinalIgnoreCase) Then
+            If isGuidance Then
+                OpenGuidanceUpdateModal(item)
+            Else
+                If item.RequiresFile AndAlso Not String.IsNullOrWhiteSpace(item.SubmittedFilePath) Then
+                    OpenSubmittedDocument(item.SubmittedFilePath)
+                Else
+                    OpenRequirementDetailsModal(item)
+                End If
             End If
             Return
         End If
 
-        ' Upload requirement (Pending or Rejected) for file-based requirements
+        ' Update Information (Guidance Pending / Rejected)
+        If button.Text.Equals("Update Information", StringComparison.OrdinalIgnoreCase) Then
+            OpenGuidanceUpdateModal(item)
+            Return
+        End If
+
+        ' Request Re-evaluation (Rejected non-file)
+        If button.Text.Equals("Request Re-evaluation", StringComparison.OrdinalIgnoreCase) Then
+            RequestReevaluation(item)
+            Return
+        End If
+
+        ' Upload Requirement / Upload Corrected
         If item.RequiresFile AndAlso item.CanSubmit Then
             Using uploadModal As New UploadClearanceModalForm()
                 uploadModal.RecordID = item.RecordID
@@ -819,15 +554,14 @@ Public Class StudentClearanceForm
 
     End Sub
 
-
     ' ============================================================
-    ' CARD REMOVE SUBMITTED DOCUMENT CLICK
+    ' SECONDARY VIEW REQUIREMENTS BUTTON CLICK
     ' ============================================================
-    Private Sub RemoveSubmittedDocumentButton_Click(
+    Private Sub ViewRequirementButton_Click(
         sender As Object,
         e As EventArgs
-    ) Handles btnrmvsub1.Click, btnrmvsub2.Click, btnrmvsub3.Click, btnrmvsub4.Click,
-              btnrmvsub5.Click, btnrmvsub6.Click, btnrmvsub7.Click, btnrmvsub8.Click, btnrmvsub9.Click
+    ) Handles btnViewReq1.Click, btnViewReq2.Click, btnViewReq3.Click, btnViewReq4.Click,
+              btnViewReq5.Click, btnViewReq6.Click, btnViewReq7.Click, btnViewReq8.Click, btnViewReq9.Click
 
         Dim button = DirectCast(sender, Button)
         If button.Tag Is Nothing OrElse Not (TypeOf button.Tag Is ClearanceWorkflowHelper.ClearanceItemInfo) Then
@@ -836,154 +570,42 @@ Public Class StudentClearanceForm
 
         Dim item = DirectCast(button.Tag, ClearanceWorkflowHelper.ClearanceItemInfo)
 
-        ' If button is "Update Information" for Guidance
-        If Not item.RequiresFile Then
-            If item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance") Then
-                OpenGuidanceUpdateModal(item)
-            End If
+        If button.Text.Equals("Update Information", StringComparison.OrdinalIgnoreCase) Then
+            OpenGuidanceUpdateModal(item)
             Return
         End If
 
-        If item.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
-            MessageBox.Show("A cleared clearance requirement cannot be removed.", "Cannot Remove", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Return
-        End If
-
-        If String.IsNullOrWhiteSpace(item.SubmittedFilePath) AndAlso item.FileCount = 0 Then
-            MessageBox.Show("There is no submitted document to remove.", "No Document", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Return
-        End If
-
-        Dim confirmResult As DialogResult = MessageBox.Show(
-            "Are you sure you want to remove your submitted document(s) for " & item.DepartmentName & "?" & Environment.NewLine & Environment.NewLine &
-            "Your submitted files will be removed and your clearance status will be reset to Pending.",
-            "Remove Submitted Documents",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Warning
-        )
-
-        If confirmResult <> DialogResult.Yes Then Return
-
-        ExecuteRemoveSubmittedDocuments(item.RecordID, item.SubmittedFilePath, item.EffectiveStatus)
+        OpenRequirementDetailsModal(item)
 
     End Sub
-
-
-    Private Sub ExecuteRemoveSubmittedDocuments(
-        recordID As Integer,
-        filePath As String,
-        oldStatus As String
-    )
-        Try
-            Using conn As MySqlConnection = db.GetConnection()
-                conn.Open()
-                Using transaction As MySqlTransaction = conn.BeginTransaction()
-                    Try
-                        ' 1. Delete rows from ClearanceRecordFiles
-                        Dim deleteFilesSql As String =
-                            "DELETE FROM ClearanceRecordFiles WHERE RecordID = @RecordID;"
-
-                        Using delFilesCmd As New MySqlCommand(deleteFilesSql, conn, transaction)
-                            delFilesCmd.Parameters.AddWithValue("@RecordID", recordID)
-                            delFilesCmd.ExecuteNonQuery()
-                        End Using
-
-                        ' 2. Update ClearanceRecords
-                        Dim updateQuery As String =
-                            "UPDATE ClearanceRecords " &
-                            "SET SubmittedFilePath = NULL, " &
-                            "SubmittedFileName = NULL, " &
-                            "SubmittedAt = NULL, " &
-                            "Status = 'Pending', " &
-                            "Remarks = NULL, " &
-                            "ReviewedBy = NULL, " &
-                            "ReviewedAt = NULL " &
-                            "WHERE RecordID = @RecordID AND StudentID = @StudentID;"
-
-                        Using updateCmd As New MySqlCommand(updateQuery, conn, transaction)
-                            updateCmd.Parameters.AddWithValue("@RecordID", recordID)
-                            updateCmd.Parameters.AddWithValue("@StudentID", AppSession.UserID)
-                            updateCmd.ExecuteNonQuery()
-                        End Using
-
-                        ' 3. Add History row
-                        Dim historyQuery As String =
-                            "INSERT INTO ClearanceHistory " &
-                            "(RecordID, ActionBy, ActionType, OldStatus, NewStatus, Remarks) " &
-                            "VALUES (@RecordID, @ActionBy, 'Document Removed', @OldStatus, 'Pending', 'Student removed submitted document');"
-
-                        Using histCmd As New MySqlCommand(historyQuery, conn, transaction)
-                            histCmd.Parameters.AddWithValue("@RecordID", recordID)
-                            histCmd.Parameters.AddWithValue("@ActionBy", AppSession.UserID)
-                            histCmd.Parameters.AddWithValue("@OldStatus", oldStatus)
-                            histCmd.ExecuteNonQuery()
-                        End Using
-
-                        transaction.Commit()
-
-                    Catch ex As Exception
-                        transaction.Rollback()
-                        Throw
-                    End Try
-                End Using
-            End Using
-
-            ' Delete physical file from disk if single path exists
-            If Not String.IsNullOrWhiteSpace(filePath) Then
-                Try
-                    Dim fullPath As String = filePath
-                    If Not Path.IsPathRooted(fullPath) Then
-                        fullPath = Path.Combine(Application.StartupPath, filePath)
-                    End If
-                    If File.Exists(fullPath) Then
-                        File.Delete(fullPath)
-                    End If
-                Catch
-                End Try
-            End If
-
-            MessageBox.Show(
-                "Your submitted documents have been removed successfully. Clearance status is now Pending.",
-                "Documents Removed",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            )
-
-            LoadClearanceData()
-
-        Catch ex As Exception
-            MessageBox.Show("Failed to remove submitted documents: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
 
     ' ============================================================
-    ' OPEN SUBMITTED DOCUMENT IN DEFAULT VIEWER
+    ' OPEN REQUIREMENT MODAL
     ' ============================================================
-    Private Sub OpenSubmittedDocument(filePath As String)
+    Private Sub OpenRequirementDetailsModal(item As ClearanceWorkflowHelper.ClearanceItemInfo)
 
-        If String.IsNullOrWhiteSpace(filePath) Then Return
+        Using modal As New ViewRequirementModalForm()
+            modal.DepartmentName = item.DepartmentName
+            modal.RequirementName = item.RequirementName
+            modal.SequenceOrder = item.SequenceOrder
+            modal.EffectiveStatus = item.EffectiveStatus
+            modal.InstructionsText = item.Instructions
+            modal.RequiresFile = item.RequiresFile
+            modal.RequirementLink = item.RequirementLink
+            modal.IsGuidanceOffice = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
 
-        Dim fullPath As String = filePath
-        If Not Path.IsPathRooted(fullPath) Then
-            fullPath = Path.Combine(Application.StartupPath, filePath)
-        End If
+            modal.ShowDialog(Me)
+        End Using
 
-        If Not File.Exists(fullPath) Then
-            MessageBox.Show("The submitted document could not be found at: " & Path.GetFileName(fullPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Return
-        End If
-
-        Try
-            Process.Start(New ProcessStartInfo(fullPath) With {.UseShellExecute = True})
-        Catch ex As Exception
-            MessageBox.Show("Unable to open the document: " & ex.Message, "Document Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
+        LoadClearanceData()
 
     End Sub
 
-
+    ' ============================================================
+    ' OPEN GUIDANCE UPDATE MODAL
+    ' ============================================================
     Private Sub OpenGuidanceUpdateModal(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+
         Using modal As New ViewRequirementModalForm()
             modal.DepartmentName = item.DepartmentName
             modal.RequirementName = item.RequirementName
@@ -998,10 +620,14 @@ Public Class StudentClearanceForm
         End Using
 
         LoadClearanceData()
+
     End Sub
 
-
+    ' ============================================================
+    ' REQUEST RE-EVALUATION
+    ' ============================================================
     Private Sub RequestReevaluation(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+
         Dim msg As String =
             "Have you completed the required evaluation and updated any necessary information for " & item.DepartmentName & "?" & Environment.NewLine & Environment.NewLine &
             "Click Yes to submit a request for re-evaluation to the office."
@@ -1045,98 +671,33 @@ Public Class StudentClearanceForm
         Catch ex As Exception
             MessageBox.Show("Unable to submit re-evaluation request: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+
     End Sub
 
-
     ' ============================================================
-    ' UPDATE PROGRESS (BASED ON APPLICABLE REQUIREMENTS ONLY)
+    ' OPEN SUBMITTED DOCUMENT
     ' ============================================================
-    Private Sub UpdateProgress()
+    Private Sub OpenSubmittedDocument(filePath As String)
 
-        Dim applicableItems = allClearanceItems.Where(Function(i) i.IsApplicable).ToList()
-        Dim totalApplicable As Integer = applicableItems.Count
+        If String.IsNullOrWhiteSpace(filePath) Then Return
 
-        If totalApplicable = 0 Then
-            pbOverall.Value = 0
-            lblProgressPercent.Text = "0%"
-            lblProgressSub.Text = "No applicable clearance requirements"
-            lblAttentionTitle.Text = "No clearance requirements"
-            lblAttentionDesc.Text = "No requirements are available for your current course/term."
+        Dim fullPath As String = filePath
+        If Not Path.IsPathRooted(fullPath) Then
+            fullPath = Path.Combine(Application.StartupPath, filePath)
+        End If
+
+        If Not File.Exists(fullPath) Then
+            MessageBox.Show("The submitted document could not be found at: " & Path.GetFileName(fullPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
 
-        Dim clearedCount As Integer = 0
-        For Each itm In applicableItems
-            If itm.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
-                clearedCount += 1
-            End If
-        Next
-
-        Dim percent As Integer =
-            CInt(Math.Round(clearedCount * 100.0 / totalApplicable))
-
-        percent = Math.Max(0, Math.Min(100, percent))
-
-        pbOverall.Value = percent
-        lblProgressPercent.Text = percent.ToString() & "%"
-        lblProgressSub.Text = clearedCount.ToString() & " of " & totalApplicable.ToString() & " applicable offices cleared"
-
-        If clearedCount = totalApplicable Then
-            lblAttentionTitle.Text = "🎉 Clearance Fully Cleared!"
-            lblAttentionDesc.Text = "Congratulations! All your applicable clearance requirements have been cleared."
-        Else
-            Dim currentStep =
-                allClearanceItems.FirstOrDefault(Function(i) i.IsApplicable AndAlso Not i.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase))
-
-            If currentStep IsNot Nothing Then
-                lblAttentionTitle.Text = "Current Step: " & currentStep.DepartmentName & " (" & currentStep.EffectiveStatus & ")"
-                If currentStep.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
-                    If currentStep.RequiresFile Then
-                        lblAttentionDesc.Text = "Your submission was rejected by the office. Please review the remarks and upload a corrected document."
-                    Else
-                        lblAttentionDesc.Text = "Your clearance was rejected by the office. Please review the remarks and request re-evaluation."
-                    End If
-                ElseIf currentStep.EffectiveStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase) Then
-                    lblAttentionDesc.Text = "Your submission is currently under review by " & currentStep.DepartmentName & "."
-                Else
-                    lblAttentionDesc.Text = "Complete this step to unlock the subsequent clearance requirements."
-                End If
-            Else
-                lblAttentionTitle.Text = "Clearance in Progress"
-                lblAttentionDesc.Text = "Complete pending clearance steps."
-            End If
-        End If
+        Try
+            Process.Start(New ProcessStartInfo(fullPath) With {.UseShellExecute = True})
+        Catch ex As Exception
+            MessageBox.Show("Unable to open the document: " & ex.Message, "Document Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
 
     End Sub
-
-
-    ' ============================================================
-    ' FILTER CHANGED
-    ' ============================================================
-    Private Sub cmbFilterOffices_SelectedIndexChanged(
-        sender As Object,
-        e As EventArgs
-    ) Handles cmbFilterOffices.SelectedIndexChanged
-
-        If Me.IsHandleCreated Then
-            ApplyFilter()
-        End If
-
-    End Sub
-
-
-    ' ============================================================
-    ' REFRESH
-    ' ============================================================
-    Private Sub btnRefresh_Click(
-        sender As Object,
-        e As EventArgs
-    ) Handles btnRefresh.Click
-
-        LoadClearanceData()
-
-    End Sub
-
 
     ' ============================================================
     ' NAVIGATION - MY CLEARANCE
@@ -1150,7 +711,6 @@ Public Class StudentClearanceForm
 
     End Sub
 
-
     ' ============================================================
     ' NAVIGATION - HISTORY
     ' ============================================================
@@ -1163,6 +723,33 @@ Public Class StudentClearanceForm
 
     End Sub
 
+    ' ============================================================
+    ' NAVIGATION - PROFILE
+    ' ============================================================
+    Private Sub btnNavProfile_Click(
+        sender As Object,
+        e As EventArgs
+    ) Handles btnNavProfile.Click
+
+        ' Open personal information update modal
+        Dim guidanceItem = allClearanceItems.FirstOrDefault(Function(i) i.SequenceOrder = 1 OrElse i.DepartmentName.ToLowerInvariant().Contains("guidance"))
+
+        If guidanceItem IsNot Nothing Then
+            OpenGuidanceUpdateModal(guidanceItem)
+        Else
+            MessageBox.Show(
+                "Student Profile:" & Environment.NewLine & Environment.NewLine &
+                "Name: " & AppSession.FullName & Environment.NewLine &
+                "Student No: " & AppSession.StudentNo & Environment.NewLine &
+                "Course: " & AppSession.Course & Environment.NewLine &
+                "Year Level: " & AppSession.YearLevel,
+                "Student Profile",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            )
+        End If
+
+    End Sub
 
     ' ============================================================
     ' SPA VIEW SWITCHING (SINGLE PAGE ARCHITECTURE)
@@ -1174,7 +761,7 @@ Public Class StudentClearanceForm
             pnlViewHost = New Panel()
             pnlViewHost.Dock = DockStyle.Fill
             pnlViewHost.Visible = False
-            pnlViewHost.BackColor = Color.FromArgb(244, 246, 250)
+            pnlViewHost.BackColor = Color.FromArgb(248, 250, 252)
             Me.Controls.Add(pnlViewHost)
         End If
     End Sub
@@ -1187,7 +774,6 @@ Public Class StudentClearanceForm
         End If
         pnlMain.Visible = True
         pnlMain.BringToFront()
-        cmbFilterOffices.SelectedIndex = 0
         LoadClearanceData()
     End Sub
 
@@ -1219,7 +805,7 @@ Public Class StudentClearanceForm
     End Sub
 
     Private Sub SetActiveNavButton(activeBtn As Button)
-        Dim navButtons As Button() = {btnNavMyClearance, btnNavHistory}
+        Dim navButtons As Button() = {btnNavMyClearance, btnNavHistory, btnNavProfile}
 
         For Each btn In navButtons
             If btn Is activeBtn Then
@@ -1233,7 +819,6 @@ Public Class StudentClearanceForm
             End If
         Next
     End Sub
-
 
     ' ============================================================
     ' LOGOUT

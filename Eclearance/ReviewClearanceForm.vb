@@ -11,6 +11,10 @@ Public Class ReviewClearanceForm
     Private currentDepartmentName As String = "Assigned Office"
     Private currentFilePath As String = ""
     Private currentStatus As String = "Pending"
+    Private _isGuidanceOffice As Boolean = False
+    Private _requiresFile As Boolean = True
+    Private _hasGuidanceInfo As Boolean = False
+    Private _hasSubmittedDocument As Boolean = False
 
     Private Sub ReviewClearanceForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Not AppSession.DepartmentID.HasValue Then
@@ -79,6 +83,7 @@ Public Class ReviewClearanceForm
                 "  u.Relationship, " &
                 "  u.EmergencyContactNo, " &
                 "  u.AdditionalNotes, " &
+                "  u.GuidanceInfoUpdated, " &
                 "  d.DepartmentID, " &
                 "  d.DepartmentName, " &
                 "  r.RequirementName, " &
@@ -133,7 +138,45 @@ Public Class ReviewClearanceForm
             Dim requiresFile As Boolean = Convert.ToBoolean(row("RequiresFile"))
             Dim isGuidanceOffice As Boolean = (deptID = 6 OrElse deptName.ToLowerInvariant().Contains("guidance"))
 
+            _isGuidanceOffice = isGuidanceOffice
+            _requiresFile = requiresFile
+
             If isGuidanceOffice Then
+                ' Check if student has actually submitted/provided their required Guidance information
+                Dim guidanceUpdated As Boolean = False
+                If Not IsDBNull(row("GuidanceInfoUpdated")) Then
+                    guidanceUpdated = Convert.ToBoolean(row("GuidanceInfoUpdated"))
+                End If
+
+                Dim addressStr = If(IsDBNull(row("Address")), "", row("Address").ToString().Trim())
+                Dim contactStr = If(IsDBNull(row("ContactNo")), "", row("ContactNo").ToString().Trim())
+                Dim emailStr = If(IsDBNull(row("Email")), "", row("Email").ToString().Trim())
+                Dim emNameStr = If(IsDBNull(row("EmergencyContactName")), "", row("EmergencyContactName").ToString().Trim())
+                Dim emNoStr = If(IsDBNull(row("EmergencyContactNo")), "", row("EmergencyContactNo").ToString().Trim())
+
+                ' Student has provided information if GuidanceInfoUpdated is True and core required fields are filled
+                _hasGuidanceInfo = guidanceUpdated AndAlso
+                                   (Not String.IsNullOrWhiteSpace(addressStr)) AndAlso
+                                   (Not String.IsNullOrWhiteSpace(contactStr)) AndAlso
+                                   (Not String.IsNullOrWhiteSpace(emailStr)) AndAlso
+                                   (Not String.IsNullOrWhiteSpace(emNameStr)) AndAlso
+                                   (Not String.IsNullOrWhiteSpace(emNoStr))
+
+                ' Update footer notice box dynamically
+                If Not _hasGuidanceInfo Then
+                    pnlGuidanceInfoNote.BackColor = Color.FromArgb(254, 242, 242)
+                    lblGuidanceNoteIcon.Text = "⚠️"
+                    lblGuidanceNoteIcon.ForeColor = Color.FromArgb(220, 38, 38)
+                    lblGuidanceInfoNote.ForeColor = Color.FromArgb(153, 27, 27)
+                    lblGuidanceInfoNote.Text = "The student has not yet submitted or updated their Guidance personal information." & vbCrLf & "Clearance cannot be approved until all required details are provided."
+                Else
+                    pnlGuidanceInfoNote.BackColor = Color.FromArgb(239, 246, 255)
+                    lblGuidanceNoteIcon.Text = "ℹ"
+                    lblGuidanceNoteIcon.ForeColor = Color.FromArgb(37, 99, 235)
+                    lblGuidanceInfoNote.ForeColor = Color.FromArgb(30, 58, 138)
+                    lblGuidanceInfoNote.Text = "This information was provided by the student as part of the Guidance Office requirement." & vbCrLf & "Please review the details before approving or rejecting this clearance."
+                End If
+
                 ' Guidance non-file mode: Show Guidance Information Update panel, hide document preview
                 pnlDocumentCard.Visible = False
                 pnlGuidanceInfo.Visible = True
@@ -211,6 +254,8 @@ Public Class ReviewClearanceForm
                     lblDocFileName.Visible = True
                     LoadDocumentPreview()
                 End Try
+
+                _hasSubmittedDocument = (Not String.IsNullOrWhiteSpace(currentFilePath)) OrElse (cmbSubmittedFiles.Items.Count > 0)
             End If
 
         Catch ex As Exception
@@ -386,6 +431,31 @@ Public Class ReviewClearanceForm
     Private Sub btnApprove_Click(sender As Object, e As EventArgs) Handles btnApprove.Click
         If Not AppSession.DepartmentID.HasValue Then
             MessageBox.Show("Security Error: Your account is not authorized for any department.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+
+        ' Validation: Guidance requirement without student information update cannot be approved!
+        If _isGuidanceOffice AndAlso Not _hasGuidanceInfo Then
+            MessageBox.Show(
+                "Cannot approve clearance: The student has not yet submitted or updated their required Guidance personal information." & vbCrLf & vbCrLf &
+                "The student must complete and submit their personal information update before Guidance clearance can be approved." & vbCrLf & vbCrLf &
+                "You may reject the request with remarks explaining what they need to provide, or wait for them to update their information.",
+                "Guidance Information Required",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            )
+            Return
+        End If
+
+        ' Validation: File-based requirement without any uploaded document cannot be approved!
+        If _requiresFile AndAlso Not _hasSubmittedDocument Then
+            MessageBox.Show(
+                "Cannot approve clearance: No document has been submitted by the student for this requirement." & vbCrLf & vbCrLf &
+                "The student must upload the required file before this clearance can be approved.",
+                "Document Required",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            )
             Return
         End If
 

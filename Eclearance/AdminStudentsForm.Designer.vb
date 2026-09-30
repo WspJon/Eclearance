@@ -54,6 +54,11 @@ Partial Class AdminStudentsForm
         colStatus = New DataGridViewTextBoxColumn()
         pnlSearchRow = New Panel()
         btnRefresh = New Button()
+        btnResetFilters = New Button()
+        cmbFilterStatus = New ComboBox()
+        cmbFilterSection = New ComboBox()
+        cmbFilterYear = New ComboBox()
+        cmbFilterCourse = New ComboBox()
         txtSearch = New TextBox()
         pnlStatsRow = New Panel()
         pnlStatAttention = New Panel()
@@ -498,11 +503,81 @@ Partial Class AdminStudentsForm
         ' 
         pnlSearchRow.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         pnlSearchRow.Controls.Add(btnRefresh)
+        pnlSearchRow.Controls.Add(btnResetFilters)
+        pnlSearchRow.Controls.Add(cmbFilterStatus)
+        pnlSearchRow.Controls.Add(cmbFilterSection)
+        pnlSearchRow.Controls.Add(cmbFilterYear)
+        pnlSearchRow.Controls.Add(cmbFilterCourse)
         pnlSearchRow.Controls.Add(txtSearch)
         pnlSearchRow.Location = New Point(28, 205)
         pnlSearchRow.Name = "pnlSearchRow"
         pnlSearchRow.Size = New Size(924, 42)
         pnlSearchRow.TabIndex = 3
+        ' 
+        ' txtSearch
+        ' 
+        txtSearch.BorderStyle = BorderStyle.FixedSingle
+        txtSearch.Font = New Font("Segoe UI", 9.0F)
+        txtSearch.ForeColor = Color.FromArgb(15, 23, 42)
+        txtSearch.Location = New Point(0, 7)
+        txtSearch.Name = "txtSearch"
+        txtSearch.PlaceholderText = "Search student..."
+        txtSearch.Size = New Size(190, 23)
+        txtSearch.TabIndex = 0
+        ' 
+        ' cmbFilterCourse
+        ' 
+        cmbFilterCourse.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbFilterCourse.Font = New Font("Segoe UI", 9.0F)
+        cmbFilterCourse.FormattingEnabled = True
+        cmbFilterCourse.Location = New Point(196, 7)
+        cmbFilterCourse.Name = "cmbFilterCourse"
+        cmbFilterCourse.Size = New Size(130, 23)
+        cmbFilterCourse.TabIndex = 1
+        ' 
+        ' cmbFilterYear
+        ' 
+        cmbFilterYear.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbFilterYear.Font = New Font("Segoe UI", 9.0F)
+        cmbFilterYear.FormattingEnabled = True
+        cmbFilterYear.Location = New Point(332, 7)
+        cmbFilterYear.Name = "cmbFilterYear"
+        cmbFilterYear.Size = New Size(120, 23)
+        cmbFilterYear.TabIndex = 2
+        ' 
+        ' cmbFilterSection
+        ' 
+        cmbFilterSection.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbFilterSection.Font = New Font("Segoe UI", 9.0F)
+        cmbFilterSection.FormattingEnabled = True
+        cmbFilterSection.Location = New Point(458, 7)
+        cmbFilterSection.Name = "cmbFilterSection"
+        cmbFilterSection.Size = New Size(125, 23)
+        cmbFilterSection.TabIndex = 3
+        ' 
+        ' cmbFilterStatus
+        ' 
+        cmbFilterStatus.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbFilterStatus.Font = New Font("Segoe UI", 9.0F)
+        cmbFilterStatus.FormattingEnabled = True
+        cmbFilterStatus.Location = New Point(589, 7)
+        cmbFilterStatus.Name = "cmbFilterStatus"
+        cmbFilterStatus.Size = New Size(130, 23)
+        cmbFilterStatus.TabIndex = 4
+        ' 
+        ' btnResetFilters
+        ' 
+        btnResetFilters.BackColor = Color.FromArgb(241, 245, 249)
+        btnResetFilters.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225)
+        btnResetFilters.FlatStyle = FlatStyle.Flat
+        btnResetFilters.Font = New Font("Segoe UI", 9.0F)
+        btnResetFilters.ForeColor = Color.FromArgb(51, 65, 85)
+        btnResetFilters.Location = New Point(725, 5)
+        btnResetFilters.Name = "btnResetFilters"
+        btnResetFilters.Size = New Size(85, 28)
+        btnResetFilters.TabIndex = 5
+        btnResetFilters.Text = "↺ Reset"
+        btnResetFilters.UseVisualStyleBackColor = False
         ' 
         ' btnRefresh
         ' 
@@ -510,26 +585,14 @@ Partial Class AdminStudentsForm
         btnRefresh.BackColor = Color.White
         btnRefresh.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225)
         btnRefresh.FlatStyle = FlatStyle.Flat
-        btnRefresh.Font = New Font("Segoe UI", 9F)
+        btnRefresh.Font = New Font("Segoe UI", 9.0F)
         btnRefresh.ForeColor = Color.FromArgb(51, 65, 85)
-        btnRefresh.Location = New Point(824, 4)
+        btnRefresh.Location = New Point(824, 5)
         btnRefresh.Name = "btnRefresh"
-        btnRefresh.Size = New Size(100, 34)
-        btnRefresh.TabIndex = 1
+        btnRefresh.Size = New Size(95, 28)
+        btnRefresh.TabIndex = 6
         btnRefresh.Text = "🔄 Refresh"
         btnRefresh.UseVisualStyleBackColor = False
-        ' 
-        ' txtSearch
-        ' 
-        txtSearch.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        txtSearch.BorderStyle = BorderStyle.FixedSingle
-        txtSearch.Font = New Font("Segoe UI", 10F)
-        txtSearch.ForeColor = Color.FromArgb(15, 23, 42)
-        txtSearch.Location = New Point(0, 8)
-        txtSearch.Name = "txtSearch"
-        txtSearch.PlaceholderText = "Search by name or student number"
-        txtSearch.Size = New Size(808, 25)
-        txtSearch.TabIndex = 0
         ' 
         ' pnlStatsRow
         ' 
@@ -816,6 +879,11 @@ Partial Class AdminStudentsForm
     Friend WithEvents lblStatAttentionVal As Label
     Friend WithEvents pnlSearchRow As Panel
     Friend WithEvents txtSearch As TextBox
+    Friend WithEvents cmbFilterCourse As ComboBox
+    Friend WithEvents cmbFilterYear As ComboBox
+    Friend WithEvents cmbFilterSection As ComboBox
+    Friend WithEvents cmbFilterStatus As ComboBox
+    Friend WithEvents btnResetFilters As Button
     Friend WithEvents btnRefresh As Button
     Friend WithEvents dgvStudents As DataGridView
     Friend WithEvents colStudentNo As DataGridViewTextBoxColumn
