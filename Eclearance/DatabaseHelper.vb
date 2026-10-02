@@ -6,7 +6,7 @@ Public Class DatabaseHelper
     Private ReadOnly connectionString As String =
         "Server=127.0.0.1;" &
         "Port=3306;" &
-        "Database=loa_eclearance_;" &
+        "Database=loa_eclearance_latest;" &
         "Uid=root;" &
         "Pwd=;"
 
