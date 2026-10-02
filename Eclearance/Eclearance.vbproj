@@ -1,110 +1,181 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <RootNamespace>Eclearance</RootNamespace>
-    <StartupObject>Sub Main</StartupObject>
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<RootNamespace>Eclearance</RootNamespace>
+		<StartupObject>Sub Main</StartupObject>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Import Include="System.Data" />
-    <Import Include="System.Drawing" />
-    <Import Include="System.Windows.Forms" />
-  </ItemGroup>
+	<ItemGroup>
+		<Import Include="System.Data" />
+		<Import Include="System.Drawing" />
+		<Import Include="System.Windows.Forms" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="26.7.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MySql.Data" Version="26.7.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Build Remove="*.sql" />
-    <None Remove="*.sql" />
-    <None Include="*.sql">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Build Remove="*.sql" />
+		<None Remove="*.sql" />
 
-  <ItemGroup>
-    <Content Include="Resources\**\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+		<None Include="*.sql">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="LoginForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="LoginForm.Designer.vb">
-      <DependentUpon>LoginForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="AdminStudentsForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="AdminStudentsForm.Designer.vb">
-      <DependentUpon>AdminStudentsForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="StudentClearanceForm.vb" />
-    <Compile Update="StudentClearanceForm.Designer.vb">
-      <DependentUpon>StudentClearanceForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="CreateStudentForm.vb" />
-    <Compile Update="CreateStudentForm.Designer.vb">
-      <DependentUpon>CreateStudentForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="CreateStaffForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="CreateStaffForm.Designer.vb">
-      <DependentUpon>CreateStaffForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="ClearanceHistoryForm.vb" />
-    <Compile Update="ClearanceHistoryForm.Designer.vb">
-      <DependentUpon>ClearanceHistoryForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="StartNewTermForm.vb" />
-    <Compile Update="StartNewTermForm.Designer.vb">
-      <DependentUpon>StartNewTermForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="StaffOfficesForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="StaffOfficesForm.Designer.vb">
-      <DependentUpon>StaffOfficesForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="StaffDashboardForm.vb" />
-    <Compile Update="StaffDashboardForm.Designer.vb">
-      <DependentUpon>StaffDashboardForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="StaffRequestsForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="StaffRequestsForm.Designer.vb">
-      <DependentUpon>StaffRequestsForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="ReviewClearanceForm.vb" />
-    <Compile Update="ReviewClearanceForm.Designer.vb">
-      <DependentUpon>ReviewClearanceForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="StaffHistoryForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="StaffHistoryForm.Designer.vb">
-      <DependentUpon>StaffHistoryForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="StudentProfileForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="StudentProfileForm.Designer.vb">
-      <DependentUpon>StudentProfileForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="ChangePasswordModalForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ChangePasswordModalForm.Designer.vb">
-      <DependentUpon>ChangePasswordModalForm.vb</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Resources\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+
+		<Compile Update="LoginForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="LoginForm.Designer.vb">
+			<DependentUpon>LoginForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="AdminStudentsForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="AdminStudentsForm.Designer.vb">
+			<DependentUpon>AdminStudentsForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="StudentClearanceForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="StudentClearanceForm.Designer.vb">
+			<DependentUpon>StudentClearanceForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="CreateStudentForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="CreateStudentForm.Designer.vb">
+			<DependentUpon>CreateStudentForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="CreateStaffForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="CreateStaffForm.Designer.vb">
+			<DependentUpon>CreateStaffForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="ClearanceHistoryForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="ClearanceHistoryForm.Designer.vb">
+			<DependentUpon>ClearanceHistoryForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="StartNewTermForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="StartNewTermForm.Designer.vb">
+			<DependentUpon>StartNewTermForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="StaffOfficesForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="StaffOfficesForm.Designer.vb">
+			<DependentUpon>StaffOfficesForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="StaffDashboardForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="StaffDashboardForm.Designer.vb">
+			<DependentUpon>StaffDashboardForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="StaffRequestsForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="StaffRequestsForm.Designer.vb">
+			<DependentUpon>StaffRequestsForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="ReviewClearanceForm.vb" />
+
+		<Compile Update="ReviewClearanceForm.Designer.vb">
+			<DependentUpon>ReviewClearanceForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+		<EmbeddedResource Update="ReviewClearanceForm.resx">
+			<DependentUpon>ReviewClearanceForm.vb</DependentUpon>
+		</EmbeddedResource>
+
+
+		<Compile Update="StaffHistoryForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="StaffHistoryForm.Designer.vb">
+			<DependentUpon>StaffHistoryForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="StudentProfileForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="StudentProfileForm.Designer.vb">
+			<DependentUpon>StudentProfileForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="ChangePasswordModalForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="ChangePasswordModalForm.Designer.vb">
+			<DependentUpon>ChangePasswordModalForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+	</ItemGroup>
 
 </Project>
