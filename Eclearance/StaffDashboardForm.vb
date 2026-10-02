@@ -8,6 +8,7 @@ Public Class StaffDashboardForm
 
 
     Private Sub StaffDashboardForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ApplySchoolLogo(picSchoolLogo)
         InitializeStaffInfo()
         LoadDashboardData()
     End Sub
@@ -108,14 +109,7 @@ Public Class StaffDashboardForm
                     submittedAtText = subDate.ToString("MMM dd, yyyy hh:mm tt")
                 End If
 
-                Dim actionText As String = "Review"
-                If status.Equals("Under Review", StringComparison.OrdinalIgnoreCase) Then
-                    actionText = "Open"
-                ElseIf status.Equals("Cleared", StringComparison.OrdinalIgnoreCase) OrElse status.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
-                    actionText = "View"
-                End If
-
-                Dim rowIndex As Integer = dgvRecent.Rows.Add(num, recordID, studentNo, studentName, requirement, submittedAtText, status, actionText)
+                Dim rowIndex As Integer = dgvRecent.Rows.Add(num, recordID, studentNo, studentName, requirement, submittedAtText, status, "Review")
                 dgvRecent.Rows(rowIndex).Tag = recordID
                 num += 1
             Next
@@ -206,13 +200,138 @@ Public Class StaffDashboardForm
         End If
     End Sub
 
-    ' Actions in DataGridView
-    Private Sub dgvRecent_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRecent.CellContentClick
+    ' ============================================================
+    ' ACTIONS IN DATAGRIDVIEW
+    ' ============================================================
+    Private Sub dgvRecent_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRecent.CellClick
         If e.RowIndex >= 0 AndAlso e.ColumnIndex = colAction.Index Then
             Dim row = dgvRecent.Rows(e.RowIndex)
             Dim recordID As Integer = Convert.ToInt32(row.Cells(colRecordID.Index).Value)
             ShowReviewView(recordID)
         End If
+    End Sub
+
+    ' ============================================================
+    ' CUSTOM CELL PAINTING: STATUS PILL & REVIEW BUTTON
+    ' ============================================================
+    Private Sub dgvRecent_CellPainting(sender As Object, e As DataGridViewCellPaintingEventArgs) Handles dgvRecent.CellPainting
+        If e.RowIndex < 0 Then Return
+
+        ' 1. Status Column: Render rounded pill badge
+        If e.ColumnIndex = colStatus.Index Then
+            e.PaintBackground(e.CellBounds, True)
+
+            Dim statusText As String = If(e.Value IsNot Nothing, e.Value.ToString().Trim(), "")
+            If Not String.IsNullOrWhiteSpace(statusText) Then
+                Dim pillBg As Color
+                Dim pillFg As Color
+
+                Select Case statusText.ToLowerInvariant()
+                    Case "under review"
+                        pillBg = Color.FromArgb(219, 234, 254)
+                        pillFg = Color.FromArgb(37, 99, 235)
+                    Case "cleared"
+                        pillBg = Color.FromArgb(220, 252, 231)
+                        pillFg = Color.FromArgb(21, 128, 61)
+                    Case "rejected"
+                        pillBg = Color.FromArgb(254, 226, 226)
+                        pillFg = Color.FromArgb(185, 28, 28)
+                    Case Else ' Pending
+                        pillBg = Color.FromArgb(254, 243, 199)
+                        pillFg = Color.FromArgb(180, 83, 9)
+                End Select
+
+                Using pillFont As New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+                    Dim textSize As Size = TextRenderer.MeasureText(e.Graphics, statusText, pillFont)
+                    Dim pillWidth As Integer = Math.Max(textSize.Width + 18, 92)
+                    If pillWidth > e.CellBounds.Width - 8 Then pillWidth = e.CellBounds.Width - 8
+                    Dim pillHeight As Integer = 24
+                    Dim pillX As Integer = e.CellBounds.X + (e.CellBounds.Width - pillWidth) \ 2
+                    Dim pillY As Integer = e.CellBounds.Y + (e.CellBounds.Height - pillHeight) \ 2
+                    Dim pillRect As New Rectangle(pillX, pillY, pillWidth, pillHeight)
+
+                    e.Graphics.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
+                    Using path As Drawing2D.GraphicsPath = CreatePillPath(pillRect)
+                        Using brush As New SolidBrush(pillBg)
+                            e.Graphics.FillPath(brush, path)
+                        End Using
+                    End Using
+
+                    TextRenderer.DrawText(
+                        e.Graphics,
+                        statusText,
+                        pillFont,
+                        pillRect,
+                        pillFg,
+                        TextFormatFlags.HorizontalCenter Or TextFormatFlags.VerticalCenter Or TextFormatFlags.SingleLine
+                    )
+                End Using
+            End If
+
+            e.Handled = True
+            Return
+        End If
+
+        ' 2. Action Column: Render rounded outline Review button
+        If e.ColumnIndex = colAction.Index Then
+            e.PaintBackground(e.CellBounds, True)
+
+            Dim btnWidth As Integer = Math.Min(82, e.CellBounds.Width - 8)
+            Dim btnHeight As Integer = 26
+            Dim btnX As Integer = e.CellBounds.X + (e.CellBounds.Width - btnWidth) \ 2
+            Dim btnY As Integer = e.CellBounds.Y + (e.CellBounds.Height - btnHeight) \ 2
+            Dim btnRect As New Rectangle(btnX, btnY, btnWidth, btnHeight)
+
+            Using btnFont As New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+                e.Graphics.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
+                Using path As Drawing2D.GraphicsPath = CreatePillPath(btnRect)
+                    Using fillBrush As New SolidBrush(Color.White)
+                        e.Graphics.FillPath(fillBrush, path)
+                    End Using
+                    Using borderPen As New Pen(Color.FromArgb(59, 130, 246), 1.2F)
+                        e.Graphics.DrawPath(borderPen, path)
+                    End Using
+                End Using
+
+                Dim actionText As String = If(e.FormattedValue IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(e.FormattedValue.ToString()), e.FormattedValue.ToString(), "Review")
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    actionText,
+                    btnFont,
+                    btnRect,
+                    Color.FromArgb(37, 99, 235),
+                    TextFormatFlags.HorizontalCenter Or TextFormatFlags.VerticalCenter Or TextFormatFlags.SingleLine
+                )
+            End Using
+
+            e.Handled = True
+            Return
+        End If
+    End Sub
+
+    Private Function CreatePillPath(rect As Rectangle) As Drawing2D.GraphicsPath
+        Dim path As New Drawing2D.GraphicsPath()
+        Dim radius As Integer = rect.Height \ 2
+        Dim d As Integer = radius * 2
+
+        path.AddArc(rect.X, rect.Y, d, d, 180, 90)
+        path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90)
+        path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90)
+        path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90)
+        path.CloseFigure()
+        Return path
+    End Function
+
+    Private Sub dgvRecent_CellMouseMove(sender As Object, e As DataGridViewCellMouseEventArgs) Handles dgvRecent.CellMouseMove
+        If e.RowIndex >= 0 AndAlso e.ColumnIndex = colAction.Index Then
+            dgvRecent.Cursor = Cursors.Hand
+        Else
+            dgvRecent.Cursor = Cursors.Default
+        End If
+    End Sub
+
+    Private Sub dgvRecent_MouseLeave(sender As Object, e As EventArgs) Handles dgvRecent.MouseLeave
+        dgvRecent.Cursor = Cursors.Default
     End Sub
 
     ' Navigation Click Events

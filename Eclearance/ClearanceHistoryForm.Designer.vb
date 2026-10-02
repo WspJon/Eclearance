@@ -28,7 +28,7 @@ Partial Class ClearanceHistoryForm
         btnNavLogout = New Button()
         pnlLogo = New Panel()
         lblLogoText = New Label()
-        lblLogoIcon = New Label()
+        picSchoolLogo = New PictureBox()
         pnlMain = New Panel()
         lblReadOnlyNotice = New Label()
         pnlEventDetails = New Panel()
@@ -112,7 +112,7 @@ Partial Class ClearanceHistoryForm
         btnNavStudents.Padding = New Padding(12, 0, 0, 0)
         btnNavStudents.Size = New Size(196, 42)
         btnNavStudents.TabIndex = 2
-        btnNavStudents.Text = "👥  Students"
+        btnNavStudents.Text = "  Students"
         btnNavStudents.TextAlign = ContentAlignment.MiddleLeft
         btnNavStudents.UseVisualStyleBackColor = False
         ' 
@@ -128,7 +128,7 @@ Partial Class ClearanceHistoryForm
         btnNavStaff.Padding = New Padding(12, 0, 0, 0)
         btnNavStaff.Size = New Size(196, 42)
         btnNavStaff.TabIndex = 3
-        btnNavStaff.Text = "🏛  Staff & offices"
+        btnNavStaff.Text = "  Staff & offices"
         btnNavStaff.TextAlign = ContentAlignment.MiddleLeft
         btnNavStaff.UseVisualStyleBackColor = False
         ' 
@@ -144,7 +144,7 @@ Partial Class ClearanceHistoryForm
         btnNavHistory.Padding = New Padding(12, 0, 0, 0)
         btnNavHistory.Size = New Size(196, 42)
         btnNavHistory.TabIndex = 4
-        btnNavHistory.Text = "⏱  History"
+        btnNavHistory.Text = "  History"
         btnNavHistory.TextAlign = ContentAlignment.MiddleLeft
         btnNavHistory.UseVisualStyleBackColor = False
         ' 
@@ -160,7 +160,7 @@ Partial Class ClearanceHistoryForm
         btnNavStartTerm.Padding = New Padding(12, 0, 0, 0)
         btnNavStartTerm.Size = New Size(196, 42)
         btnNavStartTerm.TabIndex = 5
-        btnNavStartTerm.Text = "📅  Start new term"
+        btnNavStartTerm.Text = "  Start new term"
         btnNavStartTerm.TextAlign = ContentAlignment.MiddleLeft
         btnNavStartTerm.UseVisualStyleBackColor = False
         ' 
@@ -176,14 +176,14 @@ Partial Class ClearanceHistoryForm
         btnNavLogout.Padding = New Padding(20, 0, 0, 0)
         btnNavLogout.Size = New Size(220, 48)
         btnNavLogout.TabIndex = 6
-        btnNavLogout.Text = "↪  Log out"
+        btnNavLogout.Text = "  Log out"
         btnNavLogout.TextAlign = ContentAlignment.MiddleLeft
         btnNavLogout.UseVisualStyleBackColor = False
         ' 
         ' pnlLogo
         ' 
         pnlLogo.Controls.Add(lblLogoText)
-        pnlLogo.Controls.Add(lblLogoIcon)
+        pnlLogo.Controls.Add(picSchoolLogo)
         pnlLogo.Dock = DockStyle.Top
         pnlLogo.Location = New Point(0, 0)
         pnlLogo.Name = "pnlLogo"
@@ -198,18 +198,15 @@ Partial Class ClearanceHistoryForm
         lblLogoText.Name = "lblLogoText"
         lblLogoText.Size = New Size(140, 40)
         lblLogoText.TabIndex = 1
-        lblLogoText.Text = "School" & Global.System.Environment.NewLine & "Clearance"
+        lblLogoText.Text = "EClearance"        ' 
+        ' picSchoolLogo
         ' 
-        ' lblLogoIcon
-        ' 
-        lblLogoIcon.AutoSize = True
-        lblLogoIcon.Font = New Font("Segoe UI Emoji", 18.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblLogoIcon.ForeColor = Color.White
-        lblLogoIcon.Location = New Point(14, 20)
-        lblLogoIcon.Name = "lblLogoIcon"
-        lblLogoIcon.Size = New Size(38, 32)
-        lblLogoIcon.TabIndex = 0
-        lblLogoIcon.Text = "🎓"
+        picSchoolLogo.Location = New Point(12, 16)
+        picSchoolLogo.Name = "picSchoolLogo"
+        picSchoolLogo.Size = New Size(32, 32)
+        picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
+        picSchoolLogo.TabIndex = 0
+        picSchoolLogo.TabStop = False
         ' 
         ' pnlMain
         ' 
@@ -633,7 +630,7 @@ Partial Class ClearanceHistoryForm
         MinimumSize = New Size(1100, 750)
         Name = "ClearanceHistoryForm"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "School Clearance - Clearance History"
+        Text = "EClearance - Clearance History"
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)
@@ -654,7 +651,7 @@ Partial Class ClearanceHistoryForm
 
     Friend WithEvents pnlSidebar As Panel
     Friend WithEvents pnlLogo As Panel
-    Friend WithEvents lblLogoIcon As Label
+    Friend WithEvents picSchoolLogo As PictureBox
     Friend WithEvents lblLogoText As Label
     Friend WithEvents lblNavSection As Label
     Friend WithEvents btnNavStudents As Button

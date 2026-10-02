@@ -164,7 +164,7 @@ Partial Class ViewRequirementModalForm
         lblGuidanceNotice.Name = "lblGuidanceNotice"
         lblGuidanceNotice.Size = New Size(362, 13)
         lblGuidanceNotice.TabIndex = 18
-        lblGuidanceNotice.Text = "Old students are required to update student personal information for records."
+        lblGuidanceNotice.Text = "Students required by Guidance must update student personal information before clearance approval."
         ' 
         ' lblContactNo
         ' 
@@ -248,7 +248,7 @@ Partial Class ViewRequirementModalForm
         cmbCivilStatus.DropDownStyle = ComboBoxStyle.DropDownList
         cmbCivilStatus.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
         cmbCivilStatus.FormattingEnabled = True
-        cmbCivilStatus.Items.AddRange(New Object() {"Single", "Married", "Widowed", "Separated", "Other"})
+        cmbCivilStatus.Items.AddRange(New Object() {"Single", "Married", "Widowed"})
         cmbCivilStatus.Location = New Point(12, 168)
         cmbCivilStatus.Name = "cmbCivilStatus"
         cmbCivilStatus.Size = New Size(215, 23)

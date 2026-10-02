@@ -15,6 +15,7 @@ Public Class ReviewClearanceForm
     Private _requiresFile As Boolean = True
     Private _hasGuidanceInfo As Boolean = False
     Private _hasSubmittedDocument As Boolean = False
+    Private _guidanceUpdateRequired As Boolean = False
 
     Private Sub ReviewClearanceForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Not AppSession.DepartmentID.HasValue Then
@@ -66,6 +67,9 @@ Public Class ReviewClearanceForm
             Dim query As String =
                 "SELECT " &
                 "  cr.RecordID, " &
+                "  cr.StudentID, " &
+                "  cr.TermID, " &
+                "  t.AcademicYear, " &
                 "  cr.Status, " &
                 "  cr.Remarks, " &
                 "  cr.SubmittedFilePath, " &
@@ -75,15 +79,7 @@ Public Class ReviewClearanceForm
                 "  u.FullName AS StudentName, " &
                 "  u.Course, " &
                 "  u.YearLevel, " &
-                "  u.ContactNo, " &
-                "  u.Address, " &
-                "  u.Email, " &
-                "  u.CivilStatus, " &
-                "  u.EmergencyContactName, " &
-                "  u.Relationship, " &
-                "  u.EmergencyContactNo, " &
-                "  u.AdditionalNotes, " &
-                "  u.GuidanceInfoUpdated, " &
+                "  u.StudentType, " &
                 "  d.DepartmentID, " &
                 "  d.DepartmentName, " &
                 "  r.RequirementName, " &
@@ -92,6 +88,7 @@ Public Class ReviewClearanceForm
                 "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
                 "INNER JOIN Departments d ON r.DepartmentID = d.DepartmentID " &
                 "INNER JOIN Users u ON cr.StudentID = u.UserID " &
+                "LEFT JOIN AcademicTerms t ON cr.TermID = t.TermID " &
                 "WHERE cr.RecordID = @RecordID AND r.DepartmentID = @DeptID LIMIT 1;"
 
             Dim dt As DataTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
@@ -114,7 +111,9 @@ Public Class ReviewClearanceForm
             lblStudentNoVal.Text = row("StudentNo").ToString()
             lblStudentNameVal.Text = row("StudentName").ToString()
             lblCourseVal.Text = If(IsDBNull(row("Course")) OrElse String.IsNullOrWhiteSpace(row("Course").ToString()), "N/A", row("Course").ToString())
-            lblYearVal.Text = If(IsDBNull(row("YearLevel")) OrElse String.IsNullOrWhiteSpace(row("YearLevel").ToString()), "N/A", row("YearLevel").ToString())
+            Dim yearValStr As String = If(IsDBNull(row("YearLevel")) OrElse String.IsNullOrWhiteSpace(row("YearLevel").ToString()), "N/A", row("YearLevel").ToString())
+            Dim studentTypeValStr As String = If(IsDBNull(row("StudentType")) OrElse String.IsNullOrWhiteSpace(row("StudentType").ToString()), "", row("StudentType").ToString())
+            lblYearVal.Text = If(Not String.IsNullOrWhiteSpace(studentTypeValStr), yearValStr & " (" & studentTypeValStr & ")", yearValStr)
             lblOfficeVal.Text = row("DepartmentName").ToString()
             lblReqVal.Text = row("RequirementName").ToString()
 
@@ -142,42 +141,28 @@ Public Class ReviewClearanceForm
             _requiresFile = requiresFile
 
             If isGuidanceOffice Then
-                ' Check if student has actually submitted/provided their required Guidance information
-                Dim guidanceUpdated As Boolean = False
-                If Not IsDBNull(row("GuidanceInfoUpdated")) Then
-                    guidanceUpdated = Convert.ToBoolean(row("GuidanceInfoUpdated"))
+                Dim studentID As Integer = Convert.ToInt32(row("StudentID"))
+                Dim academicYear As String = If(IsDBNull(row("AcademicYear")), "", row("AcademicYear").ToString())
+                If String.IsNullOrWhiteSpace(academicYear) Then
+                    Try
+                        Dim dtTerm = db.ExecuteQuery("SELECT AcademicYear FROM AcademicTerms WHERE IsActive = 1 LIMIT 1;")
+                        If dtTerm.Rows.Count > 0 Then academicYear = dtTerm.Rows(0)("AcademicYear").ToString()
+                    Catch
+                    End Try
+                    If String.IsNullOrWhiteSpace(academicYear) Then academicYear = "2026-2027"
                 End If
 
-                Dim addressStr = If(IsDBNull(row("Address")), "", row("Address").ToString().Trim())
-                Dim contactStr = If(IsDBNull(row("ContactNo")), "", row("ContactNo").ToString().Trim())
-                Dim emailStr = If(IsDBNull(row("Email")), "", row("Email").ToString().Trim())
-                Dim emNameStr = If(IsDBNull(row("EmergencyContactName")), "", row("EmergencyContactName").ToString().Trim())
-                Dim emNoStr = If(IsDBNull(row("EmergencyContactNo")), "", row("EmergencyContactNo").ToString().Trim())
+                ' Check GuidanceStudentProfiles for current student and academicYear
+                Dim gProfileQuery As String =
+                    "SELECT * FROM GuidanceStudentProfiles WHERE StudentID = @StudentID AND AcademicYear = @AcademicYear LIMIT 1;"
+                Dim dtGProfile As DataTable = db.ExecuteQuery(gProfileQuery, New Dictionary(Of String, Object) From {
+                    {"@StudentID", studentID},
+                    {"@AcademicYear", academicYear}
+                })
 
-                ' Student has provided information if GuidanceInfoUpdated is True and core required fields are filled
-                _hasGuidanceInfo = guidanceUpdated AndAlso
-                                   (Not String.IsNullOrWhiteSpace(addressStr)) AndAlso
-                                   (Not String.IsNullOrWhiteSpace(contactStr)) AndAlso
-                                   (Not String.IsNullOrWhiteSpace(emailStr)) AndAlso
-                                   (Not String.IsNullOrWhiteSpace(emNameStr)) AndAlso
-                                   (Not String.IsNullOrWhiteSpace(emNoStr))
+                _hasGuidanceInfo = False
 
-                ' Update footer notice box dynamically
-                If Not _hasGuidanceInfo Then
-                    pnlGuidanceInfoNote.BackColor = Color.FromArgb(254, 242, 242)
-                    lblGuidanceNoteIcon.Text = "⚠️"
-                    lblGuidanceNoteIcon.ForeColor = Color.FromArgb(220, 38, 38)
-                    lblGuidanceInfoNote.ForeColor = Color.FromArgb(153, 27, 27)
-                    lblGuidanceInfoNote.Text = "The student has not yet submitted or updated their Guidance personal information." & vbCrLf & "Clearance cannot be approved until all required details are provided."
-                Else
-                    pnlGuidanceInfoNote.BackColor = Color.FromArgb(239, 246, 255)
-                    lblGuidanceNoteIcon.Text = "ℹ"
-                    lblGuidanceNoteIcon.ForeColor = Color.FromArgb(37, 99, 235)
-                    lblGuidanceInfoNote.ForeColor = Color.FromArgb(30, 58, 138)
-                    lblGuidanceInfoNote.Text = "This information was provided by the student as part of the Guidance Office requirement." & vbCrLf & "Please review the details before approving or rejecting this clearance."
-                End If
-
-                ' Guidance non-file mode: Show Guidance Information Update panel, hide document preview
+                ' Guidance non-file mode: Show Guidance panel, hide document preview
                 pnlDocumentCard.Visible = False
                 pnlGuidanceInfo.Visible = True
 
@@ -189,15 +174,48 @@ Public Class ReviewClearanceForm
                 lblStatusVal.Text = currentStatus
                 ApplyStatusBadgeStyle(lblStatusVal, currentStatus)
 
-                ' Populate student Guidance personal info matching screenshot layout
-                FormatGuidanceField(lblAddressValue, If(IsDBNull(row("Address")), "", row("Address").ToString()))
-                FormatGuidanceField(lblContactValue, If(IsDBNull(row("ContactNo")), "", row("ContactNo").ToString()))
-                FormatGuidanceField(lblEmailValue, If(IsDBNull(row("Email")), "", row("Email").ToString()))
-                FormatGuidanceField(lblCivilStatusValue, If(IsDBNull(row("CivilStatus")), "", row("CivilStatus").ToString()))
-                FormatGuidanceField(lblEmergencyNameValue, If(IsDBNull(row("EmergencyContactName")), "", row("EmergencyContactName").ToString()))
-                FormatGuidanceField(lblRelationshipValue, If(IsDBNull(row("Relationship")), "", row("Relationship").ToString()))
-                FormatGuidanceField(lblEmergencyContactValue, If(IsDBNull(row("EmergencyContactNo")), "", row("EmergencyContactNo").ToString()))
-                FormatGuidanceField(lblNotesValue, If(IsDBNull(row("AdditionalNotes")), "", row("AdditionalNotes").ToString()))
+                If dtGProfile.Rows.Count > 0 Then
+                    Dim gRow = dtGProfile.Rows(0)
+                    Dim addressStr = If(IsDBNull(gRow("Address")), "", gRow("Address").ToString().Trim())
+                    Dim contactStr = If(IsDBNull(gRow("ContactNo")), "", gRow("ContactNo").ToString().Trim())
+                    Dim emailStr = If(IsDBNull(gRow("Email")), "", gRow("Email").ToString().Trim())
+                    Dim emNameStr = If(IsDBNull(gRow("EmergencyContactName")), "", gRow("EmergencyContactName").ToString().Trim())
+                    Dim emNoStr = If(IsDBNull(gRow("EmergencyContactNo")), "", gRow("EmergencyContactNo").ToString().Trim())
+
+                    _hasGuidanceInfo = (Not String.IsNullOrWhiteSpace(addressStr)) AndAlso
+                                       (Not String.IsNullOrWhiteSpace(contactStr)) AndAlso
+                                       (Not String.IsNullOrWhiteSpace(emailStr)) AndAlso
+                                       (Not String.IsNullOrWhiteSpace(emNameStr)) AndAlso
+                                       (Not String.IsNullOrWhiteSpace(emNoStr))
+
+                    lblGuidanceInfoTitle.Text = "Guidance Information (" & academicYear & ")"
+                    lblGuidanceInfoSubtitle.Text = "Below is the information submitted by the student for Academic Year " & academicYear & "."
+                    pnlGuidanceFields.Visible = True
+                    pnlGuidanceNoUpdate.Visible = False
+
+                    pnlGuidanceInfoNote.BackColor = Color.FromArgb(239, 246, 255)
+                    lblGuidanceNoteIcon.Text = "ℹ"
+                    lblGuidanceNoteIcon.ForeColor = Color.FromArgb(37, 99, 235)
+                    lblGuidanceInfoNote.ForeColor = Color.FromArgb(30, 58, 138)
+                    lblGuidanceInfoNote.Text = "This information was submitted by the student for Academic Year " & academicYear & "." & vbCrLf & "Please review the details before approving or rejecting this clearance."
+
+                    FormatGuidanceField(lblAddressValue, If(IsDBNull(gRow("Address")), "", gRow("Address").ToString()))
+                    FormatGuidanceField(lblContactValue, If(IsDBNull(gRow("ContactNo")), "", gRow("ContactNo").ToString()))
+                    FormatGuidanceField(lblEmailValue, If(IsDBNull(gRow("Email")), "", gRow("Email").ToString()))
+                    FormatGuidanceField(lblCivilStatusValue, If(IsDBNull(gRow("CivilStatus")), "", gRow("CivilStatus").ToString()))
+                    FormatGuidanceField(lblEmergencyNameValue, If(IsDBNull(gRow("EmergencyContactName")), "", gRow("EmergencyContactName").ToString()))
+                    FormatGuidanceField(lblRelationshipValue, If(IsDBNull(gRow("Relationship")), "", gRow("Relationship").ToString()))
+                    FormatGuidanceField(lblEmergencyContactValue, If(IsDBNull(gRow("EmergencyContactNo")), "", gRow("EmergencyContactNo").ToString()))
+                    FormatGuidanceField(lblNotesValue, If(IsDBNull(gRow("AdditionalNotes")), "", gRow("AdditionalNotes").ToString()))
+                Else
+                    ' Clean empty state when student has not yet submitted guidance profile for current academic year
+                    lblGuidanceInfoTitle.Text = "Guidance Office Requirement (" & academicYear & ")"
+                    lblGuidanceInfoSubtitle.Text = "Review and evaluate the student's Guidance clearance requirement."
+                    pnlGuidanceFields.Visible = False
+                    pnlGuidanceNoUpdate.Visible = True
+                    lblNoUpdateTitle.Text = "No Guidance Information Submitted"
+                    lblNoUpdateMessage.Text = "No Guidance information has been submitted for the current academic year (" & academicYear & ")." & vbCrLf & vbCrLf & "The student must complete or review/update their Guidance student information before this clearance can be approved."
+                End If
 
             Else
                 ' Standard file-based offices: Show document preview, hide guidance panel
@@ -434,11 +452,11 @@ Public Class ReviewClearanceForm
             Return
         End If
 
-        ' Validation: Guidance requirement without student information update cannot be approved!
+        ' Validation: Guidance requirement requires student to have submitted their guidance information for the current academic year!
         If _isGuidanceOffice AndAlso Not _hasGuidanceInfo Then
             MessageBox.Show(
-                "Cannot approve clearance: The student has not yet submitted or updated their required Guidance personal information." & vbCrLf & vbCrLf &
-                "The student must complete and submit their personal information update before Guidance clearance can be approved." & vbCrLf & vbCrLf &
+                "Cannot approve clearance: The student has not yet submitted or updated their Guidance information for the current academic year." & vbCrLf & vbCrLf &
+                "The student must complete and submit their Guidance information before Guidance clearance can be approved." & vbCrLf & vbCrLf &
                 "You may reject the request with remarks explaining what they need to provide, or wait for them to update their information.",
                 "Guidance Information Required",
                 MessageBoxButtons.OK,

@@ -17,8 +17,19 @@ Public Class StudentClearanceForm
         e As EventArgs
     ) Handles MyBase.Load
 
+        ApplySchoolLogo(picSchoolLogo)
         SetupStudentInformation()
+        ApplyTableLayout()
         LoadClearanceData()
+
+    End Sub
+
+    Private Sub StudentClearanceForm_Resize(
+        sender As Object,
+        e As EventArgs
+    ) Handles MyBase.Resize
+
+        ApplyTableLayout()
 
     End Sub
 
@@ -27,13 +38,12 @@ Public Class StudentClearanceForm
     ' ============================================================
     Private Sub SetupStudentInformation()
 
-        lblStudentName.Text = AppSession.FullName & "  ▾"
-        lblStudentDetails.Text =
-            AppSession.StudentNo &
-            " | " &
-            AppSession.Course &
-            " - " &
-            AppSession.YearLevel
+        lblStudentName.Text = AppSession.FullName
+        Dim detailsText As String = AppSession.StudentNo & " | " & AppSession.Course & " - " & AppSession.YearLevel
+        If Not String.IsNullOrWhiteSpace(AppSession.StudentType) Then
+            detailsText &= " (" & AppSession.StudentType & ")"
+        End If
+        lblStudentDetails.Text = detailsText
 
     End Sub
 
@@ -43,6 +53,23 @@ Public Class StudentClearanceForm
     Public Sub LoadClearanceData()
 
         Try
+
+            ' Refresh student metadata from Users
+            Try
+                Dim studentInfoQuery As String = "SELECT StudentType, GuidanceInfoUpdateRequired FROM Users WHERE UserID = @UserID LIMIT 1;"
+                Dim studentInfoDt As DataTable = db.ExecuteQuery(studentInfoQuery, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
+                If studentInfoDt.Rows.Count > 0 Then
+                    Dim sRow = studentInfoDt.Rows(0)
+                    If Not IsDBNull(sRow("StudentType")) Then
+                        AppSession.StudentType = sRow("StudentType").ToString()
+                    End If
+                    If Not IsDBNull(sRow("GuidanceInfoUpdateRequired")) Then
+                        AppSession.GuidanceInfoUpdateRequired = Convert.ToBoolean(sRow("GuidanceInfoUpdateRequired"))
+                    End If
+                    SetupStudentInformation()
+                End If
+            Catch
+            End Try
 
             Dim activeTermID As Integer = GetActiveTermID()
 
@@ -217,6 +244,135 @@ Public Class StudentClearanceForm
 
     End Sub
 
+    Private Sub pnlClearanceTable_Resize(sender As Object, e As EventArgs) Handles pnlClearanceTable.Resize
+        ApplyTableLayout()
+    End Sub
+
+    Private Function GetCurrentAcademicYear() As String
+        Try
+            Dim dt = db.ExecuteQuery("SELECT AcademicYear FROM AcademicTerms WHERE IsActive = 1 LIMIT 1;")
+            If dt.Rows.Count > 0 Then Return dt.Rows(0)("AcademicYear").ToString()
+        Catch
+        End Try
+        Return "2026-2027"
+    End Function
+
+    Private Function CheckStudentHasGuidanceProfile() As Boolean
+        Try
+            Dim activeAY As String = GetCurrentAcademicYear()
+            Dim query As String = "SELECT GuidanceProfileID FROM GuidanceStudentProfiles WHERE StudentID = @StudentID AND AcademicYear = @AcademicYear LIMIT 1;"
+            Dim dt = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
+                {"@StudentID", AppSession.UserID},
+                {"@AcademicYear", activeAY}
+            })
+            If dt.Rows.Count > 0 Then Return True
+
+            Dim queryAny As String = "SELECT GuidanceProfileID FROM GuidanceStudentProfiles WHERE StudentID = @StudentID LIMIT 1;"
+            Dim dtAny = db.ExecuteQuery(queryAny, New Dictionary(Of String, Object) From {{"@StudentID", AppSession.UserID}})
+            If dtAny.Rows.Count > 0 Then Return True
+
+            Dim queryU As String = "SELECT ContactNo FROM Users WHERE UserID = @StudentID AND ContactNo IS NOT NULL AND ContactNo <> '' LIMIT 1;"
+            Dim dtU = db.ExecuteQuery(queryU, New Dictionary(Of String, Object) From {{"@StudentID", AppSession.UserID}})
+            Return dtU.Rows.Count > 0
+        Catch
+            Return False
+        End Try
+    End Function
+
+    Private Sub ApplyTableLayout()
+        Try
+            Dim totalWidth As Integer = pnlClearanceTable.ClientSize.Width
+            If totalWidth < 900 Then totalWidth = 900
+
+            Dim numX As Integer = 12
+            Dim numWidth As Integer = 32
+
+            Dim deptX As Integer = 48
+            Dim deptWidth As Integer = 138
+
+            Dim actionWidth As Integer = 270
+            Dim actionX As Integer = totalWidth - actionWidth - 12
+
+            Dim statusWidth As Integer = 96
+            Dim statusX As Integer = actionX - statusWidth - 12
+
+            Dim reqX As Integer = 192
+            Dim reqWidth As Integer = statusX - reqX - 12
+            If reqWidth < 280 Then reqWidth = 280
+
+            ' Apply to header
+            pnlTableHeader.Width = totalWidth
+            lblColNum.Location = New Point(numX, 11)
+            lblColNum.Size = New Size(numWidth, 20)
+            lblColNum.TextAlign = ContentAlignment.MiddleCenter
+
+            lblColDept.Location = New Point(deptX, 11)
+            lblColDept.Size = New Size(deptWidth, 20)
+            lblColDept.TextAlign = ContentAlignment.MiddleLeft
+
+            lblColReq.Location = New Point(reqX, 11)
+            lblColReq.Size = New Size(reqWidth, 20)
+            lblColReq.TextAlign = ContentAlignment.MiddleLeft
+
+            lblColStatus.Location = New Point(statusX, 11)
+            lblColStatus.Size = New Size(statusWidth, 20)
+            lblColStatus.TextAlign = ContentAlignment.MiddleCenter
+
+            lblColAction.Location = New Point(actionX, 11)
+            lblColAction.Size = New Size(actionWidth, 20)
+            lblColAction.TextAlign = ContentAlignment.MiddleLeft
+
+            ' Row configuration
+            Dim rowHeight As Integer = 72
+            Dim rowPanels = {pnlRow1, pnlRow2, pnlRow3, pnlRow4, pnlRow5, pnlRow6, pnlRow7, pnlRow8, pnlRow9}
+            Dim numLabels = {lblNum1, lblNum2, lblNum3, lblNum4, lblNum5, lblNum6, lblNum7, lblNum8, lblNum9}
+            Dim deptLabels = {lblDept1, lblDept2, lblDept3, lblDept4, lblDept5, lblDept6, lblDept7, lblDept8, lblDept9}
+            Dim reqLabels = {lblReq1, lblReq2, lblReq3, lblReq4, lblReq5, lblReq6, lblReq7, lblReq8, lblReq9}
+            Dim statusLabels = {lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblStatus9}
+            Dim actionPanels = {pnlAction1, pnlAction2, pnlAction3, pnlAction4, pnlAction5, pnlAction6, pnlAction7, pnlAction8, pnlAction9}
+            Dim dashLabels = {lblDash1, lblDash2, lblDash3, lblDash4, lblDash5, lblDash6, lblDash7, lblDash8, lblDash9}
+            Dim dividers = {pnlDivider1, pnlDivider2, pnlDivider3, pnlDivider4, pnlDivider5, pnlDivider6, pnlDivider7, pnlDivider8, pnlDivider9}
+
+            For i As Integer = 0 To 8
+                Dim rPanel = rowPanels(i)
+                Dim curY As Integer = 42 + (i * rowHeight)
+                rPanel.Location = New Point(0, curY)
+                rPanel.Size = New Size(totalWidth, rowHeight)
+
+                Dim numLbl = numLabels(i)
+                numLbl.Location = New Point(numX + (numWidth - 28) \ 2, (rowHeight - 28) \ 2)
+                numLbl.Size = New Size(28, 28)
+
+                Dim deptLbl = deptLabels(i)
+                deptLbl.Location = New Point(deptX, (rowHeight - 20) \ 2)
+                deptLbl.Size = New Size(deptWidth, 20)
+
+                Dim reqLbl = reqLabels(i)
+                reqLbl.AutoEllipsis = False
+                reqLbl.Location = New Point(reqX, 8)
+                reqLbl.Size = New Size(reqWidth, rowHeight - 16)
+
+                Dim statusLbl = statusLabels(i)
+                statusLbl.Location = New Point(statusX, (rowHeight - 28) \ 2)
+                statusLbl.Size = New Size(statusWidth, 28)
+
+                Dim actPanel = actionPanels(i)
+                actPanel.Location = New Point(actionX, (rowHeight - 32) \ 2)
+                actPanel.Size = New Size(actionWidth, 32)
+
+                Dim dashLbl = dashLabels(i)
+                dashLbl.Location = New Point(0, 0)
+                dashLbl.Size = New Size(actionWidth, 32)
+                dashLbl.TextAlign = ContentAlignment.MiddleCenter
+
+                Dim div = dividers(i)
+                div.Location = New Point(0, rowHeight - 1)
+                div.Size = New Size(totalWidth, 1)
+            Next
+        Catch ex As Exception
+        End Try
+    End Sub
+
     ' ============================================================
     ' POPULATE TABLE ROW
     ' ============================================================
@@ -231,6 +387,7 @@ Public Class StudentClearanceForm
         Dim lblReq As Label = Nothing
         Dim lblStatus As Label = Nothing
         Dim btnAct As Button = Nothing
+        Dim btnReeval As Button = Nothing
         Dim btnViewReq As Button = Nothing
         Dim lblDash As Label = Nothing
 
@@ -242,6 +399,7 @@ Public Class StudentClearanceForm
                 lblReq = lblReq1
                 lblStatus = lblStatus1
                 btnAct = btnAction1
+                btnReeval = btnReeval1
                 btnViewReq = btnViewReq1
                 lblDash = lblDash1
             Case 1
@@ -251,6 +409,7 @@ Public Class StudentClearanceForm
                 lblReq = lblReq2
                 lblStatus = lblStatus2
                 btnAct = btnAction2
+                btnReeval = btnReeval2
                 btnViewReq = btnViewReq2
                 lblDash = lblDash2
             Case 2
@@ -260,6 +419,7 @@ Public Class StudentClearanceForm
                 lblReq = lblReq3
                 lblStatus = lblStatus3
                 btnAct = btnAction3
+                btnReeval = btnReeval3
                 btnViewReq = btnViewReq3
                 lblDash = lblDash3
             Case 3
@@ -269,6 +429,7 @@ Public Class StudentClearanceForm
                 lblReq = lblReq4
                 lblStatus = lblStatus4
                 btnAct = btnAction4
+                btnReeval = btnReeval4
                 btnViewReq = btnViewReq4
                 lblDash = lblDash4
             Case 4
@@ -278,6 +439,7 @@ Public Class StudentClearanceForm
                 lblReq = lblReq5
                 lblStatus = lblStatus5
                 btnAct = btnAction5
+                btnReeval = btnReeval5
                 btnViewReq = btnViewReq5
                 lblDash = lblDash5
             Case 5
@@ -287,6 +449,7 @@ Public Class StudentClearanceForm
                 lblReq = lblReq6
                 lblStatus = lblStatus6
                 btnAct = btnAction6
+                btnReeval = btnReeval6
                 btnViewReq = btnViewReq6
                 lblDash = lblDash6
             Case 6
@@ -296,6 +459,7 @@ Public Class StudentClearanceForm
                 lblReq = lblReq7
                 lblStatus = lblStatus7
                 btnAct = btnAction7
+                btnReeval = btnReeval7
                 btnViewReq = btnViewReq7
                 lblDash = lblDash7
             Case 7
@@ -305,6 +469,7 @@ Public Class StudentClearanceForm
                 lblReq = lblReq8
                 lblStatus = lblStatus8
                 btnAct = btnAction8
+                btnReeval = btnReeval8
                 btnViewReq = btnViewReq8
                 lblDash = lblDash8
             Case 8
@@ -314,6 +479,7 @@ Public Class StudentClearanceForm
                 lblReq = lblReq9
                 lblStatus = lblStatus9
                 btnAct = btnAction9
+                btnReeval = btnReeval9
                 btnViewReq = btnViewReq9
                 lblDash = lblDash9
             Case Else
@@ -328,6 +494,7 @@ Public Class StudentClearanceForm
         ApplyStatusStyle(lblStatus, item.EffectiveStatus)
 
         btnAct.Tag = item
+        btnReeval.Tag = item
         btnViewReq.Tag = item
 
         Dim isGuidance As Boolean = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
@@ -343,6 +510,7 @@ Public Class StudentClearanceForm
                 btnAct.ForeColor = Color.FromArgb(30, 41, 59)
                 btnAct.Size = New Size(110, 32)
                 btnAct.Location = New Point(0, 0)
+                btnReeval.Visible = False
                 btnViewReq.Visible = False
                 lblDash.Visible = False
 
@@ -354,41 +522,47 @@ Public Class StudentClearanceForm
                 btnAct.ForeColor = Color.FromArgb(30, 41, 59)
                 btnAct.Size = New Size(110, 32)
                 btnAct.Location = New Point(0, 0)
+                btnReeval.Visible = False
                 btnViewReq.Visible = False
                 lblDash.Visible = False
 
             Case "pending"
+                btnReeval.Visible = False
+                lblDash.Visible = False
+
                 If item.RequiresFile Then
                     btnAct.Visible = True
                     btnAct.Enabled = True
                     btnAct.Text = "Upload Requirement"
                     btnAct.BackColor = Color.FromArgb(2, 132, 199)
                     btnAct.ForeColor = Color.White
-                    btnAct.Size = New Size(110, 32)
+                    btnAct.Size = New Size(125, 32)
                     btnAct.Location = New Point(0, 0)
 
                     btnViewReq.Visible = True
                     btnViewReq.Text = "View Requirements"
-                    btnViewReq.Location = New Point(116, 0)
-                    btnViewReq.Size = New Size(114, 32)
-
-                    lblDash.Visible = False
+                    btnViewReq.Location = New Point(132, 0)
+                    btnViewReq.Size = New Size(125, 32)
                 Else
                     If isGuidance Then
                         btnAct.Visible = True
                         btnAct.Enabled = True
-                        btnAct.Text = "Update Information"
+                        Dim hasProfile As Boolean = CheckStudentHasGuidanceProfile()
+                        If hasProfile Then
+                            btnAct.Text = "Review / Update Information"
+                            btnAct.Size = New Size(168, 32)
+                        Else
+                            btnAct.Text = "Complete Information"
+                            btnAct.Size = New Size(140, 32)
+                        End If
                         btnAct.BackColor = Color.FromArgb(2, 132, 199)
                         btnAct.ForeColor = Color.White
-                        btnAct.Size = New Size(110, 32)
                         btnAct.Location = New Point(0, 0)
 
                         btnViewReq.Visible = True
                         btnViewReq.Text = "View Requirements"
-                        btnViewReq.Location = New Point(116, 0)
-                        btnViewReq.Size = New Size(114, 32)
-
-                        lblDash.Visible = False
+                        btnViewReq.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 6, 0)
+                        btnViewReq.Size = New Size(125, 32)
                     Else
                         btnAct.Visible = False
 
@@ -396,46 +570,71 @@ Public Class StudentClearanceForm
                         btnViewReq.Text = "View Requirements"
                         btnViewReq.Location = New Point(0, 0)
                         btnViewReq.Size = New Size(130, 32)
-
-                        lblDash.Visible = False
                     End If
                 End If
 
             Case "rejected"
-                If item.RequiresFile Then
+                lblDash.Visible = False
+
+                If isGuidance Then
+                    btnAct.Visible = True
+                    btnAct.Enabled = True
+                    btnAct.Text = "Review / Update Information"
+                    btnAct.Size = New Size(150, 32)
+                    btnAct.BackColor = Color.FromArgb(2, 132, 199)
+                    btnAct.ForeColor = Color.White
+                    btnAct.Location = New Point(0, 0)
+
+                    btnReeval.Visible = True
+                    btnReeval.Enabled = True
+                    btnReeval.Text = "Request Re-evaluation"
+                    btnReeval.BackColor = Color.FromArgb(2, 132, 199)
+                    btnReeval.ForeColor = Color.White
+                    btnReeval.Size = New Size(124, 32)
+                    btnReeval.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 4, 0)
+
+                    btnViewReq.Visible = True
+                    btnViewReq.Text = "View Requirements"
+                    btnViewReq.Size = New Size(106, 32)
+                    btnViewReq.Location = New Point(btnReeval.Location.X + btnReeval.Size.Width + 4, 0)
+
+                ElseIf item.RequiresFile Then
                     btnAct.Visible = True
                     btnAct.Enabled = True
                     btnAct.Text = "Upload Corrected"
                     btnAct.BackColor = Color.FromArgb(220, 38, 38)
                     btnAct.ForeColor = Color.White
-                    btnAct.Size = New Size(110, 32)
+                    btnAct.Size = New Size(120, 32)
                     btnAct.Location = New Point(0, 0)
+
+                    btnReeval.Visible = False
 
                     btnViewReq.Visible = True
                     btnViewReq.Text = "View Requirements"
-                    btnViewReq.Location = New Point(116, 0)
-                    btnViewReq.Size = New Size(114, 32)
+                    btnViewReq.Location = New Point(126, 0)
+                    btnViewReq.Size = New Size(120, 32)
 
-                    lblDash.Visible = False
                 Else
+                    ' Non-guidance non-file (e.g. Clinic)
                     btnAct.Visible = True
                     btnAct.Enabled = True
                     btnAct.Text = "Request Re-evaluation"
                     btnAct.BackColor = Color.FromArgb(2, 132, 199)
                     btnAct.ForeColor = Color.White
-                    btnAct.Size = New Size(122, 32)
+                    btnAct.Size = New Size(125, 32)
                     btnAct.Location = New Point(0, 0)
 
-                    btnViewReq.Visible = True
-                    btnViewReq.Text = If(isGuidance, "Update Information", "View Requirements")
-                    btnViewReq.Location = New Point(126, 0)
-                    btnViewReq.Size = New Size(106, 32)
+                    btnReeval.Visible = False
 
-                    lblDash.Visible = False
+                    btnViewReq.Visible = True
+                    btnViewReq.Text = "View Requirements"
+                    btnViewReq.Location = New Point(132, 0)
+                    btnViewReq.Size = New Size(125, 32)
                 End If
 
             Case "locked", "not applicable"
                 btnAct.Visible = False
+                btnReeval.Visible = False
                 btnViewReq.Visible = False
                 lblDash.Visible = True
                 lblDash.Text = "-"
@@ -443,6 +642,7 @@ Public Class StudentClearanceForm
 
             Case Else
                 btnAct.Visible = False
+                btnReeval.Visible = False
                 btnViewReq.Visible = True
                 lblDash.Visible = False
 
@@ -516,7 +716,11 @@ Public Class StudentClearanceForm
         ' View Details (for Cleared or Under Review)
         If button.Text.Equals("View Details", StringComparison.OrdinalIgnoreCase) Then
             If isGuidance Then
-                OpenGuidanceUpdateModal(item)
+                If AppSession.GuidanceInfoUpdateRequired Then
+                    OpenGuidanceUpdateModal(item)
+                Else
+                    OpenRequirementDetailsModal(item)
+                End If
             Else
                 If item.RequiresFile AndAlso Not String.IsNullOrWhiteSpace(item.SubmittedFilePath) Then
                     OpenSubmittedDocument(item.SubmittedFilePath)
@@ -527,8 +731,12 @@ Public Class StudentClearanceForm
             Return
         End If
 
-        ' Update Information (Guidance Pending / Rejected)
-        If button.Text.Equals("Update Information", StringComparison.OrdinalIgnoreCase) Then
+        ' Review / Complete / Update Information for Guidance
+        If isGuidance AndAlso (button.Text.Equals("Review / Update Information", StringComparison.OrdinalIgnoreCase) OrElse
+                              button.Text.Equals("Complete Information", StringComparison.OrdinalIgnoreCase) OrElse
+                              button.Text.Equals("Update Information", StringComparison.OrdinalIgnoreCase) OrElse
+                              button.Text.Equals("Complete Requirement", StringComparison.OrdinalIgnoreCase) OrElse
+                              button.Text.Equals("Complete Required Action", StringComparison.OrdinalIgnoreCase)) Then
             OpenGuidanceUpdateModal(item)
             Return
         End If
@@ -555,6 +763,90 @@ Public Class StudentClearanceForm
     End Sub
 
     ' ============================================================
+    ' RE-EVALUATION BUTTON CLICK
+    ' ============================================================
+    Private Sub ReevaluationButton_Click(
+        sender As Object,
+        e As EventArgs
+    ) Handles btnReeval1.Click, btnReeval2.Click, btnReeval3.Click, btnReeval4.Click,
+              btnReeval5.Click, btnReeval6.Click, btnReeval7.Click, btnReeval8.Click, btnReeval9.Click
+
+        Dim button = DirectCast(sender, Button)
+        If button.Tag Is Nothing OrElse Not (TypeOf button.Tag Is ClearanceWorkflowHelper.ClearanceItemInfo) Then
+            Return
+        End If
+
+        Dim item = DirectCast(button.Tag, ClearanceWorkflowHelper.ClearanceItemInfo)
+        RequestReevaluation(item)
+
+    End Sub
+
+    ' ============================================================
+    ' COMPLETE GUIDANCE REQUIREMENT (PENDING, NO INFO UPDATE REQUIRED)
+    ' ============================================================
+    Private Sub CompleteGuidanceRequirement(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+
+        Dim msg As String =
+            "Have you completed the required evaluation for " & item.DepartmentName & "?" & Environment.NewLine & Environment.NewLine &
+            "Click Yes to submit your clearance for review."
+
+        Dim res As DialogResult = MessageBox.Show(msg, "Complete Requirement", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        If res <> DialogResult.Yes Then Return
+
+        Try
+            Dim updateSql As String =
+                "UPDATE ClearanceRecords " &
+                "SET Status = 'Under Review', " &
+                "    SubmittedAt = NOW() " &
+                "WHERE RecordID = @RecordID AND StudentID = @StudentID;"
+
+            db.ExecuteNonQuery(updateSql, New Dictionary(Of String, Object) From {
+                {"@RecordID", item.RecordID},
+                {"@StudentID", AppSession.UserID}
+            })
+
+            Dim histSql As String =
+                "INSERT INTO ClearanceHistory (RecordID, ActionType, OldStatus, NewStatus, Remarks, ActionAt, ActionBy) " &
+                "VALUES (@RecordID, 'Submitted', 'Pending', 'Under Review', 'Student confirmed completion of guidance requirement.', NOW(), @StudentID);"
+
+            db.ExecuteNonQuery(histSql, New Dictionary(Of String, Object) From {
+                {"@RecordID", item.RecordID},
+                {"@StudentID", AppSession.UserID}
+            })
+
+            MessageBox.Show(
+                "Your requirement has been submitted to " & item.DepartmentName & "." & Environment.NewLine &
+                "The clearing officer will review your clearance.",
+                "Requirement Submitted",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            )
+
+            LoadClearanceData()
+
+        Catch ex As Exception
+            MessageBox.Show("Unable to submit requirement: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+    ' ============================================================
+    ' COMPLETE GUIDANCE REQUIRED ACTION (REJECTED, NO INFO UPDATE REQUIRED)
+    ' ============================================================
+    Private Sub CompleteGuidanceRequiredAction(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+
+        Dim msg As String =
+            "Please review the office instructions and ensure you have completed the required action for " & item.DepartmentName & "." & Environment.NewLine & Environment.NewLine &
+            "Would you like to view the requirement instructions now?"
+
+        Dim res As DialogResult = MessageBox.Show(msg, "Complete Required Action", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
+        If res = DialogResult.Yes Then
+            OpenRequirementDetailsModal(item)
+        End If
+
+    End Sub
+
+    ' ============================================================
     ' SECONDARY VIEW REQUIREMENTS BUTTON CLICK
     ' ============================================================
     Private Sub ViewRequirementButton_Click(
@@ -570,7 +862,9 @@ Public Class StudentClearanceForm
 
         Dim item = DirectCast(button.Tag, ClearanceWorkflowHelper.ClearanceItemInfo)
 
-        If button.Text.Equals("Update Information", StringComparison.OrdinalIgnoreCase) Then
+        If button.Text.Equals("Update Information", StringComparison.OrdinalIgnoreCase) OrElse
+           button.Text.Equals("Review / Update Information", StringComparison.OrdinalIgnoreCase) OrElse
+           button.Text.Equals("Complete Information", StringComparison.OrdinalIgnoreCase) Then
             OpenGuidanceUpdateModal(item)
             Return
         End If
@@ -593,6 +887,9 @@ Public Class StudentClearanceForm
             modal.RequiresFile = item.RequiresFile
             modal.RequirementLink = item.RequirementLink
             modal.IsGuidanceOffice = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
+            modal.GuidanceInfoUpdateRequired = True
+            modal.AcademicYear = GetCurrentAcademicYear()
+            modal.TermID = GetActiveTermID()
 
             modal.ShowDialog(Me)
         End Using
@@ -615,6 +912,9 @@ Public Class StudentClearanceForm
             modal.RequiresFile = item.RequiresFile
             modal.RequirementLink = item.RequirementLink
             modal.IsGuidanceOffice = True
+            modal.GuidanceInfoUpdateRequired = True
+            modal.AcademicYear = GetCurrentAcademicYear()
+            modal.TermID = GetActiveTermID()
 
             modal.ShowDialog(Me)
         End Using
@@ -731,24 +1031,14 @@ Public Class StudentClearanceForm
         e As EventArgs
     ) Handles btnNavProfile.Click
 
-        ' Open personal information update modal
-        Dim guidanceItem = allClearanceItems.FirstOrDefault(Function(i) i.SequenceOrder = 1 OrElse i.DepartmentName.ToLowerInvariant().Contains("guidance"))
+        ShowProfileView()
 
-        If guidanceItem IsNot Nothing Then
-            OpenGuidanceUpdateModal(guidanceItem)
-        Else
-            MessageBox.Show(
-                "Student Profile:" & Environment.NewLine & Environment.NewLine &
-                "Name: " & AppSession.FullName & Environment.NewLine &
-                "Student No: " & AppSession.StudentNo & Environment.NewLine &
-                "Course: " & AppSession.Course & Environment.NewLine &
-                "Year Level: " & AppSession.YearLevel,
-                "Student Profile",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            )
-        End If
+    End Sub
 
+    Public Sub ShowProfileView()
+        SetActiveNavButton(btnNavProfile)
+        Dim profileForm As New StudentProfileForm()
+        LoadChildFormView(profileForm)
     End Sub
 
     ' ============================================================

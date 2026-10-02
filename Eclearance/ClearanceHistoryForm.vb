@@ -17,6 +17,8 @@ Public Class ClearanceHistoryForm
         e As EventArgs
     ) Handles MyBase.Load
 
+        ApplySchoolLogo(picSchoolLogo)
+
         ConfigureView()
 
         LoadHistory()

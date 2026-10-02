@@ -30,7 +30,7 @@ Partial Class AdminStudentsForm
         btnNavLogout = New Button()
         pnlLogo = New Panel()
         lblLogoText = New Label()
-        lblLogoIcon = New Label()
+        picSchoolLogo = New PictureBox()
         pnlMain = New Panel()
         lblFooterNotice = New Label()
         pnlBottomDetails = New Panel()
@@ -133,7 +133,7 @@ Partial Class AdminStudentsForm
         btnNavStudents.Padding = New Padding(12, 0, 0, 0)
         btnNavStudents.Size = New Size(196, 42)
         btnNavStudents.TabIndex = 2
-        btnNavStudents.Text = "👥  Students"
+        btnNavStudents.Text = "  Students"
         btnNavStudents.TextAlign = ContentAlignment.MiddleLeft
         btnNavStudents.UseVisualStyleBackColor = False
         ' 
@@ -149,7 +149,7 @@ Partial Class AdminStudentsForm
         btnNavStaff.Padding = New Padding(12, 0, 0, 0)
         btnNavStaff.Size = New Size(196, 42)
         btnNavStaff.TabIndex = 3
-        btnNavStaff.Text = "🏛  Staff & offices"
+        btnNavStaff.Text = "  Staff & offices"
         btnNavStaff.TextAlign = ContentAlignment.MiddleLeft
         btnNavStaff.UseVisualStyleBackColor = False
         ' 
@@ -165,7 +165,7 @@ Partial Class AdminStudentsForm
         btnNavHistory.Padding = New Padding(12, 0, 0, 0)
         btnNavHistory.Size = New Size(196, 42)
         btnNavHistory.TabIndex = 4
-        btnNavHistory.Text = "⏱  History"
+        btnNavHistory.Text = "  History"
         btnNavHistory.TextAlign = ContentAlignment.MiddleLeft
         btnNavHistory.UseVisualStyleBackColor = False
         ' 
@@ -181,7 +181,7 @@ Partial Class AdminStudentsForm
         btnNavStartTerm.Padding = New Padding(12, 0, 0, 0)
         btnNavStartTerm.Size = New Size(196, 42)
         btnNavStartTerm.TabIndex = 5
-        btnNavStartTerm.Text = "📅  Start new term"
+        btnNavStartTerm.Text = "  Start new term"
         btnNavStartTerm.TextAlign = ContentAlignment.MiddleLeft
         btnNavStartTerm.UseVisualStyleBackColor = False
         ' 
@@ -197,14 +197,14 @@ Partial Class AdminStudentsForm
         btnNavLogout.Padding = New Padding(20, 0, 0, 0)
         btnNavLogout.Size = New Size(220, 48)
         btnNavLogout.TabIndex = 6
-        btnNavLogout.Text = "↪  Log out"
+        btnNavLogout.Text = "  Log out"
         btnNavLogout.TextAlign = ContentAlignment.MiddleLeft
         btnNavLogout.UseVisualStyleBackColor = False
         ' 
         ' pnlLogo
         ' 
         pnlLogo.Controls.Add(lblLogoText)
-        pnlLogo.Controls.Add(lblLogoIcon)
+        pnlLogo.Controls.Add(picSchoolLogo)
         pnlLogo.Dock = DockStyle.Top
         pnlLogo.Location = New Point(0, 0)
         pnlLogo.Name = "pnlLogo"
@@ -219,18 +219,15 @@ Partial Class AdminStudentsForm
         lblLogoText.Name = "lblLogoText"
         lblLogoText.Size = New Size(140, 40)
         lblLogoText.TabIndex = 1
-        lblLogoText.Text = "School" & Global.System.Environment.NewLine & "Clearance"
+        lblLogoText.Text = "EClearance"        ' 
+        ' picSchoolLogo
         ' 
-        ' lblLogoIcon
-        ' 
-        lblLogoIcon.AutoSize = True
-        lblLogoIcon.Font = New Font("Segoe UI Emoji", 18F)
-        lblLogoIcon.ForeColor = Color.White
-        lblLogoIcon.Location = New Point(14, 20)
-        lblLogoIcon.Name = "lblLogoIcon"
-        lblLogoIcon.Size = New Size(47, 32)
-        lblLogoIcon.TabIndex = 0
-        lblLogoIcon.Text = "🎓"
+        picSchoolLogo.Location = New Point(12, 16)
+        picSchoolLogo.Name = "picSchoolLogo"
+        picSchoolLogo.Size = New Size(32, 32)
+        picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
+        picSchoolLogo.TabIndex = 0
+        picSchoolLogo.TabStop = False
         ' 
         ' pnlMain
         ' 
@@ -820,7 +817,7 @@ Partial Class AdminStudentsForm
         MinimumSize = New Size(1100, 750)
         Name = "AdminStudentsForm"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "School Clearance - Administration (Students)"
+        Text = "EClearance - Administration (Students)"
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)
@@ -850,7 +847,7 @@ Partial Class AdminStudentsForm
 
     Friend WithEvents pnlSidebar As Panel
     Friend WithEvents pnlLogo As Panel
-    Friend WithEvents lblLogoIcon As Label
+    Friend WithEvents picSchoolLogo As PictureBox
     Friend WithEvents lblLogoText As Label
     Friend WithEvents lblNavSection As Label
     Friend WithEvents btnNavStudents As Button

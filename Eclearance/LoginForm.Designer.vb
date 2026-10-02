@@ -25,7 +25,7 @@ Partial Class LoginForm
         pnlLeftHero = New Panel()
         pnlHeroDivider = New Panel()
         lblHeroTitle = New Label()
-        lblHeroLogo = New Label()
+        picSchoolLogo = New PictureBox()
         pnlRightLogin = New Panel()
         pnlLoginCard = New Panel()
         btnSignIn = New Button()
@@ -46,7 +46,7 @@ Partial Class LoginForm
         pnlLeftHero.BackColor = Color.FromArgb(CByte(11), CByte(44), CByte(99))
         pnlLeftHero.Controls.Add(pnlHeroDivider)
         pnlLeftHero.Controls.Add(lblHeroTitle)
-        pnlLeftHero.Controls.Add(lblHeroLogo)
+        pnlLeftHero.Controls.Add(picSchoolLogo)
         pnlLeftHero.Dock = DockStyle.Left
         pnlLeftHero.Location = New Point(0, 0)
         pnlLeftHero.Name = "pnlLeftHero"
@@ -71,18 +71,15 @@ Partial Class LoginForm
         lblHeroTitle.Name = "lblHeroTitle"
         lblHeroTitle.Size = New Size(300, 47)
         lblHeroTitle.TabIndex = 1
-        lblHeroTitle.Text = "School Clearance"
+        lblHeroTitle.Text = "EClearance"        ' 
+        ' picSchoolLogo
         ' 
-        ' lblHeroLogo
-        ' 
-        lblHeroLogo.AutoSize = True
-        lblHeroLogo.Font = New Font("Segoe UI Emoji", 48F)
-        lblHeroLogo.ForeColor = Color.White
-        lblHeroLogo.Location = New Point(50, 186)
-        lblHeroLogo.Name = "lblHeroLogo"
-        lblHeroLogo.Size = New Size(125, 85)
-        lblHeroLogo.TabIndex = 0
-        lblHeroLogo.Text = "🎓"
+        picSchoolLogo.Location = New Point(50, 186)
+        picSchoolLogo.Name = "picSchoolLogo"
+        picSchoolLogo.Size = New Size(80, 80)
+        picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
+        picSchoolLogo.TabIndex = 0
+        picSchoolLogo.TabStop = False
         ' 
         ' pnlRightLogin
         ' 
@@ -217,7 +214,7 @@ Partial Class LoginForm
         MinimumSize = New Size(950, 650)
         Name = "LoginForm"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "School Clearance - Sign in"
+        Text = "EClearance - Sign in"
         pnlLeftHero.ResumeLayout(False)
         pnlLeftHero.PerformLayout()
         pnlRightLogin.ResumeLayout(False)
@@ -227,7 +224,7 @@ Partial Class LoginForm
     End Sub
 
     Friend WithEvents pnlLeftHero As Panel
-    Friend WithEvents lblHeroLogo As Label
+    Friend WithEvents picSchoolLogo As PictureBox
     Friend WithEvents lblHeroTitle As Label
     Friend WithEvents lblHeroSubtitle As Label
     Friend WithEvents pnlHeroDivider As Panel

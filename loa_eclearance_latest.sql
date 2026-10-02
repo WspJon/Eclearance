@@ -84,6 +84,8 @@ CREATE TABLE `Users` (
   `Course` VARCHAR(100) NULL,
   `Section` VARCHAR(50) NULL,
   `YearLevel` VARCHAR(30) NULL,
+  `StudentType` VARCHAR(30) NULL,
+  `GuidanceInfoUpdateRequired` TINYINT(1) NOT NULL DEFAULT 0,
   `EnrolledInNSTP` TINYINT(1) NOT NULL DEFAULT 0,
   `DepartmentID` INT NULL,
   `ContactNo` VARCHAR(20) NULL,
@@ -120,6 +122,36 @@ INSERT INTO `Users`
 VALUES
 ('clinic_staff', 'clinic123', 'Clinic Staff Officer', 'Staff', 9, 1),
 ('dean_staff', 'dean123', 'College Dean Staff', 'Staff', 10, 1);
+
+-- ============================================================
+-- 3.1 GUIDANCE STUDENT PROFILES (YEARLY WORKFLOW)
+-- Preserves student guidance information per academic year.
+-- If a student updates information in a new academic year, a new
+-- yearly profile record is created, preserving historical profiles.
+-- ============================================================
+CREATE TABLE IF NOT EXISTS `GuidanceStudentProfiles` (
+  `GuidanceProfileID` INT NOT NULL AUTO_INCREMENT,
+  `StudentID` INT NOT NULL,
+  `AcademicYear` VARCHAR(50) NOT NULL,
+  `TermID` INT NULL,
+  `Address` VARCHAR(255) NULL,
+  `ContactNo` VARCHAR(50) NULL,
+  `Email` VARCHAR(150) NULL,
+  `CivilStatus` VARCHAR(50) NULL,
+  `EmergencyContactName` VARCHAR(150) NULL,
+  `EmergencyContactNo` VARCHAR(50) NULL,
+  `Relationship` VARCHAR(100) NULL,
+  `AdditionalNotes` VARCHAR(500) NULL,
+  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`GuidanceProfileID`),
+  UNIQUE KEY `uq_student_academic_year` (`StudentID`, `AcademicYear`),
+  KEY `idx_guidance_student` (`StudentID`),
+  KEY `idx_guidance_year` (`AcademicYear`),
+  CONSTRAINT `fk_guidance_profile_student`
+    FOREIGN KEY (`StudentID`) REFERENCES `Users` (`UserID`)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
 -- 4. SECTIONS
@@ -225,7 +257,7 @@ VALUES
 
 -- Guidance (original RequirementID 6)
 (6, 6, 'Guidance Clearance',
- 'Complete the required evaluation. Old students must also update their personal information before clearance approval.',
+ 'Complete the required Guidance process and review or update your student information for the current academic year.',
  0, NULL, 0, 1, NULL, NULL, NULL, 1),
 
 -- NSTP (original RequirementID 7) - first year only

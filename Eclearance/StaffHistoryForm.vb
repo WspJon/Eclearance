@@ -7,6 +7,7 @@ Public Class StaffHistoryForm
     Private _historyTable As DataTable
 
     Private Sub StaffHistoryForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ApplySchoolLogo(picSchoolLogo)
         InitializeUserData()
         cmbDateFilter.SelectedIndex = 0
         cmbStatusFilter.SelectedIndex = 0

@@ -11,6 +11,8 @@ Public Class LoginForm
         e As EventArgs
     ) Handles MyBase.Load
 
+        ApplySchoolLogo(picSchoolLogo)
+
         txtPassword.UseSystemPasswordChar = True
 
         txtUsername.Focus()
@@ -107,6 +109,8 @@ Public Class LoginForm
                 "StudentNo, " &
                 "Course, " &
                 "YearLevel, " &
+                "StudentType, " &
+                "GuidanceInfoUpdateRequired, " &
                 "DepartmentID " &
                 "FROM Users " &
                 "WHERE Username = @Username " &
@@ -212,6 +216,26 @@ Public Class LoginForm
 
                 AppSession.YearLevel =
                     row("YearLevel").ToString()
+
+            End If
+
+
+            If Not IsDBNull(
+                row("StudentType")
+            ) Then
+
+                AppSession.StudentType =
+                    row("StudentType").ToString()
+
+            End If
+
+
+            If Not IsDBNull(
+                row("GuidanceInfoUpdateRequired")
+            ) Then
+
+                AppSession.GuidanceInfoUpdateRequired =
+                    Convert.ToBoolean(row("GuidanceInfoUpdateRequired"))
 
             End If
 

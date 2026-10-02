@@ -27,6 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="LoginForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,24 @@
     </Compile>
     <Compile Update="StaffHistoryForm.Designer.vb">
       <DependentUpon>StaffHistoryForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="StudentProfileForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StudentProfileForm.Designer.vb">
+      <DependentUpon>StudentProfileForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="EditStudentProfileModalForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="EditStudentProfileModalForm.Designer.vb">
+      <DependentUpon>EditStudentProfileModalForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="ChangePasswordModalForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ChangePasswordModalForm.Designer.vb">
+      <DependentUpon>ChangePasswordModalForm.vb</DependentUpon>
     </Compile>
   </ItemGroup>
 

@@ -28,7 +28,7 @@ Partial Class StaffHistoryForm
         pnlLogo = New Panel()
         lblLogoSub = New Label()
         lblLogoTitle = New Label()
-        lblLogoIcon = New Label()
+        picSchoolLogo = New PictureBox()
         pnlMain = New Panel()
         pnlHistoryDetailCard = New Panel()
         btnReReview = New Button()
@@ -145,7 +145,7 @@ Partial Class StaffHistoryForm
         btnNavLogout.Name = "btnNavLogout"
         btnNavLogout.Size = New Size(188, 44)
         btnNavLogout.TabIndex = 5
-        btnNavLogout.Text = "  🚪   Log out"
+        btnNavLogout.Text = "  Log out"
         btnNavLogout.TextAlign = ContentAlignment.MiddleLeft
         btnNavLogout.UseVisualStyleBackColor = True
         ' 
@@ -161,7 +161,7 @@ Partial Class StaffHistoryForm
         btnNavHistory.Name = "btnNavHistory"
         btnNavHistory.Size = New Size(188, 44)
         btnNavHistory.TabIndex = 4
-        btnNavHistory.Text = "  🕒   History"
+        btnNavHistory.Text = "  History"
         btnNavHistory.TextAlign = ContentAlignment.MiddleLeft
         btnNavHistory.UseVisualStyleBackColor = False
         ' 
@@ -176,7 +176,7 @@ Partial Class StaffHistoryForm
         btnNavRequests.Name = "btnNavRequests"
         btnNavRequests.Size = New Size(188, 44)
         btnNavRequests.TabIndex = 3
-        btnNavRequests.Text = "  📄   Requests"
+        btnNavRequests.Text = "  Requests"
         btnNavRequests.TextAlign = ContentAlignment.MiddleLeft
         btnNavRequests.UseVisualStyleBackColor = True
         ' 
@@ -191,7 +191,7 @@ Partial Class StaffHistoryForm
         btnNavDashboard.Name = "btnNavDashboard"
         btnNavDashboard.Size = New Size(188, 44)
         btnNavDashboard.TabIndex = 2
-        btnNavDashboard.Text = "  ⌂   Dashboard"
+        btnNavDashboard.Text = "  Dashboard"
         btnNavDashboard.TextAlign = ContentAlignment.MiddleLeft
         btnNavDashboard.UseVisualStyleBackColor = True
         ' 
@@ -210,7 +210,7 @@ Partial Class StaffHistoryForm
         ' 
         pnlLogo.Controls.Add(lblLogoSub)
         pnlLogo.Controls.Add(lblLogoTitle)
-        pnlLogo.Controls.Add(lblLogoIcon)
+        pnlLogo.Controls.Add(picSchoolLogo)
         pnlLogo.Location = New Point(0, 0)
         pnlLogo.Name = "pnlLogo"
         pnlLogo.Size = New Size(220, 75)
@@ -236,18 +236,15 @@ Partial Class StaffHistoryForm
         lblLogoTitle.Name = "lblLogoTitle"
         lblLogoTitle.Size = New Size(134, 21)
         lblLogoTitle.TabIndex = 1
-        lblLogoTitle.Text = "School Clearance"
+        lblLogoTitle.Text = "EClearance"        ' 
+        ' picSchoolLogo
         ' 
-        ' lblLogoIcon
-        ' 
-        lblLogoIcon.AutoSize = True
-        lblLogoIcon.Font = New Font("Segoe UI Emoji", 18F)
-        lblLogoIcon.ForeColor = Color.White
-        lblLogoIcon.Location = New Point(12, 16)
-        lblLogoIcon.Name = "lblLogoIcon"
-        lblLogoIcon.Size = New Size(39, 32)
-        lblLogoIcon.TabIndex = 0
-        lblLogoIcon.Text = "🎓"
+        picSchoolLogo.Location = New Point(12, 16)
+        picSchoolLogo.Name = "picSchoolLogo"
+        picSchoolLogo.Size = New Size(32, 32)
+        picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
+        picSchoolLogo.TabIndex = 0
+        picSchoolLogo.TabStop = False
         ' 
         ' pnlMain
         ' 
@@ -1137,7 +1134,7 @@ Partial Class StaffHistoryForm
         MinimumSize = New Size(1100, 750)
         Name = "StaffHistoryForm"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "School Clearance - Staff History"
+        Text = "EClearance - Staff History"
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)
@@ -1167,7 +1164,7 @@ Partial Class StaffHistoryForm
 
     Friend WithEvents pnlSidebar As Panel
     Friend WithEvents pnlLogo As Panel
-    Friend WithEvents lblLogoIcon As Label
+    Friend WithEvents picSchoolLogo As PictureBox
     Friend WithEvents lblLogoTitle As Label
     Friend WithEvents lblLogoSub As Label
     Friend WithEvents lblNavSection As Label

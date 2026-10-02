@@ -5,6 +5,7 @@ Public Class StaffOfficesForm
     Private ReadOnly db As New DatabaseHelper()
 
     Private Sub StaffOfficesForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ApplySchoolLogo(picSchoolLogo)
         LoadStaff()
     End Sub
 

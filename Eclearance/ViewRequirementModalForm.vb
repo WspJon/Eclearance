@@ -14,6 +14,9 @@ Public Class ViewRequirementModalForm
     Public Property RequiresFile As Boolean = True
     Public Property RequirementLink As String = ""
     Public Property IsGuidanceOffice As Boolean = False
+    Public Property GuidanceInfoUpdateRequired As Boolean = False
+    Public Property AcademicYear As String = ""
+    Public Property TermID As Integer = 0
 
     Private Sub ViewRequirementModalForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lblModalHeader.Text = If(String.IsNullOrWhiteSpace(DepartmentName), "Requirement Instructions", DepartmentName & " - Instructions")
@@ -43,6 +46,22 @@ Public Class ViewRequirementModalForm
         If IsGuidanceOffice Then
             pnlGuidanceSection.Visible = True
             LoadGuidanceStudentInfo()
+
+            ' Under Review or Cleared: do not allow editing
+            Dim canEdit As Boolean = (EffectiveStatus.Equals("Pending", StringComparison.OrdinalIgnoreCase) OrElse EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase))
+            btnSaveGuidanceInfo.Enabled = canEdit
+            If Not canEdit Then
+                btnSaveGuidanceInfo.BackColor = Color.FromArgb(203, 213, 225)
+                btnSaveGuidanceInfo.Text = "Information Submitted (" & EffectiveStatus & ")"
+                txtContactNo.ReadOnly = True
+                txtEmail.ReadOnly = True
+                txtAddress.ReadOnly = True
+                cmbCivilStatus.Enabled = False
+                txtEmergencyContactName.ReadOnly = True
+                cmbRelationship.Enabled = False
+                txtEmergencyContactNo.ReadOnly = True
+                txtAdditionalNotes.ReadOnly = True
+            End If
         Else
             pnlGuidanceSection.Visible = False
         End If
@@ -71,40 +90,95 @@ Public Class ViewRequirementModalForm
         End Select
     End Sub
 
+    Private Sub EnsureActiveTermInfo()
+        If String.IsNullOrWhiteSpace(AcademicYear) OrElse TermID <= 0 Then
+            Try
+                Dim dtTerm As DataTable = db.ExecuteQuery("SELECT TermID, AcademicYear FROM AcademicTerms WHERE IsActive = 1 LIMIT 1;")
+                If dtTerm.Rows.Count > 0 Then
+                    TermID = Convert.ToInt32(dtTerm.Rows(0)("TermID"))
+                    AcademicYear = dtTerm.Rows(0)("AcademicYear").ToString()
+                End If
+            Catch
+            End Try
+            If String.IsNullOrWhiteSpace(AcademicYear) Then AcademicYear = "2026-2027"
+        End If
+    End Sub
+
     Private Sub LoadGuidanceStudentInfo()
         Try
-            Dim query As String =
-                "SELECT ContactNo, Email, Address, CivilStatus, EmergencyContactName, Relationship, EmergencyContactNo, AdditionalNotes " &
-                "FROM Users WHERE UserID = @UserID LIMIT 1;"
+            EnsureActiveTermInfo()
 
-            Dim dt = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
-                {"@UserID", AppSession.UserID}
+            ' 1. Check if profile exists for current student & active academic year
+            Dim thisYearQuery As String =
+                "SELECT * FROM GuidanceStudentProfiles WHERE StudentID = @StudentID AND AcademicYear = @AcademicYear LIMIT 1;"
+            Dim dtThisYear = db.ExecuteQuery(thisYearQuery, New Dictionary(Of String, Object) From {
+                {"@StudentID", AppSession.UserID},
+                {"@AcademicYear", AcademicYear}
             })
 
-            If dt.Rows.Count > 0 Then
-                Dim row = dt.Rows(0)
-                txtContactNo.Text = If(IsDBNull(row("ContactNo")), "", row("ContactNo").ToString())
-                txtEmail.Text = If(IsDBNull(row("Email")), "", row("Email").ToString())
-                txtAddress.Text = If(IsDBNull(row("Address")), "", row("Address").ToString())
+            Dim hasExistingData As Boolean = False
+            Dim sourceRow As DataRow = Nothing
 
-                Dim civil = If(IsDBNull(row("CivilStatus")), "", row("CivilStatus").ToString())
-                If Not String.IsNullOrWhiteSpace(civil) AndAlso cmbCivilStatus.Items.Contains(civil) Then
+            If dtThisYear.Rows.Count > 0 Then
+                sourceRow = dtThisYear.Rows(0)
+                hasExistingData = True
+            Else
+                ' 2. Try latest previous academic year
+                Dim prevQuery As String =
+                    "SELECT * FROM GuidanceStudentProfiles WHERE StudentID = @StudentID ORDER BY CreatedAt DESC, GuidanceProfileID DESC LIMIT 1;"
+                Dim dtPrev = db.ExecuteQuery(prevQuery, New Dictionary(Of String, Object) From {
+                    {"@StudentID", AppSession.UserID}
+                })
+                If dtPrev.Rows.Count > 0 Then
+                    sourceRow = dtPrev.Rows(0)
+                    hasExistingData = True
+                Else
+                    ' 3. Fallback to Users table for backwards compatibility
+                    Dim userQuery As String =
+                        "SELECT ContactNo, Email, Address, CivilStatus, EmergencyContactName, Relationship, EmergencyContactNo, AdditionalNotes " &
+                        "FROM Users WHERE UserID = @UserID LIMIT 1;"
+                    Dim dtUser = db.ExecuteQuery(userQuery, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
+                    If dtUser.Rows.Count > 0 Then
+                        sourceRow = dtUser.Rows(0)
+                        If Not IsDBNull(sourceRow("ContactNo")) AndAlso Not String.IsNullOrWhiteSpace(sourceRow("ContactNo").ToString()) Then
+                            hasExistingData = True
+                        End If
+                    End If
+                End If
+            End If
+
+            If sourceRow IsNot Nothing Then
+                txtContactNo.Text = If(IsDBNull(sourceRow("ContactNo")), "", sourceRow("ContactNo").ToString())
+                txtEmail.Text = If(IsDBNull(sourceRow("Email")), "", sourceRow("Email").ToString())
+                txtAddress.Text = If(IsDBNull(sourceRow("Address")), "", sourceRow("Address").ToString())
+
+                Dim civil = If(IsDBNull(sourceRow("CivilStatus")), "", sourceRow("CivilStatus").ToString())
+                If Not String.IsNullOrWhiteSpace(civil) Then
+                    If Not cmbCivilStatus.Items.Contains(civil) Then
+                        cmbCivilStatus.Items.Add(civil)
+                    End If
                     cmbCivilStatus.SelectedItem = civil
                 Else
                     cmbCivilStatus.SelectedIndex = -1
                 End If
 
-                txtEmergencyContactName.Text = If(IsDBNull(row("EmergencyContactName")), "", row("EmergencyContactName").ToString())
+                txtEmergencyContactName.Text = If(IsDBNull(sourceRow("EmergencyContactName")), "", sourceRow("EmergencyContactName").ToString())
 
-                Dim rel = If(IsDBNull(row("Relationship")), "", row("Relationship").ToString())
+                Dim rel = If(IsDBNull(sourceRow("Relationship")), "", sourceRow("Relationship").ToString())
                 If Not String.IsNullOrWhiteSpace(rel) AndAlso cmbRelationship.Items.Contains(rel) Then
                     cmbRelationship.SelectedItem = rel
                 Else
                     cmbRelationship.SelectedIndex = -1
                 End If
 
-                txtEmergencyContactNo.Text = If(IsDBNull(row("EmergencyContactNo")), "", row("EmergencyContactNo").ToString())
-                txtAdditionalNotes.Text = If(IsDBNull(row("AdditionalNotes")), "", row("AdditionalNotes").ToString())
+                txtEmergencyContactNo.Text = If(IsDBNull(sourceRow("EmergencyContactNo")), "", sourceRow("EmergencyContactNo").ToString())
+                txtAdditionalNotes.Text = If(IsDBNull(sourceRow("AdditionalNotes")), "", sourceRow("AdditionalNotes").ToString())
+            End If
+
+            If hasExistingData Then
+                btnSaveGuidanceInfo.Text = "Review / Update Information"
+            Else
+                btnSaveGuidanceInfo.Text = "Complete Information"
             End If
         Catch ex As Exception
             ' Keep blank fallback
@@ -190,32 +264,49 @@ Public Class ViewRequirementModalForm
         End If
 
         Try
-            Dim updateSql As String =
-                "UPDATE Users SET " &
-                "  ContactNo = @ContactNo, " &
-                "  Email = @Email, " &
-                "  Address = @Address, " &
-                "  CivilStatus = @CivilStatus, " &
-                "  EmergencyContactName = @EmergencyContactName, " &
-                "  Relationship = @Relationship, " &
-                "  EmergencyContactNo = @EmergencyContactNo, " &
-                "  AdditionalNotes = @AdditionalNotes, " &
-                "  GuidanceInfoUpdated = 1 " &
-                "WHERE UserID = @UserID;"
+            EnsureActiveTermInfo()
+
+            ' Upsert into GuidanceStudentProfiles for active AcademicYear
+            Dim saveSql As String =
+                "INSERT INTO GuidanceStudentProfiles (StudentID, AcademicYear, TermID, Address, ContactNo, Email, CivilStatus, EmergencyContactName, EmergencyContactNo, Relationship, AdditionalNotes, CreatedAt, UpdatedAt) " &
+                "VALUES (@StudentID, @AcademicYear, @TermID, @Address, @ContactNo, @Email, @CivilStatus, @EmergencyContactName, @EmergencyContactNo, @Relationship, @AdditionalNotes, NOW(), NOW()) " &
+                "ON DUPLICATE KEY UPDATE " &
+                "  Address = VALUES(Address), " &
+                "  ContactNo = VALUES(ContactNo), " &
+                "  Email = VALUES(Email), " &
+                "  CivilStatus = VALUES(CivilStatus), " &
+                "  EmergencyContactName = VALUES(EmergencyContactName), " &
+                "  EmergencyContactNo = VALUES(EmergencyContactNo), " &
+                "  Relationship = VALUES(Relationship), " &
+                "  AdditionalNotes = VALUES(AdditionalNotes), " &
+                "  UpdatedAt = NOW();"
 
             Dim params As New Dictionary(Of String, Object) From {
+                {"@StudentID", AppSession.UserID},
+                {"@AcademicYear", AcademicYear},
+                {"@TermID", TermID},
+                {"@Address", address},
                 {"@ContactNo", contact},
                 {"@Email", email},
-                {"@Address", address},
                 {"@CivilStatus", civil},
                 {"@EmergencyContactName", emName},
-                {"@Relationship", relationship},
                 {"@EmergencyContactNo", emNo},
-                {"@AdditionalNotes", notes},
-                {"@UserID", AppSession.UserID}
+                {"@Relationship", relationship},
+                {"@AdditionalNotes", notes}
             }
+            db.ExecuteNonQuery(saveSql, params)
 
-            db.ExecuteNonQuery(updateSql, params)
+            ' Sync core user info
+            Try
+                Dim userUpdateSql As String = "UPDATE Users SET ContactNo = @ContactNo, Email = @Email, Address = @Address, GuidanceInfoUpdated = 1 WHERE UserID = @UserID;"
+                db.ExecuteNonQuery(userUpdateSql, New Dictionary(Of String, Object) From {
+                    {"@ContactNo", contact},
+                    {"@Email", email},
+                    {"@Address", address},
+                    {"@UserID", AppSession.UserID}
+                })
+            Catch
+            End Try
 
             ' Also update student's active Guidance clearance record to 'Under Review' so staff can review it
             Try
@@ -235,7 +326,19 @@ Public Class ViewRequirementModalForm
             Catch
             End Try
 
-            MessageBox.Show("Student personal information updated successfully for Guidance records.", "Guidance Updated", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            btnSaveGuidanceInfo.Enabled = False
+            btnSaveGuidanceInfo.BackColor = Color.FromArgb(203, 213, 225)
+            btnSaveGuidanceInfo.Text = "Information Submitted (Under Review)"
+            txtContactNo.ReadOnly = True
+            txtEmail.ReadOnly = True
+            txtAddress.ReadOnly = True
+            cmbCivilStatus.Enabled = False
+            txtEmergencyContactName.ReadOnly = True
+            cmbRelationship.Enabled = False
+            txtEmergencyContactNo.ReadOnly = True
+            txtAdditionalNotes.ReadOnly = True
+
+            MessageBox.Show("Student personal information for Academic Year " & AcademicYear & " saved successfully for Guidance records.", "Guidance Updated", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Catch ex As Exception
             MessageBox.Show("Failed to save guidance details: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try

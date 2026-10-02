@@ -12,6 +12,7 @@ Public Class CreateStudentForm
 
         LoadCourseOptions()
         LoadYearLevelOptions()
+        LoadStudentTypeOptions()
 
         txtPassword.UseSystemPasswordChar = True
 
@@ -47,6 +48,19 @@ Public Class CreateStudentForm
         cmbYearLevel.Items.Add("4th Year")
 
         cmbYearLevel.SelectedIndex = -1
+
+    End Sub
+
+
+    Private Sub LoadStudentTypeOptions()
+
+        cmbStudentType.Items.Clear()
+
+        cmbStudentType.Items.Add("New")
+        cmbStudentType.Items.Add("Old")
+        cmbStudentType.Items.Add("Transferee")
+
+        cmbStudentType.SelectedIndex = -1
 
     End Sub
 
@@ -149,6 +163,13 @@ Public Class CreateStudentForm
             section = cmbSection.SelectedItem.ToString()
         End If
 
+        Dim studentType As String = ""
+        If cmbStudentType.SelectedItem IsNot Nothing Then
+            studentType = cmbStudentType.SelectedItem.ToString()
+        End If
+
+        Dim guidanceInfoRequired As Boolean = chkGuidanceInfoRequired.Checked
+
         If String.IsNullOrWhiteSpace(studentNo) Then
             ShowWarning("Please enter the student number.")
             txtStudentNo.Focus()
@@ -182,6 +203,12 @@ Public Class CreateStudentForm
         If String.IsNullOrWhiteSpace(section) Then
             ShowWarning("Please select the student's section.")
             cmbSection.Focus()
+            Return
+        End If
+
+        If String.IsNullOrWhiteSpace(studentType) Then
+            ShowWarning("Please select the student type.")
+            cmbStudentType.Focus()
             Return
         End If
 
@@ -308,12 +335,12 @@ Public Class CreateStudentForm
                             "INSERT INTO Users " &
                             "(" &
                             "Username, Password, FullName, FirstName, LastName, " &
-                            "Role, StudentNo, Course, Section, YearLevel, EnrolledInNSTP, IsActive" &
+                            "Role, StudentNo, Course, Section, YearLevel, StudentType, GuidanceInfoUpdateRequired, EnrolledInNSTP, IsActive" &
                             ") " &
                             "VALUES " &
                             "(" &
                             "@Username, @Password, @FullName, @FirstName, @LastName, " &
-                            "'Student', @StudentNo, @Course, @Section, @YearLevel, @NSTP, 1" &
+                            "'Student', @StudentNo, @Course, @Section, @YearLevel, @StudentType, @GuidanceInfoUpdateRequired, @NSTP, 1" &
                             ");"
 
                         Dim newStudentID As Integer
@@ -367,6 +394,16 @@ Public Class CreateStudentForm
                             cmd.Parameters.AddWithValue(
                                 "@YearLevel",
                                 yearLevel
+                            )
+
+                            cmd.Parameters.AddWithValue(
+                                "@StudentType",
+                                studentType
+                            )
+
+                            cmd.Parameters.AddWithValue(
+                                "@GuidanceInfoUpdateRequired",
+                                If(guidanceInfoRequired, 1, 0)
                             )
 
                             cmd.Parameters.AddWithValue(
@@ -671,7 +708,11 @@ Public Class CreateStudentForm
 
         cmbYearLevel.SelectedIndex = -1
 
+        cmbStudentType.SelectedIndex = -1
+
         chkNSTP.Checked = False
+
+        chkGuidanceInfoRequired.Checked = False
 
         txtUsername.Clear()
 

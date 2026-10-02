@@ -10,6 +10,7 @@ Public Class AdminStudentsForm
         e As EventArgs
     ) Handles MyBase.Load
 
+        ApplySchoolLogo(picSchoolLogo)
         LoadCurrentTermLabel()
         InitializeFilters()
         LoadStudents()

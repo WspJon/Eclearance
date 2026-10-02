@@ -38,6 +38,12 @@ Partial Class ReviewClearanceForm
         lblGuidanceInfoTitle = New Label()
         lblGuidanceInfoSubtitle = New Label()
         pnlGuidanceBody = New Panel()
+        pnlGuidanceFields = New Panel()
+        pnlGuidanceNoUpdate = New Panel()
+        pnlGuidanceNoUpdateCard = New Panel()
+        lblNoUpdateIcon = New Label()
+        lblNoUpdateTitle = New Label()
+        lblNoUpdateMessage = New Label()
         lblAddressTitle = New Label()
         lblAddressValue = New Label()
         lblContactTitle = New Label()
@@ -365,29 +371,98 @@ Partial Class ReviewClearanceForm
         ' pnlGuidanceBody
         ' 
         pnlGuidanceBody.BackColor = Color.White
-        pnlGuidanceBody.Controls.Add(pnlGuidanceInfoNote)
-        pnlGuidanceBody.Controls.Add(lblNotesValue)
-        pnlGuidanceBody.Controls.Add(lblNotesTitle)
-        pnlGuidanceBody.Controls.Add(lblEmergencyContactValue)
-        pnlGuidanceBody.Controls.Add(lblEmergencyContactTitle)
-        pnlGuidanceBody.Controls.Add(lblRelationshipValue)
-        pnlGuidanceBody.Controls.Add(lblRelationshipTitle)
-        pnlGuidanceBody.Controls.Add(lblEmergencyNameValue)
-        pnlGuidanceBody.Controls.Add(lblEmergencyNameTitle)
-        pnlGuidanceBody.Controls.Add(lblCivilStatusValue)
-        pnlGuidanceBody.Controls.Add(lblCivilStatusTitle)
-        pnlGuidanceBody.Controls.Add(lblEmailValue)
-        pnlGuidanceBody.Controls.Add(lblEmailTitle)
-        pnlGuidanceBody.Controls.Add(lblContactValue)
-        pnlGuidanceBody.Controls.Add(lblContactTitle)
-        pnlGuidanceBody.Controls.Add(lblAddressValue)
-        pnlGuidanceBody.Controls.Add(lblAddressTitle)
+        pnlGuidanceBody.Controls.Add(pnlGuidanceNoUpdate)
+        pnlGuidanceBody.Controls.Add(pnlGuidanceFields)
         pnlGuidanceBody.Dock = DockStyle.Fill
         pnlGuidanceBody.Location = New Point(0, 56)
         pnlGuidanceBody.Name = "pnlGuidanceBody"
-        pnlGuidanceBody.Padding = New Padding(20)
         pnlGuidanceBody.Size = New Size(618, 428)
         pnlGuidanceBody.TabIndex = 1
+        ' 
+        ' pnlGuidanceFields
+        ' 
+        pnlGuidanceFields.BackColor = Color.White
+        pnlGuidanceFields.Controls.Add(pnlGuidanceInfoNote)
+        pnlGuidanceFields.Controls.Add(lblNotesValue)
+        pnlGuidanceFields.Controls.Add(lblNotesTitle)
+        pnlGuidanceFields.Controls.Add(lblEmergencyContactValue)
+        pnlGuidanceFields.Controls.Add(lblEmergencyContactTitle)
+        pnlGuidanceFields.Controls.Add(lblRelationshipValue)
+        pnlGuidanceFields.Controls.Add(lblRelationshipTitle)
+        pnlGuidanceFields.Controls.Add(lblEmergencyNameValue)
+        pnlGuidanceFields.Controls.Add(lblEmergencyNameTitle)
+        pnlGuidanceFields.Controls.Add(lblCivilStatusValue)
+        pnlGuidanceFields.Controls.Add(lblCivilStatusTitle)
+        pnlGuidanceFields.Controls.Add(lblEmailValue)
+        pnlGuidanceFields.Controls.Add(lblEmailTitle)
+        pnlGuidanceFields.Controls.Add(lblContactValue)
+        pnlGuidanceFields.Controls.Add(lblContactTitle)
+        pnlGuidanceFields.Controls.Add(lblAddressValue)
+        pnlGuidanceFields.Controls.Add(lblAddressTitle)
+        pnlGuidanceFields.Dock = DockStyle.Fill
+        pnlGuidanceFields.Location = New Point(0, 0)
+        pnlGuidanceFields.Name = "pnlGuidanceFields"
+        pnlGuidanceFields.Padding = New Padding(20)
+        pnlGuidanceFields.Size = New Size(618, 428)
+        pnlGuidanceFields.TabIndex = 0
+        ' 
+        ' pnlGuidanceNoUpdate
+        ' 
+        pnlGuidanceNoUpdate.BackColor = Color.White
+        pnlGuidanceNoUpdate.Controls.Add(pnlGuidanceNoUpdateCard)
+        pnlGuidanceNoUpdate.Dock = DockStyle.Fill
+        pnlGuidanceNoUpdate.Location = New Point(0, 0)
+        pnlGuidanceNoUpdate.Name = "pnlGuidanceNoUpdate"
+        pnlGuidanceNoUpdate.Padding = New Padding(20)
+        pnlGuidanceNoUpdate.Size = New Size(618, 428)
+        pnlGuidanceNoUpdate.TabIndex = 1
+        pnlGuidanceNoUpdate.Visible = False
+        ' 
+        ' pnlGuidanceNoUpdateCard
+        ' 
+        pnlGuidanceNoUpdateCard.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlGuidanceNoUpdateCard.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        pnlGuidanceNoUpdateCard.BorderStyle = BorderStyle.FixedSingle
+        pnlGuidanceNoUpdateCard.Controls.Add(lblNoUpdateMessage)
+        pnlGuidanceNoUpdateCard.Controls.Add(lblNoUpdateTitle)
+        pnlGuidanceNoUpdateCard.Controls.Add(lblNoUpdateIcon)
+        pnlGuidanceNoUpdateCard.Location = New Point(20, 20)
+        pnlGuidanceNoUpdateCard.Name = "pnlGuidanceNoUpdateCard"
+        pnlGuidanceNoUpdateCard.Size = New Size(570, 160)
+        pnlGuidanceNoUpdateCard.TabIndex = 0
+        ' 
+        ' lblNoUpdateIcon
+        ' 
+        lblNoUpdateIcon.AutoSize = True
+        lblNoUpdateIcon.Font = New Font("Segoe UI Emoji", 20F)
+        lblNoUpdateIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
+        lblNoUpdateIcon.Location = New Point(20, 24)
+        lblNoUpdateIcon.Name = "lblNoUpdateIcon"
+        lblNoUpdateIcon.Size = New Size(34, 37)
+        lblNoUpdateIcon.TabIndex = 0
+        lblNoUpdateIcon.Text = "ℹ"
+        ' 
+        ' lblNoUpdateTitle
+        ' 
+        lblNoUpdateTitle.AutoSize = True
+        lblNoUpdateTitle.Font = New Font("Segoe UI Semibold", 10.5F, FontStyle.Bold)
+        lblNoUpdateTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblNoUpdateTitle.Location = New Point(64, 20)
+        lblNoUpdateTitle.Name = "lblNoUpdateTitle"
+        lblNoUpdateTitle.Size = New Size(198, 19)
+        lblNoUpdateTitle.TabIndex = 1
+        lblNoUpdateTitle.Text = "Guidance Clearance Evaluation"
+        ' 
+        ' lblNoUpdateMessage
+        ' 
+        lblNoUpdateMessage.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblNoUpdateMessage.Font = New Font("Segoe UI", 9.5F)
+        lblNoUpdateMessage.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
+        lblNoUpdateMessage.Location = New Point(64, 52)
+        lblNoUpdateMessage.Name = "lblNoUpdateMessage"
+        lblNoUpdateMessage.Size = New Size(480, 85)
+        lblNoUpdateMessage.TabIndex = 2
+        lblNoUpdateMessage.Text = "Personal information update is not required for this student." & vbCrLf & vbCrLf & "Please review and evaluate the student's Guidance clearance requirement."
         ' 
         ' lblAddressTitle
         ' 
@@ -1354,7 +1429,7 @@ pnlDocumentCard.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles
         Name = "ReviewClearanceForm"
         ShowInTaskbar = False
         StartPosition = FormStartPosition.CenterParent
-        Text = "Review Clearance Submission"
+        Text = "EClearance - Review Clearance Submission"
         pnlCard.ResumeLayout(False)
         pnlCard.PerformLayout()
         pnlOfficeBadge.ResumeLayout(False)
@@ -1480,6 +1555,12 @@ pnlDocumentCard.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles
     Friend WithEvents pnlGuidanceInfoNote As Panel
     Friend WithEvents lblGuidanceNoteIcon As Label
     Friend WithEvents lblGuidanceInfoNote As Label
+    Friend WithEvents pnlGuidanceFields As Panel
+    Friend WithEvents pnlGuidanceNoUpdate As Panel
+    Friend WithEvents pnlGuidanceNoUpdateCard As Panel
+    Friend WithEvents lblNoUpdateIcon As Label
+    Friend WithEvents lblNoUpdateTitle As Label
+    Friend WithEvents lblNoUpdateMessage As Label
     Friend WithEvents lblStatusTitle As Label
     Friend WithEvents lblStatusVal As Label
 End Class

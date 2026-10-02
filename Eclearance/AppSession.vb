@@ -16,6 +16,10 @@ Public Module AppSession
 
     Public YearLevel As String = ""
 
+    Public StudentType As String = ""
+
+    Public GuidanceInfoUpdateRequired As Boolean = False
+
 
     Public Sub Clear()
 
@@ -35,6 +39,46 @@ Public Module AppSession
 
         YearLevel = ""
 
+        StudentType = ""
+
+        GuidanceInfoUpdateRequired = False
+
+    End Sub
+
+    Private _schoolLogo As Image = Nothing
+
+    Public Function GetSchoolLogo() As Image
+        If _schoolLogo IsNot Nothing Then Return _schoolLogo
+        Try
+            Dim path1 As String = IO.Path.Combine(Application.StartupPath, "Resources", "loa_logo.png")
+            If IO.File.Exists(path1) Then
+                _schoolLogo = Image.FromFile(path1)
+                Return _schoolLogo
+            End If
+            ' fallback: search up to project root dir
+            Dim dir As String = Application.StartupPath
+            For i As Integer = 1 To 4
+                Dim checkPath As String = IO.Path.Combine(dir, "Resources", "loa_logo.png")
+                If IO.File.Exists(checkPath) Then
+                    _schoolLogo = Image.FromFile(checkPath)
+                    Return _schoolLogo
+                End If
+                Dim p = IO.Directory.GetParent(dir)
+                If p Is Nothing Then Exit For
+                dir = p.FullName
+            Next
+        Catch ex As Exception
+        End Try
+        Return Nothing
+    End Function
+
+    Public Sub ApplySchoolLogo(pic As PictureBox)
+        If pic Is Nothing Then Return
+        Dim logo = GetSchoolLogo()
+        If logo IsNot Nothing Then
+            pic.Image = logo
+            pic.SizeMode = PictureBoxSizeMode.Zoom
+        End If
     End Sub
 
 End Module

@@ -5,6 +5,7 @@ Public Class StartNewTermForm
     Private ReadOnly db As New DatabaseHelper()
 
     Private Sub StartNewTermForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ApplySchoolLogo(picSchoolLogo)
         InitializeTermOptions()
     End Sub
 
