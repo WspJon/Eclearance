@@ -107,24 +107,68 @@ Public Class StartNewTermForm
                         End Using
 
                         ' Batch generate clearance records for all active students and active requirements
-                        Dim generateRecordsSql As String =
-                            "INSERT INTO ClearanceRecords (StudentID, RequirementID, TermID, Status) " &
-                            "SELECT u.UserID, r.RequirementID, @TermID, 'Pending' " &
-                            "FROM Users u " &
-                            "CROSS JOIN ClearanceRequirements r " &
-                            "WHERE u.Role = 'Student' AND u.IsActive = 1 " &
-                            "AND r.IsActive = 1;"
+                        ' Parallel initialization for Steps 1-5, Gated/Sequential for Steps 6-9
+                        Dim dtStudents As New DataTable()
+                        Using cmdStudents As New MySqlCommand("SELECT UserID, Course, YearLevel FROM Users WHERE Role = 'Student' AND IsActive = 1;", conn, transaction)
+                            Using daStudents As New MySqlDataAdapter(cmdStudents)
+                                daStudents.Fill(dtStudents)
+                            End Using
+                        End Using
 
-                        Using cmdRecords As New MySqlCommand(generateRecordsSql, conn, transaction)
-                            cmdRecords.Parameters.AddWithValue("@TermID", newTermID)
-                            cmdRecords.ExecuteNonQuery()
+                        Dim dtReqs As New DataTable()
+                        Using cmdReqs As New MySqlCommand("SELECT RequirementID, SequenceOrder, AppliesToCourse, RequiresNSTP, ApplicableCourses, ApplicableYearLevels FROM ClearanceRequirements WHERE IsActive = 1 ORDER BY SequenceOrder ASC;", conn, transaction)
+                            Using daReqs As New MySqlDataAdapter(cmdReqs)
+                                daReqs.Fill(dtReqs)
+                            End Using
+                        End Using
+
+                        Dim insertRecordSql As String =
+                            "INSERT INTO ClearanceRecords (StudentID, RequirementID, TermID, Status) " &
+                            "VALUES (@StudentID, @RequirementID, @TermID, @Status);"
+
+                        Using cmdRecords As New MySqlCommand(insertRecordSql, conn, transaction)
+                            cmdRecords.Parameters.Add("@StudentID", MySqlDbType.Int32)
+                            cmdRecords.Parameters.Add("@RequirementID", MySqlDbType.Int32)
+                            cmdRecords.Parameters.Add("@TermID", MySqlDbType.Int32).Value = newTermID
+                            cmdRecords.Parameters.Add("@Status", MySqlDbType.VarChar, 30)
+
+                            For Each sRow As DataRow In dtStudents.Rows
+                                Dim sID As Integer = Convert.ToInt32(sRow("UserID"))
+                                Dim sCourse As String = If(IsDBNull(sRow("Course")), "", sRow("Course").ToString())
+                                Dim sYear As String = If(IsDBNull(sRow("YearLevel")), "", sRow("YearLevel").ToString())
+
+                                For Each rRow As DataRow In dtReqs.Rows
+                                    Dim rID As Integer = Convert.ToInt32(rRow("RequirementID"))
+                                    Dim seq As Integer = Convert.ToInt32(rRow("SequenceOrder"))
+                                    Dim appliesToCourse As String = If(IsDBNull(rRow("AppliesToCourse")), "", rRow("AppliesToCourse").ToString())
+                                    Dim reqNSTP As Boolean = Convert.ToBoolean(rRow("RequiresNSTP"))
+                                    Dim appCourses As String = If(IsDBNull(rRow("ApplicableCourses")), "", rRow("ApplicableCourses").ToString())
+                                    Dim appYears As String = If(IsDBNull(rRow("ApplicableYearLevels")), "", rRow("ApplicableYearLevels").ToString())
+
+                                    Dim isApp As Boolean = ClearanceWorkflowHelper.IsRequirementApplicable(sCourse, sYear, appliesToCourse, reqNSTP, appCourses, appYears)
+                                    Dim initStatus As String = "Locked"
+
+                                    If Not isApp Then
+                                        initStatus = "Not Applicable"
+                                    ElseIf seq >= 1 AndAlso seq <= 5 Then
+                                        initStatus = "Pending"
+                                    Else
+                                        initStatus = "Locked"
+                                    End If
+
+                                    cmdRecords.Parameters("@StudentID").Value = sID
+                                    cmdRecords.Parameters("@RequirementID").Value = rID
+                                    cmdRecords.Parameters("@Status").Value = initStatus
+                                    cmdRecords.ExecuteNonQuery()
+                                Next
+                            Next
                         End Using
 
                         transaction.Commit()
 
                         MessageBox.Show(
                             "New school term " & schoolYear & " - " & semester & " started successfully!" & Environment.NewLine &
-                            "All students' clearance requirements have been initialized to Pending.",
+                            "Clearance requirements have been initialized (Steps 1–5 Pending, Steps 6–9 Locked).",
                             "Term Started",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information

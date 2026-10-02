@@ -93,6 +93,13 @@ Public Class StaffRequestsForm
 
         Dim deptID As Integer = AppSession.DepartmentID.Value
 
+        Dim activeTermID As Integer = 0
+        Try
+            Dim dtTerm = db.ExecuteQuery("SELECT TermID FROM AcademicTerms WHERE IsActive = 1 ORDER BY TermID DESC LIMIT 1;")
+            If dtTerm.Rows.Count > 0 Then activeTermID = Convert.ToInt32(dtTerm.Rows(0)("TermID"))
+        Catch
+        End Try
+
         ' 1. Load Count Cards
         Try
             Dim countQuery As String =
@@ -101,9 +108,14 @@ Public Class StaffRequestsForm
                 "  SUM(CASE WHEN cr.Status IN ('Pending', 'Under Review') THEN 1 ELSE 0 END) AS PendingReviewCount " &
                 "FROM ClearanceRecords cr " &
                 "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
-                "WHERE r.DepartmentID = @DeptID;"
+                "WHERE r.DepartmentID = @DeptID " &
+                "  AND (@TermID = 0 OR cr.TermID = @TermID) " &
+                "  AND cr.Status <> 'Not Applicable';"
 
-            Dim dtCounts As DataTable = db.ExecuteQuery(countQuery, New Dictionary(Of String, Object) From {{"@DeptID", deptID}})
+            Dim dtCounts As DataTable = db.ExecuteQuery(countQuery, New Dictionary(Of String, Object) From {
+                {"@DeptID", deptID},
+                {"@TermID", activeTermID}
+            })
             If dtCounts.Rows.Count > 0 Then
                 Dim row = dtCounts.Rows(0)
                 lblTotalCount.Text = If(IsDBNull(row("TotalCount")), "0", row("TotalCount").ToString())
@@ -128,9 +140,14 @@ Public Class StaffRequestsForm
                 "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
                 "INNER JOIN Users u ON cr.StudentID = u.UserID " &
                 "WHERE r.DepartmentID = @DeptID " &
+                "  AND (@TermID = 0 OR cr.TermID = @TermID) " &
+                "  AND cr.Status <> 'Not Applicable' " &
                 "ORDER BY COALESCE(cr.SubmittedAt, cr.CreatedAt) DESC;"
 
-            allRequestsTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {{"@DeptID", deptID}})
+            allRequestsTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
+                {"@DeptID", deptID},
+                {"@TermID", activeTermID}
+            })
             ApplyFilters()
         Catch ex As Exception
             MessageBox.Show("Failed to load requests: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)

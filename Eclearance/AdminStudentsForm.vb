@@ -1,5 +1,6 @@
 Public Class AdminStudentsForm
 
+    Private ReadOnly db As New DatabaseHelper()
     Private _isLoadingFilters As Boolean = False
 
     ' ============================================================
@@ -324,10 +325,10 @@ Public Class AdminStudentsForm
                     row("YearLevel").ToString()
 
                 Dim progressText As String =
-                    GetStudentProgress(userID)
+                    GetStudentProgress(userID, course, yearLevel)
 
                 Dim statusText As String =
-                    GetOverallStatus(userID)
+                    GetOverallStatus(userID, course, yearLevel)
 
                 ' Clearance Status Filter
                 If Not String.IsNullOrWhiteSpace(selectedStatus) AndAlso Not selectedStatus.Equals("All Statuses", StringComparison.OrdinalIgnoreCase) Then
@@ -337,7 +338,9 @@ Public Class AdminStudentsForm
                                 Continue For
                             End If
                         Case "In Progress"
-                            If Not (statusText.Equals("Pending", StringComparison.OrdinalIgnoreCase) OrElse statusText.Equals("Under Review", StringComparison.OrdinalIgnoreCase)) Then
+                            If Not (statusText.Equals("In Progress", StringComparison.OrdinalIgnoreCase) OrElse
+                                    statusText.Equals("Pending", StringComparison.OrdinalIgnoreCase) OrElse
+                                    statusText.Equals("Under Review", StringComparison.OrdinalIgnoreCase)) Then
                                 Continue For
                             End If
                         Case "Needs Attention"
@@ -387,205 +390,34 @@ Public Class AdminStudentsForm
     ' GET STUDENT PROGRESS
     ' ============================================================
     Private Function GetStudentProgress(
-        studentID As Integer
+        studentID As Integer,
+        course As String,
+        yearLevel As String
     ) As String
-
         Try
-
-            Dim termID As Integer =
-                GetActiveTermID()
-
-
-            If termID = 0 Then
-
-                Return "0 / 0"
-
-            End If
-
-
-            Dim query As String =
-                "SELECT " &
-                "COUNT(*) AS TotalCount, " &
-                "SUM(CASE WHEN Status = 'Cleared' THEN 1 ELSE 0 END) AS ClearedCount " &
-                "FROM ClearanceRecords " &
-                "WHERE StudentID = @StudentID " &
-                "AND TermID = @TermID;"
-
-
-            Dim parameters As New Dictionary(Of String, Object) From {
-                {"@StudentID", studentID},
-                {"@TermID", termID}
-            }
-
-
-            Dim db As New DatabaseHelper()
-
-            Dim table As DataTable =
-                db.ExecuteQuery(
-                    query,
-                    parameters
-                )
-
-
-            If table.Rows.Count = 0 Then
-
-                Return "0 / 0"
-
-            End If
-
-
-            Dim total As Integer = 0
-            Dim cleared As Integer = 0
-
-
-            If Not IsDBNull(
-                table.Rows(0)("TotalCount")
-            ) Then
-
-                total =
-                    Convert.ToInt32(
-                        table.Rows(0)("TotalCount")
-                    )
-
-            End If
-
-
-            If Not IsDBNull(
-                table.Rows(0)("ClearedCount")
-            ) Then
-
-                cleared =
-                    Convert.ToInt32(
-                        table.Rows(0)("ClearedCount")
-                    )
-
-            End If
-
-
-            Return cleared.ToString() &
-                " / " &
-                total.ToString()
-
-
+            Dim termID As Integer = GetActiveTermID()
+            If termID = 0 Then Return "0 / 0"
+            Return ClearanceWorkflowHelper.GetStudentProgressText(studentID, termID, course, yearLevel, db)
         Catch
-
             Return "0 / 0"
-
         End Try
-
     End Function
-
 
     ' ============================================================
     ' GET OVERALL STATUS
     ' ============================================================
     Private Function GetOverallStatus(
-        studentID As Integer
+        studentID As Integer,
+        course As String,
+        yearLevel As String
     ) As String
-
         Try
-
-            Dim termID As Integer =
-                GetActiveTermID()
-
-
-            If termID = 0 Then
-
-                Return "No Term"
-
-            End If
-
-
-            Dim query As String =
-                "SELECT Status " &
-                "FROM ClearanceRecords " &
-                "WHERE StudentID = @StudentID " &
-                "AND TermID = @TermID;"
-
-
-            Dim parameters As New Dictionary(Of String, Object) From {
-                {"@StudentID", studentID},
-                {"@TermID", termID}
-            }
-
-
-            Dim db As New DatabaseHelper()
-
-            Dim table As DataTable =
-                db.ExecuteQuery(
-                    query,
-                    parameters
-                )
-
-
-            If table.Rows.Count = 0 Then
-
-                Return "Pending"
-
-            End If
-
-
-            Dim clearedCount As Integer = 0
-            Dim rejectedCount As Integer = 0
-            Dim underReviewCount As Integer = 0
-            Dim pendingCount As Integer = 0
-
-
-            For Each row As DataRow In table.Rows
-
-                Dim status As String =
-                    row("Status").ToString()
-
-
-                Select Case status.ToLower()
-
-                    Case "cleared"
-                        clearedCount += 1
-
-                    Case "rejected"
-                        rejectedCount += 1
-
-                    Case "under review"
-                        underReviewCount += 1
-
-                    Case Else
-                        pendingCount += 1
-
-                End Select
-
-            Next
-
-
-            If clearedCount = table.Rows.Count Then
-
-                Return "Cleared"
-
-            End If
-
-
-            If rejectedCount > 0 Then
-
-                Return "Needs Attention"
-
-            End If
-
-
-            If underReviewCount > 0 Then
-
-                Return "Under Review"
-
-            End If
-
-
-            Return "Pending"
-
-
+            Dim termID As Integer = GetActiveTermID()
+            If termID = 0 Then Return "No Term"
+            Return ClearanceWorkflowHelper.ComputeStudentOverallStatus(studentID, termID, course, yearLevel, db)
         Catch
-
             Return "Pending"
-
         End Try
-
     End Function
 
 
@@ -687,74 +519,27 @@ Public Class AdminStudentsForm
             Convert.ToInt32(
                 dgvStudents.SelectedRows(0).Tag
             )
-
+        Dim course As String = If(dgvStudents.SelectedRows(0).Cells(colCourse.Index).Value, "").ToString()
+        Dim yearLevel As String = If(dgvStudents.SelectedRows(0).Cells(colYear.Index).Value, "").ToString()
 
         Try
 
             dgvClearanceDetails.Rows.Clear()
 
-
             Dim termID As Integer =
                 GetActiveTermID()
 
-
             If termID = 0 Then
-
                 Return
-
             End If
 
-
-            Dim query As String =
-                "SELECT " &
-                "d.DepartmentName, " &
-                "cr.Status, " &
-                "cr.Remarks " &
-                "FROM ClearanceRecords cr " &
-                "INNER JOIN ClearanceRequirements r " &
-                "ON cr.RequirementID = r.RequirementID " &
-                "INNER JOIN Departments d " &
-                "ON r.DepartmentID = d.DepartmentID " &
-                "WHERE cr.StudentID = @StudentID " &
-                "AND cr.TermID = @TermID " &
-                "ORDER BY d.DepartmentName ASC;"
-
-
-            Dim parameters As New Dictionary(Of String, Object) From {
-                {"@StudentID", studentID},
-                {"@TermID", termID}
-            }
-
-
-            Dim db As New DatabaseHelper()
-
-            Dim table As DataTable =
-                db.ExecuteQuery(
-                    query,
-                    parameters
-                )
-
-
-            For Each row As DataRow In table.Rows
-
-                Dim remarks As String = ""
-
-                If Not IsDBNull(
-                    row("Remarks")
-                ) Then
-
-                    remarks =
-                        row("Remarks").ToString()
-
-                End If
-
-
+            Dim items = ClearanceWorkflowHelper.GetStudentClearanceItems(studentID, termID, course, yearLevel, db)
+            For Each itm In items
                 dgvClearanceDetails.Rows.Add(
-                    row("DepartmentName").ToString(),
-                    row("Status").ToString(),
-                    remarks
+                    itm.DepartmentName,
+                    itm.EffectiveStatus,
+                    itm.Remarks
                 )
-
             Next
 
 

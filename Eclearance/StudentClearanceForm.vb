@@ -140,8 +140,9 @@ Public Class StudentClearanceForm
                 allClearanceItems.Add(item)
             Next
 
-            ' Evaluate strict sequential clearance workflow
+            ' Evaluate parallel (steps 1-5) and sequential (steps 6-9) clearance workflow
             ClearanceWorkflowHelper.EvaluateSequentialWorkflow(allClearanceItems, AppSession.Course, AppSession.YearLevel)
+            ClearanceWorkflowHelper.UnlockNextStepsInDatabase(AppSession.UserID, activeTermID, AppSession.Course, AppSession.YearLevel, db)
 
             DisplayClearanceTable()
 
@@ -693,7 +694,7 @@ Public Class StudentClearanceForm
         Dim isGuidance As Boolean = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
 
         If item.EffectiveStatus.Equals("Locked", StringComparison.OrdinalIgnoreCase) Then
-            MessageBox.Show("This clearance step is currently locked. Complete the preceding applicable step to unlock it.", "Requirement Locked", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("This clearance step is currently locked. Complete the preceding required clearance steps to unlock it.", "Requirement Locked", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return
         End If
 

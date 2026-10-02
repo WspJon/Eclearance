@@ -427,6 +427,7 @@ Public Class CreateStudentForm
                             newStudentID,
                             termID,
                             course,
+                            yearLevel,
                             chkNSTP.Checked
                         )
 
@@ -501,89 +502,56 @@ Public Class CreateStudentForm
         studentID As Integer,
         termID As Integer,
         course As String,
+        yearLevel As String,
         enrolledInNSTP As Boolean
     )
-
         Dim requirementQuery As String =
-            "SELECT RequirementID " &
+            "SELECT RequirementID, SequenceOrder, AppliesToCourse, RequiresNSTP, ApplicableCourses, ApplicableYearLevels " &
             "FROM ClearanceRequirements " &
             "WHERE IsActive = 1 " &
             "ORDER BY SequenceOrder ASC;"
 
-        Dim requirementIDs As New List(Of Integer)()
-
-        Using cmd As New MySqlCommand(
-            requirementQuery,
-            conn,
-            transaction
-        )
-
-
-            Using reader As MySqlDataReader =
-                cmd.ExecuteReader()
-
-                While reader.Read()
-
-                    requirementIDs.Add(
-                        Convert.ToInt32(
-                            reader("RequirementID")
-                        )
-                    )
-
-                End While
-
+        Dim dtReqs As New DataTable()
+        Using cmd As New MySqlCommand(requirementQuery, conn, transaction)
+            Using da As New MySqlDataAdapter(cmd)
+                da.Fill(dtReqs)
             End Using
-
         End Using
 
-
-        If requirementIDs.Count = 0 Then
-
-            Throw New Exception(
-                "No active clearance requirements were found."
-            )
-
+        If dtReqs.Rows.Count = 0 Then
+            Throw New Exception("No active clearance requirements were found.")
         End If
 
+        Dim insertRecordQuery As String =
+            "INSERT INTO ClearanceRecords (StudentID, RequirementID, TermID, Status) " &
+            "VALUES (@StudentID, @RequirementID, @TermID, @Status);"
 
-        For Each requirementID As Integer In requirementIDs
+        For Each row As DataRow In dtReqs.Rows
+            Dim reqID As Integer = Convert.ToInt32(row("RequirementID"))
+            Dim seqOrder As Integer = Convert.ToInt32(row("SequenceOrder"))
+            Dim appliesToCourse As String = If(IsDBNull(row("AppliesToCourse")), "", row("AppliesToCourse").ToString())
+            Dim reqNSTP As Boolean = Convert.ToBoolean(row("RequiresNSTP"))
+            Dim appCourses As String = If(IsDBNull(row("ApplicableCourses")), "", row("ApplicableCourses").ToString())
+            Dim appYears As String = If(IsDBNull(row("ApplicableYearLevels")), "", row("ApplicableYearLevels").ToString())
 
-            Dim insertRecordQuery As String =
-                "INSERT INTO ClearanceRecords " &
-                "(" &
-                "StudentID, RequirementID, TermID, Status" &
-                ") " &
-                "VALUES " &
-                "(" &
-                "@StudentID, @RequirementID, @TermID, 'Pending'" &
-                ");"
+            Dim isApp As Boolean = ClearanceWorkflowHelper.IsRequirementApplicable(course, yearLevel, appliesToCourse, reqNSTP, appCourses, appYears)
+            Dim initStatus As String = "Locked"
 
+            If Not isApp Then
+                initStatus = "Not Applicable"
+            ElseIf seqOrder >= 1 AndAlso seqOrder <= 5 Then
+                initStatus = "Pending"
+            Else
+                initStatus = "Locked"
+            End If
 
-            Using cmd As New MySqlCommand(
-                insertRecordQuery,
-                conn,
-                transaction
-            )
-
-                cmd.Parameters.AddWithValue(
-                    "@StudentID",
-                    studentID
-                )
-
-                cmd.Parameters.AddWithValue(
-                    "@RequirementID",
-                    requirementID
-                )
-
-                cmd.Parameters.AddWithValue(
-                    "@TermID",
-                    termID
-                )
-
+            Using cmd As New MySqlCommand(insertRecordQuery, conn, transaction)
+                cmd.Parameters.AddWithValue("@StudentID", studentID)
+                cmd.Parameters.AddWithValue("@RequirementID", reqID)
+                cmd.Parameters.AddWithValue("@TermID", termID)
+                cmd.Parameters.AddWithValue("@Status", initStatus)
                 cmd.ExecuteNonQuery()
-
             End Using
-
         Next
 
     End Sub

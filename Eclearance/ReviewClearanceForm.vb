@@ -16,6 +16,10 @@ Public Class ReviewClearanceForm
     Private _hasGuidanceInfo As Boolean = False
     Private _hasSubmittedDocument As Boolean = False
     Private _guidanceUpdateRequired As Boolean = False
+    Private _studentID As Integer = 0
+    Private _termID As Integer = 0
+    Private _studentCourse As String = ""
+    Private _studentYearLevel As String = ""
 
     Private Sub ReviewClearanceForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Not AppSession.DepartmentID.HasValue Then
@@ -108,6 +112,11 @@ Public Class ReviewClearanceForm
             End If
 
             Dim row = dt.Rows(0)
+            _studentID = Convert.ToInt32(row("StudentID"))
+            _termID = Convert.ToInt32(row("TermID"))
+            _studentCourse = If(IsDBNull(row("Course")), "", row("Course").ToString())
+            _studentYearLevel = If(IsDBNull(row("YearLevel")), "", row("YearLevel").ToString())
+
             lblStudentNoVal.Text = row("StudentNo").ToString()
             lblStudentNameVal.Text = row("StudentName").ToString()
             lblCourseVal.Text = If(IsDBNull(row("Course")) OrElse String.IsNullOrWhiteSpace(row("Course").ToString()), "N/A", row("Course").ToString())
@@ -477,6 +486,18 @@ Public Class ReviewClearanceForm
             Return
         End If
 
+        ' Sequential Clearance Gate: Validate prerequisite steps
+        Dim blockerReason As String = ""
+        If Not ClearanceWorkflowHelper.CanStaffApproveRecord(TargetRecordID, db, blockerReason) Then
+            MessageBox.Show(
+                blockerReason,
+                "Prerequisites Incomplete",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            )
+            Return
+        End If
+
         Dim remarks As String = txtRemarks.Text.Trim()
         Dim confirm = MessageBox.Show(
             "Are you sure you want to APPROVE and CLEAR this requirement for " & lblStudentNameVal.Text & "?",
@@ -577,6 +598,11 @@ Public Class ReviewClearanceForm
                             histCmd.Parameters.AddWithValue("@Remarks", If(String.IsNullOrWhiteSpace(remarks), actionTypeName, remarks))
                             histCmd.ExecuteNonQuery()
                         End Using
+
+                        ' If cleared, automatically unlock next sequential step in the active term
+                        If newStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
+                            ClearanceWorkflowHelper.UnlockNextStepsInDatabase(_studentID, _termID, _studentCourse, _studentYearLevel, db, conn, transaction)
+                        End If
 
                         transaction.Commit()
 
