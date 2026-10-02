@@ -629,4 +629,7 @@ Public Class ReviewClearanceForm
         End Function
     End Class
 
+    Private Sub lblOfficeName_Click(sender As Object, e As EventArgs) Handles lblOfficeName.Click
+
+    End Sub
 End Class
