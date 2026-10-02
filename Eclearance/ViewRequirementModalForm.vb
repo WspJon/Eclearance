@@ -314,10 +314,14 @@ Public Class ViewRequirementModalForm
                     "SELECT cr.RecordID, cr.Status " &
                     "FROM ClearanceRecords cr " &
                     "INNER JOIN ClearanceRequirements req ON cr.RequirementID = req.RequirementID " &
-                    "WHERE cr.StudentID = @UserID " &
+                    "WHERE cr.StudentID = @StudentID " &
+                    "  AND cr.TermID = @TermID " &
                     "  AND (req.DepartmentID = 6 OR req.RequirementName LIKE '%Guidance%') " &
                     "LIMIT 1;"
-                Dim dtRecord As DataTable = db.ExecuteQuery(findRecordSql, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
+                Dim dtRecord As DataTable = db.ExecuteQuery(findRecordSql, New Dictionary(Of String, Object) From {
+                    {"@StudentID", AppSession.UserID},
+                    {"@TermID", TermID}
+                })
 
                 If dtRecord.Rows.Count > 0 Then
                     Dim recId As Integer = Convert.ToInt32(dtRecord.Rows(0)("RecordID"))

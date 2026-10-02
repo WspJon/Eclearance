@@ -297,6 +297,10 @@ Public Class StudentProfileForm
     ' ============================================================
     Private Sub btnEditProfile_Click(sender As Object, e As EventArgs) Handles btnEditProfile.Click
         Try
+            If activeTermID <= 0 Then
+                LoadActiveTerm()
+            End If
+
             Dim guidanceStatus As String = "Pending"
             Dim instructions As String = "Please review and complete/update your Guidance student profile information."
 
@@ -305,10 +309,12 @@ Public Class StudentProfileForm
                 "FROM ClearanceRecords cr " &
                 "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
                 "WHERE cr.StudentID = @StudentID " &
+                "  AND cr.TermID = @TermID " &
                 "  AND (r.DepartmentID = 6 OR r.RequirementName LIKE '%Guidance%') " &
                 "LIMIT 1;"
             Dim dtRec As DataTable = db.ExecuteQuery(qRec, New Dictionary(Of String, Object) From {
-                {"@StudentID", AppSession.UserID}
+                {"@StudentID", AppSession.UserID},
+                {"@TermID", activeTermID}
             })
 
             If dtRec.Rows.Count > 0 Then
