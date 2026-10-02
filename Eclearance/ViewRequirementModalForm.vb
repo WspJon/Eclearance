@@ -389,8 +389,11 @@ Public Class ViewRequirementModalForm
         End If
     End Sub
 
-    Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click, btnDismiss.Click
-        Me.Close()
+    Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnDismiss.Click
+        Close()
     End Sub
 
+    Private Sub pnlMainCard_Paint(sender As Object, e As PaintEventArgs) Handles pnlMainCard.Paint
+
+    End Sub
 End Class
