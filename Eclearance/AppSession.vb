@@ -17,10 +17,7 @@ Public Module AppSession
     Public YearLevel As String = ""
 
     Public StudentType As String = ""
-
-    Public GuidanceInfoUpdateRequired As Boolean = False
-
-
+ 
     Public Sub Clear()
 
         UserID = 0
@@ -40,8 +37,6 @@ Public Module AppSession
         YearLevel = ""
 
         StudentType = ""
-
-        GuidanceInfoUpdateRequired = False
 
     End Sub
 

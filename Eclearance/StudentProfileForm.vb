@@ -296,11 +296,50 @@ Public Class StudentProfileForm
     ' ACTIONS: EDIT PROFILE & CHANGE PASSWORD
     ' ============================================================
     Private Sub btnEditProfile_Click(sender As Object, e As EventArgs) Handles btnEditProfile.Click
-        Using modal As New EditStudentProfileModalForm()
-            If modal.ShowDialog(Me) = DialogResult.OK Then
-                LoadProfileData()
+        Try
+            Dim guidanceStatus As String = "Pending"
+            Dim instructions As String = "Please review and complete/update your Guidance student profile information."
+
+            Dim qRec As String =
+                "SELECT cr.Status, r.Instructions " &
+                "FROM ClearanceRecords cr " &
+                "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
+                "WHERE cr.StudentID = @StudentID " &
+                "  AND (r.DepartmentID = 6 OR r.RequirementName LIKE '%Guidance%') " &
+                "LIMIT 1;"
+            Dim dtRec As DataTable = db.ExecuteQuery(qRec, New Dictionary(Of String, Object) From {
+                {"@StudentID", AppSession.UserID}
+            })
+
+            If dtRec.Rows.Count > 0 Then
+                If Not IsDBNull(dtRec.Rows(0)("Status")) Then
+                    guidanceStatus = dtRec.Rows(0)("Status").ToString()
+                End If
+                If Not IsDBNull(dtRec.Rows(0)("Instructions")) Then
+                    instructions = dtRec.Rows(0)("Instructions").ToString()
+                End If
             End If
-        End Using
+
+            Using modal As New ViewRequirementModalForm()
+                modal.DepartmentName = "Guidance Office"
+                modal.RequirementName = "Student Information Sheet / Guidance Profile"
+                modal.SequenceOrder = 1
+                modal.EffectiveStatus = guidanceStatus
+                modal.InstructionsText = instructions
+                modal.RequiresFile = False
+                modal.RequirementLink = ""
+                modal.IsGuidanceOffice = True
+                modal.AcademicYear = activeAcademicYear
+                modal.TermID = activeTermID
+
+                modal.ShowDialog(Me)
+            End Using
+
+            LoadProfileData()
+
+        Catch ex As Exception
+            MessageBox.Show("Unable to open Guidance Information: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnChangePassword_Click(sender As Object, e As EventArgs) Handles btnChangePassword.Click

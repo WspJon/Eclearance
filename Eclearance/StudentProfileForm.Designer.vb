@@ -985,11 +985,11 @@ Partial Class StudentProfileForm
         btnEditProfile.FlatStyle = FlatStyle.Flat
         btnEditProfile.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnEditProfile.ForeColor = Color.White
-        btnEditProfile.Location = New Point(788, 20)
+        btnEditProfile.Location = New Point(684, 20)
         btnEditProfile.Name = "btnEditProfile"
-        btnEditProfile.Size = New Size(116, 36)
+        btnEditProfile.Size = New Size(220, 36)
         btnEditProfile.TabIndex = 7
-        btnEditProfile.Text = "✎  Edit Profile"
+        btnEditProfile.Text = "Review / Update Information"
         btnEditProfile.UseVisualStyleBackColor = False
         ' 
         ' lblCollege

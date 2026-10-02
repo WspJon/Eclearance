@@ -14,7 +14,6 @@ Public Class ViewRequirementModalForm
     Public Property RequiresFile As Boolean = True
     Public Property RequirementLink As String = ""
     Public Property IsGuidanceOffice As Boolean = False
-    Public Property GuidanceInfoUpdateRequired As Boolean = False
     Public Property AcademicYear As String = ""
     Public Property TermID As Integer = 0
 
@@ -175,7 +174,8 @@ Public Class ViewRequirementModalForm
                 txtAdditionalNotes.Text = If(IsDBNull(sourceRow("AdditionalNotes")), "", sourceRow("AdditionalNotes").ToString())
             End If
 
-            If hasExistingData Then
+            Dim hasCurrentYearProfile As Boolean = (dtThisYear.Rows.Count > 0)
+            If hasCurrentYearProfile Then
                 btnSaveGuidanceInfo.Text = "Review / Update Information"
             Else
                 btnSaveGuidanceInfo.Text = "Complete Information"
@@ -310,19 +310,49 @@ Public Class ViewRequirementModalForm
 
             ' Also update student's active Guidance clearance record to 'Under Review' so staff can review it
             Try
-                Dim updateRecordSql As String =
-                    "UPDATE ClearanceRecords cr " &
+                Dim findRecordSql As String =
+                    "SELECT cr.RecordID, cr.Status " &
+                    "FROM ClearanceRecords cr " &
                     "INNER JOIN ClearanceRequirements req ON cr.RequirementID = req.RequirementID " &
-                    "SET cr.Status = 'Under Review', cr.SubmittedAt = NOW() " &
                     "WHERE cr.StudentID = @UserID " &
                     "  AND (req.DepartmentID = 6 OR req.RequirementName LIKE '%Guidance%') " &
-                    "  AND cr.Status IN ('Pending', 'Rejected');"
+                    "LIMIT 1;"
+                Dim dtRecord As DataTable = db.ExecuteQuery(findRecordSql, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
 
-                db.ExecuteNonQuery(updateRecordSql, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
+                If dtRecord.Rows.Count > 0 Then
+                    Dim recId As Integer = Convert.ToInt32(dtRecord.Rows(0)("RecordID"))
+                    Dim oldStatus As String = dtRecord.Rows(0)("Status").ToString()
 
-                EffectiveStatus = "Under Review"
-                lblStatusBadge.Text = "Under Review"
-                ApplyStatusStyle(lblStatusBadge, "Under Review")
+                    If oldStatus.Equals("Pending", StringComparison.OrdinalIgnoreCase) OrElse oldStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
+                        Dim updateRecordSql As String =
+                            "UPDATE ClearanceRecords " &
+                            "SET Status = 'Under Review', SubmittedAt = NOW() " &
+                            "WHERE RecordID = @RecordID;"
+                        db.ExecuteNonQuery(updateRecordSql, New Dictionary(Of String, Object) From {{"@RecordID", recId}})
+
+                        ' Log to ClearanceHistory
+                        Dim actionType As String = If(oldStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase), "Resubmitted", "Information Submitted")
+                        Dim actionRemarks As String = If(oldStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase),
+                            "Student corrected and resubmitted guidance information.",
+                            "Student submitted yearly guidance information for review.")
+
+                        Dim histSql As String =
+                            "INSERT INTO ClearanceHistory (RecordID, ActionBy, ActionType, OldStatus, NewStatus, Remarks, ActionAt) " &
+                            "VALUES (@RecordID, @ActionBy, @ActionType, @OldStatus, 'Under Review', @Remarks, NOW());"
+
+                        db.ExecuteNonQuery(histSql, New Dictionary(Of String, Object) From {
+                            {"@RecordID", recId},
+                            {"@ActionBy", AppSession.UserID},
+                            {"@ActionType", actionType},
+                            {"@OldStatus", oldStatus},
+                            {"@Remarks", actionRemarks}
+                        })
+
+                        EffectiveStatus = "Under Review"
+                        lblStatusBadge.Text = "Under Review"
+                        ApplyStatusStyle(lblStatusBadge, "Under Review")
+                    End If
+                End If
             Catch
             End Try
 

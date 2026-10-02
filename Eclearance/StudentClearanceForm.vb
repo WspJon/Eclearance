@@ -56,15 +56,12 @@ Public Class StudentClearanceForm
 
             ' Refresh student metadata from Users
             Try
-                Dim studentInfoQuery As String = "SELECT StudentType, GuidanceInfoUpdateRequired FROM Users WHERE UserID = @UserID LIMIT 1;"
+                Dim studentInfoQuery As String = "SELECT StudentType FROM Users WHERE UserID = @UserID LIMIT 1;"
                 Dim studentInfoDt As DataTable = db.ExecuteQuery(studentInfoQuery, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
                 If studentInfoDt.Rows.Count > 0 Then
                     Dim sRow = studentInfoDt.Rows(0)
                     If Not IsDBNull(sRow("StudentType")) Then
                         AppSession.StudentType = sRow("StudentType").ToString()
-                    End If
-                    If Not IsDBNull(sRow("GuidanceInfoUpdateRequired")) Then
-                        AppSession.GuidanceInfoUpdateRequired = Convert.ToBoolean(sRow("GuidanceInfoUpdateRequired"))
                     End If
                     SetupStudentInformation()
                 End If
@@ -257,7 +254,7 @@ Public Class StudentClearanceForm
         Return "2026-2027"
     End Function
 
-    Private Function CheckStudentHasGuidanceProfile() As Boolean
+    Private Function HasCurrentYearGuidanceProfile() As Boolean
         Try
             Dim activeAY As String = GetCurrentAcademicYear()
             Dim query As String = "SELECT GuidanceProfileID FROM GuidanceStudentProfiles WHERE StudentID = @StudentID AND AcademicYear = @AcademicYear LIMIT 1;"
@@ -265,15 +262,7 @@ Public Class StudentClearanceForm
                 {"@StudentID", AppSession.UserID},
                 {"@AcademicYear", activeAY}
             })
-            If dt.Rows.Count > 0 Then Return True
-
-            Dim queryAny As String = "SELECT GuidanceProfileID FROM GuidanceStudentProfiles WHERE StudentID = @StudentID LIMIT 1;"
-            Dim dtAny = db.ExecuteQuery(queryAny, New Dictionary(Of String, Object) From {{"@StudentID", AppSession.UserID}})
-            If dtAny.Rows.Count > 0 Then Return True
-
-            Dim queryU As String = "SELECT ContactNo FROM Users WHERE UserID = @StudentID AND ContactNo IS NOT NULL AND ContactNo <> '' LIMIT 1;"
-            Dim dtU = db.ExecuteQuery(queryU, New Dictionary(Of String, Object) From {{"@StudentID", AppSession.UserID}})
-            Return dtU.Rows.Count > 0
+            Return dt.Rows.Count > 0
         Catch
             Return False
         End Try
@@ -547,7 +536,7 @@ Public Class StudentClearanceForm
                     If isGuidance Then
                         btnAct.Visible = True
                         btnAct.Enabled = True
-                        Dim hasProfile As Boolean = CheckStudentHasGuidanceProfile()
+                        Dim hasProfile As Boolean = HasCurrentYearGuidanceProfile()
                         If hasProfile Then
                             btnAct.Text = "Review / Update Information"
                             btnAct.Size = New Size(168, 32)
@@ -579,24 +568,24 @@ Public Class StudentClearanceForm
                 If isGuidance Then
                     btnAct.Visible = True
                     btnAct.Enabled = True
-                    btnAct.Text = "Review / Update Information"
-                    btnAct.Size = New Size(150, 32)
+                    Dim hasProfile As Boolean = HasCurrentYearGuidanceProfile()
+                    If hasProfile Then
+                        btnAct.Text = "Review / Update Information"
+                        btnAct.Size = New Size(168, 32)
+                    Else
+                        btnAct.Text = "Complete Information"
+                        btnAct.Size = New Size(140, 32)
+                    End If
                     btnAct.BackColor = Color.FromArgb(2, 132, 199)
                     btnAct.ForeColor = Color.White
                     btnAct.Location = New Point(0, 0)
 
-                    btnReeval.Visible = True
-                    btnReeval.Enabled = True
-                    btnReeval.Text = "Request Re-evaluation"
-                    btnReeval.BackColor = Color.FromArgb(2, 132, 199)
-                    btnReeval.ForeColor = Color.White
-                    btnReeval.Size = New Size(124, 32)
-                    btnReeval.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 4, 0)
+                    btnReeval.Visible = False
 
                     btnViewReq.Visible = True
                     btnViewReq.Text = "View Requirements"
-                    btnViewReq.Size = New Size(106, 32)
-                    btnViewReq.Location = New Point(btnReeval.Location.X + btnReeval.Size.Width + 4, 0)
+                    btnViewReq.Size = New Size(125, 32)
+                    btnViewReq.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 6, 0)
 
                 ElseIf item.RequiresFile Then
                     btnAct.Visible = True
@@ -716,11 +705,7 @@ Public Class StudentClearanceForm
         ' View Details (for Cleared or Under Review)
         If button.Text.Equals("View Details", StringComparison.OrdinalIgnoreCase) Then
             If isGuidance Then
-                If AppSession.GuidanceInfoUpdateRequired Then
-                    OpenGuidanceUpdateModal(item)
-                Else
-                    OpenRequirementDetailsModal(item)
-                End If
+                OpenGuidanceUpdateModal(item)
             Else
                 If item.RequiresFile AndAlso Not String.IsNullOrWhiteSpace(item.SubmittedFilePath) Then
                     OpenSubmittedDocument(item.SubmittedFilePath)
@@ -781,70 +766,6 @@ Public Class StudentClearanceForm
 
     End Sub
 
-    ' ============================================================
-    ' COMPLETE GUIDANCE REQUIREMENT (PENDING, NO INFO UPDATE REQUIRED)
-    ' ============================================================
-    Private Sub CompleteGuidanceRequirement(item As ClearanceWorkflowHelper.ClearanceItemInfo)
-
-        Dim msg As String =
-            "Have you completed the required evaluation for " & item.DepartmentName & "?" & Environment.NewLine & Environment.NewLine &
-            "Click Yes to submit your clearance for review."
-
-        Dim res As DialogResult = MessageBox.Show(msg, "Complete Requirement", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-        If res <> DialogResult.Yes Then Return
-
-        Try
-            Dim updateSql As String =
-                "UPDATE ClearanceRecords " &
-                "SET Status = 'Under Review', " &
-                "    SubmittedAt = NOW() " &
-                "WHERE RecordID = @RecordID AND StudentID = @StudentID;"
-
-            db.ExecuteNonQuery(updateSql, New Dictionary(Of String, Object) From {
-                {"@RecordID", item.RecordID},
-                {"@StudentID", AppSession.UserID}
-            })
-
-            Dim histSql As String =
-                "INSERT INTO ClearanceHistory (RecordID, ActionType, OldStatus, NewStatus, Remarks, ActionAt, ActionBy) " &
-                "VALUES (@RecordID, 'Submitted', 'Pending', 'Under Review', 'Student confirmed completion of guidance requirement.', NOW(), @StudentID);"
-
-            db.ExecuteNonQuery(histSql, New Dictionary(Of String, Object) From {
-                {"@RecordID", item.RecordID},
-                {"@StudentID", AppSession.UserID}
-            })
-
-            MessageBox.Show(
-                "Your requirement has been submitted to " & item.DepartmentName & "." & Environment.NewLine &
-                "The clearing officer will review your clearance.",
-                "Requirement Submitted",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            )
-
-            LoadClearanceData()
-
-        Catch ex As Exception
-            MessageBox.Show("Unable to submit requirement: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-
-    End Sub
-
-    ' ============================================================
-    ' COMPLETE GUIDANCE REQUIRED ACTION (REJECTED, NO INFO UPDATE REQUIRED)
-    ' ============================================================
-    Private Sub CompleteGuidanceRequiredAction(item As ClearanceWorkflowHelper.ClearanceItemInfo)
-
-        Dim msg As String =
-            "Please review the office instructions and ensure you have completed the required action for " & item.DepartmentName & "." & Environment.NewLine & Environment.NewLine &
-            "Would you like to view the requirement instructions now?"
-
-        Dim res As DialogResult = MessageBox.Show(msg, "Complete Required Action", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
-        If res = DialogResult.Yes Then
-            OpenRequirementDetailsModal(item)
-        End If
-
-    End Sub
 
     ' ============================================================
     ' SECONDARY VIEW REQUIREMENTS BUTTON CLICK
@@ -887,7 +808,6 @@ Public Class StudentClearanceForm
             modal.RequiresFile = item.RequiresFile
             modal.RequirementLink = item.RequirementLink
             modal.IsGuidanceOffice = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
-            modal.GuidanceInfoUpdateRequired = True
             modal.AcademicYear = GetCurrentAcademicYear()
             modal.TermID = GetActiveTermID()
 
@@ -912,7 +832,6 @@ Public Class StudentClearanceForm
             modal.RequiresFile = item.RequiresFile
             modal.RequirementLink = item.RequirementLink
             modal.IsGuidanceOffice = True
-            modal.GuidanceInfoUpdateRequired = True
             modal.AcademicYear = GetCurrentAcademicYear()
             modal.TermID = GetActiveTermID()
 
@@ -929,7 +848,7 @@ Public Class StudentClearanceForm
     Private Sub RequestReevaluation(item As ClearanceWorkflowHelper.ClearanceItemInfo)
 
         Dim msg As String =
-            "Have you completed the required evaluation and updated any necessary information for " & item.DepartmentName & "?" & Environment.NewLine & Environment.NewLine &
+            "Have you addressed the remarks and completed the requirements for " & item.DepartmentName & "?" & Environment.NewLine & Environment.NewLine &
             "Click Yes to submit a request for re-evaluation to the office."
 
         Dim res As DialogResult = MessageBox.Show(msg, "Request Re-evaluation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)

@@ -110,7 +110,6 @@ Public Class LoginForm
                 "Course, " &
                 "YearLevel, " &
                 "StudentType, " &
-                "GuidanceInfoUpdateRequired, " &
                 "DepartmentID " &
                 "FROM Users " &
                 "WHERE Username = @Username " &
@@ -226,16 +225,6 @@ Public Class LoginForm
 
                 AppSession.StudentType =
                     row("StudentType").ToString()
-
-            End If
-
-
-            If Not IsDBNull(
-                row("GuidanceInfoUpdateRequired")
-            ) Then
-
-                AppSession.GuidanceInfoUpdateRequired =
-                    Convert.ToBoolean(row("GuidanceInfoUpdateRequired"))
 
             End If
 

@@ -99,12 +99,6 @@
     <Compile Update="StudentProfileForm.Designer.vb">
       <DependentUpon>StudentProfileForm.vb</DependentUpon>
     </Compile>
-    <Compile Update="EditStudentProfileModalForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="EditStudentProfileModalForm.Designer.vb">
-      <DependentUpon>EditStudentProfileModalForm.vb</DependentUpon>
-    </Compile>
     <Compile Update="ChangePasswordModalForm.vb">
       <SubType>Form</SubType>
     </Compile>

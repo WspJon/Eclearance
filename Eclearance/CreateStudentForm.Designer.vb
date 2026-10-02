@@ -338,6 +338,7 @@ Partial Class CreateStudentForm
         lblGuidanceInfoRequired.Size = New Size(211, 15)
         lblGuidanceInfoRequired.TabIndex = 21
         lblGuidanceInfoRequired.Text = "Guidance information update required"
+        lblGuidanceInfoRequired.Visible = False
         ' 
         ' chkGuidanceInfoRequired
         ' 
@@ -350,6 +351,7 @@ Partial Class CreateStudentForm
         chkGuidanceInfoRequired.TabIndex = 22
         chkGuidanceInfoRequired.Text = "Require student to update information"
         chkGuidanceInfoRequired.UseVisualStyleBackColor = True
+        chkGuidanceInfoRequired.Visible = False
         ' 
         ' lblBadge03
         ' 
