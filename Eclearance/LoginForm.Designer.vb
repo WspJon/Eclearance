@@ -37,6 +37,7 @@ Partial Class LoginForm
         lblWelcomeSub = New Label()
         lblWelcomeTitle = New Label()
         pnlLeftHero.SuspendLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
         pnlRightLogin.SuspendLayout()
         pnlLoginCard.SuspendLayout()
         SuspendLayout()
@@ -57,7 +58,7 @@ Partial Class LoginForm
         ' pnlHeroDivider
         ' 
         pnlHeroDivider.BackColor = Color.FromArgb(CByte(30), CByte(96), CByte(198))
-        pnlHeroDivider.Location = New Point(50, 360)
+        pnlHeroDivider.Location = New Point(53, 357)
         pnlHeroDivider.Name = "pnlHeroDivider"
         pnlHeroDivider.Size = New Size(60, 4)
         pnlHeroDivider.TabIndex = 3
@@ -69,12 +70,13 @@ Partial Class LoginForm
         lblHeroTitle.ForeColor = Color.White
         lblHeroTitle.Location = New Point(50, 285)
         lblHeroTitle.Name = "lblHeroTitle"
-        lblHeroTitle.Size = New Size(300, 47)
+        lblHeroTitle.Size = New Size(199, 47)
         lblHeroTitle.TabIndex = 1
-        lblHeroTitle.Text = "EClearance"        ' 
+        lblHeroTitle.Text = "EClearance"
+        ' 
         ' picSchoolLogo
         ' 
-        picSchoolLogo.Location = New Point(50, 186)
+        picSchoolLogo.Location = New Point(53, 201)
         picSchoolLogo.Name = "picSchoolLogo"
         picSchoolLogo.Size = New Size(80, 80)
         picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
@@ -217,6 +219,7 @@ Partial Class LoginForm
         Text = "EClearance - Sign in"
         pnlLeftHero.ResumeLayout(False)
         pnlLeftHero.PerformLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).EndInit()
         pnlRightLogin.ResumeLayout(False)
         pnlLoginCard.ResumeLayout(False)
         pnlLoginCard.PerformLayout()

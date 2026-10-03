@@ -16,9 +16,9 @@ Partial Class StaffRequestsForm
     Private components As System.ComponentModel.IContainer
 
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle7 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         btnNavLogout = New Button()
         btnNavHistory = New Button()
@@ -90,6 +90,7 @@ Partial Class StaffRequestsForm
         lblHeaderTitle = New Label()
         pnlSidebar.SuspendLayout()
         pnlLogo.SuspendLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
         pnlMain.SuspendLayout()
         pnlRightColumn.SuspendLayout()
         pnlMyOfficeCard.SuspendLayout()
@@ -116,7 +117,7 @@ Partial Class StaffRequestsForm
         pnlSidebar.Dock = DockStyle.Left
         pnlSidebar.Location = New Point(0, 0)
         pnlSidebar.Name = "pnlSidebar"
-        pnlSidebar.Size = New Size(220, 800)
+        pnlSidebar.Size = New Size(220, 808)
         pnlSidebar.TabIndex = 0
         ' 
         ' btnNavLogout
@@ -127,7 +128,7 @@ Partial Class StaffRequestsForm
         btnNavLogout.FlatStyle = FlatStyle.Flat
         btnNavLogout.Font = New Font("Segoe UI", 9.5F)
         btnNavLogout.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
-        btnNavLogout.Location = New Point(16, 735)
+        btnNavLogout.Location = New Point(16, 743)
         btnNavLogout.Name = "btnNavLogout"
         btnNavLogout.Size = New Size(188, 44)
         btnNavLogout.TabIndex = 5
@@ -220,9 +221,10 @@ Partial Class StaffRequestsForm
         lblLogoTitle.ForeColor = Color.White
         lblLogoTitle.Location = New Point(48, 16)
         lblLogoTitle.Name = "lblLogoTitle"
-        lblLogoTitle.Size = New Size(141, 21)
+        lblLogoTitle.Size = New Size(94, 21)
         lblLogoTitle.TabIndex = 1
-        lblLogoTitle.Text = "EClearance"        ' 
+        lblLogoTitle.Text = "EClearance"
+        ' 
         ' picSchoolLogo
         ' 
         picSchoolLogo.Location = New Point(12, 16)
@@ -248,7 +250,7 @@ Partial Class StaffRequestsForm
         pnlMain.Dock = DockStyle.Fill
         pnlMain.Location = New Point(220, 0)
         pnlMain.Name = "pnlMain"
-        pnlMain.Size = New Size(980, 800)
+        pnlMain.Size = New Size(980, 808)
         pnlMain.TabIndex = 1
         ' 
         ' pnlRightColumn
@@ -258,7 +260,7 @@ Partial Class StaffRequestsForm
         pnlRightColumn.Controls.Add(pnlQuickActionsCard)
         pnlRightColumn.Location = New Point(680, 194)
         pnlRightColumn.Name = "pnlRightColumn"
-        pnlRightColumn.Size = New Size(272, 570)
+        pnlRightColumn.Size = New Size(272, 578)
         pnlRightColumn.TabIndex = 9
         ' 
         ' pnlMyOfficeCard
@@ -271,7 +273,7 @@ Partial Class StaffRequestsForm
         pnlMyOfficeCard.Location = New Point(0, 264)
         pnlMyOfficeCard.Name = "pnlMyOfficeCard"
         pnlMyOfficeCard.Padding = New Padding(16)
-        pnlMyOfficeCard.Size = New Size(272, 306)
+        pnlMyOfficeCard.Size = New Size(272, 314)
         pnlMyOfficeCard.TabIndex = 1
         ' 
         ' pnlOfficeInner
@@ -435,7 +437,7 @@ Partial Class StaffRequestsForm
         pnlTableCard.Location = New Point(24, 260)
         pnlTableCard.Name = "pnlTableCard"
         pnlTableCard.Padding = New Padding(16)
-        pnlTableCard.Size = New Size(640, 504)
+        pnlTableCard.Size = New Size(640, 512)
         pnlTableCard.TabIndex = 8
         ' 
         ' dgvRequests
@@ -449,25 +451,25 @@ Partial Class StaffRequestsForm
         dgvRequests.BorderStyle = BorderStyle.None
         dgvRequests.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
         dgvRequests.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
-        DataGridViewCellStyle7.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        DataGridViewCellStyle7.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
-        DataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
-        DataGridViewCellStyle7.SelectionForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
-        DataGridViewCellStyle7.WrapMode = DataGridViewTriState.False
-        dgvRequests.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        DataGridViewCellStyle1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        DataGridViewCellStyle1.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        DataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.False
+        dgvRequests.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         dgvRequests.ColumnHeadersHeight = 42
         dgvRequests.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         dgvRequests.Columns.AddRange(New DataGridViewColumn() {colReqNum, colReqRecordID, colReqStudentNo, colReqStudentName, colReqRequirement, colReqSubmittedAt, colReqStatus, colReqAction})
-        DataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = Color.White
-        DataGridViewCellStyle9.Font = New Font("Segoe UI", 9F)
-        DataGridViewCellStyle9.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle9.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
-        DataGridViewCellStyle9.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle9.WrapMode = DataGridViewTriState.False
-        dgvRequests.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = Color.White
+        DataGridViewCellStyle3.Font = New Font("Segoe UI", 9F)
+        DataGridViewCellStyle3.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.False
+        dgvRequests.DefaultCellStyle = DataGridViewCellStyle3
         dgvRequests.EnableHeadersVisualStyles = False
         dgvRequests.GridColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         dgvRequests.Location = New Point(16, 52)
@@ -477,15 +479,15 @@ Partial Class StaffRequestsForm
         dgvRequests.RowHeadersVisible = False
         dgvRequests.RowTemplate.Height = 46
         dgvRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-        dgvRequests.Size = New Size(606, 434)
+        dgvRequests.Size = New Size(606, 442)
         dgvRequests.TabIndex = 3
         ' 
         ' colReqNum
         ' 
         colReqNum.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.Padding = New Padding(8, 0, 0, 0)
-        colReqNum.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.Padding = New Padding(8, 0, 0, 0)
+        colReqNum.DefaultCellStyle = DataGridViewCellStyle2
         colReqNum.HeaderText = "#"
         colReqNum.Name = "colReqNum"
         colReqNum.ReadOnly = True
@@ -990,7 +992,7 @@ Partial Class StaffRequestsForm
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
-        ClientSize = New Size(1200, 800)
+        ClientSize = New Size(1200, 808)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
@@ -1002,6 +1004,7 @@ Partial Class StaffRequestsForm
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)
         pnlLogo.PerformLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).EndInit()
         pnlMain.ResumeLayout(False)
         pnlMain.PerformLayout()
         pnlRightColumn.ResumeLayout(False)
