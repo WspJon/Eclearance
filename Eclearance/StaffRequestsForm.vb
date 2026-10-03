@@ -87,6 +87,7 @@ Public Class StaffRequestsForm
     End Sub
 
     Public Sub LoadRequestsData()
+
         If Not AppSession.DepartmentID.HasValue Then
             Return
         End If
@@ -94,64 +95,133 @@ Public Class StaffRequestsForm
         Dim deptID As Integer = AppSession.DepartmentID.Value
 
         Dim activeTermID As Integer = 0
+
         Try
-            Dim dtTerm = db.ExecuteQuery("SELECT TermID FROM AcademicTerms WHERE IsActive = 1 ORDER BY TermID DESC LIMIT 1;")
-            If dtTerm.Rows.Count > 0 Then activeTermID = Convert.ToInt32(dtTerm.Rows(0)("TermID"))
+            Dim dtTerm As DataTable =
+            db.ExecuteQuery(
+                "SELECT TermID " &
+                "FROM AcademicTerms " &
+                "WHERE IsActive = 1 " &
+                "ORDER BY TermID DESC " &
+                "LIMIT 1;"
+            )
+
+            If dtTerm.Rows.Count > 0 Then
+                activeTermID =
+                Convert.ToInt32(
+                    dtTerm.Rows(0)("TermID")
+                )
+            End If
+
         Catch
         End Try
 
-        ' 1. Load Count Cards
         Try
-            Dim countQuery As String =
-                "SELECT " &
-                "  COUNT(*) AS TotalCount, " &
-                "  SUM(CASE WHEN cr.Status IN ('Pending', 'Under Review') THEN 1 ELSE 0 END) AS PendingReviewCount " &
-                "FROM ClearanceRecords cr " &
-                "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
-                "WHERE r.DepartmentID = @DeptID " &
-                "  AND (@TermID = 0 OR cr.TermID = @TermID) " &
-                "  AND cr.Status <> 'Not Applicable';"
 
-            Dim dtCounts As DataTable = db.ExecuteQuery(countQuery, New Dictionary(Of String, Object) From {
-                {"@DeptID", deptID},
-                {"@TermID", activeTermID}
-            })
+            Dim countQuery As String =
+            "SELECT " &
+            "COUNT(*) AS TotalCount, " &
+            "SUM(" &
+            "CASE " &
+            "WHEN cr.Status = 'Under Review' THEN 1 " &
+            "ELSE 0 " &
+            "END" &
+            ") AS PendingReviewCount " &
+            "FROM ClearanceRecords cr " &
+            "INNER JOIN ClearanceRequirements r " &
+            "ON cr.RequirementID = r.RequirementID " &
+            "WHERE r.DepartmentID = @DeptID " &
+            "AND (@TermID = 0 OR cr.TermID = @TermID) " &
+            "AND cr.Status <> 'Not Applicable' " &
+            "AND (" &
+            "     cr.SubmittedAt IS NOT NULL " &
+            "     OR cr.Status IN ('Under Review', 'Cleared', 'Rejected')" &
+            ");"
+
+            Dim dtCounts As DataTable =
+            db.ExecuteQuery(
+                countQuery,
+                New Dictionary(Of String, Object) From {
+                    {"@DeptID", deptID},
+                    {"@TermID", activeTermID}
+                }
+            )
+
             If dtCounts.Rows.Count > 0 Then
-                Dim row = dtCounts.Rows(0)
-                lblTotalCount.Text = If(IsDBNull(row("TotalCount")), "0", row("TotalCount").ToString())
-                lblPendingCount.Text = If(IsDBNull(row("PendingReviewCount")), "0", row("PendingReviewCount").ToString())
+
+                Dim row As DataRow =
+                dtCounts.Rows(0)
+
+                lblTotalCount.Text =
+                If(
+                    IsDBNull(row("TotalCount")),
+                    "0",
+                    row("TotalCount").ToString()
+                )
+
+                lblPendingCount.Text =
+                If(
+                    IsDBNull(row("PendingReviewCount")),
+                    "0",
+                    row("PendingReviewCount").ToString()
+                )
+
             End If
+
         Catch ex As Exception
+
             lblTotalCount.Text = "0"
             lblPendingCount.Text = "0"
+
         End Try
 
-        ' 2. Load Table
         Try
-            Dim query As String =
-                "SELECT " &
-                "  cr.RecordID, " &
-                "  u.StudentNo, " &
-                "  u.FullName AS StudentName, " &
-                "  r.RequirementName, " &
-                "  cr.SubmittedAt, " &
-                "  cr.Status " &
-                "FROM ClearanceRecords cr " &
-                "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
-                "INNER JOIN Users u ON cr.StudentID = u.UserID " &
-                "WHERE r.DepartmentID = @DeptID " &
-                "  AND (@TermID = 0 OR cr.TermID = @TermID) " &
-                "  AND cr.Status <> 'Not Applicable' " &
-                "ORDER BY COALESCE(cr.SubmittedAt, cr.CreatedAt) DESC;"
 
-            allRequestsTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
-                {"@DeptID", deptID},
-                {"@TermID", activeTermID}
-            })
+            Dim query As String =
+            "SELECT " &
+            "cr.RecordID, " &
+            "u.StudentNo, " &
+            "u.FullName AS StudentName, " &
+            "r.RequirementName, " &
+            "cr.SubmittedAt, " &
+            "cr.Status " &
+            "FROM ClearanceRecords cr " &
+            "INNER JOIN ClearanceRequirements r " &
+            "ON cr.RequirementID = r.RequirementID " &
+            "INNER JOIN Users u " &
+            "ON cr.StudentID = u.UserID " &
+            "WHERE r.DepartmentID = @DeptID " &
+            "AND (@TermID = 0 OR cr.TermID = @TermID) " &
+            "AND cr.Status <> 'Not Applicable' " &
+            "AND (" &
+            "     cr.SubmittedAt IS NOT NULL " &
+            "     OR cr.Status IN ('Under Review', 'Cleared', 'Rejected')" &
+            ") " &
+            "ORDER BY " &
+            "COALESCE(cr.SubmittedAt, cr.CreatedAt) DESC;"
+
+            allRequestsTable =
+            db.ExecuteQuery(
+                query,
+                New Dictionary(Of String, Object) From {
+                    {"@DeptID", deptID},
+                    {"@TermID", activeTermID}
+                }
+            )
+
             ApplyFilters()
+
         Catch ex As Exception
-            MessageBox.Show("Failed to load requests: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+            MessageBox.Show(
+            "Failed to load requests: " & ex.Message,
+            "Error",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error
+        )
+
         End Try
+
     End Sub
 
     Private Sub ApplyFilters()
@@ -279,28 +349,92 @@ Public Class StaffRequestsForm
     End Sub
 
     Private Sub ReviewNextPending()
-        If Not AppSession.DepartmentID.HasValue Then Return
+
+        If Not AppSession.DepartmentID.HasValue Then
+            Return
+        End If
 
         Try
-            Dim query As String =
-                "SELECT cr.RecordID FROM ClearanceRecords cr " &
-                "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
-                "WHERE r.DepartmentID = @DeptID AND cr.Status = 'Pending' " &
-                "ORDER BY COALESCE(cr.SubmittedAt, cr.CreatedAt) ASC LIMIT 1;"
 
-            Dim dt = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
-                {"@DeptID", AppSession.DepartmentID.Value}
-            })
+            Dim activeTermID As Integer = 0
+
+            Dim dtTerm As DataTable =
+            db.ExecuteQuery(
+                "SELECT TermID " &
+                "FROM AcademicTerms " &
+                "WHERE IsActive = 1 " &
+                "ORDER BY TermID DESC " &
+                "LIMIT 1;"
+            )
+
+            If dtTerm.Rows.Count > 0 Then
+                activeTermID =
+                Convert.ToInt32(
+                    dtTerm.Rows(0)("TermID")
+                )
+            End If
+
+
+            Dim query As String =
+            "SELECT cr.RecordID " &
+            "FROM ClearanceRecords cr " &
+            "INNER JOIN ClearanceRequirements r " &
+            "ON cr.RequirementID = r.RequirementID " &
+            "WHERE r.DepartmentID = @DeptID " &
+            "AND (@TermID = 0 OR cr.TermID = @TermID) " &
+            "AND cr.Status = 'Under Review' " &
+            "AND cr.SubmittedAt IS NOT NULL " &
+            "ORDER BY cr.SubmittedAt ASC " &
+            "LIMIT 1;"
+
+            Dim dt As DataTable =
+            db.ExecuteQuery(
+                query,
+                New Dictionary(Of String, Object) From {
+                    {
+                        "@DeptID",
+                        AppSession.DepartmentID.Value
+                    },
+                    {
+                        "@TermID",
+                        activeTermID
+                    }
+                }
+            )
+
 
             If dt.Rows.Count > 0 Then
-                Dim recordID As Integer = Convert.ToInt32(dt.Rows(0)("RecordID"))
+
+                Dim recordID As Integer =
+                Convert.ToInt32(
+                    dt.Rows(0)("RecordID")
+                )
+
                 ShowReviewView(recordID)
+
             Else
-                MessageBox.Show("No pending requests are available.", "No Pending Requests", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+                MessageBox.Show(
+                "No submitted requests are waiting for review.",
+                "No Requests",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            )
+
             End If
+
         Catch ex As Exception
-            MessageBox.Show("Unable to load next pending request: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+            MessageBox.Show(
+            "Unable to load the next review request: " &
+            ex.Message,
+            "Error",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error
+        )
+
         End Try
+
     End Sub
 
     ' Table row click
@@ -503,4 +637,7 @@ Public Class StaffRequestsForm
         End If
     End Sub
 
+    Private Sub dgvRequests_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRequests.CellContentClick
+
+    End Sub
 End Class

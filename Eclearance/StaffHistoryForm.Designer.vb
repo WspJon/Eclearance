@@ -16,9 +16,14 @@ Partial Class StaffHistoryForm
     Private components As System.ComponentModel.IContainer
 
     Private Sub InitializeComponent()
-        Dim dataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim dataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim dataGridViewCellStyleStatus As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim centeredHeaderStyle As New DataGridViewCellStyle()
+        Dim wrappedCellStyle As New DataGridViewCellStyle()
+        centeredHeaderStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        wrappedCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        wrappedCellStyle.WrapMode = DataGridViewTriState.True
         pnlSidebar = New Panel()
         btnNavLogout = New Button()
         btnNavHistory = New Button()
@@ -105,6 +110,7 @@ Partial Class StaffHistoryForm
         lblHeaderTitle = New Label()
         pnlSidebar.SuspendLayout()
         pnlLogo.SuspendLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
         pnlMain.SuspendLayout()
         pnlHistoryDetailCard.SuspendLayout()
         pnlHistoryTableCard.SuspendLayout()
@@ -120,7 +126,7 @@ Partial Class StaffHistoryForm
         ' 
         ' pnlSidebar
         ' 
-        pnlSidebar.BackColor = Color.FromArgb(15, 39, 74)
+        pnlSidebar.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         pnlSidebar.Controls.Add(btnNavLogout)
         pnlSidebar.Controls.Add(btnNavHistory)
         pnlSidebar.Controls.Add(btnNavRequests)
@@ -140,7 +146,7 @@ Partial Class StaffHistoryForm
         btnNavLogout.FlatAppearance.BorderSize = 0
         btnNavLogout.FlatStyle = FlatStyle.Flat
         btnNavLogout.Font = New Font("Segoe UI", 9.5F)
-        btnNavLogout.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavLogout.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavLogout.Location = New Point(16, 735)
         btnNavLogout.Name = "btnNavLogout"
         btnNavLogout.Size = New Size(188, 44)
@@ -151,7 +157,7 @@ Partial Class StaffHistoryForm
         ' 
         ' btnNavHistory
         ' 
-        btnNavHistory.BackColor = Color.FromArgb(28, 91, 184)
+        btnNavHistory.BackColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         btnNavHistory.Cursor = Cursors.Hand
         btnNavHistory.FlatAppearance.BorderSize = 0
         btnNavHistory.FlatStyle = FlatStyle.Flat
@@ -171,7 +177,7 @@ Partial Class StaffHistoryForm
         btnNavRequests.FlatAppearance.BorderSize = 0
         btnNavRequests.FlatStyle = FlatStyle.Flat
         btnNavRequests.Font = New Font("Segoe UI", 9.5F)
-        btnNavRequests.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavRequests.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavRequests.Location = New Point(16, 172)
         btnNavRequests.Name = "btnNavRequests"
         btnNavRequests.Size = New Size(188, 44)
@@ -186,7 +192,7 @@ Partial Class StaffHistoryForm
         btnNavDashboard.FlatAppearance.BorderSize = 0
         btnNavDashboard.FlatStyle = FlatStyle.Flat
         btnNavDashboard.Font = New Font("Segoe UI", 9.5F)
-        btnNavDashboard.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavDashboard.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavDashboard.Location = New Point(16, 120)
         btnNavDashboard.Name = "btnNavDashboard"
         btnNavDashboard.Size = New Size(188, 44)
@@ -199,10 +205,10 @@ Partial Class StaffHistoryForm
         ' 
         lblNavSection.AutoSize = True
         lblNavSection.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
-        lblNavSection.ForeColor = Color.FromArgb(100, 130, 170)
+        lblNavSection.ForeColor = Color.FromArgb(CByte(100), CByte(130), CByte(170))
         lblNavSection.Location = New Point(16, 95)
         lblNavSection.Name = "lblNavSection"
-        lblNavSection.Size = New Size(79, 12)
+        lblNavSection.Size = New Size(74, 12)
         lblNavSection.TabIndex = 1
         lblNavSection.Text = "STAFF PORTAL"
         ' 
@@ -220,10 +226,10 @@ Partial Class StaffHistoryForm
         ' 
         lblLogoSub.AutoSize = True
         lblLogoSub.Font = New Font("Segoe UI", 7.5F)
-        lblLogoSub.ForeColor = Color.FromArgb(140, 168, 205)
+        lblLogoSub.ForeColor = Color.FromArgb(CByte(140), CByte(168), CByte(205))
         lblLogoSub.Location = New Point(50, 38)
         lblLogoSub.Name = "lblLogoSub"
-        lblLogoSub.Size = New Size(123, 12)
+        lblLogoSub.Size = New Size(118, 12)
         lblLogoSub.TabIndex = 2
         lblLogoSub.Text = "Student Clearance System"
         ' 
@@ -234,9 +240,10 @@ Partial Class StaffHistoryForm
         lblLogoTitle.ForeColor = Color.White
         lblLogoTitle.Location = New Point(48, 16)
         lblLogoTitle.Name = "lblLogoTitle"
-        lblLogoTitle.Size = New Size(134, 21)
+        lblLogoTitle.Size = New Size(94, 21)
         lblLogoTitle.TabIndex = 1
-        lblLogoTitle.Text = "EClearance"        ' 
+        lblLogoTitle.Text = "EClearance"
+        ' 
         ' picSchoolLogo
         ' 
         picSchoolLogo.Location = New Point(12, 16)
@@ -248,7 +255,7 @@ Partial Class StaffHistoryForm
         ' 
         ' pnlMain
         ' 
-        pnlMain.BackColor = Color.FromArgb(244, 247, 251)
+        pnlMain.BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         pnlMain.Controls.Add(pnlHistoryDetailCard)
         pnlMain.Controls.Add(pnlHistoryTableCard)
         pnlMain.Controls.Add(pnlFilterBar)
@@ -293,20 +300,20 @@ Partial Class StaffHistoryForm
         pnlHistoryDetailCard.Location = New Point(680, 260)
         pnlHistoryDetailCard.Name = "pnlHistoryDetailCard"
         pnlHistoryDetailCard.Padding = New Padding(16)
-        pnlHistoryDetailCard.Size = New Size(272, 504)
+        pnlHistoryDetailCard.Size = New Size(272, 516)
         pnlHistoryDetailCard.TabIndex = 9
         ' 
         ' btnReReview
         ' 
         btnReReview.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
-        btnReReview.BackColor = Color.FromArgb(11, 99, 229)
+        btnReReview.BackColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         btnReReview.Cursor = Cursors.Hand
         btnReReview.Enabled = False
         btnReReview.FlatAppearance.BorderSize = 0
         btnReReview.FlatStyle = FlatStyle.Flat
         btnReReview.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         btnReReview.ForeColor = Color.White
-        btnReReview.Location = New Point(16, 450)
+        btnReReview.Location = New Point(16, 462)
         btnReReview.Name = "btnReReview"
         btnReReview.Size = New Size(238, 38)
         btnReReview.TabIndex = 20
@@ -315,12 +322,13 @@ Partial Class StaffHistoryForm
         ' 
         ' lblDetailRemarksVal
         ' 
-        lblDetailRemarksVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailRemarksVal.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         lblDetailRemarksVal.Font = New Font("Segoe UI", 8F)
-        lblDetailRemarksVal.ForeColor = Color.FromArgb(51, 65, 85)
-        lblDetailRemarksVal.Location = New Point(16, 334)
+        lblDetailRemarksVal.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
+        lblDetailRemarksVal.Location = New Point(16, 300)
+        lblDetailRemarksVal.AutoEllipsis = True
         lblDetailRemarksVal.Name = "lblDetailRemarksVal"
-        lblDetailRemarksVal.Size = New Size(238, 100)
+        lblDetailRemarksVal.Size = New Size(238, 146)
         lblDetailRemarksVal.TabIndex = 19
         lblDetailRemarksVal.Text = "Select a row from the history table to view details."
         ' 
@@ -328,21 +336,23 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailRemarksLabel.AutoSize = True
         lblDetailRemarksLabel.Font = New Font("Segoe UI Semibold", 8F, FontStyle.Bold)
-        lblDetailRemarksLabel.ForeColor = Color.FromArgb(100, 116, 139)
-        lblDetailRemarksLabel.Location = New Point(16, 314)
+        lblDetailRemarksLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblDetailRemarksLabel.Location = New Point(16, 280)
         lblDetailRemarksLabel.Name = "lblDetailRemarksLabel"
-        lblDetailRemarksLabel.Size = New Size(54, 13)
+        lblDetailRemarksLabel.Size = New Size(57, 13)
         lblDetailRemarksLabel.TabIndex = 18
         lblDetailRemarksLabel.Text = "Remarks :"
         ' 
         ' lblDetailStatusVal
         ' 
-        lblDetailStatusVal.AutoSize = True
+        lblDetailStatusVal.AutoSize = False
         lblDetailStatusVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblDetailStatusVal.ForeColor = Color.FromArgb(15, 23, 42)
-        lblDetailStatusVal.Location = New Point(110, 276)
+        lblDetailStatusVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblDetailStatusVal.Location = New Point(110, 250)
+        lblDetailStatusVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailStatusVal.AutoEllipsis = True
         lblDetailStatusVal.Name = "lblDetailStatusVal"
-        lblDetailStatusVal.Size = New Size(12, 15)
+        lblDetailStatusVal.Size = New Size(144, 22)
         lblDetailStatusVal.TabIndex = 17
         lblDetailStatusVal.Text = "-"
         ' 
@@ -350,8 +360,8 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailStatusLabel.AutoSize = True
         lblDetailStatusLabel.Font = New Font("Segoe UI", 8F)
-        lblDetailStatusLabel.ForeColor = Color.FromArgb(100, 116, 139)
-        lblDetailStatusLabel.Location = New Point(16, 276)
+        lblDetailStatusLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblDetailStatusLabel.Location = New Point(16, 250)
         lblDetailStatusLabel.Name = "lblDetailStatusLabel"
         lblDetailStatusLabel.Size = New Size(45, 13)
         lblDetailStatusLabel.TabIndex = 16
@@ -359,12 +369,14 @@ Partial Class StaffHistoryForm
         ' 
         ' lblDetailActionVal
         ' 
-        lblDetailActionVal.AutoSize = True
+        lblDetailActionVal.AutoSize = False
         lblDetailActionVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblDetailActionVal.ForeColor = Color.FromArgb(15, 23, 42)
-        lblDetailActionVal.Location = New Point(110, 246)
+        lblDetailActionVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblDetailActionVal.Location = New Point(110, 224)
+        lblDetailActionVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailActionVal.AutoEllipsis = True
         lblDetailActionVal.Name = "lblDetailActionVal"
-        lblDetailActionVal.Size = New Size(12, 15)
+        lblDetailActionVal.Size = New Size(144, 22)
         lblDetailActionVal.TabIndex = 15
         lblDetailActionVal.Text = "-"
         ' 
@@ -372,21 +384,23 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailActionLabel.AutoSize = True
         lblDetailActionLabel.Font = New Font("Segoe UI", 8F)
-        lblDetailActionLabel.ForeColor = Color.FromArgb(100, 116, 139)
-        lblDetailActionLabel.Location = New Point(16, 246)
+        lblDetailActionLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblDetailActionLabel.Location = New Point(16, 224)
         lblDetailActionLabel.Name = "lblDetailActionLabel"
-        lblDetailActionLabel.Size = New Size(79, 13)
+        lblDetailActionLabel.Size = New Size(78, 13)
         lblDetailActionLabel.TabIndex = 14
         lblDetailActionLabel.Text = "Action Taken :"
         ' 
         ' lblDetailDateVal
         ' 
-        lblDetailDateVal.AutoSize = True
+        lblDetailDateVal.AutoSize = False
         lblDetailDateVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblDetailDateVal.ForeColor = Color.FromArgb(15, 23, 42)
-        lblDetailDateVal.Location = New Point(110, 216)
+        lblDetailDateVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblDetailDateVal.Location = New Point(110, 198)
+        lblDetailDateVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailDateVal.AutoEllipsis = True
         lblDetailDateVal.Name = "lblDetailDateVal"
-        lblDetailDateVal.Size = New Size(12, 15)
+        lblDetailDateVal.Size = New Size(144, 22)
         lblDetailDateVal.TabIndex = 13
         lblDetailDateVal.Text = "-"
         ' 
@@ -394,10 +408,10 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailDateLabel.AutoSize = True
         lblDetailDateLabel.Font = New Font("Segoe UI", 8F)
-        lblDetailDateLabel.ForeColor = Color.FromArgb(100, 116, 139)
-        lblDetailDateLabel.Location = New Point(16, 216)
+        lblDetailDateLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblDetailDateLabel.Location = New Point(16, 198)
         lblDetailDateLabel.Name = "lblDetailDateLabel"
-        lblDetailDateLabel.Size = New Size(91, 13)
+        lblDetailDateLabel.Size = New Size(86, 13)
         lblDetailDateLabel.TabIndex = 12
         lblDetailDateLabel.Text = "Date Actioned :"
         ' 
@@ -405,8 +419,8 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailReqVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         lblDetailReqVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblDetailReqVal.ForeColor = Color.FromArgb(15, 23, 42)
-        lblDetailReqVal.Location = New Point(110, 178)
+        lblDetailReqVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblDetailReqVal.Location = New Point(110, 166)
         lblDetailReqVal.Name = "lblDetailReqVal"
         lblDetailReqVal.Size = New Size(144, 30)
         lblDetailReqVal.TabIndex = 11
@@ -416,8 +430,8 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailReqLabel.AutoSize = True
         lblDetailReqLabel.Font = New Font("Segoe UI", 8F)
-        lblDetailReqLabel.ForeColor = Color.FromArgb(100, 116, 139)
-        lblDetailReqLabel.Location = New Point(16, 178)
+        lblDetailReqLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblDetailReqLabel.Location = New Point(16, 166)
         lblDetailReqLabel.Name = "lblDetailReqLabel"
         lblDetailReqLabel.Size = New Size(79, 13)
         lblDetailReqLabel.TabIndex = 10
@@ -425,12 +439,14 @@ Partial Class StaffHistoryForm
         ' 
         ' lblDetailYearVal
         ' 
-        lblDetailYearVal.AutoSize = True
+        lblDetailYearVal.AutoSize = False
         lblDetailYearVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblDetailYearVal.ForeColor = Color.FromArgb(15, 23, 42)
-        lblDetailYearVal.Location = New Point(110, 148)
+        lblDetailYearVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblDetailYearVal.Location = New Point(110, 140)
+        lblDetailYearVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailYearVal.AutoEllipsis = True
         lblDetailYearVal.Name = "lblDetailYearVal"
-        lblDetailYearVal.Size = New Size(12, 15)
+        lblDetailYearVal.Size = New Size(144, 22)
         lblDetailYearVal.TabIndex = 9
         lblDetailYearVal.Text = "-"
         ' 
@@ -438,10 +454,10 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailYearLabel.AutoSize = True
         lblDetailYearLabel.Font = New Font("Segoe UI", 8F)
-        lblDetailYearLabel.ForeColor = Color.FromArgb(100, 116, 139)
-        lblDetailYearLabel.Location = New Point(16, 148)
+        lblDetailYearLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblDetailYearLabel.Location = New Point(16, 140)
         lblDetailYearLabel.Name = "lblDetailYearLabel"
-        lblDetailYearLabel.Size = New Size(64, 13)
+        lblDetailYearLabel.Size = New Size(61, 13)
         lblDetailYearLabel.TabIndex = 8
         lblDetailYearLabel.Text = "Year Level :"
         ' 
@@ -449,7 +465,7 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailCourseVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         lblDetailCourseVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblDetailCourseVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblDetailCourseVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailCourseVal.Location = New Point(110, 110)
         lblDetailCourseVal.Name = "lblDetailCourseVal"
         lblDetailCourseVal.Size = New Size(144, 30)
@@ -460,7 +476,7 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailCourseLabel.AutoSize = True
         lblDetailCourseLabel.Font = New Font("Segoe UI", 8F)
-        lblDetailCourseLabel.ForeColor = Color.FromArgb(100, 116, 139)
+        lblDetailCourseLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblDetailCourseLabel.Location = New Point(16, 110)
         lblDetailCourseLabel.Name = "lblDetailCourseLabel"
         lblDetailCourseLabel.Size = New Size(49, 13)
@@ -471,7 +487,7 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailNameVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         lblDetailNameVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblDetailNameVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblDetailNameVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailNameVal.Location = New Point(110, 78)
         lblDetailNameVal.Name = "lblDetailNameVal"
         lblDetailNameVal.Size = New Size(144, 26)
@@ -482,21 +498,23 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailNameLabel.AutoSize = True
         lblDetailNameLabel.Font = New Font("Segoe UI", 8F)
-        lblDetailNameLabel.ForeColor = Color.FromArgb(100, 116, 139)
+        lblDetailNameLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblDetailNameLabel.Location = New Point(16, 78)
         lblDetailNameLabel.Name = "lblDetailNameLabel"
-        lblDetailNameLabel.Size = New Size(85, 13)
+        lblDetailNameLabel.Size = New Size(86, 13)
         lblDetailNameLabel.TabIndex = 4
         lblDetailNameLabel.Text = "Student Name :"
         ' 
         ' lblDetailStudentNoVal
         ' 
-        lblDetailStudentNoVal.AutoSize = True
+        lblDetailStudentNoVal.AutoSize = False
         lblDetailStudentNoVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblDetailStudentNoVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblDetailStudentNoVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailStudentNoVal.Location = New Point(110, 50)
+        lblDetailStudentNoVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailStudentNoVal.AutoEllipsis = True
         lblDetailStudentNoVal.Name = "lblDetailStudentNoVal"
-        lblDetailStudentNoVal.Size = New Size(12, 15)
+        lblDetailStudentNoVal.Size = New Size(144, 22)
         lblDetailStudentNoVal.TabIndex = 3
         lblDetailStudentNoVal.Text = "-"
         ' 
@@ -504,10 +522,10 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailStudentNoLabel.AutoSize = True
         lblDetailStudentNoLabel.Font = New Font("Segoe UI", 8F)
-        lblDetailStudentNoLabel.ForeColor = Color.FromArgb(100, 116, 139)
+        lblDetailStudentNoLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblDetailStudentNoLabel.Location = New Point(16, 50)
         lblDetailStudentNoLabel.Name = "lblDetailStudentNoLabel"
-        lblDetailStudentNoLabel.Size = New Size(73, 13)
+        lblDetailStudentNoLabel.Size = New Size(75, 13)
         lblDetailStudentNoLabel.TabIndex = 2
         lblDetailStudentNoLabel.Text = "Student No. :"
         ' 
@@ -515,10 +533,10 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailTitle.AutoSize = True
         lblDetailTitle.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
-        lblDetailTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblDetailTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailTitle.Location = New Point(42, 16)
         lblDetailTitle.Name = "lblDetailTitle"
-        lblDetailTitle.Size = New Size(117, 20)
+        lblDetailTitle.Size = New Size(118, 20)
         lblDetailTitle.TabIndex = 1
         lblDetailTitle.Text = "Request Details"
         ' 
@@ -526,10 +544,10 @@ Partial Class StaffHistoryForm
         ' 
         lblDetailIcon.AutoSize = True
         lblDetailIcon.Font = New Font("Segoe UI Emoji", 12F)
-        lblDetailIcon.ForeColor = Color.FromArgb(11, 99, 229)
+        lblDetailIcon.ForeColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         lblDetailIcon.Location = New Point(16, 16)
         lblDetailIcon.Name = "lblDetailIcon"
-        lblDetailIcon.Size = New Size(24, 21)
+        lblDetailIcon.Size = New Size(32, 21)
         lblDetailIcon.TabIndex = 0
         lblDetailIcon.Text = "📄"
         ' 
@@ -545,7 +563,7 @@ Partial Class StaffHistoryForm
         pnlHistoryTableCard.Location = New Point(28, 260)
         pnlHistoryTableCard.Name = "pnlHistoryTableCard"
         pnlHistoryTableCard.Padding = New Padding(16)
-        pnlHistoryTableCard.Size = New Size(636, 504)
+        pnlHistoryTableCard.Size = New Size(636, 516)
         pnlHistoryTableCard.TabIndex = 8
         ' 
         ' dgvHistory
@@ -554,46 +572,54 @@ Partial Class StaffHistoryForm
         dgvHistory.AllowUserToDeleteRows = False
         dgvHistory.AllowUserToResizeRows = False
         dgvHistory.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        dgvHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvHistory.BackgroundColor = Color.White
         dgvHistory.BorderStyle = BorderStyle.None
         dgvHistory.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
-        dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle1.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        dataGridViewCellStyle1.ForeColor = Color.FromArgb(100, 116, 139)
-        dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(100, 116, 139)
-        dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
-        dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1
-        dgvHistory.ColumnHeadersHeight = 36
+        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle1.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        DataGridViewCellStyle1.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        DataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
+        dgvHistory.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        dgvHistory.ColumnHeadersHeight = 42
         dgvHistory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         dgvHistory.Columns.AddRange(New DataGridViewColumn() {colNum, colHistoryID, colRecordID, colDate, colStudentNo, colStudentName, colRequirement, colActionTaken, colStatus, colRemarks})
-        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle2.BackColor = Color.White
-        dataGridViewCellStyle2.Font = New Font("Segoe UI", 8.5F)
-        dataGridViewCellStyle2.ForeColor = Color.FromArgb(30, 41, 59)
-        dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(239, 246, 255)
-        dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(30, 41, 59)
-        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
-        dgvHistory.DefaultCellStyle = dataGridViewCellStyle2
+        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = Color.White
+        DataGridViewCellStyle3.Font = New Font("Segoe UI", 8.5F)
+        DataGridViewCellStyle3.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(CByte(239), CByte(246), CByte(255))
+        DataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.False
+        dgvHistory.DefaultCellStyle = DataGridViewCellStyle3
         dgvHistory.EnableHeadersVisualStyles = False
-        dgvHistory.GridColor = Color.FromArgb(241, 245, 249)
+        dgvHistory.GridColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         dgvHistory.Location = New Point(16, 52)
         dgvHistory.MultiSelect = False
+        dgvHistory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None
         dgvHistory.Name = "dgvHistory"
         dgvHistory.ReadOnly = True
         dgvHistory.RowHeadersVisible = False
-        dgvHistory.RowTemplate.Height = 38
+        dgvHistory.RowTemplate.Height = 46
         dgvHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-        dgvHistory.Size = New Size(602, 434)
+        dgvHistory.Size = New Size(602, 446)
         dgvHistory.TabIndex = 3
         ' 
         ' colNum
         ' 
         colNum.HeaderText = "#"
+        colNum.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+        colNum.Width = 36
+        colNum.MinimumWidth = 36
+        colNum.Resizable = DataGridViewTriState.False
+        colNum.SortMode = DataGridViewColumnSortMode.NotSortable
+        colNum.HeaderCell.Style = centeredHeaderStyle
+        colNum.DefaultCellStyle = centeredHeaderStyle
         colNum.Name = "colNum"
         colNum.ReadOnly = True
-        colNum.Width = 35
         ' 
         ' colHistoryID
         ' 
@@ -612,63 +638,90 @@ Partial Class StaffHistoryForm
         ' colDate
         ' 
         colDate.HeaderText = "Date"
+        colDate.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+        colDate.Width = 114
+        colDate.MinimumWidth = 114
+        colDate.Resizable = DataGridViewTriState.False
+        colDate.DefaultCellStyle = wrappedCellStyle
         colDate.Name = "colDate"
         colDate.ReadOnly = True
-        colDate.Width = 100
         ' 
         ' colStudentNo
         ' 
         colStudentNo.HeaderText = "Student No."
+        colStudentNo.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+        colStudentNo.Width = 86
+        colStudentNo.MinimumWidth = 86
+        colStudentNo.Resizable = DataGridViewTriState.False
         colStudentNo.Name = "colStudentNo"
         colStudentNo.ReadOnly = True
-        colStudentNo.Width = 95
         ' 
         ' colStudentName
         ' 
         colStudentName.HeaderText = "Student Name"
+        colStudentName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        colStudentName.FillWeight = 22.0F
+        colStudentName.MinimumWidth = 86
+        colStudentName.DefaultCellStyle = wrappedCellStyle
         colStudentName.Name = "colStudentName"
         colStudentName.ReadOnly = True
-        colStudentName.Width = 120
         ' 
         ' colRequirement
         ' 
         colRequirement.HeaderText = "Requirement"
+        colRequirement.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        colRequirement.FillWeight = 26.0F
+        colRequirement.MinimumWidth = 94
+        colRequirement.DefaultCellStyle = wrappedCellStyle
         colRequirement.Name = "colRequirement"
         colRequirement.ReadOnly = True
-        colRequirement.Width = 105
         ' 
         ' colActionTaken
         ' 
         colActionTaken.HeaderText = "Action Taken"
+        colActionTaken.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        colActionTaken.FillWeight = 22.0F
+        colActionTaken.MinimumWidth = 86
+        colActionTaken.DefaultCellStyle = wrappedCellStyle
         colActionTaken.Name = "colActionTaken"
         colActionTaken.ReadOnly = True
-        colActionTaken.Width = 95
         ' 
         ' colStatus
         ' 
-        dataGridViewCellStyleStatus.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        colStatus.DefaultCellStyle = dataGridViewCellStyleStatus
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        colStatus.DefaultCellStyle = DataGridViewCellStyle2
         colStatus.HeaderText = "Status"
+        colStatus.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+        colStatus.Width = 94
+        colStatus.MinimumWidth = 94
+        colStatus.Resizable = DataGridViewTriState.False
+        colStatus.SortMode = DataGridViewColumnSortMode.NotSortable
+        colStatus.HeaderCell.Style = centeredHeaderStyle
         colStatus.Name = "colStatus"
         colStatus.ReadOnly = True
-        colStatus.Width = 85
         ' 
         ' colRemarks
         ' 
         colRemarks.HeaderText = "Remarks"
+        colRemarks.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        colRemarks.FillWeight = 30.0F
+        colRemarks.MinimumWidth = 94
+        colRemarks.DefaultCellStyle = wrappedCellStyle
         colRemarks.Name = "colRemarks"
         colRemarks.ReadOnly = True
-        colRemarks.Width = 120
         ' 
         ' lblRecordCount
         ' 
-        lblRecordCount.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblRecordCount.AutoSize = True
+        lblRecordCount.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblRecordCount.AutoSize = False
         lblRecordCount.Font = New Font("Segoe UI", 8.5F)
-        lblRecordCount.ForeColor = Color.FromArgb(100, 116, 139)
-        lblRecordCount.Location = New Point(480, 18)
+        lblRecordCount.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblRecordCount.Location = New Point(284, 14)
+        lblRecordCount.AutoEllipsis = True
+        lblRecordCount.TextAlign = ContentAlignment.MiddleRight
         lblRecordCount.Name = "lblRecordCount"
-        lblRecordCount.Size = New Size(130, 15)
+        lblRecordCount.Size = New Size(332, 24)
         lblRecordCount.TabIndex = 2
         lblRecordCount.Text = "Showing 0 of 0 records"
         ' 
@@ -676,10 +729,10 @@ Partial Class StaffHistoryForm
         ' 
         lblTableTitle.AutoSize = True
         lblTableTitle.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
-        lblTableTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblTableTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblTableTitle.Location = New Point(42, 16)
         lblTableTitle.Name = "lblTableTitle"
-        lblTableTitle.Size = New Size(227, 20)
+        lblTableTitle.Size = New Size(222, 20)
         lblTableTitle.TabIndex = 1
         lblTableTitle.Text = "History of Processed Requests"
         ' 
@@ -687,10 +740,10 @@ Partial Class StaffHistoryForm
         ' 
         lblTableIcon.AutoSize = True
         lblTableIcon.Font = New Font("Segoe UI Emoji", 12F)
-        lblTableIcon.ForeColor = Color.FromArgb(11, 99, 229)
+        lblTableIcon.ForeColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         lblTableIcon.Location = New Point(16, 16)
         lblTableIcon.Name = "lblTableIcon"
-        lblTableIcon.Size = New Size(24, 21)
+        lblTableIcon.Size = New Size(32, 21)
         lblTableIcon.TabIndex = 0
         lblTableIcon.Text = "📄"
         ' 
@@ -712,7 +765,7 @@ Partial Class StaffHistoryForm
         ' btnRefresh
         ' 
         btnRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnRefresh.BackColor = Color.FromArgb(11, 99, 229)
+        btnRefresh.BackColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         btnRefresh.Cursor = Cursors.Hand
         btnRefresh.FlatAppearance.BorderSize = 0
         btnRefresh.FlatStyle = FlatStyle.Flat
@@ -752,7 +805,7 @@ Partial Class StaffHistoryForm
         txtSearch.BackColor = Color.White
         txtSearch.BorderStyle = BorderStyle.FixedSingle
         txtSearch.Font = New Font("Segoe UI", 9F)
-        txtSearch.ForeColor = Color.FromArgb(30, 41, 59)
+        txtSearch.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
         txtSearch.Location = New Point(38, 14)
         txtSearch.Name = "txtSearch"
         txtSearch.PlaceholderText = "Search by student name or student number..."
@@ -763,10 +816,10 @@ Partial Class StaffHistoryForm
         ' 
         lblSearchIcon.AutoSize = True
         lblSearchIcon.Font = New Font("Segoe UI Emoji", 10F)
-        lblSearchIcon.ForeColor = Color.FromArgb(100, 116, 139)
+        lblSearchIcon.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSearchIcon.Location = New Point(12, 16)
         lblSearchIcon.Name = "lblSearchIcon"
-        lblSearchIcon.Size = New Size(21, 19)
+        lblSearchIcon.Size = New Size(28, 19)
         lblSearchIcon.TabIndex = 0
         lblSearchIcon.Text = "🔍"
         ' 
@@ -801,10 +854,10 @@ Partial Class StaffHistoryForm
         lblRejectedArrow.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         lblRejectedArrow.AutoSize = True
         lblRejectedArrow.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        lblRejectedArrow.ForeColor = Color.FromArgb(220, 38, 38)
+        lblRejectedArrow.ForeColor = Color.FromArgb(CByte(220), CByte(38), CByte(38))
         lblRejectedArrow.Location = New Point(266, 32)
         lblRejectedArrow.Name = "lblRejectedArrow"
-        lblRejectedArrow.Size = New Size(19, 21)
+        lblRejectedArrow.Size = New Size(21, 21)
         lblRejectedArrow.TabIndex = 4
         lblRejectedArrow.Text = ">"
         ' 
@@ -812,10 +865,10 @@ Partial Class StaffHistoryForm
         ' 
         lblRejectedSub.AutoSize = True
         lblRejectedSub.Font = New Font("Segoe UI", 8F)
-        lblRejectedSub.ForeColor = Color.FromArgb(100, 116, 139)
+        lblRejectedSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblRejectedSub.Location = New Point(64, 56)
         lblRejectedSub.Name = "lblRejectedSub"
-        lblRejectedSub.Size = New Size(136, 13)
+        lblRejectedSub.Size = New Size(147, 13)
         lblRejectedSub.TabIndex = 3
         lblRejectedSub.Text = "Requests you have rejected"
         ' 
@@ -823,10 +876,10 @@ Partial Class StaffHistoryForm
         ' 
         lblRejectedTitle.AutoSize = True
         lblRejectedTitle.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        lblRejectedTitle.ForeColor = Color.FromArgb(30, 41, 59)
+        lblRejectedTitle.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
         lblRejectedTitle.Location = New Point(64, 38)
         lblRejectedTitle.Name = "lblRejectedTitle"
-        lblRejectedTitle.Size = New Size(53, 15)
+        lblRejectedTitle.Size = New Size(52, 15)
         lblRejectedTitle.TabIndex = 2
         lblRejectedTitle.Text = "Rejected"
         ' 
@@ -834,7 +887,7 @@ Partial Class StaffHistoryForm
         ' 
         lblRejectedCount.AutoSize = True
         lblRejectedCount.Font = New Font("Segoe UI", 16F, FontStyle.Bold)
-        lblRejectedCount.ForeColor = Color.FromArgb(15, 23, 42)
+        lblRejectedCount.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblRejectedCount.Location = New Point(64, 8)
         lblRejectedCount.Name = "lblRejectedCount"
         lblRejectedCount.Size = New Size(26, 30)
@@ -843,9 +896,9 @@ Partial Class StaffHistoryForm
         ' 
         ' lblRejectedIcon
         ' 
-        lblRejectedIcon.BackColor = Color.FromArgb(254, 226, 226)
+        lblRejectedIcon.BackColor = Color.FromArgb(CByte(254), CByte(226), CByte(226))
         lblRejectedIcon.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        lblRejectedIcon.ForeColor = Color.FromArgb(220, 38, 38)
+        lblRejectedIcon.ForeColor = Color.FromArgb(CByte(220), CByte(38), CByte(38))
         lblRejectedIcon.Location = New Point(16, 16)
         lblRejectedIcon.Name = "lblRejectedIcon"
         lblRejectedIcon.Size = New Size(40, 40)
@@ -873,10 +926,10 @@ Partial Class StaffHistoryForm
         lblApprovedArrow.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         lblApprovedArrow.AutoSize = True
         lblApprovedArrow.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        lblApprovedArrow.ForeColor = Color.FromArgb(22, 163, 74)
+        lblApprovedArrow.ForeColor = Color.FromArgb(CByte(22), CByte(163), CByte(74))
         lblApprovedArrow.Location = New Point(266, 32)
         lblApprovedArrow.Name = "lblApprovedArrow"
-        lblApprovedArrow.Size = New Size(19, 21)
+        lblApprovedArrow.Size = New Size(21, 21)
         lblApprovedArrow.TabIndex = 4
         lblApprovedArrow.Text = ">"
         ' 
@@ -884,10 +937,10 @@ Partial Class StaffHistoryForm
         ' 
         lblApprovedSub.AutoSize = True
         lblApprovedSub.Font = New Font("Segoe UI", 8F)
-        lblApprovedSub.ForeColor = Color.FromArgb(100, 116, 139)
+        lblApprovedSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblApprovedSub.Location = New Point(64, 56)
         lblApprovedSub.Name = "lblApprovedSub"
-        lblApprovedSub.Size = New Size(144, 13)
+        lblApprovedSub.Size = New Size(155, 13)
         lblApprovedSub.TabIndex = 3
         lblApprovedSub.Text = "Requests you have approved"
         ' 
@@ -895,7 +948,7 @@ Partial Class StaffHistoryForm
         ' 
         lblApprovedTitle.AutoSize = True
         lblApprovedTitle.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        lblApprovedTitle.ForeColor = Color.FromArgb(30, 41, 59)
+        lblApprovedTitle.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
         lblApprovedTitle.Location = New Point(64, 38)
         lblApprovedTitle.Name = "lblApprovedTitle"
         lblApprovedTitle.Size = New Size(59, 15)
@@ -906,7 +959,7 @@ Partial Class StaffHistoryForm
         ' 
         lblApprovedCount.AutoSize = True
         lblApprovedCount.Font = New Font("Segoe UI", 16F, FontStyle.Bold)
-        lblApprovedCount.ForeColor = Color.FromArgb(15, 23, 42)
+        lblApprovedCount.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblApprovedCount.Location = New Point(64, 8)
         lblApprovedCount.Name = "lblApprovedCount"
         lblApprovedCount.Size = New Size(26, 30)
@@ -915,9 +968,9 @@ Partial Class StaffHistoryForm
         ' 
         ' lblApprovedIcon
         ' 
-        lblApprovedIcon.BackColor = Color.FromArgb(220, 252, 231)
+        lblApprovedIcon.BackColor = Color.FromArgb(CByte(220), CByte(252), CByte(231))
         lblApprovedIcon.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        lblApprovedIcon.ForeColor = Color.FromArgb(22, 163, 74)
+        lblApprovedIcon.ForeColor = Color.FromArgb(CByte(22), CByte(163), CByte(74))
         lblApprovedIcon.Location = New Point(16, 16)
         lblApprovedIcon.Name = "lblApprovedIcon"
         lblApprovedIcon.Size = New Size(40, 40)
@@ -944,10 +997,10 @@ Partial Class StaffHistoryForm
         lblReviewedArrow.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         lblReviewedArrow.AutoSize = True
         lblReviewedArrow.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        lblReviewedArrow.ForeColor = Color.FromArgb(37, 99, 235)
+        lblReviewedArrow.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblReviewedArrow.Location = New Point(266, 32)
         lblReviewedArrow.Name = "lblReviewedArrow"
-        lblReviewedArrow.Size = New Size(19, 21)
+        lblReviewedArrow.Size = New Size(21, 21)
         lblReviewedArrow.TabIndex = 4
         lblReviewedArrow.Text = ">"
         ' 
@@ -955,10 +1008,10 @@ Partial Class StaffHistoryForm
         ' 
         lblReviewedSub.AutoSize = True
         lblReviewedSub.Font = New Font("Segoe UI", 8F)
-        lblReviewedSub.ForeColor = Color.FromArgb(100, 116, 139)
+        lblReviewedSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblReviewedSub.Location = New Point(64, 56)
         lblReviewedSub.Name = "lblReviewedSub"
-        lblReviewedSub.Size = New Size(175, 13)
+        lblReviewedSub.Size = New Size(182, 13)
         lblReviewedSub.TabIndex = 3
         lblReviewedSub.Text = "Total requests you have processed"
         ' 
@@ -966,7 +1019,7 @@ Partial Class StaffHistoryForm
         ' 
         lblReviewedTitle.AutoSize = True
         lblReviewedTitle.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        lblReviewedTitle.ForeColor = Color.FromArgb(30, 41, 59)
+        lblReviewedTitle.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
         lblReviewedTitle.Location = New Point(64, 38)
         lblReviewedTitle.Name = "lblReviewedTitle"
         lblReviewedTitle.Size = New Size(86, 15)
@@ -977,7 +1030,7 @@ Partial Class StaffHistoryForm
         ' 
         lblReviewedCount.AutoSize = True
         lblReviewedCount.Font = New Font("Segoe UI", 16F, FontStyle.Bold)
-        lblReviewedCount.ForeColor = Color.FromArgb(15, 23, 42)
+        lblReviewedCount.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblReviewedCount.Location = New Point(64, 8)
         lblReviewedCount.Name = "lblReviewedCount"
         lblReviewedCount.Size = New Size(26, 30)
@@ -986,9 +1039,9 @@ Partial Class StaffHistoryForm
         ' 
         ' lblReviewedIcon
         ' 
-        lblReviewedIcon.BackColor = Color.FromArgb(219, 234, 254)
+        lblReviewedIcon.BackColor = Color.FromArgb(CByte(219), CByte(234), CByte(254))
         lblReviewedIcon.Font = New Font("Segoe UI", 12F)
-        lblReviewedIcon.ForeColor = Color.FromArgb(37, 99, 235)
+        lblReviewedIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblReviewedIcon.Location = New Point(16, 16)
         lblReviewedIcon.Name = "lblReviewedIcon"
         lblReviewedIcon.Size = New Size(40, 40)
@@ -1000,7 +1053,7 @@ Partial Class StaffHistoryForm
         ' 
         lblDateTimeBadge.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         lblDateTimeBadge.Font = New Font("Segoe UI", 8F)
-        lblDateTimeBadge.ForeColor = Color.FromArgb(100, 116, 139)
+        lblDateTimeBadge.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblDateTimeBadge.Location = New Point(854, 16)
         lblDateTimeBadge.Name = "lblDateTimeBadge"
         lblDateTimeBadge.Size = New Size(98, 48)
@@ -1025,10 +1078,10 @@ Partial Class StaffHistoryForm
         ' 
         lblStaffRole.AutoSize = True
         lblStaffRole.Font = New Font("Segoe UI", 7.5F)
-        lblStaffRole.ForeColor = Color.FromArgb(100, 116, 139)
+        lblStaffRole.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblStaffRole.Location = New Point(38, 26)
         lblStaffRole.Name = "lblStaffRole"
-        lblStaffRole.Size = New Size(106, 12)
+        lblStaffRole.Size = New Size(101, 12)
         lblStaffRole.TabIndex = 2
         lblStaffRole.Text = "Staff / Clearing Officer"
         ' 
@@ -1036,10 +1089,10 @@ Partial Class StaffHistoryForm
         ' 
         lblStaffName.AutoSize = True
         lblStaffName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblStaffName.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStaffName.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblStaffName.Location = New Point(38, 8)
         lblStaffName.Name = "lblStaffName"
-        lblStaffName.Size = New Size(79, 15)
+        lblStaffName.Size = New Size(80, 15)
         lblStaffName.TabIndex = 1
         lblStaffName.Text = "Staff Member"
         ' 
@@ -1047,10 +1100,10 @@ Partial Class StaffHistoryForm
         ' 
         lblStaffIcon.AutoSize = True
         lblStaffIcon.Font = New Font("Segoe UI Emoji", 14F)
-        lblStaffIcon.ForeColor = Color.FromArgb(37, 99, 235)
+        lblStaffIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblStaffIcon.Location = New Point(8, 10)
         lblStaffIcon.Name = "lblStaffIcon"
-        lblStaffIcon.Size = New Size(28, 26)
+        lblStaffIcon.Size = New Size(38, 26)
         lblStaffIcon.TabIndex = 0
         lblStaffIcon.Text = "👤"
         ' 
@@ -1071,10 +1124,10 @@ Partial Class StaffHistoryForm
         ' 
         lblOfficeSub.AutoSize = True
         lblOfficeSub.Font = New Font("Segoe UI", 7.5F)
-        lblOfficeSub.ForeColor = Color.FromArgb(100, 116, 139)
+        lblOfficeSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblOfficeSub.Location = New Point(38, 26)
         lblOfficeSub.Name = "lblOfficeSub"
-        lblOfficeSub.Size = New Size(74, 12)
+        lblOfficeSub.Size = New Size(73, 12)
         lblOfficeSub.TabIndex = 2
         lblOfficeSub.Text = "Assigned Office"
         ' 
@@ -1082,10 +1135,10 @@ Partial Class StaffHistoryForm
         ' 
         lblOfficeName.AutoSize = True
         lblOfficeName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        lblOfficeName.ForeColor = Color.FromArgb(15, 23, 42)
+        lblOfficeName.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblOfficeName.Location = New Point(38, 8)
         lblOfficeName.Name = "lblOfficeName"
-        lblOfficeName.Size = New Size(86, 15)
+        lblOfficeName.Size = New Size(90, 15)
         lblOfficeName.TabIndex = 1
         lblOfficeName.Text = "Assigned Office"
         ' 
@@ -1093,10 +1146,10 @@ Partial Class StaffHistoryForm
         ' 
         lblOfficeIcon.AutoSize = True
         lblOfficeIcon.Font = New Font("Segoe UI Emoji", 14F)
-        lblOfficeIcon.ForeColor = Color.FromArgb(37, 99, 235)
+        lblOfficeIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblOfficeIcon.Location = New Point(8, 10)
         lblOfficeIcon.Name = "lblOfficeIcon"
-        lblOfficeIcon.Size = New Size(28, 26)
+        lblOfficeIcon.Size = New Size(38, 26)
         lblOfficeIcon.TabIndex = 0
         lblOfficeIcon.Text = "🏛"
         ' 
@@ -1104,10 +1157,10 @@ Partial Class StaffHistoryForm
         ' 
         lblHeaderSub.AutoSize = True
         lblHeaderSub.Font = New Font("Segoe UI", 9.5F)
-        lblHeaderSub.ForeColor = Color.FromArgb(100, 116, 139)
+        lblHeaderSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblHeaderSub.Location = New Point(28, 56)
         lblHeaderSub.Name = "lblHeaderSub"
-        lblHeaderSub.Size = New Size(256, 17)
+        lblHeaderSub.Size = New Size(291, 17)
         lblHeaderSub.TabIndex = 1
         lblHeaderSub.Text = "View processed clearance actions and decisions."
         ' 
@@ -1115,10 +1168,10 @@ Partial Class StaffHistoryForm
         ' 
         lblHeaderTitle.AutoSize = True
         lblHeaderTitle.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
-        lblHeaderTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblHeaderTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblHeaderTitle.Location = New Point(24, 16)
         lblHeaderTitle.Name = "lblHeaderTitle"
-        lblHeaderTitle.Size = New Size(177, 37)
+        lblHeaderTitle.Size = New Size(180, 37)
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "Staff History"
         ' 
@@ -1126,12 +1179,12 @@ Partial Class StaffHistoryForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        BackColor = Color.FromArgb(244, 247, 251)
+        BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         ClientSize = New Size(1200, 800)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
-        MinimumSize = New Size(1100, 750)
+        MinimumSize = New Size(1200, 728)
         Name = "StaffHistoryForm"
         StartPosition = FormStartPosition.CenterScreen
         Text = "EClearance - Staff History"
@@ -1139,6 +1192,7 @@ Partial Class StaffHistoryForm
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)
         pnlLogo.PerformLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).EndInit()
         pnlMain.ResumeLayout(False)
         pnlMain.PerformLayout()
         pnlHistoryDetailCard.ResumeLayout(False)

@@ -17,10 +17,10 @@ Partial Class StaffDashboardForm
 
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         pnlNavIndicator = New Panel()
-        pnlViewHost = New Panel()
         btnNavLogout = New Button()
         btnNavHistory = New Button()
         btnNavRequests = New Button()
@@ -30,6 +30,7 @@ Partial Class StaffDashboardForm
         lblLogoSub = New Label()
         lblLogoTitle = New Label()
         picSchoolLogo = New PictureBox()
+        pnlViewHost = New Panel()
         pnlMain = New Panel()
         pnlRightColumn = New Panel()
         pnlMyOfficeCard = New Panel()
@@ -95,6 +96,7 @@ Partial Class StaffDashboardForm
         lblHeaderTitle = New Label()
         pnlSidebar.SuspendLayout()
         pnlLogo.SuspendLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
         pnlMain.SuspendLayout()
         pnlRightColumn.SuspendLayout()
         pnlMyOfficeCard.SuspendLayout()
@@ -236,9 +238,10 @@ Partial Class StaffDashboardForm
         lblLogoTitle.ForeColor = Color.White
         lblLogoTitle.Location = New Point(48, 16)
         lblLogoTitle.Name = "lblLogoTitle"
-        lblLogoTitle.Size = New Size(141, 21)
+        lblLogoTitle.Size = New Size(94, 21)
         lblLogoTitle.TabIndex = 1
-        lblLogoTitle.Text = "EClearance"        ' 
+        lblLogoTitle.Text = "EClearance"
+        ' 
         ' picSchoolLogo
         ' 
         picSchoolLogo.Location = New Point(12, 16)
@@ -247,6 +250,16 @@ Partial Class StaffDashboardForm
         picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
         picSchoolLogo.TabIndex = 0
         picSchoolLogo.TabStop = False
+        ' 
+        ' pnlViewHost
+        ' 
+        pnlViewHost.BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
+        pnlViewHost.Dock = DockStyle.Fill
+        pnlViewHost.Location = New Point(220, 0)
+        pnlViewHost.Name = "pnlViewHost"
+        pnlViewHost.Size = New Size(980, 800)
+        pnlViewHost.TabIndex = 2
+        pnlViewHost.Visible = False
         ' 
         ' pnlMain
         ' 
@@ -462,9 +475,10 @@ Partial Class StaffDashboardForm
         dgvRecent.BackgroundColor = Color.White
         dgvRecent.BorderStyle = BorderStyle.None
         dgvRecent.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
+        dgvRecent.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
         DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
-        DataGridViewCellStyle1.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        DataGridViewCellStyle1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         DataGridViewCellStyle1.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         DataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         DataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
@@ -472,16 +486,15 @@ Partial Class StaffDashboardForm
         dgvRecent.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         dgvRecent.ColumnHeadersHeight = 42
         dgvRecent.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        dgvRecent.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
         dgvRecent.Columns.AddRange(New DataGridViewColumn() {colNum, colRecordID, colStudentNo, colStudentName, colRequirement, colSubmittedAt, colStatus, colAction})
-        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = Color.White
-        DataGridViewCellStyle2.Font = New Font("Segoe UI", 9.0F)
-        DataGridViewCellStyle2.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
-        DataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
-        dgvRecent.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = Color.White
+        DataGridViewCellStyle3.Font = New Font("Segoe UI", 9F)
+        DataGridViewCellStyle3.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.False
+        dgvRecent.DefaultCellStyle = DataGridViewCellStyle3
         dgvRecent.EnableHeadersVisualStyles = False
         dgvRecent.GridColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         dgvRecent.Location = New Point(16, 52)
@@ -497,10 +510,9 @@ Partial Class StaffDashboardForm
         ' colNum
         ' 
         colNum.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        colNum.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        colNum.DefaultCellStyle.Padding = New Padding(8, 0, 0, 0)
-        colNum.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
-        colNum.HeaderCell.Style.Padding = New Padding(8, 0, 0, 0)
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.Padding = New Padding(8, 0, 0, 0)
+        colNum.DefaultCellStyle = DataGridViewCellStyle2
         colNum.HeaderText = "#"
         colNum.Name = "colNum"
         colNum.ReadOnly = True
@@ -516,7 +528,7 @@ Partial Class StaffDashboardForm
         ' 
         ' colStudentNo
         ' 
-        colStudentNo.FillWeight = 14.0F
+        colStudentNo.FillWeight = 14F
         colStudentNo.HeaderText = "Student No."
         colStudentNo.MinimumWidth = 85
         colStudentNo.Name = "colStudentNo"
@@ -524,7 +536,7 @@ Partial Class StaffDashboardForm
         ' 
         ' colStudentName
         ' 
-        colStudentName.FillWeight = 22.0F
+        colStudentName.FillWeight = 22F
         colStudentName.HeaderText = "Student Name"
         colStudentName.MinimumWidth = 110
         colStudentName.Name = "colStudentName"
@@ -532,7 +544,7 @@ Partial Class StaffDashboardForm
         ' 
         ' colRequirement
         ' 
-        colRequirement.FillWeight = 24.0F
+        colRequirement.FillWeight = 24F
         colRequirement.HeaderText = "Requirement"
         colRequirement.MinimumWidth = 120
         colRequirement.Name = "colRequirement"
@@ -540,7 +552,7 @@ Partial Class StaffDashboardForm
         ' 
         ' colSubmittedAt
         ' 
-        colSubmittedAt.FillWeight = 18.0F
+        colSubmittedAt.FillWeight = 18F
         colSubmittedAt.HeaderText = "Submitted At"
         colSubmittedAt.MinimumWidth = 120
         colSubmittedAt.Name = "colSubmittedAt"
@@ -548,8 +560,7 @@ Partial Class StaffDashboardForm
         ' 
         ' colStatus
         ' 
-        colStatus.FillWeight = 12.0F
-        colStatus.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        colStatus.FillWeight = 12F
         colStatus.HeaderText = "Status"
         colStatus.MinimumWidth = 95
         colStatus.Name = "colStatus"
@@ -557,9 +568,8 @@ Partial Class StaffDashboardForm
         ' 
         ' colAction
         ' 
-        colAction.FillWeight = 10.0F
+        colAction.FillWeight = 10F
         colAction.FlatStyle = FlatStyle.Flat
-        colAction.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
         colAction.HeaderText = "Action"
         colAction.MinimumWidth = 85
         colAction.Name = "colAction"
@@ -573,7 +583,7 @@ Partial Class StaffDashboardForm
         btnViewAll.Cursor = Cursors.Hand
         btnViewAll.FlatAppearance.BorderSize = 0
         btnViewAll.FlatStyle = FlatStyle.Flat
-        btnViewAll.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold)
+        btnViewAll.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnViewAll.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         btnViewAll.Location = New Point(532, 14)
         btnViewAll.Name = "btnViewAll"
@@ -590,18 +600,18 @@ Partial Class StaffDashboardForm
         lblRecentTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblRecentTitle.Location = New Point(44, 16)
         lblRecentTitle.Name = "lblRecentTitle"
-        lblRecentTitle.Size = New Size(155, 21)
+        lblRecentTitle.Size = New Size(161, 21)
         lblRecentTitle.TabIndex = 1
         lblRecentTitle.Text = "Recent Submissions"
         ' 
         ' lblRecentIcon
         ' 
         lblRecentIcon.AutoSize = True
-        lblRecentIcon.Font = New Font("Segoe UI Emoji", 12.0F)
+        lblRecentIcon.Font = New Font("Segoe UI Emoji", 12F)
         lblRecentIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblRecentIcon.Location = New Point(16, 16)
         lblRecentIcon.Name = "lblRecentIcon"
-        lblRecentIcon.Size = New Size(24, 21)
+        lblRecentIcon.Size = New Size(32, 21)
         lblRecentIcon.TabIndex = 0
         lblRecentIcon.Text = "📄"
         ' 
@@ -1027,16 +1037,6 @@ Partial Class StaffDashboardForm
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "Staff Dashboard"
         ' 
-        ' pnlViewHost
-        ' 
-        pnlViewHost.BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
-        pnlViewHost.Dock = DockStyle.Fill
-        pnlViewHost.Location = New Point(220, 0)
-        pnlViewHost.Name = "pnlViewHost"
-        pnlViewHost.Size = New Size(980, 800)
-        pnlViewHost.TabIndex = 2
-        pnlViewHost.Visible = False
-        ' 
         ' StaffDashboardForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -1055,6 +1055,7 @@ Partial Class StaffDashboardForm
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)
         pnlLogo.PerformLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).EndInit()
         pnlMain.ResumeLayout(False)
         pnlMain.PerformLayout()
         pnlRightColumn.ResumeLayout(False)

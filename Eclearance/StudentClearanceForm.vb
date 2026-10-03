@@ -1053,4 +1053,7 @@ Public Class StudentClearanceForm
 
     End Sub
 
+    Private Sub lblReq1_Click(sender As Object, e As EventArgs) Handles lblReq1.Click
+
+    End Sub
 End Class

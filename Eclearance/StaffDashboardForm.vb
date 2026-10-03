@@ -103,7 +103,8 @@ Public Class StaffDashboardForm
                 "WHERE r.DepartmentID = @DeptID " &
                 "  AND (@TermID = 0 OR cr.TermID = @TermID) " &
                 "  AND cr.Status <> 'Not Applicable' " &
-                "ORDER BY COALESCE(cr.SubmittedAt, cr.CreatedAt) DESC " &
+                "  AND cr.SubmittedAt IS NOT NULL " &
+                "ORDER BY cr.SubmittedAt DESC, cr.RecordID DESC " &
                 "LIMIT 10;"
 
             Dim dtRecent As DataTable = db.ExecuteQuery(recentQuery, New Dictionary(Of String, Object) From {
