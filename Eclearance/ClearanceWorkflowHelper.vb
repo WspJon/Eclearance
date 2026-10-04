@@ -418,6 +418,41 @@ Public Class ClearanceWorkflowHelper
                 result.Add(item)
             Next
 
+            ' 1. Determine applicability for all items
+            For Each item In result
+                item.IsApplicable = IsRequirementApplicable(
+                    studentCourse,
+                    studentYearLevel,
+                    item.AppliesToCourse,
+                    item.RequiresNSTP,
+                    item.ApplicableCourses,
+                    item.ApplicableYearLevels
+                )
+            Next
+
+            ' 2. Filter Step 6 (Dean offices): Keep ONLY the student's applicable Dean office requirement
+            Dim filteredItems As New List(Of ClearanceItemInfo)()
+            For Each item In result
+                If item.SequenceOrder = 6 Then
+                    If item.IsApplicable Then
+                        filteredItems.Add(item)
+                    End If
+                Else
+                    filteredItems.Add(item)
+                End If
+            Next
+
+            ' Fallback if course didn't match any specific dean but there was a dean requirement
+            If Not filteredItems.Any(Function(i) i.SequenceOrder = 6) Then
+                Dim firstDean = result.FirstOrDefault(Function(i) i.SequenceOrder = 6)
+                If firstDean IsNot Nothing Then
+                    firstDean.IsApplicable = True
+                    filteredItems.Add(firstDean)
+                End If
+            End If
+
+            result = filteredItems.OrderBy(Function(i) i.SequenceOrder).ToList()
+
             EvaluateSequentialWorkflow(result, studentCourse, studentYearLevel)
 
         Catch ex As Exception
@@ -506,10 +541,13 @@ Public Class ClearanceWorkflowHelper
 
         Try
             Dim dt = db.ExecuteQuery(
-                "SELECT cr.StudentID, cr.TermID, r.SequenceOrder, r.RequirementName, u.Course, u.YearLevel " &
+                "SELECT cr.StudentID, cr.TermID, r.SequenceOrder, r.RequirementName, " &
+                "       COALESCE(s.Course, u.Course, '') AS Course, " &
+                "       COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel " &
                 "FROM ClearanceRecords cr " &
                 "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
                 "INNER JOIN Users u ON cr.StudentID = u.UserID " &
+                "LEFT JOIN Students s ON s.UserID = u.UserID " &
                 "WHERE cr.RecordID = @RecordID LIMIT 1;",
                 New Dictionary(Of String, Object) From {{"@RecordID", recordID}}
             )
@@ -627,5 +665,53 @@ Public Class ClearanceWorkflowHelper
         Catch ex As Exception
         End Try
     End Sub
+
+    ''' <summary>
+    ''' Resolves the Dean DepartmentID for a given student course from CoursePrograms.
+    ''' </summary>
+    Public Shared Function GetDeanDepartmentForCourse(course As String, db As DatabaseHelper) As Integer
+        Dim cleanCourse As String = If(course, "").Trim().ToUpperInvariant()
+        If String.IsNullOrWhiteSpace(cleanCourse) Then Return 0
+        Try
+            Dim dt = db.ExecuteQuery(
+                "SELECT DeanDepartmentID FROM CoursePrograms WHERE UPPER(CourseCode) = @Course AND IsActive = 1 LIMIT 1;",
+                New Dictionary(Of String, Object) From {{"@Course", cleanCourse}}
+            )
+            If dt.Rows.Count > 0 Then
+                Return Convert.ToInt32(dt.Rows(0)("DeanDepartmentID"))
+            End If
+
+            ' Partial match fallback
+            Dim dtAll = db.ExecuteQuery("SELECT CourseCode, DeanDepartmentID FROM CoursePrograms WHERE IsActive = 1;")
+            For Each row As DataRow In dtAll.Rows
+                Dim code = row("CourseCode").ToString().Trim().ToUpperInvariant()
+                If cleanCourse.Contains(code) OrElse code.Contains(cleanCourse) Then
+                    Return Convert.ToInt32(row("DeanDepartmentID"))
+                End If
+            Next
+        Catch ex As Exception
+        End Try
+        Return 0
+    End Function
+
+    ''' <summary>
+    ''' Resolves the Dean RequirementID for a given student course.
+    ''' </summary>
+    Public Shared Function GetDeanRequirementForCourse(course As String, db As DatabaseHelper) As Integer
+        Dim deanDeptID = GetDeanDepartmentForCourse(course, db)
+        If deanDeptID > 0 Then
+            Try
+                Dim res = db.ExecuteScalar(
+                    "SELECT RequirementID FROM ClearanceRequirements WHERE DepartmentID = @DeptID AND SequenceOrder = 6 AND IsActive = 1 LIMIT 1;",
+                    New Dictionary(Of String, Object) From {{"@DeptID", deanDeptID}}
+                )
+                If res IsNot Nothing AndAlso Not IsDBNull(res) Then
+                    Return Convert.ToInt32(res)
+                End If
+            Catch ex As Exception
+            End Try
+        End If
+        Return 0
+    End Function
 
 End Class

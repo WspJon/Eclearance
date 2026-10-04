@@ -2,6 +2,10 @@ Public Module AppSession
 
     Public UserID As Integer = 0
 
+    Public StudentID As Integer = 0
+
+    Public StaffID As Integer = 0
+
     Public Username As String = ""
 
     Public FullName As String = ""
@@ -14,6 +18,8 @@ Public Module AppSession
 
     Public Course As String = ""
 
+    Public Section As String = ""
+
     Public YearLevel As String = ""
 
     Public StudentType As String = ""
@@ -21,6 +27,10 @@ Public Module AppSession
     Public Sub Clear()
 
         UserID = 0
+
+        StudentID = 0
+
+        StaffID = 0
 
         Username = ""
 
@@ -33,6 +43,8 @@ Public Module AppSession
         StudentNo = ""
 
         Course = ""
+
+        Section = ""
 
         YearLevel = ""
 

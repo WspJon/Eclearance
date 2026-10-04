@@ -79,11 +79,11 @@ Public Class ReviewClearanceForm
                 "  cr.SubmittedFilePath, " &
                 "  cr.SubmittedFileName, " &
                 "  cr.SubmittedAt, " &
-                "  u.StudentNo, " &
+                "  COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
                 "  u.FullName AS StudentName, " &
-                "  u.Course, " &
-                "  u.YearLevel, " &
-                "  u.StudentType, " &
+                "  COALESCE(s.Course, u.Course, '') AS Course, " &
+                "  COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
+                "  COALESCE(s.StudentType, u.StudentType, 'Regular') AS StudentType, " &
                 "  d.DepartmentID, " &
                 "  d.DepartmentName, " &
                 "  r.RequirementName, " &
@@ -92,6 +92,7 @@ Public Class ReviewClearanceForm
                 "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
                 "INNER JOIN Departments d ON r.DepartmentID = d.DepartmentID " &
                 "INNER JOIN Users u ON cr.StudentID = u.UserID " &
+                "LEFT JOIN Students s ON s.UserID = u.UserID " &
                 "LEFT JOIN AcademicTerms t ON cr.TermID = t.TermID " &
                 "WHERE cr.RecordID = @RecordID AND r.DepartmentID = @DeptID LIMIT 1;"
 

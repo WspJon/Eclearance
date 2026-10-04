@@ -109,7 +109,7 @@ Public Class StartNewTermForm
                         ' Batch generate clearance records for all active students and active requirements
                         ' Parallel initialization for Steps 1-5, Gated/Sequential for Steps 6-9
                         Dim dtStudents As New DataTable()
-                        Using cmdStudents As New MySqlCommand("SELECT UserID, Course, YearLevel FROM Users WHERE Role = 'Student' AND IsActive = 1;", conn, transaction)
+                        Using cmdStudents As New MySqlCommand("SELECT u.UserID, COALESCE(s.Course, u.Course, '') AS Course, COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel FROM Users u LEFT JOIN Students s ON s.UserID = u.UserID WHERE u.Role = 'Student' AND u.IsActive = 1;", conn, transaction)
                             Using daStudents As New MySqlDataAdapter(cmdStudents)
                                 daStudents.Fill(dtStudents)
                             End Using
@@ -146,6 +146,12 @@ Public Class StartNewTermForm
                                     Dim appYears As String = If(IsDBNull(rRow("ApplicableYearLevels")), "", rRow("ApplicableYearLevels").ToString())
 
                                     Dim isApp As Boolean = ClearanceWorkflowHelper.IsRequirementApplicable(sCourse, sYear, appliesToCourse, reqNSTP, appCourses, appYears)
+
+                                    ' Step 6 (Dean offices): Only create record for the student's applicable Dean!
+                                    If seq = 6 AndAlso Not isApp Then
+                                        Continue For
+                                    End If
+
                                     Dim initStatus As String = "Locked"
 
                                     If Not isApp Then

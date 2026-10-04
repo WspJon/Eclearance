@@ -180,7 +180,7 @@ Public Class StaffRequestsForm
             Dim query As String =
             "SELECT " &
             "cr.RecordID, " &
-            "u.StudentNo, " &
+            "COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
             "u.FullName AS StudentName, " &
             "r.RequirementName, " &
             "cr.SubmittedAt, " &
@@ -190,6 +190,8 @@ Public Class StaffRequestsForm
             "ON cr.RequirementID = r.RequirementID " &
             "INNER JOIN Users u " &
             "ON cr.StudentID = u.UserID " &
+            "LEFT JOIN Students s " &
+            "ON s.UserID = u.UserID " &
             "WHERE r.DepartmentID = @DeptID " &
             "AND (@TermID = 0 OR cr.TermID = @TermID) " &
             "AND cr.Status <> 'Not Applicable' " &

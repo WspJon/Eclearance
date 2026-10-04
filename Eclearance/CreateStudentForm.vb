@@ -420,6 +420,22 @@ Public Class CreateStudentForm
 
                         End Using
 
+                        ' Insert into separate Students table
+                        Dim insertStudentsTableQuery As String =
+                            "INSERT INTO Students " &
+                            "(UserID, StudentNo, Course, Section, YearLevel, StudentType, EnrolledInNSTP) " &
+                            "VALUES (@UserID, @StudentNo, @Course, @Section, @YearLevel, @StudentType, @NSTP);"
+
+                        Using cmdStudentTable As New MySqlCommand(insertStudentsTableQuery, conn, transaction)
+                            cmdStudentTable.Parameters.AddWithValue("@UserID", newStudentID)
+                            cmdStudentTable.Parameters.AddWithValue("@StudentNo", studentNo)
+                            cmdStudentTable.Parameters.AddWithValue("@Course", course)
+                            cmdStudentTable.Parameters.AddWithValue("@Section", section)
+                            cmdStudentTable.Parameters.AddWithValue("@YearLevel", yearLevel)
+                            cmdStudentTable.Parameters.AddWithValue("@StudentType", studentType)
+                            cmdStudentTable.Parameters.AddWithValue("@NSTP", If(chkNSTP.Checked, 1, 0))
+                            cmdStudentTable.ExecuteNonQuery()
+                        End Using
 
                         CreateClearanceRecords(
                             conn,
@@ -535,6 +551,12 @@ Public Class CreateStudentForm
             Dim appYears As String = If(IsDBNull(row("ApplicableYearLevels")), "", row("ApplicableYearLevels").ToString())
 
             Dim isApp As Boolean = ClearanceWorkflowHelper.IsRequirementApplicable(course, yearLevel, appliesToCourse, reqNSTP, appCourses, appYears)
+
+            ' Step 6 (Dean offices): Only create record for the student's applicable Dean!
+            If seqOrder = 6 AndAlso Not isApp Then
+                Continue For
+            End If
+
             Dim initStatus As String = "Locked"
 
             If Not isApp Then

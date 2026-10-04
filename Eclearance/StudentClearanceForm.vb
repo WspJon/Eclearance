@@ -54,15 +54,23 @@ Public Class StudentClearanceForm
 
         Try
 
-            ' Refresh student metadata from Users
+            ' Refresh student metadata from Students (with Users fallback)
             Try
-                Dim studentInfoQuery As String = "SELECT StudentType FROM Users WHERE UserID = @UserID LIMIT 1;"
+                Dim studentInfoQuery As String =
+                    "SELECT COALESCE(s.StudentType, u.StudentType, 'Regular') AS StudentType, " &
+                    "       COALESCE(s.Course, u.Course, '') AS Course, " &
+                    "       COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
+                    "       COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo " &
+                    "FROM Users u " &
+                    "LEFT JOIN Students s ON s.UserID = u.UserID " &
+                    "WHERE u.UserID = @UserID LIMIT 1;"
                 Dim studentInfoDt As DataTable = db.ExecuteQuery(studentInfoQuery, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
                 If studentInfoDt.Rows.Count > 0 Then
                     Dim sRow = studentInfoDt.Rows(0)
-                    If Not IsDBNull(sRow("StudentType")) Then
-                        AppSession.StudentType = sRow("StudentType").ToString()
-                    End If
+                    AppSession.StudentType = sRow("StudentType").ToString()
+                    AppSession.Course = sRow("Course").ToString()
+                    AppSession.YearLevel = sRow("YearLevel").ToString()
+                    AppSession.StudentNo = sRow("StudentNo").ToString()
                     SetupStudentInformation()
                 End If
             Catch
@@ -78,70 +86,7 @@ Public Class StudentClearanceForm
 
             LoadCurrentTerm(activeTermID)
 
-            Dim query As String =
-                "SELECT " &
-                "  r.RequirementID, " &
-                "  r.RequirementName, " &
-                "  r.Instructions, " &
-                "  r.RequiresFile, " &
-                "  r.SequenceOrder, " &
-                "  r.RequirementLink, " &
-                "  r.AppliesToCourse, " &
-                "  r.RequiresNSTP, " &
-                "  r.ApplicableCourses, " &
-                "  r.ApplicableYearLevels, " &
-                "  d.DepartmentID, " &
-                "  d.DepartmentName, " &
-                "  COALESCE(cr.RecordID, 0) AS RecordID, " &
-                "  COALESCE(cr.Status, 'Pending') AS DBStatus, " &
-                "  cr.Remarks, " &
-                "  cr.SubmittedFilePath, " &
-                "  cr.SubmittedFileName, " &
-                "  cr.SubmittedAt, " &
-                "  (SELECT COUNT(*) FROM ClearanceRecordFiles crf WHERE crf.RecordID = cr.RecordID) AS FileCount " &
-                "FROM ClearanceRequirements r " &
-                "INNER JOIN Departments d ON r.DepartmentID = d.DepartmentID " &
-                "LEFT JOIN ClearanceRecords cr ON cr.RequirementID = r.RequirementID AND cr.StudentID = @StudentID AND cr.TermID = @TermID " &
-                "WHERE r.IsActive = 1 " &
-                "ORDER BY r.SequenceOrder ASC;"
-
-            Dim parameters As New Dictionary(Of String, Object) From {
-                {"@StudentID", AppSession.UserID},
-                {"@TermID", activeTermID}
-            }
-
-            Dim dt As DataTable = db.ExecuteQuery(query, parameters)
-
-            allClearanceItems.Clear()
-
-            For Each row As DataRow In dt.Rows
-                Dim item As New ClearanceWorkflowHelper.ClearanceItemInfo With {
-                    .RecordID = Convert.ToInt32(row("RecordID")),
-                    .RequirementID = Convert.ToInt32(row("RequirementID")),
-                    .DepartmentID = Convert.ToInt32(row("DepartmentID")),
-                    .DepartmentName = row("DepartmentName").ToString(),
-                    .RequirementName = row("RequirementName").ToString(),
-                    .Instructions = If(IsDBNull(row("Instructions")), "", row("Instructions").ToString()),
-                    .RequirementLink = If(IsDBNull(row("RequirementLink")), "", row("RequirementLink").ToString()),
-                    .RequiresFile = Convert.ToBoolean(row("RequiresFile")),
-                    .SequenceOrder = Convert.ToInt32(row("SequenceOrder")),
-                    .AppliesToCourse = If(IsDBNull(row("AppliesToCourse")), "", row("AppliesToCourse").ToString()),
-                    .RequiresNSTP = Convert.ToBoolean(row("RequiresNSTP")),
-                    .ApplicableCourses = If(IsDBNull(row("ApplicableCourses")), "", row("ApplicableCourses").ToString()),
-                    .ApplicableYearLevels = If(IsDBNull(row("ApplicableYearLevels")), "", row("ApplicableYearLevels").ToString()),
-                    .DBStatus = row("DBStatus").ToString(),
-                    .Remarks = If(IsDBNull(row("Remarks")), "", row("Remarks").ToString()),
-                    .SubmittedFilePath = If(IsDBNull(row("SubmittedFilePath")), "", row("SubmittedFilePath").ToString()),
-                    .SubmittedFileName = If(IsDBNull(row("SubmittedFileName")), "", row("SubmittedFileName").ToString()),
-                    .SubmittedAt = row("SubmittedAt"),
-                    .FileCount = Convert.ToInt32(row("FileCount"))
-                }
-
-                allClearanceItems.Add(item)
-            Next
-
-            ' Evaluate parallel (steps 1-5) and sequential (steps 6-9) clearance workflow
-            ClearanceWorkflowHelper.EvaluateSequentialWorkflow(allClearanceItems, AppSession.Course, AppSession.YearLevel)
+            allClearanceItems = ClearanceWorkflowHelper.GetStudentClearanceItems(AppSession.UserID, activeTermID, AppSession.Course, AppSession.YearLevel, db)
             ClearanceWorkflowHelper.UnlockNextStepsInDatabase(AppSession.UserID, activeTermID, AppSession.Course, AppSession.YearLevel, db)
 
             DisplayClearanceTable()

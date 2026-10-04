@@ -107,7 +107,7 @@ Public Class AdminStudentsForm
                 Next
 
                 Dim dtUserSec As DataTable = db.ExecuteQuery(
-                    "SELECT DISTINCT Section FROM Users WHERE Role = 'Student' AND Section IS NOT NULL AND Section <> '' ORDER BY Section ASC;"
+                    "SELECT DISTINCT COALESCE(s.Section, u.Section) AS Section FROM Users u LEFT JOIN Students s ON s.UserID = u.UserID WHERE u.Role = 'Student' AND COALESCE(s.Section, u.Section) IS NOT NULL AND COALESCE(s.Section, u.Section) <> '' ORDER BY Section ASC;"
                 )
                 For Each r As DataRow In dtUserSec.Rows
                     Dim sName As String = If(IsDBNull(r("Section")), "", r("Section").ToString().Trim())
@@ -128,7 +128,7 @@ Public Class AdminStudentsForm
                 Next
 
                 Dim dtUserSec As DataTable = db.ExecuteQuery(
-                    "SELECT DISTINCT Section FROM Users WHERE Role = 'Student' AND Course = @Course AND Section IS NOT NULL AND Section <> '' ORDER BY Section ASC;",
+                    "SELECT DISTINCT COALESCE(s.Section, u.Section) AS Section FROM Users u LEFT JOIN Students s ON s.UserID = u.UserID WHERE u.Role = 'Student' AND COALESCE(s.Course, u.Course) = @Course AND COALESCE(s.Section, u.Section) IS NOT NULL AND COALESCE(s.Section, u.Section) <> '' ORDER BY Section ASC;",
                     New Dictionary(Of String, Object) From {{"@Course", selectedCourse}}
                 )
                 For Each r As DataRow In dtUserSec.Rows
@@ -259,43 +259,44 @@ Public Class AdminStudentsForm
 
             Dim query As String =
                 "SELECT " &
-                "UserID, " &
-                "StudentNo, " &
-                "FullName, " &
-                "Course, " &
-                "YearLevel, " &
-                "Section " &
-                "FROM Users " &
-                "WHERE Role = 'Student' " &
-                "AND IsActive = 1 "
+                "  u.UserID, " &
+                "  COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
+                "  u.FullName, " &
+                "  COALESCE(s.Course, u.Course, '') AS Course, " &
+                "  COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
+                "  COALESCE(s.Section, u.Section, '') AS Section " &
+                "FROM Users u " &
+                "LEFT JOIN Students s ON s.UserID = u.UserID " &
+                "WHERE u.Role = 'Student' " &
+                "AND u.IsActive = 1 "
 
             Dim parameters As New Dictionary(Of String, Object)()
 
             If Not String.IsNullOrWhiteSpace(searchText) Then
                 query &=
                     "AND (" &
-                    "FullName LIKE @Search " &
-                    "OR StudentNo LIKE @Search" &
+                    "u.FullName LIKE @Search " &
+                    "OR COALESCE(s.StudentNo, u.StudentNo) LIKE @Search" &
                     ") "
                 parameters.Add("@Search", "%" & searchText & "%")
             End If
 
             If Not String.IsNullOrWhiteSpace(selectedCourse) AndAlso Not selectedCourse.Equals("All Courses", StringComparison.OrdinalIgnoreCase) Then
-                query &= "AND Course = @Course "
+                query &= "AND COALESCE(s.Course, u.Course) = @Course "
                 parameters.Add("@Course", selectedCourse)
             End If
 
             If Not String.IsNullOrWhiteSpace(selectedYear) AndAlso Not selectedYear.Equals("All Year Levels", StringComparison.OrdinalIgnoreCase) Then
-                query &= "AND YearLevel = @YearLevel "
+                query &= "AND COALESCE(s.YearLevel, u.YearLevel) = @YearLevel "
                 parameters.Add("@YearLevel", selectedYear)
             End If
 
             If Not String.IsNullOrWhiteSpace(selectedSection) AndAlso Not selectedSection.Equals("All Sections", StringComparison.OrdinalIgnoreCase) Then
-                query &= "AND Section = @Section "
+                query &= "AND COALESCE(s.Section, u.Section) = @Section "
                 parameters.Add("@Section", selectedSection)
             End If
 
-            query &= "ORDER BY FullName ASC;"
+            query &= "ORDER BY u.FullName ASC;"
 
             Dim db As New DatabaseHelper()
 

@@ -97,24 +97,28 @@ Public Class LoginForm
         Try
 
             ' ----------------------------------------------------
-            ' IMPORTANT:
-            ' USE Password COLUMN, NOT PasswordHash
+            ' QUERY USER DETAILS (JOIN STUDENTS AND STAFF TABLES)
             ' ----------------------------------------------------
             Dim query As String =
                 "SELECT " &
-                "UserID, " &
-                "Username, " &
-                "FullName, " &
-                "Role, " &
-                "StudentNo, " &
-                "Course, " &
-                "YearLevel, " &
-                "StudentType, " &
-                "DepartmentID " &
-                "FROM Users " &
-                "WHERE Username = @Username " &
-                "AND Password = @Password " &
-                "AND IsActive = 1 " &
+                "  u.UserID, " &
+                "  u.Username, " &
+                "  u.FullName, " &
+                "  u.Role, " &
+                "  COALESCE(s.StudentID, 0) AS StudentID, " &
+                "  COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
+                "  COALESCE(s.Course, u.Course, '') AS Course, " &
+                "  COALESCE(s.Section, u.Section, '') AS Section, " &
+                "  COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
+                "  COALESCE(s.StudentType, u.StudentType, 'Regular') AS StudentType, " &
+                "  COALESCE(st.StaffID, 0) AS StaffID, " &
+                "  COALESCE(st.DepartmentID, u.DepartmentID) AS DepartmentID " &
+                "FROM Users u " &
+                "LEFT JOIN Students s ON s.UserID = u.UserID " &
+                "LEFT JOIN Staff st ON st.UserID = u.UserID " &
+                "WHERE u.Username = @Username " &
+                "AND u.Password = @Password " &
+                "AND u.IsActive = 1 " &
                 "LIMIT 1;"
 
 
@@ -162,82 +166,22 @@ Public Class LoginForm
             ' ----------------------------------------------------
             ' SAVE SESSION
             ' ----------------------------------------------------
-            AppSession.UserID =
-                Convert.ToInt32(
-                    row("UserID")
-                )
+            AppSession.UserID = Convert.ToInt32(row("UserID"))
+            AppSession.StudentID = Convert.ToInt32(row("StudentID"))
+            AppSession.StaffID = Convert.ToInt32(row("StaffID"))
+            AppSession.Username = row("Username").ToString()
+            AppSession.FullName = row("FullName").ToString()
+            AppSession.Role = row("Role").ToString()
+            AppSession.StudentNo = row("StudentNo").ToString()
+            AppSession.Course = row("Course").ToString()
+            AppSession.Section = row("Section").ToString()
+            AppSession.YearLevel = row("YearLevel").ToString()
+            AppSession.StudentType = row("StudentType").ToString()
 
-
-            AppSession.Username =
-                row("Username").ToString()
-
-
-            AppSession.FullName =
-                row("FullName").ToString()
-
-
-            AppSession.Role =
-                row("Role").ToString()
-
-
-            AppSession.StudentNo = ""
-
-            AppSession.Course = ""
-
-            AppSession.YearLevel = ""
-
-            AppSession.DepartmentID = Nothing
-
-
-            If Not IsDBNull(
-                row("StudentNo")
-            ) Then
-
-                AppSession.StudentNo =
-                    row("StudentNo").ToString()
-
-            End If
-
-
-            If Not IsDBNull(
-                row("Course")
-            ) Then
-
-                AppSession.Course =
-                    row("Course").ToString()
-
-            End If
-
-
-            If Not IsDBNull(
-                row("YearLevel")
-            ) Then
-
-                AppSession.YearLevel =
-                    row("YearLevel").ToString()
-
-            End If
-
-
-            If Not IsDBNull(
-                row("StudentType")
-            ) Then
-
-                AppSession.StudentType =
-                    row("StudentType").ToString()
-
-            End If
-
-
-            If Not IsDBNull(
-                row("DepartmentID")
-            ) Then
-
-                AppSession.DepartmentID =
-                    Convert.ToInt32(
-                        row("DepartmentID")
-                    )
-
+            If Not IsDBNull(row("DepartmentID")) AndAlso Convert.ToInt32(row("DepartmentID")) > 0 Then
+                AppSession.DepartmentID = Convert.ToInt32(row("DepartmentID"))
+            Else
+                AppSession.DepartmentID = Nothing
             End If
 
 

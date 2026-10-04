@@ -33,10 +33,23 @@ Public Class StudentProfileForm
         End If
         Try
             Dim queryUser As String =
-                "SELECT UserID, Username, FullName, StudentNo, Course, Section, YearLevel, StudentType, " &
-                "       ContactNo, Email, Address, CivilStatus, EmergencyContactName, EmergencyContactNo, Relationship, " &
-                "       IsActive, CreatedAt " &
-                "FROM Users WHERE UserID = @UserID LIMIT 1;"
+                "SELECT u.UserID, u.Username, u.FullName, " &
+                "       COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
+                "       COALESCE(s.Course, u.Course, '') AS Course, " &
+                "       COALESCE(s.Section, u.Section, '') AS Section, " &
+                "       COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
+                "       COALESCE(s.StudentType, u.StudentType, 'Regular') AS StudentType, " &
+                "       COALESCE(s.ContactNo, u.ContactNo, '') AS ContactNo, " &
+                "       COALESCE(s.Email, u.Email, '') AS Email, " &
+                "       COALESCE(s.Address, u.Address, '') AS Address, " &
+                "       COALESCE(s.CivilStatus, u.CivilStatus, '') AS CivilStatus, " &
+                "       COALESCE(s.EmergencyContactName, u.EmergencyContactName, '') AS EmergencyContactName, " &
+                "       COALESCE(s.EmergencyContactNo, u.EmergencyContactNo, '') AS EmergencyContactNo, " &
+                "       COALESCE(s.Relationship, u.Relationship, '') AS Relationship, " &
+                "       u.IsActive, u.CreatedAt " &
+                "FROM Users u " &
+                "LEFT JOIN Students s ON s.UserID = u.UserID " &
+                "WHERE u.UserID = @UserID LIMIT 1;"
 
             Dim dtUser As DataTable = db.ExecuteQuery(queryUser, New Dictionary(Of String, Object) From {
                 {"@UserID", AppSession.UserID}
@@ -218,7 +231,7 @@ Public Class StudentProfileForm
             Case "BSIT"
                 Return "College of Computer Studies"
             Case "BSCPE"
-                Return "College of Engineering & Computer Studies"
+                Return "College of Engineering"
             Case "BSBA"
                 Return "College of Business Administration"
             Case "BSA"

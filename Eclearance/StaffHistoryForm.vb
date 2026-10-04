@@ -80,10 +80,10 @@ Public Class StaffHistoryForm
             queryBuilder.Append("h.HistoryID, ")
             queryBuilder.Append("h.RecordID, ")
             queryBuilder.Append("h.ActionAt, ")
-            queryBuilder.Append("u.StudentNo, ")
+            queryBuilder.Append("COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, ")
             queryBuilder.Append("u.FullName AS StudentName, ")
-            queryBuilder.Append("COALESCE(u.Course, 'N/A') AS Course, ")
-            queryBuilder.Append("COALESCE(u.YearLevel, 'N/A') AS YearLevel, ")
+            queryBuilder.Append("COALESCE(s.Course, u.Course, 'N/A') AS Course, ")
+            queryBuilder.Append("COALESCE(s.YearLevel, u.YearLevel, 'N/A') AS YearLevel, ")
             queryBuilder.Append("req.RequirementName, ")
             queryBuilder.Append("h.ActionType, ")
             queryBuilder.Append("h.NewStatus, ")
@@ -92,13 +92,14 @@ Public Class StaffHistoryForm
             queryBuilder.Append("INNER JOIN ClearanceRecords r ON h.RecordID = r.RecordID ")
             queryBuilder.Append("INNER JOIN ClearanceRequirements req ON r.RequirementID = req.RequirementID ")
             queryBuilder.Append("INNER JOIN Users u ON r.StudentID = u.UserID ")
+            queryBuilder.Append("LEFT JOIN Students s ON s.UserID = u.UserID ")
             queryBuilder.Append("WHERE req.DepartmentID = @DeptID ")
 
             params.Add("@DeptID", AppSession.DepartmentID.Value)
 
             Dim searchText As String = txtSearch.Text.Trim()
             If Not String.IsNullOrEmpty(searchText) Then
-                queryBuilder.Append("AND (u.FullName LIKE @Search OR u.StudentNo LIKE @Search OR req.RequirementName LIKE @Search) ")
+                queryBuilder.Append("AND (u.FullName LIKE @Search OR COALESCE(s.StudentNo, u.StudentNo) LIKE @Search OR req.RequirementName LIKE @Search) ")
                 params.Add("@Search", "%" & searchText & "%")
             End If
 

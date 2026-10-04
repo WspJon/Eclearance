@@ -90,6 +90,21 @@ Public Class CreateStaffForm
 
             db.ExecuteNonQuery(insertQuery, insertParams)
 
+            ' Also insert into Staff table
+            Try
+                Dim newUserID As Integer = Convert.ToInt32(db.ExecuteScalar("SELECT LAST_INSERT_ID();"))
+                If newUserID > 0 Then
+                    db.ExecuteNonQuery(
+                        "INSERT INTO Staff (UserID, DepartmentID, IsActive) VALUES (@UserID, @DeptID, 1);",
+                        New Dictionary(Of String, Object) From {
+                            {"@UserID", newUserID},
+                            {"@DeptID", deptID}
+                        }
+                    )
+                End If
+            Catch
+            End Try
+
             MessageBox.Show(
                 "Staff account created successfully." & Environment.NewLine & Environment.NewLine &
                 "Name: " & fullName & Environment.NewLine &
