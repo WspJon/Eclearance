@@ -16,15 +16,11 @@ Partial Class StaffRequestsForm
     Private components As System.ComponentModel.IContainer
 
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim centeredHeaderStyle As New DataGridViewCellStyle()
-        Dim wrappedCellStyle As New DataGridViewCellStyle()
-        centeredHeaderStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-        wrappedCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        wrappedCellStyle.WrapMode = DataGridViewTriState.True
+        Dim DataGridViewCellStyle11 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         btnNavLogout = New Button()
         btnNavHistory = New Button()
@@ -169,7 +165,7 @@ Partial Class StaffRequestsForm
         btnNavRequests.Name = "btnNavRequests"
         btnNavRequests.Size = New Size(188, 44)
         btnNavRequests.TabIndex = 3
-        btnNavRequests.Text = "  Requests"
+        btnNavRequests.Text = "Submissions"
         btnNavRequests.TextAlign = ContentAlignment.MiddleLeft
         btnNavRequests.UseVisualStyleBackColor = False
         ' 
@@ -223,7 +219,7 @@ Partial Class StaffRequestsForm
         ' lblLogoTitle
         ' 
         lblLogoTitle.AutoSize = True
-        lblLogoTitle.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
+        lblLogoTitle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         lblLogoTitle.ForeColor = Color.White
         lblLogoTitle.Location = New Point(48, 16)
         lblLogoTitle.Name = "lblLogoTitle"
@@ -299,7 +295,7 @@ Partial Class StaffRequestsForm
         ' lblOfficeDescSub
         ' 
         lblOfficeDescSub.AutoSize = True
-        lblOfficeDescSub.Font = New Font("Segoe UI", 8.0F)
+        lblOfficeDescSub.Font = New Font("Segoe UI", 8F)
         lblOfficeDescSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblOfficeDescSub.Location = New Point(58, 44)
         lblOfficeDescSub.Name = "lblOfficeDescSub"
@@ -323,7 +319,7 @@ Partial Class StaffRequestsForm
         ' lblMyOfficeTitle
         ' 
         lblMyOfficeTitle.AutoSize = True
-        lblMyOfficeTitle.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
+        lblMyOfficeTitle.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
         lblMyOfficeTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblMyOfficeTitle.Location = New Point(58, 14)
         lblMyOfficeTitle.Name = "lblMyOfficeTitle"
@@ -334,7 +330,7 @@ Partial Class StaffRequestsForm
         ' lblOfficeBadgeIcon
         ' 
         lblOfficeBadgeIcon.BackColor = Color.FromArgb(CByte(219), CByte(234), CByte(254))
-        lblOfficeBadgeIcon.Font = New Font("Segoe UI Emoji", 14.0F)
+        lblOfficeBadgeIcon.Font = New Font("Segoe UI Emoji", 14F)
         lblOfficeBadgeIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblOfficeBadgeIcon.Location = New Point(12, 14)
         lblOfficeBadgeIcon.Name = "lblOfficeBadgeIcon"
@@ -346,7 +342,7 @@ Partial Class StaffRequestsForm
         ' lblMyOfficeHeader
         ' 
         lblMyOfficeHeader.AutoSize = True
-        lblMyOfficeHeader.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
+        lblMyOfficeHeader.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         lblMyOfficeHeader.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblMyOfficeHeader.Location = New Point(16, 16)
         lblMyOfficeHeader.Name = "lblMyOfficeHeader"
@@ -376,7 +372,7 @@ Partial Class StaffRequestsForm
         btnQuickHistory.Cursor = Cursors.Hand
         btnQuickHistory.FlatAppearance.BorderColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
         btnQuickHistory.FlatStyle = FlatStyle.Flat
-        btnQuickHistory.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold)
+        btnQuickHistory.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnQuickHistory.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         btnQuickHistory.Location = New Point(16, 168)
         btnQuickHistory.Name = "btnQuickHistory"
@@ -393,7 +389,7 @@ Partial Class StaffRequestsForm
         btnQuickRefresh.Cursor = Cursors.Hand
         btnQuickRefresh.FlatAppearance.BorderColor = Color.FromArgb(CByte(226), CByte(232), CByte(240))
         btnQuickRefresh.FlatStyle = FlatStyle.Flat
-        btnQuickRefresh.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold)
+        btnQuickRefresh.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnQuickRefresh.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         btnQuickRefresh.Location = New Point(16, 108)
         btnQuickRefresh.Name = "btnQuickRefresh"
@@ -410,7 +406,7 @@ Partial Class StaffRequestsForm
         btnQuickReviewNext.Cursor = Cursors.Hand
         btnQuickReviewNext.FlatAppearance.BorderSize = 0
         btnQuickReviewNext.FlatStyle = FlatStyle.Flat
-        btnQuickReviewNext.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold)
+        btnQuickReviewNext.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnQuickReviewNext.ForeColor = Color.White
         btnQuickReviewNext.Location = New Point(16, 48)
         btnQuickReviewNext.Name = "btnQuickReviewNext"
@@ -423,7 +419,7 @@ Partial Class StaffRequestsForm
         ' lblQuickTitle
         ' 
         lblQuickTitle.AutoSize = True
-        lblQuickTitle.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
+        lblQuickTitle.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         lblQuickTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblQuickTitle.Location = New Point(16, 16)
         lblQuickTitle.Name = "lblQuickTitle"
@@ -457,30 +453,29 @@ Partial Class StaffRequestsForm
         dgvRequests.BorderStyle = BorderStyle.None
         dgvRequests.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
         dgvRequests.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
-        DataGridViewCellStyle1.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        DataGridViewCellStyle1.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
-        DataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
-        DataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
-        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.False
-        dgvRequests.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle11.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        DataGridViewCellStyle11.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        DataGridViewCellStyle11.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle11.SelectionBackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        DataGridViewCellStyle11.SelectionForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle11.WrapMode = DataGridViewTriState.False
+        dgvRequests.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle11
         dgvRequests.ColumnHeadersHeight = 42
         dgvRequests.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         dgvRequests.Columns.AddRange(New DataGridViewColumn() {colReqNum, colReqRecordID, colReqStudentNo, colReqStudentName, colReqRequirement, colReqSubmittedAt, colReqStatus, colReqAction})
-        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = Color.White
-        DataGridViewCellStyle4.Font = New Font("Segoe UI", 9.0F)
-        DataGridViewCellStyle4.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
-        DataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle4.WrapMode = DataGridViewTriState.False
-        dgvRequests.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle15.BackColor = Color.White
+        DataGridViewCellStyle15.Font = New Font("Segoe UI", 9F)
+        DataGridViewCellStyle15.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle15.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle15.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle15.WrapMode = DataGridViewTriState.False
+        dgvRequests.DefaultCellStyle = DataGridViewCellStyle15
         dgvRequests.EnableHeadersVisualStyles = False
         dgvRequests.GridColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         dgvRequests.Location = New Point(16, 52)
         dgvRequests.MultiSelect = False
-        dgvRequests.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None
         dgvRequests.Name = "dgvRequests"
         dgvRequests.ReadOnly = True
         dgvRequests.RowHeadersVisible = False
@@ -492,16 +487,14 @@ Partial Class StaffRequestsForm
         ' colReqNum
         ' 
         colReqNum.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.Padding = New Padding(0)
-        colReqNum.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleCenter
+        colReqNum.DefaultCellStyle = DataGridViewCellStyle12
         colReqNum.HeaderText = "#"
         colReqNum.MinimumWidth = 36
-        colReqNum.SortMode = DataGridViewColumnSortMode.NotSortable
-        colReqNum.HeaderCell.Style = centeredHeaderStyle
         colReqNum.Name = "colReqNum"
         colReqNum.ReadOnly = True
         colReqNum.Resizable = DataGridViewTriState.False
+        colReqNum.SortMode = DataGridViewColumnSortMode.NotSortable
         colReqNum.Width = 36
         ' 
         ' colReqRecordID
@@ -513,91 +506,88 @@ Partial Class StaffRequestsForm
         ' 
         ' colReqStudentNo
         ' 
-        colReqStudentNo.FillWeight = 14.0F
+        colReqStudentNo.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+        colReqStudentNo.FillWeight = 14F
         colReqStudentNo.HeaderText = "Student No."
         colReqStudentNo.MinimumWidth = 86
-        colReqStudentNo.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        colReqStudentNo.Width = 86
-        colReqStudentNo.Resizable = DataGridViewTriState.False
         colReqStudentNo.Name = "colReqStudentNo"
         colReqStudentNo.ReadOnly = True
+        colReqStudentNo.Resizable = DataGridViewTriState.False
+        colReqStudentNo.Width = 86
         ' 
         ' colReqStudentName
         ' 
-        colReqStudentName.FillWeight = 45.0F
+        colReqStudentName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        DataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle13.WrapMode = DataGridViewTriState.True
+        colReqStudentName.DefaultCellStyle = DataGridViewCellStyle13
+        colReqStudentName.FillWeight = 45F
         colReqStudentName.HeaderText = "Student Name"
         colReqStudentName.MinimumWidth = 90
-        colReqStudentName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        colReqStudentName.DefaultCellStyle = wrappedCellStyle
         colReqStudentName.Name = "colReqStudentName"
         colReqStudentName.ReadOnly = True
         ' 
         ' colReqRequirement
         ' 
-        colReqRequirement.FillWeight = 55.0F
+        colReqRequirement.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        colReqRequirement.DefaultCellStyle = DataGridViewCellStyle3
+        colReqRequirement.FillWeight = 55F
         colReqRequirement.HeaderText = "Requirement"
         colReqRequirement.MinimumWidth = 98
-        colReqRequirement.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        colReqRequirement.DefaultCellStyle = wrappedCellStyle
         colReqRequirement.Name = "colReqRequirement"
         colReqRequirement.ReadOnly = True
         ' 
         ' colReqSubmittedAt
         ' 
-        colReqSubmittedAt.FillWeight = 18.0F
+        colReqSubmittedAt.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+        colReqSubmittedAt.DefaultCellStyle = DataGridViewCellStyle3
+        colReqSubmittedAt.FillWeight = 18F
         colReqSubmittedAt.HeaderText = "Submitted At"
         colReqSubmittedAt.MinimumWidth = 128
-        colReqSubmittedAt.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        colReqSubmittedAt.Width = 128
-        colReqSubmittedAt.Resizable = DataGridViewTriState.False
-        colReqSubmittedAt.DefaultCellStyle = wrappedCellStyle
         colReqSubmittedAt.Name = "colReqSubmittedAt"
         colReqSubmittedAt.ReadOnly = True
+        colReqSubmittedAt.Resizable = DataGridViewTriState.False
+        colReqSubmittedAt.Width = 128
         ' 
         ' colReqStatus
         ' 
-        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter
-        colReqStatus.DefaultCellStyle = DataGridViewCellStyle3
-        colReqStatus.FillWeight = 12.0F
+        colReqStatus.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleCenter
+        colReqStatus.DefaultCellStyle = DataGridViewCellStyle14
+        colReqStatus.FillWeight = 12F
         colReqStatus.HeaderText = "Status"
         colReqStatus.MinimumWidth = 110
-        colReqStatus.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        colReqStatus.Width = 110
-        colReqStatus.Resizable = DataGridViewTriState.False
-        colReqStatus.SortMode = DataGridViewColumnSortMode.NotSortable
-        colReqStatus.HeaderCell.Style = centeredHeaderStyle
         colReqStatus.Name = "colReqStatus"
         colReqStatus.ReadOnly = True
+        colReqStatus.Resizable = DataGridViewTriState.False
+        colReqStatus.SortMode = DataGridViewColumnSortMode.NotSortable
+        colReqStatus.Width = 110
         ' 
         ' colReqAction
         ' 
-        colReqAction.FillWeight = 10.0F
+        colReqAction.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+        colReqAction.FillWeight = 10F
         colReqAction.FlatStyle = FlatStyle.Flat
         colReqAction.HeaderText = "Action"
         colReqAction.MinimumWidth = 88
-        colReqAction.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        colReqAction.Width = 88
-        colReqAction.Resizable = DataGridViewTriState.False
-        colReqAction.SortMode = DataGridViewColumnSortMode.NotSortable
-        colReqAction.HeaderCell.Style = centeredHeaderStyle
-        colReqAction.DefaultCellStyle = DataGridViewCellStyle3
         colReqAction.Name = "colReqAction"
         colReqAction.ReadOnly = True
+        colReqAction.Resizable = DataGridViewTriState.False
         colReqAction.Text = "Review"
+        colReqAction.Width = 88
         ' 
         ' lblRecordCount
         ' 
         lblRecordCount.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        lblRecordCount.AutoSize = False
+        lblRecordCount.AutoEllipsis = True
         lblRecordCount.Font = New Font("Segoe UI", 8.5F)
         lblRecordCount.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblRecordCount.Location = New Point(284, 14)
-        lblRecordCount.AutoEllipsis = True
-        lblRecordCount.TextAlign = ContentAlignment.MiddleRight
         lblRecordCount.Name = "lblRecordCount"
         lblRecordCount.Size = New Size(332, 24)
         lblRecordCount.TabIndex = 2
         lblRecordCount.Text = "Showing 0 requests"
+        lblRecordCount.TextAlign = ContentAlignment.MiddleRight
         ' 
         ' lblTableTitle
         ' 
@@ -606,14 +596,14 @@ Partial Class StaffRequestsForm
         lblTableTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblTableTitle.Location = New Point(44, 16)
         lblTableTitle.Name = "lblTableTitle"
-        lblTableTitle.Size = New Size(221, 21)
+        lblTableTitle.Size = New Size(169, 21)
         lblTableTitle.TabIndex = 1
-        lblTableTitle.Text = "Student Clearance Requests"
+        lblTableTitle.Text = "Student Submissions"
         ' 
         ' lblTableIcon
         ' 
         lblTableIcon.AutoSize = True
-        lblTableIcon.Font = New Font("Segoe UI Emoji", 12.0F)
+        lblTableIcon.Font = New Font("Segoe UI Emoji", 12F)
         lblTableIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblTableIcon.Location = New Point(16, 16)
         lblTableIcon.Name = "lblTableIcon"
@@ -734,7 +724,7 @@ Partial Class StaffRequestsForm
         ' 
         txtSearch.BackColor = Color.White
         txtSearch.BorderStyle = BorderStyle.FixedSingle
-        txtSearch.Font = New Font("Segoe UI", 9.0F)
+        txtSearch.Font = New Font("Segoe UI", 9F)
         txtSearch.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
         txtSearch.Location = New Point(34, 14)
         txtSearch.Name = "txtSearch"
@@ -745,7 +735,7 @@ Partial Class StaffRequestsForm
         ' lblSearchIcon
         ' 
         lblSearchIcon.AutoSize = True
-        lblSearchIcon.Font = New Font("Segoe UI Emoji", 10.0F)
+        lblSearchIcon.Font = New Font("Segoe UI Emoji", 10F)
         lblSearchIcon.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSearchIcon.Location = New Point(10, 16)
         lblSearchIcon.Name = "lblSearchIcon"
@@ -772,7 +762,7 @@ Partial Class StaffRequestsForm
         ' 
         lblPendingArrow.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         lblPendingArrow.AutoSize = True
-        lblPendingArrow.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
+        lblPendingArrow.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         lblPendingArrow.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblPendingArrow.Location = New Point(282, 32)
         lblPendingArrow.Name = "lblPendingArrow"
@@ -783,7 +773,7 @@ Partial Class StaffRequestsForm
         ' lblPendingSub
         ' 
         lblPendingSub.AutoSize = True
-        lblPendingSub.Font = New Font("Segoe UI", 8.0F)
+        lblPendingSub.Font = New Font("Segoe UI", 8F)
         lblPendingSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblPendingSub.Location = New Point(68, 56)
         lblPendingSub.Name = "lblPendingSub"
@@ -794,7 +784,7 @@ Partial Class StaffRequestsForm
         ' lblPendingTitle
         ' 
         lblPendingTitle.AutoSize = True
-        lblPendingTitle.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold)
+        lblPendingTitle.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         lblPendingTitle.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
         lblPendingTitle.Location = New Point(68, 38)
         lblPendingTitle.Name = "lblPendingTitle"
@@ -805,7 +795,7 @@ Partial Class StaffRequestsForm
         ' lblPendingCount
         ' 
         lblPendingCount.AutoSize = True
-        lblPendingCount.Font = New Font("Segoe UI", 18.0F, FontStyle.Bold)
+        lblPendingCount.Font = New Font("Segoe UI", 18F, FontStyle.Bold)
         lblPendingCount.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblPendingCount.Location = New Point(68, 6)
         lblPendingCount.Name = "lblPendingCount"
@@ -816,7 +806,7 @@ Partial Class StaffRequestsForm
         ' lblPendingIcon
         ' 
         lblPendingIcon.BackColor = Color.FromArgb(CByte(219), CByte(234), CByte(254))
-        lblPendingIcon.Font = New Font("Segoe UI Emoji", 14.0F)
+        lblPendingIcon.Font = New Font("Segoe UI Emoji", 14F)
         lblPendingIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblPendingIcon.Location = New Point(16, 16)
         lblPendingIcon.Name = "lblPendingIcon"
@@ -844,7 +834,7 @@ Partial Class StaffRequestsForm
         ' 
         lblTotalArrow.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         lblTotalArrow.AutoSize = True
-        lblTotalArrow.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
+        lblTotalArrow.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         lblTotalArrow.ForeColor = Color.FromArgb(CByte(217), CByte(119), CByte(6))
         lblTotalArrow.Location = New Point(282, 32)
         lblTotalArrow.Name = "lblTotalArrow"
@@ -855,7 +845,7 @@ Partial Class StaffRequestsForm
         ' lblTotalSub
         ' 
         lblTotalSub.AutoSize = True
-        lblTotalSub.Font = New Font("Segoe UI", 8.0F)
+        lblTotalSub.Font = New Font("Segoe UI", 8F)
         lblTotalSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblTotalSub.Location = New Point(68, 56)
         lblTotalSub.Name = "lblTotalSub"
@@ -866,18 +856,18 @@ Partial Class StaffRequestsForm
         ' lblTotalTitle
         ' 
         lblTotalTitle.AutoSize = True
-        lblTotalTitle.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold)
+        lblTotalTitle.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         lblTotalTitle.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
         lblTotalTitle.Location = New Point(68, 38)
         lblTotalTitle.Name = "lblTotalTitle"
-        lblTotalTitle.Size = New Size(83, 15)
+        lblTotalTitle.Size = New Size(103, 15)
         lblTotalTitle.TabIndex = 2
-        lblTotalTitle.Text = "Total Requests"
+        lblTotalTitle.Text = "Total Submissions"
         ' 
         ' lblTotalCount
         ' 
         lblTotalCount.AutoSize = True
-        lblTotalCount.Font = New Font("Segoe UI", 18.0F, FontStyle.Bold)
+        lblTotalCount.Font = New Font("Segoe UI", 18F, FontStyle.Bold)
         lblTotalCount.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblTotalCount.Location = New Point(68, 6)
         lblTotalCount.Name = "lblTotalCount"
@@ -888,7 +878,7 @@ Partial Class StaffRequestsForm
         ' lblTotalIcon
         ' 
         lblTotalIcon.BackColor = Color.FromArgb(CByte(254), CByte(243), CByte(199))
-        lblTotalIcon.Font = New Font("Segoe UI Emoji", 14.0F)
+        lblTotalIcon.Font = New Font("Segoe UI Emoji", 14F)
         lblTotalIcon.ForeColor = Color.FromArgb(CByte(217), CByte(119), CByte(6))
         lblTotalIcon.Location = New Point(16, 16)
         lblTotalIcon.Name = "lblTotalIcon"
@@ -900,7 +890,7 @@ Partial Class StaffRequestsForm
         ' lblDateTimeBadge
         ' 
         lblDateTimeBadge.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblDateTimeBadge.Font = New Font("Segoe UI", 8.0F)
+        lblDateTimeBadge.Font = New Font("Segoe UI", 8F)
         lblDateTimeBadge.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblDateTimeBadge.Location = New Point(854, 16)
         lblDateTimeBadge.Name = "lblDateTimeBadge"
@@ -947,7 +937,7 @@ Partial Class StaffRequestsForm
         ' lblStaffIcon
         ' 
         lblStaffIcon.AutoSize = True
-        lblStaffIcon.Font = New Font("Segoe UI Emoji", 14.0F)
+        lblStaffIcon.Font = New Font("Segoe UI Emoji", 14F)
         lblStaffIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblStaffIcon.Location = New Point(8, 10)
         lblStaffIcon.Name = "lblStaffIcon"
@@ -993,7 +983,7 @@ Partial Class StaffRequestsForm
         ' lblOfficeIcon
         ' 
         lblOfficeIcon.AutoSize = True
-        lblOfficeIcon.Font = New Font("Segoe UI Emoji", 14.0F)
+        lblOfficeIcon.Font = New Font("Segoe UI Emoji", 14F)
         lblOfficeIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblOfficeIcon.Location = New Point(8, 10)
         lblOfficeIcon.Name = "lblOfficeIcon"
@@ -1015,7 +1005,7 @@ Partial Class StaffRequestsForm
         ' lblHeaderTitle
         ' 
         lblHeaderTitle.AutoSize = True
-        lblHeaderTitle.Font = New Font("Segoe UI", 20.0F, FontStyle.Bold)
+        lblHeaderTitle.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
         lblHeaderTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblHeaderTitle.Location = New Point(20, 16)
         lblHeaderTitle.Name = "lblHeaderTitle"
@@ -1025,13 +1015,13 @@ Partial Class StaffRequestsForm
         ' 
         ' StaffRequestsForm
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         ClientSize = New Size(1200, 808)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
-        Font = New Font("Segoe UI", 9.0F)
+        Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1200, 728)
         Name = "StaffRequestsForm"
         StartPosition = FormStartPosition.CenterScreen
