@@ -334,13 +334,11 @@ Public Class CreateStudentForm
                         Dim insertStudentQuery As String =
                             "INSERT INTO Users " &
                             "(" &
-                            "Username, Password, FullName, FirstName, LastName, " &
-                            "Role, StudentNo, Course, Section, YearLevel, StudentType, GuidanceInfoUpdateRequired, EnrolledInNSTP, IsActive" &
+                            "Username, Password, FullName, FirstName, LastName, Role, IsActive" &
                             ") " &
                             "VALUES " &
                             "(" &
-                            "@Username, @Password, @FullName, @FirstName, @LastName, " &
-                            "'Student', @StudentNo, @Course, @Section, @YearLevel, @StudentType, @GuidanceInfoUpdateRequired, @NSTP, 1" &
+                            "@Username, @Password, @FullName, @FirstName, @LastName, 'Student', 1" &
                             ");"
 
                         Dim newStudentID As Integer
@@ -374,41 +372,6 @@ Public Class CreateStudentForm
                             cmd.Parameters.AddWithValue(
                                 "@LastName",
                                 lastName
-                            )
-
-                            cmd.Parameters.AddWithValue(
-                                "@StudentNo",
-                                studentNo
-                            )
-
-                            cmd.Parameters.AddWithValue(
-                                "@Course",
-                                course
-                            )
-
-                            cmd.Parameters.AddWithValue(
-                                "@Section",
-                                section
-                            )
-
-                            cmd.Parameters.AddWithValue(
-                                "@YearLevel",
-                                yearLevel
-                            )
-
-                            cmd.Parameters.AddWithValue(
-                                "@StudentType",
-                                studentType
-                            )
-
-                            cmd.Parameters.AddWithValue(
-                                "@GuidanceInfoUpdateRequired",
-                                If(guidanceInfoRequired, 1, 0)
-                            )
-
-                            cmd.Parameters.AddWithValue(
-                                "@NSTP",
-                                If(chkNSTP.Checked, 1, 0)
                             )
 
                             cmd.ExecuteNonQuery()
@@ -585,7 +548,7 @@ Public Class CreateStudentForm
 
         Dim query As String =
             "SELECT COUNT(*) " &
-            "FROM Users " &
+            "FROM Students " &
             "WHERE StudentNo = @StudentNo;"
 
 

@@ -92,7 +92,7 @@ Public Class StaffDashboardForm
             Dim recentQuery As String =
                 "SELECT " &
                 "  cr.RecordID, " &
-                "  COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
+                "  COALESCE(s.StudentNo, '') AS StudentNo, " &
                 "  u.FullName AS StudentName, " &
                 "  r.RequirementName, " &
                 "  cr.SubmittedAt, " &
@@ -383,4 +383,7 @@ Public Class StaffDashboardForm
         End If
     End Sub
 
+    Private Sub lblLogoTitle_Click(sender As Object, e As EventArgs) Handles lblLogoTitle.Click
+
+    End Sub
 End Class

@@ -132,19 +132,18 @@ Public Class ViewRequirementModalForm
                     sourceRow = dtPrev.Rows(0)
                     hasExistingData = True
                 Else
-                    ' 3. Fallback to Students / Users table for backwards compatibility
+                    ' 3. Fallback to Students table
                     Dim userQuery As String =
-                        "SELECT COALESCE(s.ContactNo, u.ContactNo, '') AS ContactNo, " &
-                        "       COALESCE(s.Email, u.Email, '') AS Email, " &
-                        "       COALESCE(s.Address, u.Address, '') AS Address, " &
-                        "       COALESCE(s.CivilStatus, u.CivilStatus, '') AS CivilStatus, " &
-                        "       COALESCE(s.EmergencyContactName, u.EmergencyContactName, '') AS EmergencyContactName, " &
-                        "       COALESCE(s.Relationship, u.Relationship, '') AS Relationship, " &
-                        "       COALESCE(s.EmergencyContactNo, u.EmergencyContactNo, '') AS EmergencyContactNo, " &
-                        "       COALESCE(s.AdditionalNotes, u.AdditionalNotes, '') AS AdditionalNotes " &
-                        "FROM Users u " &
-                        "LEFT JOIN Students s ON s.UserID = u.UserID " &
-                        "WHERE u.UserID = @UserID LIMIT 1;"
+                        "SELECT COALESCE(s.ContactNo, '') AS ContactNo, " &
+                        "       COALESCE(s.Email, '') AS Email, " &
+                        "       COALESCE(s.Address, '') AS Address, " &
+                        "       COALESCE(s.CivilStatus, '') AS CivilStatus, " &
+                        "       COALESCE(s.EmergencyContactName, '') AS EmergencyContactName, " &
+                        "       COALESCE(s.Relationship, '') AS Relationship, " &
+                        "       COALESCE(s.EmergencyContactNo, '') AS EmergencyContactNo, " &
+                        "       COALESCE(s.AdditionalNotes, '') AS AdditionalNotes " &
+                        "FROM Students s " &
+                        "WHERE s.UserID = @UserID LIMIT 1;"
                     Dim dtUser = db.ExecuteQuery(userQuery, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
                     If dtUser.Rows.Count > 0 Then
                         sourceRow = dtUser.Rows(0)
@@ -305,16 +304,8 @@ Public Class ViewRequirementModalForm
             }
             db.ExecuteNonQuery(saveSql, params)
 
-            ' Sync core user and student info
+            ' Sync student profile info
             Try
-                Dim userUpdateSql As String = "UPDATE Users SET ContactNo = @ContactNo, Email = @Email, Address = @Address, GuidanceInfoUpdated = 1 WHERE UserID = @UserID;"
-                db.ExecuteNonQuery(userUpdateSql, New Dictionary(Of String, Object) From {
-                    {"@ContactNo", contact},
-                    {"@Email", email},
-                    {"@Address", address},
-                    {"@UserID", AppSession.UserID}
-                })
-
                 Dim studentUpdateSql As String =
                     "UPDATE Students SET ContactNo = @ContactNo, Email = @Email, Address = @Address, " &
                     "CivilStatus = @CivilStatus, EmergencyContactName = @EmergencyContactName, " &

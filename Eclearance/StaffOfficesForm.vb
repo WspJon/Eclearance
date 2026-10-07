@@ -19,7 +19,8 @@ Public Class StaffOfficesForm
                 "u.Username, u.Role, " &
                 "CASE WHEN u.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS StatusText " &
                 "FROM Users u " &
-                "LEFT JOIN Departments d ON u.DepartmentID = d.DepartmentID " &
+                "LEFT JOIN Staff st ON u.UserID = st.UserID " &
+                "LEFT JOIN Departments d ON st.DepartmentID = d.DepartmentID " &
                 "WHERE u.Role IN ('Staff', 'Admin', 'Administrator') "
 
             Dim parameters As New Dictionary(Of String, Object)()
@@ -64,6 +65,8 @@ Public Class StaffOfficesForm
         lblSelectedStaffVal.Text = "--"
         lblSelectedUsernameVal.Text = "--"
         lblSelectedOfficeVal.Text = "--"
+        btnRemoveStaff.Text = "Deactivate Staff"
+        btnRemoveStaff.BackColor = Color.FromArgb(220, 38, 38)
     End Sub
 
     Private Sub UpdateSelectedDetails()
@@ -76,6 +79,15 @@ Public Class StaffOfficesForm
         lblSelectedStaffVal.Text = If(row.Cells(colStaffName.Index).Value IsNot Nothing, row.Cells(colStaffName.Index).Value.ToString(), "--")
         lblSelectedOfficeVal.Text = If(row.Cells(colAssignedOffice.Index).Value IsNot Nothing, row.Cells(colAssignedOffice.Index).Value.ToString(), "--")
         lblSelectedUsernameVal.Text = If(row.Cells(colUsername.Index).Value IsNot Nothing, row.Cells(colUsername.Index).Value.ToString(), "--")
+
+        Dim statusText As String = If(row.Cells(colStatus.Index).Value IsNot Nothing, row.Cells(colStatus.Index).Value.ToString(), "Active")
+        If statusText.Equals("Inactive", StringComparison.OrdinalIgnoreCase) Then
+            btnRemoveStaff.Text = "Reactivate Staff"
+            btnRemoveStaff.BackColor = Color.FromArgb(16, 185, 129)
+        Else
+            btnRemoveStaff.Text = "Deactivate Staff"
+            btnRemoveStaff.BackColor = Color.FromArgb(220, 38, 38)
+        End If
     End Sub
 
     Private Sub dgvStaff_SelectionChanged(sender As Object, e As EventArgs) Handles dgvStaff.SelectionChanged
@@ -165,33 +177,174 @@ Public Class StaffOfficesForm
         End If
 
         Dim staffID As Integer = Convert.ToInt32(dgvStaff.SelectedRows(0).Tag)
-        Dim staffName As String = dgvStaff.SelectedRows(0).Cells(colStaffName.Index).Value.ToString()
-        Dim currentStatus As String = dgvStaff.SelectedRows(0).Cells(colStatus.Index).Value.ToString()
-        Dim newStatus As Integer = If(currentStatus.Equals("Active", StringComparison.OrdinalIgnoreCase), 0, 1)
-        Dim newStatusText As String = If(newStatus = 1, "Active", "Inactive")
 
-        Dim answer As DialogResult = MessageBox.Show(
-            "Change status of " & staffName & " to " & newStatusText & "?",
-            "Toggle Staff Status",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question
-        )
+        Dim topForm As Form = Me.FindForm()
+        If topForm Is Nothing Then topForm = Me
 
-        If answer <> DialogResult.Yes Then Return
-
+        Dim modalBackdrop As New Form()
         Try
-            Dim query As String = "UPDATE Users SET IsActive = @Status WHERE UserID = @UserID;"
-            Dim parameters As New Dictionary(Of String, Object) From {
-                {"@Status", newStatus},
-                {"@UserID", staffID}
-            }
-            db.ExecuteNonQuery(query, parameters)
+            modalBackdrop.FormBorderStyle = FormBorderStyle.None
+            modalBackdrop.BackColor = Color.Black
+            modalBackdrop.Opacity = 0.45R
+            modalBackdrop.ShowInTaskbar = False
+            modalBackdrop.StartPosition = FormStartPosition.Manual
+            modalBackdrop.Location = topForm.PointToScreen(Point.Empty)
+            modalBackdrop.Size = topForm.ClientSize
+            modalBackdrop.Owner = topForm
+            modalBackdrop.Show()
 
-            MessageBox.Show(staffName & " status is now " & newStatusText & ".", "Status Updated", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            LoadStaff(txtSearch.Text.Trim())
-        Catch ex As Exception
-            MessageBox.Show("Unable to update staff status." & Environment.NewLine & ex.Message, "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Using frm As New EditStaffForm(staffID)
+                If frm.ShowDialog(modalBackdrop) = DialogResult.OK Then
+                    LoadStaff(txtSearch.Text.Trim())
+                End If
+            End Using
+        Finally
+            modalBackdrop.Dispose()
         End Try
+    End Sub
+
+    Private Sub btnRemoveStaff_Click(sender As Object, e As EventArgs) Handles btnRemoveStaff.Click
+        If dgvStaff.SelectedRows.Count = 0 OrElse dgvStaff.SelectedRows(0).Tag Is Nothing Then
+            MessageBox.Show("Please select a staff member first.", "Staff Action", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return
+        End If
+
+        Dim row As DataGridViewRow = dgvStaff.SelectedRows(0)
+        Dim staffID As Integer = Convert.ToInt32(row.Tag)
+        Dim staffName As String = If(row.Cells(colStaffName.Index).Value IsNot Nothing, row.Cells(colStaffName.Index).Value.ToString(), "")
+        Dim role As String = If(row.Cells(colRole.Index).Value IsNot Nothing, row.Cells(colRole.Index).Value.ToString(), "")
+        Dim currentStatus As String = If(row.Cells(colStatus.Index).Value IsNot Nothing, row.Cells(colStatus.Index).Value.ToString(), "")
+        Dim isInactive As Boolean = currentStatus.Equals("Inactive", StringComparison.OrdinalIgnoreCase)
+
+        ' Safeguard: Do NOT allow deactivating Administrator accounts
+        If (role.Equals("Admin", StringComparison.OrdinalIgnoreCase) OrElse role.Equals("Administrator", StringComparison.OrdinalIgnoreCase)) AndAlso Not isInactive Then
+            MessageBox.Show(
+                "Administrator accounts cannot be deactivated from this screen.",
+                "Action Not Allowed",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            )
+            Return
+        End If
+
+        If isInactive Then
+            ' Reactivate account
+            Dim confirmMsg As String =
+                "Reactivate " & staffName & "?" & Environment.NewLine & Environment.NewLine &
+                "This will restore access and allow the staff member to log in."
+
+            Dim answer As DialogResult = MessageBox.Show(
+                confirmMsg,
+                "Confirm Reactivate Staff",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            )
+
+            If answer <> DialogResult.Yes Then Return
+
+            Try
+                Using conn As MySqlConnection = db.GetConnection()
+                    conn.Open()
+                    Using transaction As MySqlTransaction = conn.BeginTransaction()
+                        Try
+                            Dim userSql As String = "UPDATE Users SET IsActive = 1 WHERE UserID = @UserID;"
+                            Using cmdUser As New MySqlCommand(userSql, conn, transaction)
+                                cmdUser.Parameters.AddWithValue("@UserID", staffID)
+                                cmdUser.ExecuteNonQuery()
+                            End Using
+
+                            Dim staffSql As String = "UPDATE Staff SET IsActive = 1 WHERE UserID = @UserID;"
+                            Using cmdStaff As New MySqlCommand(staffSql, conn, transaction)
+                                cmdStaff.Parameters.AddWithValue("@UserID", staffID)
+                                cmdStaff.ExecuteNonQuery()
+                            End Using
+
+                            transaction.Commit()
+                        Catch
+                            transaction.Rollback()
+                            Throw
+                        End Try
+                    End Using
+                End Using
+
+                MessageBox.Show(
+                    staffName & " has been successfully reactivated.",
+                    "Staff Reactivated",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                )
+
+                LoadStaff(txtSearch.Text.Trim())
+
+            Catch ex As Exception
+                MessageBox.Show(
+                    "Unable to reactivate staff member." & Environment.NewLine & Environment.NewLine & ex.Message,
+                    "Reactivate Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                )
+            End Try
+
+        Else
+            ' Deactivate account
+            Dim confirmMsg As String =
+                "Deactivate " & staffName & "?" & Environment.NewLine & Environment.NewLine &
+                "This will disable the account and prevent login." & Environment.NewLine &
+                "Previous clearance actions and history will be preserved."
+
+            Dim answer As DialogResult = MessageBox.Show(
+                confirmMsg,
+                "Confirm Deactivate Staff",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            )
+
+            If answer <> DialogResult.Yes Then Return
+
+            Try
+                Using conn As MySqlConnection = db.GetConnection()
+                    conn.Open()
+                    Using transaction As MySqlTransaction = conn.BeginTransaction()
+                        Try
+                            Dim userSql As String = "UPDATE Users SET IsActive = 0 WHERE UserID = @UserID;"
+                            Using cmdUser As New MySqlCommand(userSql, conn, transaction)
+                                cmdUser.Parameters.AddWithValue("@UserID", staffID)
+                                cmdUser.ExecuteNonQuery()
+                            End Using
+
+                            Dim staffSql As String = "UPDATE Staff SET IsActive = 0 WHERE UserID = @UserID;"
+                            Using cmdStaff As New MySqlCommand(staffSql, conn, transaction)
+                                cmdStaff.Parameters.AddWithValue("@UserID", staffID)
+                                cmdStaff.ExecuteNonQuery()
+                            End Using
+
+                            transaction.Commit()
+                        Catch
+                            transaction.Rollback()
+                            Throw
+                        End Try
+                    End Using
+                End Using
+
+                MessageBox.Show(
+                    staffName & " has been successfully deactivated.",
+                    "Staff Deactivated",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                )
+
+                LoadStaff(txtSearch.Text.Trim())
+
+            Catch ex As Exception
+                MessageBox.Show(
+                    "Unable to deactivate staff member." & Environment.NewLine & Environment.NewLine & ex.Message,
+                    "Deactivate Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                )
+            End Try
+
+        End If
     End Sub
 
 End Class

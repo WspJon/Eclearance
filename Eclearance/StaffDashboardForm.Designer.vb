@@ -16,9 +16,9 @@ Partial Class StaffDashboardForm
     Private components As System.ComponentModel.IContainer
 
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         pnlNavIndicator = New Panel()
         btnNavLogout = New Button()
@@ -225,7 +225,7 @@ Partial Class StaffDashboardForm
         lblLogoSub.AutoSize = True
         lblLogoSub.Font = New Font("Segoe UI", 7.5F)
         lblLogoSub.ForeColor = Color.FromArgb(CByte(140), CByte(168), CByte(205))
-        lblLogoSub.Location = New Point(50, 38)
+        lblLogoSub.Location = New Point(50, 44)
         lblLogoSub.Name = "lblLogoSub"
         lblLogoSub.Size = New Size(118, 12)
         lblLogoSub.TabIndex = 2
@@ -234,19 +234,19 @@ Partial Class StaffDashboardForm
         ' lblLogoTitle
         ' 
         lblLogoTitle.AutoSize = True
-        lblLogoTitle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        lblLogoTitle.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
         lblLogoTitle.ForeColor = Color.White
-        lblLogoTitle.Location = New Point(48, 16)
+        lblLogoTitle.Location = New Point(50, 16)
         lblLogoTitle.Name = "lblLogoTitle"
-        lblLogoTitle.Size = New Size(94, 21)
+        lblLogoTitle.Size = New Size(115, 28)
         lblLogoTitle.TabIndex = 1
         lblLogoTitle.Text = "EClearance"
         ' 
         ' picSchoolLogo
         ' 
-        picSchoolLogo.Location = New Point(12, 16)
+        picSchoolLogo.Location = New Point(8, 16)
         picSchoolLogo.Name = "picSchoolLogo"
-        picSchoolLogo.Size = New Size(32, 32)
+        picSchoolLogo.Size = New Size(39, 40)
         picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
         picSchoolLogo.TabIndex = 0
         picSchoolLogo.TabStop = False
@@ -476,25 +476,25 @@ Partial Class StaffDashboardForm
         dgvRecent.BorderStyle = BorderStyle.None
         dgvRecent.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
         dgvRecent.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
-        DataGridViewCellStyle1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        DataGridViewCellStyle1.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
-        DataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
-        DataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
-        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.False
-        dgvRecent.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        DataGridViewCellStyle4.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        DataGridViewCellStyle4.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        DataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle4.WrapMode = DataGridViewTriState.False
+        dgvRecent.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         dgvRecent.ColumnHeadersHeight = 42
         dgvRecent.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         dgvRecent.Columns.AddRange(New DataGridViewColumn() {colNum, colRecordID, colStudentNo, colStudentName, colRequirement, colSubmittedAt, colStatus, colAction})
-        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = Color.White
-        DataGridViewCellStyle3.Font = New Font("Segoe UI", 9F)
-        DataGridViewCellStyle3.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
-        DataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.False
-        dgvRecent.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = Color.White
+        DataGridViewCellStyle6.Font = New Font("Segoe UI", 9F)
+        DataGridViewCellStyle6.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle6.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle6.WrapMode = DataGridViewTriState.False
+        dgvRecent.DefaultCellStyle = DataGridViewCellStyle6
         dgvRecent.EnableHeadersVisualStyles = False
         dgvRecent.GridColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         dgvRecent.Location = New Point(16, 52)
@@ -510,9 +510,9 @@ Partial Class StaffDashboardForm
         ' colNum
         ' 
         colNum.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.Padding = New Padding(8, 0, 0, 0)
-        colNum.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.Padding = New Padding(8, 0, 0, 0)
+        colNum.DefaultCellStyle = DataGridViewCellStyle5
         colNum.HeaderText = "#"
         colNum.Name = "colNum"
         colNum.ReadOnly = True

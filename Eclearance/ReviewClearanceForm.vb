@@ -79,11 +79,11 @@ Public Class ReviewClearanceForm
                 "  cr.SubmittedFilePath, " &
                 "  cr.SubmittedFileName, " &
                 "  cr.SubmittedAt, " &
-                "  COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
+                "  COALESCE(s.StudentNo, '') AS StudentNo, " &
                 "  u.FullName AS StudentName, " &
-                "  COALESCE(s.Course, u.Course, '') AS Course, " &
-                "  COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
-                "  COALESCE(s.StudentType, u.StudentType, 'Regular') AS StudentType, " &
+                "  COALESCE(s.Course, '') AS Course, " &
+                "  COALESCE(s.YearLevel, '') AS YearLevel, " &
+                "  COALESCE(s.StudentType, 'Regular') AS StudentType, " &
                 "  d.DepartmentID, " &
                 "  d.DepartmentName, " &
                 "  r.RequirementName, " &

@@ -17,8 +17,8 @@ Partial Class StaffOfficesForm
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim dataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim dataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         lblNavSection = New Label()
         btnNavStudents = New Button()
@@ -32,6 +32,7 @@ Partial Class StaffOfficesForm
         pnlMain = New Panel()
         pnlBottomDetails = New Panel()
         pnlActionsCard = New Panel()
+        btnRemoveStaff = New Button()
         btnResetPassword = New Button()
         btnEditStaff = New Button()
         lblActionsSub = New Label()
@@ -59,6 +60,7 @@ Partial Class StaffOfficesForm
         lblHeaderTitle = New Label()
         pnlSidebar.SuspendLayout()
         pnlLogo.SuspendLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
         pnlMain.SuspendLayout()
         pnlBottomDetails.SuspendLayout()
         pnlActionsCard.SuspendLayout()
@@ -70,7 +72,7 @@ Partial Class StaffOfficesForm
         ' 
         ' pnlSidebar
         ' 
-        pnlSidebar.BackColor = Color.FromArgb(15, 39, 74)
+        pnlSidebar.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         pnlSidebar.Controls.Add(lblNavSection)
         pnlSidebar.Controls.Add(btnNavStudents)
         pnlSidebar.Controls.Add(btnNavStaff)
@@ -87,21 +89,21 @@ Partial Class StaffOfficesForm
         ' lblNavSection
         ' 
         lblNavSection.AutoSize = True
-        lblNavSection.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblNavSection.ForeColor = Color.FromArgb(91, 122, 159)
+        lblNavSection.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
+        lblNavSection.ForeColor = Color.FromArgb(CByte(91), CByte(122), CByte(159))
         lblNavSection.Location = New Point(18, 90)
         lblNavSection.Name = "lblNavSection"
-        lblNavSection.Size = New Size(94, 12)
+        lblNavSection.Size = New Size(93, 12)
         lblNavSection.TabIndex = 1
         lblNavSection.Text = "ADMINISTRATION"
         ' 
         ' btnNavStudents
         ' 
-        btnNavStudents.BackColor = Color.FromArgb(15, 39, 74)
+        btnNavStudents.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         btnNavStudents.FlatAppearance.BorderSize = 0
         btnNavStudents.FlatStyle = FlatStyle.Flat
-        btnNavStudents.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        btnNavStudents.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavStudents.Font = New Font("Segoe UI", 9.5F)
+        btnNavStudents.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavStudents.Location = New Point(12, 115)
         btnNavStudents.Name = "btnNavStudents"
         btnNavStudents.Padding = New Padding(12, 0, 0, 0)
@@ -113,10 +115,10 @@ Partial Class StaffOfficesForm
         ' 
         ' btnNavStaff
         ' 
-        btnNavStaff.BackColor = Color.FromArgb(28, 91, 184)
+        btnNavStaff.BackColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         btnNavStaff.FlatAppearance.BorderSize = 0
         btnNavStaff.FlatStyle = FlatStyle.Flat
-        btnNavStaff.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
+        btnNavStaff.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnNavStaff.ForeColor = Color.White
         btnNavStaff.Location = New Point(12, 163)
         btnNavStaff.Name = "btnNavStaff"
@@ -129,11 +131,11 @@ Partial Class StaffOfficesForm
         ' 
         ' btnNavHistory
         ' 
-        btnNavHistory.BackColor = Color.FromArgb(15, 39, 74)
+        btnNavHistory.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         btnNavHistory.FlatAppearance.BorderSize = 0
         btnNavHistory.FlatStyle = FlatStyle.Flat
-        btnNavHistory.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        btnNavHistory.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavHistory.Font = New Font("Segoe UI", 9.5F)
+        btnNavHistory.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavHistory.Location = New Point(12, 211)
         btnNavHistory.Name = "btnNavHistory"
         btnNavHistory.Padding = New Padding(12, 0, 0, 0)
@@ -145,11 +147,11 @@ Partial Class StaffOfficesForm
         ' 
         ' btnNavStartTerm
         ' 
-        btnNavStartTerm.BackColor = Color.FromArgb(15, 39, 74)
+        btnNavStartTerm.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         btnNavStartTerm.FlatAppearance.BorderSize = 0
         btnNavStartTerm.FlatStyle = FlatStyle.Flat
-        btnNavStartTerm.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        btnNavStartTerm.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavStartTerm.Font = New Font("Segoe UI", 9.5F)
+        btnNavStartTerm.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavStartTerm.Location = New Point(12, 259)
         btnNavStartTerm.Name = "btnNavStartTerm"
         btnNavStartTerm.Padding = New Padding(12, 0, 0, 0)
@@ -164,8 +166,8 @@ Partial Class StaffOfficesForm
         btnNavLogout.Dock = DockStyle.Bottom
         btnNavLogout.FlatAppearance.BorderSize = 0
         btnNavLogout.FlatStyle = FlatStyle.Flat
-        btnNavLogout.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        btnNavLogout.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavLogout.Font = New Font("Segoe UI", 9.5F)
+        btnNavLogout.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavLogout.Location = New Point(0, 752)
         btnNavLogout.Name = "btnNavLogout"
         btnNavLogout.Padding = New Padding(20, 0, 0, 0)
@@ -187,18 +189,19 @@ Partial Class StaffOfficesForm
         ' 
         ' lblLogoText
         ' 
-        lblLogoText.Font = New Font("Segoe UI", 11.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblLogoText.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
         lblLogoText.ForeColor = Color.White
-        lblLogoText.Location = New Point(55, 18)
+        lblLogoText.Location = New Point(52, 16)
         lblLogoText.Name = "lblLogoText"
         lblLogoText.Size = New Size(140, 40)
         lblLogoText.TabIndex = 1
-        lblLogoText.Text = "EClearance"        ' 
+        lblLogoText.Text = "EClearance"
+        ' 
         ' picSchoolLogo
         ' 
-        picSchoolLogo.Location = New Point(12, 16)
+        picSchoolLogo.Location = New Point(3, 16)
         picSchoolLogo.Name = "picSchoolLogo"
-        picSchoolLogo.Size = New Size(32, 32)
+        picSchoolLogo.Size = New Size(43, 40)
         picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
         picSchoolLogo.TabIndex = 0
         picSchoolLogo.TabStop = False
@@ -206,7 +209,7 @@ Partial Class StaffOfficesForm
         ' pnlMain
         ' 
         pnlMain.AutoScroll = True
-        pnlMain.BackColor = Color.FromArgb(244, 247, 251)
+        pnlMain.BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         pnlMain.Controls.Add(pnlBottomDetails)
         pnlMain.Controls.Add(dgvStaff)
         pnlMain.Controls.Add(pnlSearchRow)
@@ -225,7 +228,7 @@ Partial Class StaffOfficesForm
         pnlBottomDetails.Controls.Add(pnlDetailsCard)
         pnlBottomDetails.Location = New Point(28, 540)
         pnlBottomDetails.Name = "pnlBottomDetails"
-        pnlBottomDetails.Size = New Size(924, 200)
+        pnlBottomDetails.Size = New Size(924, 240)
         pnlBottomDetails.TabIndex = 3
         ' 
         ' pnlActionsCard
@@ -233,6 +236,7 @@ Partial Class StaffOfficesForm
         pnlActionsCard.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         pnlActionsCard.BackColor = Color.White
         pnlActionsCard.BorderStyle = BorderStyle.FixedSingle
+        pnlActionsCard.Controls.Add(btnRemoveStaff)
         pnlActionsCard.Controls.Add(btnResetPassword)
         pnlActionsCard.Controls.Add(btnEditStaff)
         pnlActionsCard.Controls.Add(lblActionsSub)
@@ -240,17 +244,32 @@ Partial Class StaffOfficesForm
         pnlActionsCard.Location = New Point(630, 0)
         pnlActionsCard.Name = "pnlActionsCard"
         pnlActionsCard.Padding = New Padding(16)
-        pnlActionsCard.Size = New Size(294, 196)
+        pnlActionsCard.Size = New Size(294, 236)
         pnlActionsCard.TabIndex = 1
+        ' 
+        ' btnRemoveStaff
+        ' 
+        btnRemoveStaff.BackColor = Color.FromArgb(CByte(220), CByte(38), CByte(38))
+        btnRemoveStaff.Cursor = Cursors.Hand
+        btnRemoveStaff.FlatAppearance.BorderSize = 0
+        btnRemoveStaff.FlatStyle = FlatStyle.Flat
+        btnRemoveStaff.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnRemoveStaff.ForeColor = Color.White
+        btnRemoveStaff.Location = New Point(16, 185)
+        btnRemoveStaff.Name = "btnRemoveStaff"
+        btnRemoveStaff.Size = New Size(260, 36)
+        btnRemoveStaff.TabIndex = 4
+        btnRemoveStaff.Text = "Deactivate Staff"
+        btnRemoveStaff.UseVisualStyleBackColor = False
         ' 
         ' btnResetPassword
         ' 
         btnResetPassword.BackColor = Color.White
         btnResetPassword.Cursor = Cursors.Hand
-        btnResetPassword.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225)
+        btnResetPassword.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
         btnResetPassword.FlatStyle = FlatStyle.Flat
-        btnResetPassword.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        btnResetPassword.ForeColor = Color.FromArgb(71, 85, 105)
+        btnResetPassword.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnResetPassword.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
         btnResetPassword.Location = New Point(16, 140)
         btnResetPassword.Name = "btnResetPassword"
         btnResetPassword.Size = New Size(260, 36)
@@ -260,11 +279,11 @@ Partial Class StaffOfficesForm
         ' 
         ' btnEditStaff
         ' 
-        btnEditStaff.BackColor = Color.FromArgb(11, 99, 229)
+        btnEditStaff.BackColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         btnEditStaff.Cursor = Cursors.Hand
         btnEditStaff.FlatAppearance.BorderSize = 0
         btnEditStaff.FlatStyle = FlatStyle.Flat
-        btnEditStaff.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        btnEditStaff.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnEditStaff.ForeColor = Color.White
         btnEditStaff.Location = New Point(16, 95)
         btnEditStaff.Name = "btnEditStaff"
@@ -275,8 +294,8 @@ Partial Class StaffOfficesForm
         ' 
         ' lblActionsSub
         ' 
-        lblActionsSub.Font = New Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point)
-        lblActionsSub.ForeColor = Color.FromArgb(100, 116, 139)
+        lblActionsSub.Font = New Font("Segoe UI", 8.5F)
+        lblActionsSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblActionsSub.Location = New Point(16, 42)
         lblActionsSub.Name = "lblActionsSub"
         lblActionsSub.Size = New Size(260, 42)
@@ -286,8 +305,8 @@ Partial Class StaffOfficesForm
         ' lblActionsTitle
         ' 
         lblActionsTitle.AutoSize = True
-        lblActionsTitle.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblActionsTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblActionsTitle.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
+        lblActionsTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblActionsTitle.Location = New Point(16, 16)
         lblActionsTitle.Name = "lblActionsTitle"
         lblActionsTitle.Size = New Size(62, 20)
@@ -309,14 +328,14 @@ Partial Class StaffOfficesForm
         pnlDetailsCard.Location = New Point(0, 0)
         pnlDetailsCard.Name = "pnlDetailsCard"
         pnlDetailsCard.Padding = New Padding(20)
-        pnlDetailsCard.Size = New Size(616, 196)
+        pnlDetailsCard.Size = New Size(616, 236)
         pnlDetailsCard.TabIndex = 0
         ' 
         ' lblSelectedOfficeVal
         ' 
         lblSelectedOfficeVal.AutoSize = True
-        lblSelectedOfficeVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblSelectedOfficeVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblSelectedOfficeVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        lblSelectedOfficeVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblSelectedOfficeVal.Location = New Point(150, 135)
         lblSelectedOfficeVal.Name = "lblSelectedOfficeVal"
         lblSelectedOfficeVal.Size = New Size(18, 17)
@@ -326,19 +345,19 @@ Partial Class StaffOfficesForm
         ' lblSelectedOffice
         ' 
         lblSelectedOffice.AutoSize = True
-        lblSelectedOffice.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblSelectedOffice.ForeColor = Color.FromArgb(100, 116, 139)
+        lblSelectedOffice.Font = New Font("Segoe UI", 9F)
+        lblSelectedOffice.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSelectedOffice.Location = New Point(20, 135)
         lblSelectedOffice.Name = "lblSelectedOffice"
-        lblSelectedOffice.Size = New Size(89, 15)
+        lblSelectedOffice.Size = New Size(88, 15)
         lblSelectedOffice.TabIndex = 5
         lblSelectedOffice.Text = "Assigned office"
         ' 
         ' lblSelectedUsernameVal
         ' 
         lblSelectedUsernameVal.AutoSize = True
-        lblSelectedUsernameVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblSelectedUsernameVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblSelectedUsernameVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        lblSelectedUsernameVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblSelectedUsernameVal.Location = New Point(150, 95)
         lblSelectedUsernameVal.Name = "lblSelectedUsernameVal"
         lblSelectedUsernameVal.Size = New Size(18, 17)
@@ -348,8 +367,8 @@ Partial Class StaffOfficesForm
         ' lblSelectedUsername
         ' 
         lblSelectedUsername.AutoSize = True
-        lblSelectedUsername.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblSelectedUsername.ForeColor = Color.FromArgb(100, 116, 139)
+        lblSelectedUsername.Font = New Font("Segoe UI", 9F)
+        lblSelectedUsername.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSelectedUsername.Location = New Point(20, 95)
         lblSelectedUsername.Name = "lblSelectedUsername"
         lblSelectedUsername.Size = New Size(60, 15)
@@ -359,8 +378,8 @@ Partial Class StaffOfficesForm
         ' lblSelectedStaffVal
         ' 
         lblSelectedStaffVal.AutoSize = True
-        lblSelectedStaffVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblSelectedStaffVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblSelectedStaffVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        lblSelectedStaffVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblSelectedStaffVal.Location = New Point(150, 55)
         lblSelectedStaffVal.Name = "lblSelectedStaffVal"
         lblSelectedStaffVal.Size = New Size(18, 17)
@@ -370,22 +389,22 @@ Partial Class StaffOfficesForm
         ' lblSelectedStaff
         ' 
         lblSelectedStaff.AutoSize = True
-        lblSelectedStaff.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblSelectedStaff.ForeColor = Color.FromArgb(100, 116, 139)
+        lblSelectedStaff.Font = New Font("Segoe UI", 9F)
+        lblSelectedStaff.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSelectedStaff.Location = New Point(20, 55)
         lblSelectedStaff.Name = "lblSelectedStaff"
-        lblSelectedStaff.Size = New Size(58, 15)
+        lblSelectedStaff.Size = New Size(64, 15)
         lblSelectedStaff.TabIndex = 1
         lblSelectedStaff.Text = "Staff name"
         ' 
         ' lblDetailsTitle
         ' 
         lblDetailsTitle.AutoSize = True
-        lblDetailsTitle.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblDetailsTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblDetailsTitle.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
+        lblDetailsTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailsTitle.Location = New Point(20, 18)
         lblDetailsTitle.Name = "lblDetailsTitle"
-        lblDetailsTitle.Size = New Size(94, 20)
+        lblDetailsTitle.Size = New Size(93, 20)
         lblDetailsTitle.TabIndex = 0
         lblDetailsTitle.Text = "Staff details"
         ' 
@@ -395,29 +414,28 @@ Partial Class StaffOfficesForm
         dgvStaff.AllowUserToDeleteRows = False
         dgvStaff.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         dgvStaff.BackgroundColor = Color.White
-        dgvStaff.BorderStyle = BorderStyle.FixedSingle
         dgvStaff.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
         dgvStaff.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
-        dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle1.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        dataGridViewCellStyle1.ForeColor = Color.FromArgb(71, 85, 105)
-        dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(71, 85, 105)
-        dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
-        dgvStaff.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1
+        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle1.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        DataGridViewCellStyle1.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        DataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
+        dgvStaff.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         dgvStaff.ColumnHeadersHeight = 36
         dgvStaff.Columns.AddRange(New DataGridViewColumn() {colStaffName, colAssignedOffice, colUsername, colRole, colStatus})
-        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle2.BackColor = Color.White
-        dataGridViewCellStyle2.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        dataGridViewCellStyle2.ForeColor = Color.FromArgb(15, 23, 42)
-        dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(224, 238, 255)
-        dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(15, 23, 42)
-        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
-        dgvStaff.DefaultCellStyle = dataGridViewCellStyle2
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = Color.White
+        DataGridViewCellStyle2.Font = New Font("Segoe UI", 9F)
+        DataGridViewCellStyle2.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(CByte(224), CByte(238), CByte(255))
+        DataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
+        dgvStaff.DefaultCellStyle = DataGridViewCellStyle2
         dgvStaff.EnableHeadersVisualStyles = False
-        dgvStaff.GridColor = Color.FromArgb(241, 245, 249)
+        dgvStaff.GridColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         dgvStaff.Location = New Point(28, 160)
         dgvStaff.Name = "dgvStaff"
         dgvStaff.ReadOnly = True
@@ -476,10 +494,10 @@ Partial Class StaffOfficesForm
         ' 
         btnRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnRefresh.BackColor = Color.White
-        btnRefresh.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225)
+        btnRefresh.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
         btnRefresh.FlatStyle = FlatStyle.Flat
-        btnRefresh.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        btnRefresh.ForeColor = Color.FromArgb(51, 65, 85)
+        btnRefresh.Font = New Font("Segoe UI", 9F)
+        btnRefresh.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         btnRefresh.Location = New Point(824, 4)
         btnRefresh.Name = "btnRefresh"
         btnRefresh.Size = New Size(100, 34)
@@ -491,8 +509,8 @@ Partial Class StaffOfficesForm
         ' 
         txtSearch.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         txtSearch.BorderStyle = BorderStyle.FixedSingle
-        txtSearch.Font = New Font("Segoe UI", 10.0F, FontStyle.Regular, GraphicsUnit.Point)
-        txtSearch.ForeColor = Color.FromArgb(15, 23, 42)
+        txtSearch.Font = New Font("Segoe UI", 10F)
+        txtSearch.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         txtSearch.Location = New Point(0, 8)
         txtSearch.Name = "txtSearch"
         txtSearch.PlaceholderText = "Search by name, office, or username"
@@ -513,11 +531,11 @@ Partial Class StaffOfficesForm
         ' btnAddStaff
         ' 
         btnAddStaff.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnAddStaff.BackColor = Color.FromArgb(11, 99, 229)
+        btnAddStaff.BackColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         btnAddStaff.Cursor = Cursors.Hand
         btnAddStaff.FlatAppearance.BorderSize = 0
         btnAddStaff.FlatStyle = FlatStyle.Flat
-        btnAddStaff.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
+        btnAddStaff.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnAddStaff.ForeColor = Color.White
         btnAddStaff.Location = New Point(804, 12)
         btnAddStaff.Name = "btnAddStaff"
@@ -529,34 +547,34 @@ Partial Class StaffOfficesForm
         ' lblSubHeader
         ' 
         lblSubHeader.AutoSize = True
-        lblSubHeader.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        lblSubHeader.ForeColor = Color.FromArgb(100, 116, 139)
+        lblSubHeader.Font = New Font("Segoe UI", 9.5F)
+        lblSubHeader.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSubHeader.Location = New Point(0, 38)
         lblSubHeader.Name = "lblSubHeader"
-        lblSubHeader.Size = New Size(300, 17)
+        lblSubHeader.Size = New Size(340, 17)
         lblSubHeader.TabIndex = 1
         lblSubHeader.Text = "Manage staff accounts and clearance office assignments."
         ' 
         ' lblHeaderTitle
         ' 
         lblHeaderTitle.AutoSize = True
-        lblHeaderTitle.Font = New Font("Segoe UI", 20.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblHeaderTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblHeaderTitle.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
+        lblHeaderTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblHeaderTitle.Location = New Point(-3, 0)
         lblHeaderTitle.Name = "lblHeaderTitle"
-        lblHeaderTitle.Size = New Size(183, 37)
+        lblHeaderTitle.Size = New Size(176, 37)
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "Staff & offices"
         ' 
         ' StaffOfficesForm
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        BackColor = Color.FromArgb(244, 247, 251)
+        BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         ClientSize = New Size(1200, 800)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
-        Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1100, 750)
         Name = "StaffOfficesForm"
         StartPosition = FormStartPosition.CenterScreen
@@ -564,7 +582,7 @@ Partial Class StaffOfficesForm
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)
-        pnlLogo.PerformLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).EndInit()
         pnlMain.ResumeLayout(False)
         pnlBottomDetails.ResumeLayout(False)
         pnlActionsCard.ResumeLayout(False)
@@ -617,5 +635,6 @@ Partial Class StaffOfficesForm
     Friend WithEvents lblActionsSub As Label
     Friend WithEvents btnEditStaff As Button
     Friend WithEvents btnResetPassword As Button
+    Friend WithEvents btnRemoveStaff As Button
 
 End Class

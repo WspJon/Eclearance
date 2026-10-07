@@ -11,8 +11,6 @@ Public Class LoginForm
         e As EventArgs
     ) Handles MyBase.Load
 
-        ApplySchoolLogo(picSchoolLogo)
-
         txtPassword.UseSystemPasswordChar = True
 
         txtUsername.Focus()
@@ -106,13 +104,13 @@ Public Class LoginForm
                 "  u.FullName, " &
                 "  u.Role, " &
                 "  COALESCE(s.StudentID, 0) AS StudentID, " &
-                "  COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
-                "  COALESCE(s.Course, u.Course, '') AS Course, " &
-                "  COALESCE(s.Section, u.Section, '') AS Section, " &
-                "  COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
-                "  COALESCE(s.StudentType, u.StudentType, 'Regular') AS StudentType, " &
+                "  COALESCE(s.StudentNo, '') AS StudentNo, " &
+                "  COALESCE(s.Course, '') AS Course, " &
+                "  COALESCE(s.Section, '') AS Section, " &
+                "  COALESCE(s.YearLevel, '') AS YearLevel, " &
+                "  COALESCE(s.StudentType, 'Regular') AS StudentType, " &
                 "  COALESCE(st.StaffID, 0) AS StaffID, " &
-                "  COALESCE(st.DepartmentID, u.DepartmentID) AS DepartmentID " &
+                "  COALESCE(st.DepartmentID, 0) AS DepartmentID " &
                 "FROM Users u " &
                 "LEFT JOIN Students s ON s.UserID = u.UserID " &
                 "LEFT JOIN Staff st ON st.UserID = u.UserID " &
@@ -320,4 +318,7 @@ Public Class LoginForm
 
     End Sub
 
+    Private Sub PicSchoolLogo_Click(sender As Object, e As EventArgs) Handles PicSchoolLogo.Click
+
+    End Sub
 End Class

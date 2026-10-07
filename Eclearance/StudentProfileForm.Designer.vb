@@ -116,7 +116,7 @@ Partial Class StudentProfileForm
         ' 
         ' pnlSidebar
         ' 
-        pnlSidebar.BackColor = Color.FromArgb(15, 39, 74)
+        pnlSidebar.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         pnlSidebar.Controls.Add(btnNavLogout)
         pnlSidebar.Controls.Add(btnNavProfile)
         pnlSidebar.Controls.Add(btnNavHistory)
@@ -135,7 +135,7 @@ Partial Class StudentProfileForm
         btnNavLogout.FlatAppearance.BorderSize = 0
         btnNavLogout.FlatStyle = FlatStyle.Flat
         btnNavLogout.Font = New Font("Segoe UI", 9.5F)
-        btnNavLogout.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavLogout.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavLogout.Location = New Point(0, 736)
         btnNavLogout.Name = "btnNavLogout"
         btnNavLogout.Padding = New Padding(20, 0, 0, 0)
@@ -147,7 +147,7 @@ Partial Class StudentProfileForm
         ' 
         ' btnNavProfile
         ' 
-        btnNavProfile.BackColor = Color.FromArgb(28, 91, 184)
+        btnNavProfile.BackColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         btnNavProfile.Cursor = Cursors.Hand
         btnNavProfile.Dock = DockStyle.Top
         btnNavProfile.FlatAppearance.BorderSize = 0
@@ -170,7 +170,7 @@ Partial Class StudentProfileForm
         btnNavHistory.FlatAppearance.BorderSize = 0
         btnNavHistory.FlatStyle = FlatStyle.Flat
         btnNavHistory.Font = New Font("Segoe UI", 9.5F)
-        btnNavHistory.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavHistory.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavHistory.Location = New Point(0, 120)
         btnNavHistory.Name = "btnNavHistory"
         btnNavHistory.Padding = New Padding(20, 0, 0, 0)
@@ -187,7 +187,7 @@ Partial Class StudentProfileForm
         btnNavMyClearance.FlatAppearance.BorderSize = 0
         btnNavMyClearance.FlatStyle = FlatStyle.Flat
         btnNavMyClearance.Font = New Font("Segoe UI", 9.5F)
-        btnNavMyClearance.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavMyClearance.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavMyClearance.Location = New Point(0, 76)
         btnNavMyClearance.Name = "btnNavMyClearance"
         btnNavMyClearance.Padding = New Padding(20, 0, 0, 0)
@@ -211,17 +211,17 @@ Partial Class StudentProfileForm
         ' lblLogoSubtitle
         ' 
         lblLogoSubtitle.AutoSize = True
-        lblLogoSubtitle.Font = New Font("Segoe UI", 8.0F)
-        lblLogoSubtitle.ForeColor = Color.FromArgb(148, 163, 184)
-        lblLogoSubtitle.Location = New Point(68, 41)
+        lblLogoSubtitle.Font = New Font("Segoe UI", 8F)
+        lblLogoSubtitle.ForeColor = Color.FromArgb(CByte(148), CByte(163), CByte(184))
+        lblLogoSubtitle.Location = New Point(64, 47)
         lblLogoSubtitle.Name = "lblLogoSubtitle"
-        lblLogoSubtitle.Size = New Size(77, 13)
+        lblLogoSubtitle.Size = New Size(81, 13)
         lblLogoSubtitle.TabIndex = 2
         lblLogoSubtitle.Text = "Student Portal"
         ' 
         ' picSchoolLogo
         ' 
-        picSchoolLogo.Location = New Point(16, 16)
+        picSchoolLogo.Location = New Point(12, 16)
         picSchoolLogo.Name = "picSchoolLogo"
         picSchoolLogo.Size = New Size(42, 42)
         picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
@@ -231,17 +231,17 @@ Partial Class StudentProfileForm
         ' lblLogoTitle
         ' 
         lblLogoTitle.AutoSize = True
-        lblLogoTitle.Font = New Font("Segoe UI Semibold", 12.0F, FontStyle.Bold)
+        lblLogoTitle.Font = New Font("Segoe UI Semibold", 15F, FontStyle.Bold)
         lblLogoTitle.ForeColor = Color.White
-        lblLogoTitle.Location = New Point(67, 19)
+        lblLogoTitle.Location = New Point(60, 19)
         lblLogoTitle.Name = "lblLogoTitle"
-        lblLogoTitle.Size = New Size(89, 21)
+        lblLogoTitle.Size = New Size(109, 28)
         lblLogoTitle.TabIndex = 1
         lblLogoTitle.Text = "EClearance"
         ' 
         ' pnlMain
         ' 
-        pnlMain.BackColor = Color.FromArgb(248, 250, 252)
+        pnlMain.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
         pnlMain.Controls.Add(pnlScrollContent)
         pnlMain.Controls.Add(pnlHeader)
         pnlMain.Dock = DockStyle.Fill
@@ -268,8 +268,8 @@ Partial Class StudentProfileForm
         tlpCards.AutoSize = True
         tlpCards.AutoSizeMode = AutoSizeMode.GrowAndShrink
         tlpCards.ColumnCount = 2
-        tlpCards.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50.0F))
-        tlpCards.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50.0F))
+        tlpCards.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50F))
+        tlpCards.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50F))
         tlpCards.Controls.Add(pnlPersonalCard, 0, 0)
         tlpCards.Controls.Add(pnlAcademicCard, 1, 0)
         tlpCards.Controls.Add(pnlContactCard, 0, 1)
@@ -280,7 +280,7 @@ Partial Class StudentProfileForm
         tlpCards.RowCount = 2
         tlpCards.RowStyles.Add(New RowStyle())
         tlpCards.RowStyles.Add(New RowStyle())
-        tlpCards.Size = New Size(924, 604)
+        tlpCards.Size = New Size(907, 604)
         tlpCards.TabIndex = 2
         ' 
         ' pnlPersonalCard
@@ -298,14 +298,14 @@ Partial Class StudentProfileForm
         pnlPersonalCard.Margin = New Padding(0, 0, 10, 16)
         pnlPersonalCard.Name = "pnlPersonalCard"
         pnlPersonalCard.Padding = New Padding(20, 16, 20, 18)
-        pnlPersonalCard.Size = New Size(452, 286)
+        pnlPersonalCard.Size = New Size(443, 286)
         pnlPersonalCard.TabIndex = 0
         ' 
         ' lblPersonalCivilStatusVal
         ' 
         lblPersonalCivilStatusVal.AutoSize = True
         lblPersonalCivilStatusVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblPersonalCivilStatusVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblPersonalCivilStatusVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblPersonalCivilStatusVal.Location = New Point(170, 96)
         lblPersonalCivilStatusVal.Name = "lblPersonalCivilStatusVal"
         lblPersonalCivilStatusVal.Size = New Size(44, 17)
@@ -315,8 +315,8 @@ Partial Class StudentProfileForm
         ' lblPersonalCivilStatusTitle
         ' 
         lblPersonalCivilStatusTitle.AutoSize = True
-        lblPersonalCivilStatusTitle.Font = New Font("Segoe UI", 9.0F)
-        lblPersonalCivilStatusTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblPersonalCivilStatusTitle.Font = New Font("Segoe UI", 9F)
+        lblPersonalCivilStatusTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblPersonalCivilStatusTitle.Location = New Point(20, 97)
         lblPersonalCivilStatusTitle.Name = "lblPersonalCivilStatusTitle"
         lblPersonalCivilStatusTitle.Size = New Size(65, 15)
@@ -327,18 +327,18 @@ Partial Class StudentProfileForm
         ' 
         lblPersonalFullNameVal.AutoSize = True
         lblPersonalFullNameVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblPersonalFullNameVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblPersonalFullNameVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblPersonalFullNameVal.Location = New Point(170, 62)
         lblPersonalFullNameVal.Name = "lblPersonalFullNameVal"
-        lblPersonalFullNameVal.Size = New Size(94, 17)
+        lblPersonalFullNameVal.Size = New Size(97, 17)
         lblPersonalFullNameVal.TabIndex = 4
         lblPersonalFullNameVal.Text = "Juan Dela Cruz"
         ' 
         ' lblPersonalFullNameTitle
         ' 
         lblPersonalFullNameTitle.AutoSize = True
-        lblPersonalFullNameTitle.Font = New Font("Segoe UI", 9.0F)
-        lblPersonalFullNameTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblPersonalFullNameTitle.Font = New Font("Segoe UI", 9F)
+        lblPersonalFullNameTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblPersonalFullNameTitle.Location = New Point(20, 63)
         lblPersonalFullNameTitle.Name = "lblPersonalFullNameTitle"
         lblPersonalFullNameTitle.Size = New Size(61, 15)
@@ -347,7 +347,7 @@ Partial Class StudentProfileForm
         ' 
         ' pnlPersonalSep
         ' 
-        pnlPersonalSep.BackColor = Color.FromArgb(241, 245, 249)
+        pnlPersonalSep.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         pnlPersonalSep.Location = New Point(20, 46)
         pnlPersonalSep.Name = "pnlPersonalSep"
         pnlPersonalSep.Size = New Size(412, 1)
@@ -357,17 +357,17 @@ Partial Class StudentProfileForm
         ' 
         lblPersonalTitle.AutoSize = True
         lblPersonalTitle.Font = New Font("Segoe UI Semibold", 10.5F, FontStyle.Bold)
-        lblPersonalTitle.ForeColor = Color.FromArgb(15, 39, 74)
+        lblPersonalTitle.ForeColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         lblPersonalTitle.Location = New Point(44, 16)
         lblPersonalTitle.Name = "lblPersonalTitle"
-        lblPersonalTitle.Size = New Size(142, 19)
+        lblPersonalTitle.Size = New Size(140, 19)
         lblPersonalTitle.TabIndex = 1
         lblPersonalTitle.Text = "Personal Information"
         ' 
         ' lblPersonalIcon
         ' 
-        lblPersonalIcon.Font = New Font("Segoe UI", 11.0F)
-        lblPersonalIcon.ForeColor = Color.FromArgb(28, 91, 184)
+        lblPersonalIcon.Font = New Font("Segoe UI", 11F)
+        lblPersonalIcon.ForeColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         lblPersonalIcon.Location = New Point(18, 14)
         lblPersonalIcon.Name = "lblPersonalIcon"
         lblPersonalIcon.Size = New Size(24, 22)
@@ -397,32 +397,32 @@ Partial Class StudentProfileForm
         pnlAcademicCard.Controls.Add(lblAcademicTitle)
         pnlAcademicCard.Controls.Add(lblAcademicIcon)
         pnlAcademicCard.Dock = DockStyle.Fill
-        pnlAcademicCard.Location = New Point(472, 0)
+        pnlAcademicCard.Location = New Point(463, 0)
         pnlAcademicCard.Margin = New Padding(10, 0, 0, 16)
         pnlAcademicCard.Name = "pnlAcademicCard"
         pnlAcademicCard.Padding = New Padding(20, 16, 20, 18)
-        pnlAcademicCard.Size = New Size(452, 286)
+        pnlAcademicCard.Size = New Size(444, 286)
         pnlAcademicCard.TabIndex = 1
         ' 
         ' lblAcademicTermVal
         ' 
         lblAcademicTermVal.AutoSize = True
         lblAcademicTermVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAcademicTermVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAcademicTermVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAcademicTermVal.Location = New Point(170, 252)
         lblAcademicTermVal.Name = "lblAcademicTermVal"
-        lblAcademicTermVal.Size = New Size(88, 17)
+        lblAcademicTermVal.Size = New Size(84, 17)
         lblAcademicTermVal.TabIndex = 18
         lblAcademicTermVal.Text = "1st Semester"
         ' 
         ' lblAcademicTermTitle
         ' 
         lblAcademicTermTitle.AutoSize = True
-        lblAcademicTermTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAcademicTermTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAcademicTermTitle.Font = New Font("Segoe UI", 9F)
+        lblAcademicTermTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAcademicTermTitle.Location = New Point(20, 253)
         lblAcademicTermTitle.Name = "lblAcademicTermTitle"
-        lblAcademicTermTitle.Size = New Size(33, 15)
+        lblAcademicTermTitle.Size = New Size(34, 15)
         lblAcademicTermTitle.TabIndex = 17
         lblAcademicTermTitle.Text = "Term"
         ' 
@@ -430,21 +430,21 @@ Partial Class StudentProfileForm
         ' 
         lblAcademicYearVal.AutoSize = True
         lblAcademicYearVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAcademicYearVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAcademicYearVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAcademicYearVal.Location = New Point(170, 224)
         lblAcademicYearVal.Name = "lblAcademicYearVal"
-        lblAcademicYearVal.Size = New Size(80, 17)
+        lblAcademicYearVal.Size = New Size(77, 17)
         lblAcademicYearVal.TabIndex = 16
         lblAcademicYearVal.Text = "2024 - 2025"
         ' 
         ' lblAcademicYearTitle
         ' 
         lblAcademicYearTitle.AutoSize = True
-        lblAcademicYearTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAcademicYearTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAcademicYearTitle.Font = New Font("Segoe UI", 9F)
+        lblAcademicYearTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAcademicYearTitle.Location = New Point(20, 225)
         lblAcademicYearTitle.Name = "lblAcademicYearTitle"
-        lblAcademicYearTitle.Size = New Size(86, 15)
+        lblAcademicYearTitle.Size = New Size(85, 15)
         lblAcademicYearTitle.TabIndex = 15
         lblAcademicYearTitle.Text = "Academic Year"
         ' 
@@ -452,7 +452,7 @@ Partial Class StudentProfileForm
         ' 
         lblAcademicCollegeVal.AutoSize = True
         lblAcademicCollegeVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAcademicCollegeVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAcademicCollegeVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAcademicCollegeVal.Location = New Point(170, 196)
         lblAcademicCollegeVal.Name = "lblAcademicCollegeVal"
         lblAcademicCollegeVal.Size = New Size(181, 17)
@@ -462,8 +462,8 @@ Partial Class StudentProfileForm
         ' lblAcademicCollegeTitle
         ' 
         lblAcademicCollegeTitle.AutoSize = True
-        lblAcademicCollegeTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAcademicCollegeTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAcademicCollegeTitle.Font = New Font("Segoe UI", 9F)
+        lblAcademicCollegeTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAcademicCollegeTitle.Location = New Point(20, 197)
         lblAcademicCollegeTitle.Name = "lblAcademicCollegeTitle"
         lblAcademicCollegeTitle.Size = New Size(47, 15)
@@ -474,18 +474,18 @@ Partial Class StudentProfileForm
         ' 
         lblAcademicStudentTypeVal.AutoSize = True
         lblAcademicStudentTypeVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAcademicStudentTypeVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAcademicStudentTypeVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAcademicStudentTypeVal.Location = New Point(170, 168)
         lblAcademicStudentTypeVal.Name = "lblAcademicStudentTypeVal"
-        lblAcademicStudentTypeVal.Size = New Size(30, 17)
+        lblAcademicStudentTypeVal.Size = New Size(29, 17)
         lblAcademicStudentTypeVal.TabIndex = 12
         lblAcademicStudentTypeVal.Text = "Old"
         ' 
         ' lblAcademicStudentTypeTitle
         ' 
         lblAcademicStudentTypeTitle.AutoSize = True
-        lblAcademicStudentTypeTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAcademicStudentTypeTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAcademicStudentTypeTitle.Font = New Font("Segoe UI", 9F)
+        lblAcademicStudentTypeTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAcademicStudentTypeTitle.Location = New Point(20, 169)
         lblAcademicStudentTypeTitle.Name = "lblAcademicStudentTypeTitle"
         lblAcademicStudentTypeTitle.Size = New Size(76, 15)
@@ -496,7 +496,7 @@ Partial Class StudentProfileForm
         ' 
         lblAcademicSectionVal.AutoSize = True
         lblAcademicSectionVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAcademicSectionVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAcademicSectionVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAcademicSectionVal.Location = New Point(170, 140)
         lblAcademicSectionVal.Name = "lblAcademicSectionVal"
         lblAcademicSectionVal.Size = New Size(54, 17)
@@ -506,8 +506,8 @@ Partial Class StudentProfileForm
         ' lblAcademicSectionTitle
         ' 
         lblAcademicSectionTitle.AutoSize = True
-        lblAcademicSectionTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAcademicSectionTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAcademicSectionTitle.Font = New Font("Segoe UI", 9F)
+        lblAcademicSectionTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAcademicSectionTitle.Location = New Point(20, 141)
         lblAcademicSectionTitle.Name = "lblAcademicSectionTitle"
         lblAcademicSectionTitle.Size = New Size(46, 15)
@@ -518,21 +518,21 @@ Partial Class StudentProfileForm
         ' 
         lblAcademicYearLevelVal.AutoSize = True
         lblAcademicYearLevelVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAcademicYearLevelVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAcademicYearLevelVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAcademicYearLevelVal.Location = New Point(170, 112)
         lblAcademicYearLevelVal.Name = "lblAcademicYearLevelVal"
-        lblAcademicYearLevelVal.Size = New Size(58, 17)
+        lblAcademicYearLevelVal.Size = New Size(61, 17)
         lblAcademicYearLevelVal.TabIndex = 8
         lblAcademicYearLevelVal.Text = "2nd Year"
         ' 
         ' lblAcademicYearLevelTitle
         ' 
         lblAcademicYearLevelTitle.AutoSize = True
-        lblAcademicYearLevelTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAcademicYearLevelTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAcademicYearLevelTitle.Font = New Font("Segoe UI", 9F)
+        lblAcademicYearLevelTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAcademicYearLevelTitle.Location = New Point(20, 113)
         lblAcademicYearLevelTitle.Name = "lblAcademicYearLevelTitle"
-        lblAcademicYearLevelTitle.Size = New Size(60, 15)
+        lblAcademicYearLevelTitle.Size = New Size(59, 15)
         lblAcademicYearLevelTitle.TabIndex = 7
         lblAcademicYearLevelTitle.Text = "Year Level"
         ' 
@@ -540,21 +540,21 @@ Partial Class StudentProfileForm
         ' 
         lblAcademicCourseVal.AutoSize = True
         lblAcademicCourseVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAcademicCourseVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAcademicCourseVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAcademicCourseVal.Location = New Point(170, 84)
         lblAcademicCourseVal.Name = "lblAcademicCourseVal"
-        lblAcademicCourseVal.Size = New Size(160, 17)
+        lblAcademicCourseVal.Size = New Size(172, 17)
         lblAcademicCourseVal.TabIndex = 6
         lblAcademicCourseVal.Text = "BS Information Technology"
         ' 
         ' lblAcademicCourseTitle
         ' 
         lblAcademicCourseTitle.AutoSize = True
-        lblAcademicCourseTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAcademicCourseTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAcademicCourseTitle.Font = New Font("Segoe UI", 9F)
+        lblAcademicCourseTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAcademicCourseTitle.Location = New Point(20, 85)
         lblAcademicCourseTitle.Name = "lblAcademicCourseTitle"
-        lblAcademicCourseTitle.Size = New Size(99, 15)
+        lblAcademicCourseTitle.Size = New Size(101, 15)
         lblAcademicCourseTitle.TabIndex = 5
         lblAcademicCourseTitle.Text = "Course / Program"
         ' 
@@ -562,27 +562,27 @@ Partial Class StudentProfileForm
         ' 
         lblAcademicStudentNoVal.AutoSize = True
         lblAcademicStudentNoVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAcademicStudentNoVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAcademicStudentNoVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAcademicStudentNoVal.Location = New Point(170, 56)
         lblAcademicStudentNoVal.Name = "lblAcademicStudentNoVal"
-        lblAcademicStudentNoVal.Size = New Size(77, 17)
+        lblAcademicStudentNoVal.Size = New Size(74, 17)
         lblAcademicStudentNoVal.TabIndex = 4
         lblAcademicStudentNoVal.Text = "2023-00123"
         ' 
         ' lblAcademicStudentNoTitle
         ' 
         lblAcademicStudentNoTitle.AutoSize = True
-        lblAcademicStudentNoTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAcademicStudentNoTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAcademicStudentNoTitle.Font = New Font("Segoe UI", 9F)
+        lblAcademicStudentNoTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAcademicStudentNoTitle.Location = New Point(20, 57)
         lblAcademicStudentNoTitle.Name = "lblAcademicStudentNoTitle"
-        lblAcademicStudentNoTitle.Size = New Size(94, 15)
+        lblAcademicStudentNoTitle.Size = New Size(95, 15)
         lblAcademicStudentNoTitle.TabIndex = 3
         lblAcademicStudentNoTitle.Text = "Student Number"
         ' 
         ' pnlAcademicSep
         ' 
-        pnlAcademicSep.BackColor = Color.FromArgb(241, 245, 249)
+        pnlAcademicSep.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         pnlAcademicSep.Location = New Point(20, 44)
         pnlAcademicSep.Name = "pnlAcademicSep"
         pnlAcademicSep.Size = New Size(412, 1)
@@ -592,17 +592,17 @@ Partial Class StudentProfileForm
         ' 
         lblAcademicTitle.AutoSize = True
         lblAcademicTitle.Font = New Font("Segoe UI Semibold", 10.5F, FontStyle.Bold)
-        lblAcademicTitle.ForeColor = Color.FromArgb(15, 39, 74)
+        lblAcademicTitle.ForeColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         lblAcademicTitle.Location = New Point(44, 16)
         lblAcademicTitle.Name = "lblAcademicTitle"
-        lblAcademicTitle.Size = New Size(149, 19)
+        lblAcademicTitle.Size = New Size(148, 19)
         lblAcademicTitle.TabIndex = 1
         lblAcademicTitle.Text = "Academic Information"
         ' 
         ' lblAcademicIcon
         ' 
-        lblAcademicIcon.Font = New Font("Segoe UI", 11.0F)
-        lblAcademicIcon.ForeColor = Color.FromArgb(28, 91, 184)
+        lblAcademicIcon.Font = New Font("Segoe UI", 11F)
+        lblAcademicIcon.ForeColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         lblAcademicIcon.Location = New Point(18, 14)
         lblAcademicIcon.Name = "lblAcademicIcon"
         lblAcademicIcon.Size = New Size(24, 22)
@@ -632,25 +632,25 @@ Partial Class StudentProfileForm
         pnlContactCard.Margin = New Padding(0, 0, 10, 16)
         pnlContactCard.Name = "pnlContactCard"
         pnlContactCard.Padding = New Padding(20, 16, 20, 18)
-        pnlContactCard.Size = New Size(452, 286)
+        pnlContactCard.Size = New Size(443, 286)
         pnlContactCard.TabIndex = 2
         ' 
         ' lblContactRelationshipVal
         ' 
         lblContactRelationshipVal.AutoSize = True
         lblContactRelationshipVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblContactRelationshipVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblContactRelationshipVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblContactRelationshipVal.Location = New Point(180, 240)
         lblContactRelationshipVal.Name = "lblContactRelationshipVal"
-        lblContactRelationshipVal.Size = New Size(52, 17)
+        lblContactRelationshipVal.Size = New Size(53, 17)
         lblContactRelationshipVal.TabIndex = 14
         lblContactRelationshipVal.Text = "Mother"
         ' 
         ' lblContactRelationshipTitle
         ' 
         lblContactRelationshipTitle.AutoSize = True
-        lblContactRelationshipTitle.Font = New Font("Segoe UI", 9.0F)
-        lblContactRelationshipTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblContactRelationshipTitle.Font = New Font("Segoe UI", 9F)
+        lblContactRelationshipTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblContactRelationshipTitle.Location = New Point(20, 241)
         lblContactRelationshipTitle.Name = "lblContactRelationshipTitle"
         lblContactRelationshipTitle.Size = New Size(72, 15)
@@ -661,21 +661,21 @@ Partial Class StudentProfileForm
         ' 
         lblContactEmergencyPhoneVal.AutoSize = True
         lblContactEmergencyPhoneVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblContactEmergencyPhoneVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblContactEmergencyPhoneVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblContactEmergencyPhoneVal.Location = New Point(180, 208)
         lblContactEmergencyPhoneVal.Name = "lblContactEmergencyPhoneVal"
-        lblContactEmergencyPhoneVal.Size = New Size(100, 17)
+        lblContactEmergencyPhoneVal.Size = New Size(102, 17)
         lblContactEmergencyPhoneVal.TabIndex = 12
         lblContactEmergencyPhoneVal.Text = "09XX XXX XXXX"
         ' 
         ' lblContactEmergencyPhoneTitle
         ' 
         lblContactEmergencyPhoneTitle.AutoSize = True
-        lblContactEmergencyPhoneTitle.Font = New Font("Segoe UI", 9.0F)
-        lblContactEmergencyPhoneTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblContactEmergencyPhoneTitle.Font = New Font("Segoe UI", 9F)
+        lblContactEmergencyPhoneTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblContactEmergencyPhoneTitle.Location = New Point(20, 209)
         lblContactEmergencyPhoneTitle.Name = "lblContactEmergencyPhoneTitle"
-        lblContactEmergencyPhoneTitle.Size = New Size(150, 15)
+        lblContactEmergencyPhoneTitle.Size = New Size(158, 15)
         lblContactEmergencyPhoneTitle.TabIndex = 11
         lblContactEmergencyPhoneTitle.Text = "Emergency Contact Number"
         ' 
@@ -683,28 +683,28 @@ Partial Class StudentProfileForm
         ' 
         lblContactEmergencyNameVal.AutoSize = True
         lblContactEmergencyNameVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblContactEmergencyNameVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblContactEmergencyNameVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblContactEmergencyNameVal.Location = New Point(180, 176)
         lblContactEmergencyNameVal.Name = "lblContactEmergencyNameVal"
-        lblContactEmergencyNameVal.Size = New Size(99, 17)
+        lblContactEmergencyNameVal.Size = New Size(103, 17)
         lblContactEmergencyNameVal.TabIndex = 10
         lblContactEmergencyNameVal.Text = "Maria Dela Cruz"
         ' 
         ' lblContactEmergencyNameTitle
         ' 
         lblContactEmergencyNameTitle.AutoSize = True
-        lblContactEmergencyNameTitle.Font = New Font("Segoe UI", 9.0F)
-        lblContactEmergencyNameTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblContactEmergencyNameTitle.Font = New Font("Segoe UI", 9F)
+        lblContactEmergencyNameTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblContactEmergencyNameTitle.Location = New Point(20, 177)
         lblContactEmergencyNameTitle.Name = "lblContactEmergencyNameTitle"
-        lblContactEmergencyNameTitle.Size = New Size(143, 15)
+        lblContactEmergencyNameTitle.Size = New Size(150, 15)
         lblContactEmergencyNameTitle.TabIndex = 9
         lblContactEmergencyNameTitle.Text = "Emergency Contact Person"
         ' 
         ' lblContactAddressVal
         ' 
         lblContactAddressVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblContactAddressVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblContactAddressVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblContactAddressVal.Location = New Point(180, 122)
         lblContactAddressVal.Name = "lblContactAddressVal"
         lblContactAddressVal.Size = New Size(250, 46)
@@ -714,8 +714,8 @@ Partial Class StudentProfileForm
         ' lblContactAddressTitle
         ' 
         lblContactAddressTitle.AutoSize = True
-        lblContactAddressTitle.Font = New Font("Segoe UI", 9.0F)
-        lblContactAddressTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblContactAddressTitle.Font = New Font("Segoe UI", 9F)
+        lblContactAddressTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblContactAddressTitle.Location = New Point(20, 123)
         lblContactAddressTitle.Name = "lblContactAddressTitle"
         lblContactAddressTitle.Size = New Size(92, 15)
@@ -726,21 +726,21 @@ Partial Class StudentProfileForm
         ' 
         lblContactPhoneVal.AutoSize = True
         lblContactPhoneVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblContactPhoneVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblContactPhoneVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblContactPhoneVal.Location = New Point(180, 90)
         lblContactPhoneVal.Name = "lblContactPhoneVal"
-        lblContactPhoneVal.Size = New Size(100, 17)
+        lblContactPhoneVal.Size = New Size(102, 17)
         lblContactPhoneVal.TabIndex = 6
         lblContactPhoneVal.Text = "09XX XXX XXXX"
         ' 
         ' lblContactPhoneTitle
         ' 
         lblContactPhoneTitle.AutoSize = True
-        lblContactPhoneTitle.Font = New Font("Segoe UI", 9.0F)
-        lblContactPhoneTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblContactPhoneTitle.Font = New Font("Segoe UI", 9F)
+        lblContactPhoneTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblContactPhoneTitle.Location = New Point(20, 91)
         lblContactPhoneTitle.Name = "lblContactPhoneTitle"
-        lblContactPhoneTitle.Size = New Size(94, 15)
+        lblContactPhoneTitle.Size = New Size(96, 15)
         lblContactPhoneTitle.TabIndex = 5
         lblContactPhoneTitle.Text = "Contact Number"
         ' 
@@ -748,18 +748,18 @@ Partial Class StudentProfileForm
         ' 
         lblContactEmailVal.AutoSize = True
         lblContactEmailVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblContactEmailVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblContactEmailVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblContactEmailVal.Location = New Point(180, 58)
         lblContactEmailVal.Name = "lblContactEmailVal"
-        lblContactEmailVal.Size = New Size(157, 17)
+        lblContactEmailVal.Size = New Size(160, 17)
         lblContactEmailVal.TabIndex = 4
         lblContactEmailVal.Text = "juan.delacruz@email.com"
         ' 
         ' lblContactEmailTitle
         ' 
         lblContactEmailTitle.AutoSize = True
-        lblContactEmailTitle.Font = New Font("Segoe UI", 9.0F)
-        lblContactEmailTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblContactEmailTitle.Font = New Font("Segoe UI", 9F)
+        lblContactEmailTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblContactEmailTitle.Location = New Point(20, 59)
         lblContactEmailTitle.Name = "lblContactEmailTitle"
         lblContactEmailTitle.Size = New Size(81, 15)
@@ -768,7 +768,7 @@ Partial Class StudentProfileForm
         ' 
         ' pnlContactSep
         ' 
-        pnlContactSep.BackColor = Color.FromArgb(241, 245, 249)
+        pnlContactSep.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         pnlContactSep.Location = New Point(20, 44)
         pnlContactSep.Name = "pnlContactSep"
         pnlContactSep.Size = New Size(412, 1)
@@ -778,17 +778,17 @@ Partial Class StudentProfileForm
         ' 
         lblContactTitle.AutoSize = True
         lblContactTitle.Font = New Font("Segoe UI Semibold", 10.5F, FontStyle.Bold)
-        lblContactTitle.ForeColor = Color.FromArgb(15, 39, 74)
+        lblContactTitle.ForeColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         lblContactTitle.Location = New Point(44, 16)
         lblContactTitle.Name = "lblContactTitle"
-        lblContactTitle.Size = New Size(135, 19)
+        lblContactTitle.Size = New Size(136, 19)
         lblContactTitle.TabIndex = 1
         lblContactTitle.Text = "Contact Information"
         ' 
         ' lblContactIcon
         ' 
-        lblContactIcon.Font = New Font("Segoe UI", 11.0F)
-        lblContactIcon.ForeColor = Color.FromArgb(28, 91, 184)
+        lblContactIcon.Font = New Font("Segoe UI", 11F)
+        lblContactIcon.ForeColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         lblContactIcon.Location = New Point(18, 14)
         lblContactIcon.Name = "lblContactIcon"
         lblContactIcon.Size = New Size(24, 22)
@@ -811,32 +811,32 @@ Partial Class StudentProfileForm
         pnlAccountCard.Controls.Add(lblAccountTitle)
         pnlAccountCard.Controls.Add(lblAccountIcon)
         pnlAccountCard.Dock = DockStyle.Fill
-        pnlAccountCard.Location = New Point(472, 302)
+        pnlAccountCard.Location = New Point(463, 302)
         pnlAccountCard.Margin = New Padding(10, 0, 0, 16)
         pnlAccountCard.Name = "pnlAccountCard"
         pnlAccountCard.Padding = New Padding(20, 16, 20, 18)
-        pnlAccountCard.Size = New Size(452, 286)
+        pnlAccountCard.Size = New Size(444, 286)
         pnlAccountCard.TabIndex = 3
         ' 
         ' lblAccountCreatedVal
         ' 
         lblAccountCreatedVal.AutoSize = True
         lblAccountCreatedVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAccountCreatedVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAccountCreatedVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAccountCreatedVal.Location = New Point(170, 164)
         lblAccountCreatedVal.Name = "lblAccountCreatedVal"
-        lblAccountCreatedVal.Size = New Size(166, 17)
+        lblAccountCreatedVal.Size = New Size(179, 17)
         lblAccountCreatedVal.TabIndex = 10
         lblAccountCreatedVal.Text = "September 26, 2025 3:45 PM"
         ' 
         ' lblAccountCreatedTitle
         ' 
         lblAccountCreatedTitle.AutoSize = True
-        lblAccountCreatedTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAccountCreatedTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAccountCreatedTitle.Font = New Font("Segoe UI", 9F)
+        lblAccountCreatedTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAccountCreatedTitle.Location = New Point(20, 165)
         lblAccountCreatedTitle.Name = "lblAccountCreatedTitle"
-        lblAccountCreatedTitle.Size = New Size(62, 15)
+        lblAccountCreatedTitle.Size = New Size(61, 15)
         lblAccountCreatedTitle.TabIndex = 9
         lblAccountCreatedTitle.Text = "Last Login"
         ' 
@@ -844,18 +844,18 @@ Partial Class StudentProfileForm
         ' 
         lblAccountStatusBadge.AutoSize = True
         lblAccountStatusBadge.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAccountStatusBadge.ForeColor = Color.FromArgb(22, 101, 52)
+        lblAccountStatusBadge.ForeColor = Color.FromArgb(CByte(22), CByte(101), CByte(52))
         lblAccountStatusBadge.Location = New Point(170, 128)
         lblAccountStatusBadge.Name = "lblAccountStatusBadge"
-        lblAccountStatusBadge.Size = New Size(44, 17)
+        lblAccountStatusBadge.Size = New Size(45, 17)
         lblAccountStatusBadge.TabIndex = 8
         lblAccountStatusBadge.Text = "Active"
         ' 
         ' lblAccountStatusTitle
         ' 
         lblAccountStatusTitle.AutoSize = True
-        lblAccountStatusTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAccountStatusTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAccountStatusTitle.Font = New Font("Segoe UI", 9F)
+        lblAccountStatusTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAccountStatusTitle.Location = New Point(20, 129)
         lblAccountStatusTitle.Name = "lblAccountStatusTitle"
         lblAccountStatusTitle.Size = New Size(87, 15)
@@ -864,12 +864,12 @@ Partial Class StudentProfileForm
         ' 
         ' btnChangePassword
         ' 
-        btnChangePassword.BackColor = Color.FromArgb(235, 243, 252)
+        btnChangePassword.BackColor = Color.FromArgb(CByte(235), CByte(243), CByte(252))
         btnChangePassword.Cursor = Cursors.Hand
-        btnChangePassword.FlatAppearance.BorderColor = Color.FromArgb(191, 219, 254)
+        btnChangePassword.FlatAppearance.BorderColor = Color.FromArgb(CByte(191), CByte(219), CByte(254))
         btnChangePassword.FlatStyle = FlatStyle.Flat
         btnChangePassword.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        btnChangePassword.ForeColor = Color.FromArgb(28, 91, 184)
+        btnChangePassword.ForeColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         btnChangePassword.Location = New Point(280, 88)
         btnChangePassword.Name = "btnChangePassword"
         btnChangePassword.Size = New Size(125, 26)
@@ -881,18 +881,18 @@ Partial Class StudentProfileForm
         ' 
         lblAccountPasswordVal.AutoSize = True
         lblAccountPasswordVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAccountPasswordVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAccountPasswordVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAccountPasswordVal.Location = New Point(170, 93)
         lblAccountPasswordVal.Name = "lblAccountPasswordVal"
-        lblAccountPasswordVal.Size = New Size(78, 17)
+        lblAccountPasswordVal.Size = New Size(80, 17)
         lblAccountPasswordVal.TabIndex = 5
         lblAccountPasswordVal.Text = "************"
         ' 
         ' lblAccountPasswordTitle
         ' 
         lblAccountPasswordTitle.AutoSize = True
-        lblAccountPasswordTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAccountPasswordTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAccountPasswordTitle.Font = New Font("Segoe UI", 9F)
+        lblAccountPasswordTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAccountPasswordTitle.Location = New Point(20, 94)
         lblAccountPasswordTitle.Name = "lblAccountPasswordTitle"
         lblAccountPasswordTitle.Size = New Size(57, 15)
@@ -903,18 +903,18 @@ Partial Class StudentProfileForm
         ' 
         lblAccountUsernameVal.AutoSize = True
         lblAccountUsernameVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblAccountUsernameVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblAccountUsernameVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblAccountUsernameVal.Location = New Point(170, 58)
         lblAccountUsernameVal.Name = "lblAccountUsernameVal"
-        lblAccountUsernameVal.Size = New Size(52, 17)
+        lblAccountUsernameVal.Size = New Size(53, 17)
         lblAccountUsernameVal.TabIndex = 3
         lblAccountUsernameVal.Text = "juan123"
         ' 
         ' lblAccountUsernameTitle
         ' 
         lblAccountUsernameTitle.AutoSize = True
-        lblAccountUsernameTitle.Font = New Font("Segoe UI", 9.0F)
-        lblAccountUsernameTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblAccountUsernameTitle.Font = New Font("Segoe UI", 9F)
+        lblAccountUsernameTitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblAccountUsernameTitle.Location = New Point(20, 59)
         lblAccountUsernameTitle.Name = "lblAccountUsernameTitle"
         lblAccountUsernameTitle.Size = New Size(60, 15)
@@ -923,7 +923,7 @@ Partial Class StudentProfileForm
         ' 
         ' pnlAccountSep
         ' 
-        pnlAccountSep.BackColor = Color.FromArgb(241, 245, 249)
+        pnlAccountSep.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         pnlAccountSep.Location = New Point(20, 44)
         pnlAccountSep.Name = "pnlAccountSep"
         pnlAccountSep.Size = New Size(412, 1)
@@ -933,17 +933,17 @@ Partial Class StudentProfileForm
         ' 
         lblAccountTitle.AutoSize = True
         lblAccountTitle.Font = New Font("Segoe UI Semibold", 10.5F, FontStyle.Bold)
-        lblAccountTitle.ForeColor = Color.FromArgb(15, 39, 74)
+        lblAccountTitle.ForeColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         lblAccountTitle.Location = New Point(44, 16)
         lblAccountTitle.Name = "lblAccountTitle"
-        lblAccountTitle.Size = New Size(137, 19)
+        lblAccountTitle.Size = New Size(139, 19)
         lblAccountTitle.TabIndex = 1
         lblAccountTitle.Text = "Account Information"
         ' 
         ' lblAccountIcon
         ' 
-        lblAccountIcon.Font = New Font("Segoe UI", 11.0F)
-        lblAccountIcon.ForeColor = Color.FromArgb(28, 91, 184)
+        lblAccountIcon.Font = New Font("Segoe UI", 11F)
+        lblAccountIcon.ForeColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         lblAccountIcon.Location = New Point(18, 14)
         lblAccountIcon.Name = "lblAccountIcon"
         lblAccountIcon.Size = New Size(24, 22)
@@ -955,7 +955,7 @@ Partial Class StudentProfileForm
         pnlSpacer.Dock = DockStyle.Top
         pnlSpacer.Location = New Point(28, 130)
         pnlSpacer.Name = "pnlSpacer"
-        pnlSpacer.Size = New Size(924, 16)
+        pnlSpacer.Size = New Size(907, 16)
         pnlSpacer.TabIndex = 1
         ' 
         ' pnlSummaryCard
@@ -973,19 +973,19 @@ Partial Class StudentProfileForm
         pnlSummaryCard.Location = New Point(28, 8)
         pnlSummaryCard.Name = "pnlSummaryCard"
         pnlSummaryCard.Padding = New Padding(20, 16, 20, 16)
-        pnlSummaryCard.Size = New Size(924, 122)
+        pnlSummaryCard.Size = New Size(907, 122)
         pnlSummaryCard.TabIndex = 0
         ' 
         ' btnEditProfile
         ' 
         btnEditProfile.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnEditProfile.BackColor = Color.FromArgb(28, 91, 184)
+        btnEditProfile.BackColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         btnEditProfile.Cursor = Cursors.Hand
         btnEditProfile.FlatAppearance.BorderSize = 0
         btnEditProfile.FlatStyle = FlatStyle.Flat
         btnEditProfile.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnEditProfile.ForeColor = Color.White
-        btnEditProfile.Location = New Point(684, 20)
+        btnEditProfile.Location = New Point(667, 20)
         btnEditProfile.Name = "btnEditProfile"
         btnEditProfile.Size = New Size(220, 36)
         btnEditProfile.TabIndex = 7
@@ -995,11 +995,11 @@ Partial Class StudentProfileForm
         ' lblCollege
         ' 
         lblCollege.AutoSize = True
-        lblCollege.Font = New Font("Segoe UI", 9.0F)
-        lblCollege.ForeColor = Color.FromArgb(100, 116, 139)
+        lblCollege.Font = New Font("Segoe UI", 9F)
+        lblCollege.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblCollege.Location = New Point(122, 90)
         lblCollege.Name = "lblCollege"
-        lblCollege.Size = New Size(155, 15)
+        lblCollege.Size = New Size(159, 15)
         lblCollege.TabIndex = 6
         lblCollege.Text = "College of Computer Studies"
         ' 
@@ -1007,23 +1007,23 @@ Partial Class StudentProfileForm
         ' 
         lblCourseFull.AutoSize = True
         lblCourseFull.Font = New Font("Segoe UI", 9.5F)
-        lblCourseFull.ForeColor = Color.FromArgb(51, 65, 85)
+        lblCourseFull.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblCourseFull.Location = New Point(122, 69)
         lblCourseFull.Name = "lblCourseFull"
-        lblCourseFull.Size = New Size(160, 17)
+        lblCourseFull.Size = New Size(163, 17)
         lblCourseFull.TabIndex = 5
         lblCourseFull.Text = "BS Information Technology"
         ' 
         ' lblStatusBadge
         ' 
         lblStatusBadge.AutoSize = True
-        lblStatusBadge.BackColor = Color.FromArgb(220, 252, 231)
-        lblStatusBadge.Font = New Font("Segoe UI Semibold", 8.0F, FontStyle.Bold)
-        lblStatusBadge.ForeColor = Color.FromArgb(22, 101, 52)
+        lblStatusBadge.BackColor = Color.FromArgb(CByte(220), CByte(252), CByte(231))
+        lblStatusBadge.Font = New Font("Segoe UI Semibold", 8F, FontStyle.Bold)
+        lblStatusBadge.ForeColor = Color.FromArgb(CByte(22), CByte(101), CByte(52))
         lblStatusBadge.Location = New Point(286, 47)
         lblStatusBadge.Name = "lblStatusBadge"
         lblStatusBadge.Padding = New Padding(6, 2, 6, 2)
-        lblStatusBadge.Size = New Size(49, 17)
+        lblStatusBadge.Size = New Size(50, 17)
         lblStatusBadge.TabIndex = 4
         lblStatusBadge.Text = "Active"
         ' 
@@ -1031,10 +1031,10 @@ Partial Class StudentProfileForm
         ' 
         lblStudentNoVal.AutoSize = True
         lblStudentNoVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        lblStudentNoVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStudentNoVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblStudentNoVal.Location = New Point(216, 47)
         lblStudentNoVal.Name = "lblStudentNoVal"
-        lblStudentNoVal.Size = New Size(62, 17)
+        lblStudentNoVal.Size = New Size(53, 17)
         lblStudentNoVal.TabIndex = 3
         lblStudentNoVal.Text = "1237-24"
         ' 
@@ -1042,21 +1042,21 @@ Partial Class StudentProfileForm
         ' 
         lblStudentNoLabel.AutoSize = True
         lblStudentNoLabel.Font = New Font("Segoe UI", 9.5F)
-        lblStudentNoLabel.ForeColor = Color.FromArgb(71, 85, 105)
+        lblStudentNoLabel.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
         lblStudentNoLabel.Location = New Point(122, 47)
         lblStudentNoLabel.Name = "lblStudentNoLabel"
-        lblStudentNoLabel.Size = New Size(94, 17)
+        lblStudentNoLabel.Size = New Size(107, 17)
         lblStudentNoLabel.TabIndex = 2
         lblStudentNoLabel.Text = "Student Number:"
         ' 
         ' lblStudentName
         ' 
         lblStudentName.AutoSize = True
-        lblStudentName.Font = New Font("Segoe UI Bold", 15.0F, FontStyle.Bold)
-        lblStudentName.ForeColor = Color.FromArgb(15, 39, 74)
+        lblStudentName.Font = New Font("Microsoft Sans Serif", 15F, FontStyle.Bold)
+        lblStudentName.ForeColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         lblStudentName.Location = New Point(120, 16)
         lblStudentName.Name = "lblStudentName"
-        lblStudentName.Size = New Size(149, 28)
+        lblStudentName.Size = New Size(162, 25)
         lblStudentName.TabIndex = 1
         lblStudentName.Text = "Juan Dela Cruz"
         ' 
@@ -1084,21 +1084,21 @@ Partial Class StudentProfileForm
         ' 
         lblSubHeader.AutoSize = True
         lblSubHeader.Font = New Font("Segoe UI", 9.5F)
-        lblSubHeader.ForeColor = Color.FromArgb(100, 116, 139)
+        lblSubHeader.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSubHeader.Location = New Point(28, 41)
         lblSubHeader.Name = "lblSubHeader"
-        lblSubHeader.Size = New Size(393, 17)
+        lblSubHeader.Size = New Size(444, 17)
         lblSubHeader.TabIndex = 1
         lblSubHeader.Text = "View your personal information, academic details, and contact information."
         ' 
         ' lblHeaderTitle
         ' 
         lblHeaderTitle.AutoSize = True
-        lblHeaderTitle.Font = New Font("Segoe UI Bold", 18.0F, FontStyle.Bold)
-        lblHeaderTitle.ForeColor = Color.FromArgb(15, 39, 74)
+        lblHeaderTitle.Font = New Font("Microsoft Sans Serif", 18F, FontStyle.Bold)
+        lblHeaderTitle.ForeColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         lblHeaderTitle.Location = New Point(26, 9)
         lblHeaderTitle.Name = "lblHeaderTitle"
-        lblHeaderTitle.Size = New Size(130, 32)
+        lblHeaderTitle.Size = New Size(130, 29)
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "My Profile"
         ' 
@@ -1106,11 +1106,11 @@ Partial Class StudentProfileForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        BackColor = Color.FromArgb(248, 250, 252)
+        BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
         ClientSize = New Size(1200, 780)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
-        Font = New Font("Segoe UI", 9.0F)
+        Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(900, 600)
         Name = "StudentProfileForm"
         StartPosition = FormStartPosition.CenterScreen

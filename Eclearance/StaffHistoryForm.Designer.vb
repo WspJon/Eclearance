@@ -17,13 +17,10 @@ Partial Class StaffHistoryForm
 
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As DataGridViewCellStyle = New DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim centeredHeaderStyle As New DataGridViewCellStyle()
-        Dim wrappedCellStyle As New DataGridViewCellStyle()
-        centeredHeaderStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-        wrappedCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        wrappedCellStyle.WrapMode = DataGridViewTriState.True
+        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         btnNavLogout = New Button()
         btnNavHistory = New Button()
@@ -227,7 +224,7 @@ Partial Class StaffHistoryForm
         lblLogoSub.AutoSize = True
         lblLogoSub.Font = New Font("Segoe UI", 7.5F)
         lblLogoSub.ForeColor = Color.FromArgb(CByte(140), CByte(168), CByte(205))
-        lblLogoSub.Location = New Point(50, 38)
+        lblLogoSub.Location = New Point(48, 44)
         lblLogoSub.Name = "lblLogoSub"
         lblLogoSub.Size = New Size(118, 12)
         lblLogoSub.TabIndex = 2
@@ -236,19 +233,19 @@ Partial Class StaffHistoryForm
         ' lblLogoTitle
         ' 
         lblLogoTitle.AutoSize = True
-        lblLogoTitle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        lblLogoTitle.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
         lblLogoTitle.ForeColor = Color.White
         lblLogoTitle.Location = New Point(48, 16)
         lblLogoTitle.Name = "lblLogoTitle"
-        lblLogoTitle.Size = New Size(94, 21)
+        lblLogoTitle.Size = New Size(115, 28)
         lblLogoTitle.TabIndex = 1
         lblLogoTitle.Text = "EClearance"
         ' 
         ' picSchoolLogo
         ' 
-        picSchoolLogo.Location = New Point(12, 16)
+        picSchoolLogo.Location = New Point(3, 16)
         picSchoolLogo.Name = "picSchoolLogo"
-        picSchoolLogo.Size = New Size(32, 32)
+        picSchoolLogo.Size = New Size(43, 40)
         picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
         picSchoolLogo.TabIndex = 0
         picSchoolLogo.TabStop = False
@@ -323,10 +320,10 @@ Partial Class StaffHistoryForm
         ' lblDetailRemarksVal
         ' 
         lblDetailRemarksVal.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailRemarksVal.AutoEllipsis = True
         lblDetailRemarksVal.Font = New Font("Segoe UI", 8F)
         lblDetailRemarksVal.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblDetailRemarksVal.Location = New Point(16, 300)
-        lblDetailRemarksVal.AutoEllipsis = True
         lblDetailRemarksVal.Name = "lblDetailRemarksVal"
         lblDetailRemarksVal.Size = New Size(238, 146)
         lblDetailRemarksVal.TabIndex = 19
@@ -345,12 +342,11 @@ Partial Class StaffHistoryForm
         ' 
         ' lblDetailStatusVal
         ' 
-        lblDetailStatusVal.AutoSize = False
+        lblDetailStatusVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailStatusVal.AutoEllipsis = True
         lblDetailStatusVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         lblDetailStatusVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailStatusVal.Location = New Point(110, 250)
-        lblDetailStatusVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        lblDetailStatusVal.AutoEllipsis = True
         lblDetailStatusVal.Name = "lblDetailStatusVal"
         lblDetailStatusVal.Size = New Size(144, 22)
         lblDetailStatusVal.TabIndex = 17
@@ -369,12 +365,11 @@ Partial Class StaffHistoryForm
         ' 
         ' lblDetailActionVal
         ' 
-        lblDetailActionVal.AutoSize = False
+        lblDetailActionVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailActionVal.AutoEllipsis = True
         lblDetailActionVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         lblDetailActionVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailActionVal.Location = New Point(110, 224)
-        lblDetailActionVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        lblDetailActionVal.AutoEllipsis = True
         lblDetailActionVal.Name = "lblDetailActionVal"
         lblDetailActionVal.Size = New Size(144, 22)
         lblDetailActionVal.TabIndex = 15
@@ -393,12 +388,11 @@ Partial Class StaffHistoryForm
         ' 
         ' lblDetailDateVal
         ' 
-        lblDetailDateVal.AutoSize = False
+        lblDetailDateVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailDateVal.AutoEllipsis = True
         lblDetailDateVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         lblDetailDateVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailDateVal.Location = New Point(110, 198)
-        lblDetailDateVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        lblDetailDateVal.AutoEllipsis = True
         lblDetailDateVal.Name = "lblDetailDateVal"
         lblDetailDateVal.Size = New Size(144, 22)
         lblDetailDateVal.TabIndex = 13
@@ -439,12 +433,11 @@ Partial Class StaffHistoryForm
         ' 
         ' lblDetailYearVal
         ' 
-        lblDetailYearVal.AutoSize = False
+        lblDetailYearVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailYearVal.AutoEllipsis = True
         lblDetailYearVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         lblDetailYearVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailYearVal.Location = New Point(110, 140)
-        lblDetailYearVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        lblDetailYearVal.AutoEllipsis = True
         lblDetailYearVal.Name = "lblDetailYearVal"
         lblDetailYearVal.Size = New Size(144, 22)
         lblDetailYearVal.TabIndex = 9
@@ -507,12 +500,11 @@ Partial Class StaffHistoryForm
         ' 
         ' lblDetailStudentNoVal
         ' 
-        lblDetailStudentNoVal.AutoSize = False
+        lblDetailStudentNoVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblDetailStudentNoVal.AutoEllipsis = True
         lblDetailStudentNoVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         lblDetailStudentNoVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailStudentNoVal.Location = New Point(110, 50)
-        lblDetailStudentNoVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        lblDetailStudentNoVal.AutoEllipsis = True
         lblDetailStudentNoVal.Name = "lblDetailStudentNoVal"
         lblDetailStudentNoVal.Size = New Size(144, 22)
         lblDetailStudentNoVal.TabIndex = 3
@@ -587,19 +579,18 @@ Partial Class StaffHistoryForm
         dgvHistory.ColumnHeadersHeight = 42
         dgvHistory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         dgvHistory.Columns.AddRange(New DataGridViewColumn() {colNum, colHistoryID, colRecordID, colDate, colStudentNo, colStudentName, colRequirement, colActionTaken, colStatus, colRemarks})
-        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = Color.White
-        DataGridViewCellStyle3.Font = New Font("Segoe UI", 8.5F)
-        DataGridViewCellStyle3.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(CByte(239), CByte(246), CByte(255))
-        DataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
-        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.False
-        dgvHistory.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = Color.White
+        DataGridViewCellStyle5.Font = New Font("Segoe UI", 8.5F)
+        DataGridViewCellStyle5.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(CByte(239), CByte(246), CByte(255))
+        DataGridViewCellStyle5.SelectionForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
+        DataGridViewCellStyle5.WrapMode = DataGridViewTriState.False
+        dgvHistory.DefaultCellStyle = DataGridViewCellStyle5
         dgvHistory.EnableHeadersVisualStyles = False
         dgvHistory.GridColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         dgvHistory.Location = New Point(16, 52)
         dgvHistory.MultiSelect = False
-        dgvHistory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None
         dgvHistory.Name = "dgvHistory"
         dgvHistory.ReadOnly = True
         dgvHistory.RowHeadersVisible = False
@@ -610,16 +601,16 @@ Partial Class StaffHistoryForm
         ' 
         ' colNum
         ' 
-        colNum.HeaderText = "#"
         colNum.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        colNum.Width = 36
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter
+        colNum.DefaultCellStyle = DataGridViewCellStyle2
+        colNum.HeaderText = "#"
         colNum.MinimumWidth = 36
-        colNum.Resizable = DataGridViewTriState.False
-        colNum.SortMode = DataGridViewColumnSortMode.NotSortable
-        colNum.HeaderCell.Style = centeredHeaderStyle
-        colNum.DefaultCellStyle = centeredHeaderStyle
         colNum.Name = "colNum"
         colNum.ReadOnly = True
+        colNum.Resizable = DataGridViewTriState.False
+        colNum.SortMode = DataGridViewColumnSortMode.NotSortable
+        colNum.Width = 36
         ' 
         ' colHistoryID
         ' 
@@ -637,93 +628,93 @@ Partial Class StaffHistoryForm
         ' 
         ' colDate
         ' 
-        colDate.HeaderText = "Date"
         colDate.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        colDate.Width = 114
+        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.True
+        colDate.DefaultCellStyle = DataGridViewCellStyle3
+        colDate.HeaderText = "Date"
         colDate.MinimumWidth = 114
-        colDate.Resizable = DataGridViewTriState.False
-        colDate.DefaultCellStyle = wrappedCellStyle
         colDate.Name = "colDate"
         colDate.ReadOnly = True
+        colDate.Resizable = DataGridViewTriState.False
+        colDate.Width = 114
         ' 
         ' colStudentNo
         ' 
-        colStudentNo.HeaderText = "Student No."
         colStudentNo.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        colStudentNo.Width = 86
+        colStudentNo.HeaderText = "Student No."
         colStudentNo.MinimumWidth = 86
-        colStudentNo.Resizable = DataGridViewTriState.False
         colStudentNo.Name = "colStudentNo"
         colStudentNo.ReadOnly = True
+        colStudentNo.Resizable = DataGridViewTriState.False
+        colStudentNo.Width = 86
         ' 
         ' colStudentName
         ' 
-        colStudentName.HeaderText = "Student Name"
         colStudentName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        colStudentName.FillWeight = 22.0F
+        colStudentName.DefaultCellStyle = DataGridViewCellStyle3
+        colStudentName.FillWeight = 22F
+        colStudentName.HeaderText = "Student Name"
         colStudentName.MinimumWidth = 86
-        colStudentName.DefaultCellStyle = wrappedCellStyle
         colStudentName.Name = "colStudentName"
         colStudentName.ReadOnly = True
         ' 
         ' colRequirement
         ' 
-        colRequirement.HeaderText = "Requirement"
         colRequirement.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        colRequirement.FillWeight = 26.0F
+        colRequirement.DefaultCellStyle = DataGridViewCellStyle3
+        colRequirement.FillWeight = 26F
+        colRequirement.HeaderText = "Requirement"
         colRequirement.MinimumWidth = 94
-        colRequirement.DefaultCellStyle = wrappedCellStyle
         colRequirement.Name = "colRequirement"
         colRequirement.ReadOnly = True
         ' 
         ' colActionTaken
         ' 
-        colActionTaken.HeaderText = "Action Taken"
         colActionTaken.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        colActionTaken.FillWeight = 22.0F
+        colActionTaken.DefaultCellStyle = DataGridViewCellStyle3
+        colActionTaken.FillWeight = 22F
+        colActionTaken.HeaderText = "Action Taken"
         colActionTaken.MinimumWidth = 86
-        colActionTaken.DefaultCellStyle = wrappedCellStyle
         colActionTaken.Name = "colActionTaken"
         colActionTaken.ReadOnly = True
         ' 
         ' colStatus
         ' 
-        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-        colStatus.DefaultCellStyle = DataGridViewCellStyle2
-        colStatus.HeaderText = "Status"
         colStatus.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        colStatus.Width = 94
+        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle4.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        colStatus.DefaultCellStyle = DataGridViewCellStyle4
+        colStatus.HeaderText = "Status"
         colStatus.MinimumWidth = 94
-        colStatus.Resizable = DataGridViewTriState.False
-        colStatus.SortMode = DataGridViewColumnSortMode.NotSortable
-        colStatus.HeaderCell.Style = centeredHeaderStyle
         colStatus.Name = "colStatus"
         colStatus.ReadOnly = True
+        colStatus.Resizable = DataGridViewTriState.False
+        colStatus.SortMode = DataGridViewColumnSortMode.NotSortable
+        colStatus.Width = 94
         ' 
         ' colRemarks
         ' 
-        colRemarks.HeaderText = "Remarks"
         colRemarks.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        colRemarks.FillWeight = 30.0F
+        colRemarks.DefaultCellStyle = DataGridViewCellStyle3
+        colRemarks.FillWeight = 30F
+        colRemarks.HeaderText = "Remarks"
         colRemarks.MinimumWidth = 94
-        colRemarks.DefaultCellStyle = wrappedCellStyle
         colRemarks.Name = "colRemarks"
         colRemarks.ReadOnly = True
         ' 
         ' lblRecordCount
         ' 
         lblRecordCount.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        lblRecordCount.AutoSize = False
+        lblRecordCount.AutoEllipsis = True
         lblRecordCount.Font = New Font("Segoe UI", 8.5F)
         lblRecordCount.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblRecordCount.Location = New Point(284, 14)
-        lblRecordCount.AutoEllipsis = True
-        lblRecordCount.TextAlign = ContentAlignment.MiddleRight
         lblRecordCount.Name = "lblRecordCount"
         lblRecordCount.Size = New Size(332, 24)
         lblRecordCount.TabIndex = 2
         lblRecordCount.Text = "Showing 0 of 0 records"
+        lblRecordCount.TextAlign = ContentAlignment.MiddleRight
         ' 
         ' lblTableTitle
         ' 

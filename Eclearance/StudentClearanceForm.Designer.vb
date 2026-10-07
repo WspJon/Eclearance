@@ -264,7 +264,7 @@ Partial Class StudentClearanceForm
         lblLogoSubtitle.AutoSize = True
         lblLogoSubtitle.Font = New Font("Segoe UI", 8.5F)
         lblLogoSubtitle.ForeColor = Color.FromArgb(CByte(148), CByte(163), CByte(184))
-        lblLogoSubtitle.Location = New Point(50, 38)
+        lblLogoSubtitle.Location = New Point(50, 44)
         lblLogoSubtitle.Name = "lblLogoSubtitle"
         lblLogoSubtitle.Size = New Size(82, 15)
         lblLogoSubtitle.TabIndex = 1
@@ -272,9 +272,9 @@ Partial Class StudentClearanceForm
         ' 
         ' picSchoolLogo
         ' 
-        picSchoolLogo.Location = New Point(12, 16)
+        picSchoolLogo.Location = New Point(3, 16)
         picSchoolLogo.Name = "picSchoolLogo"
-        picSchoolLogo.Size = New Size(32, 32)
+        picSchoolLogo.Size = New Size(43, 43)
         picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
         picSchoolLogo.TabIndex = 0
         picSchoolLogo.TabStop = False
@@ -282,11 +282,11 @@ Partial Class StudentClearanceForm
         ' lblLogoTitle
         ' 
         lblLogoTitle.AutoSize = True
-        lblLogoTitle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        lblLogoTitle.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
         lblLogoTitle.ForeColor = Color.White
-        lblLogoTitle.Location = New Point(50, 15)
+        lblLogoTitle.Location = New Point(50, 14)
         lblLogoTitle.Name = "lblLogoTitle"
-        lblLogoTitle.Size = New Size(94, 21)
+        lblLogoTitle.Size = New Size(115, 28)
         lblLogoTitle.TabIndex = 0
         lblLogoTitle.Text = "EClearance"
         ' 

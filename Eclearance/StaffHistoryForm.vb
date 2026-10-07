@@ -80,10 +80,10 @@ Public Class StaffHistoryForm
             queryBuilder.Append("h.HistoryID, ")
             queryBuilder.Append("h.RecordID, ")
             queryBuilder.Append("h.ActionAt, ")
-            queryBuilder.Append("COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, ")
+            queryBuilder.Append("COALESCE(s.StudentNo, '') AS StudentNo, ")
             queryBuilder.Append("u.FullName AS StudentName, ")
-            queryBuilder.Append("COALESCE(s.Course, u.Course, 'N/A') AS Course, ")
-            queryBuilder.Append("COALESCE(s.YearLevel, u.YearLevel, 'N/A') AS YearLevel, ")
+            queryBuilder.Append("COALESCE(s.Course, 'N/A') AS Course, ")
+            queryBuilder.Append("COALESCE(s.YearLevel, 'N/A') AS YearLevel, ")
             queryBuilder.Append("req.RequirementName, ")
             queryBuilder.Append("h.ActionType, ")
             queryBuilder.Append("h.NewStatus, ")
@@ -99,7 +99,7 @@ Public Class StaffHistoryForm
 
             Dim searchText As String = txtSearch.Text.Trim()
             If Not String.IsNullOrEmpty(searchText) Then
-                queryBuilder.Append("AND (u.FullName LIKE @Search OR COALESCE(s.StudentNo, u.StudentNo) LIKE @Search OR req.RequirementName LIKE @Search) ")
+                queryBuilder.Append("AND (u.FullName LIKE @Search OR s.StudentNo LIKE @Search OR req.RequirementName LIKE @Search) ")
                 params.Add("@Search", "%" & searchText & "%")
             End If
 

@@ -47,7 +47,7 @@ Public Class AdminStudentsForm
 
             Try
                 Dim dtUsers As DataTable = db.ExecuteQuery(
-                    "SELECT DISTINCT Course FROM Users WHERE Role = 'Student' AND Course IS NOT NULL AND Course <> '' ORDER BY Course ASC;"
+                    "SELECT DISTINCT Course FROM Students WHERE Course IS NOT NULL AND Course <> '' ORDER BY Course ASC;"
                 )
                 For Each r As DataRow In dtUsers.Rows
                     Dim cName As String = If(IsDBNull(r("Course")), "", r("Course").ToString().Trim())
@@ -107,7 +107,7 @@ Public Class AdminStudentsForm
                 Next
 
                 Dim dtUserSec As DataTable = db.ExecuteQuery(
-                    "SELECT DISTINCT COALESCE(s.Section, u.Section) AS Section FROM Users u LEFT JOIN Students s ON s.UserID = u.UserID WHERE u.Role = 'Student' AND COALESCE(s.Section, u.Section) IS NOT NULL AND COALESCE(s.Section, u.Section) <> '' ORDER BY Section ASC;"
+                    "SELECT DISTINCT s.Section FROM Students s INNER JOIN Users u ON s.UserID = u.UserID WHERE u.Role = 'Student' AND s.Section IS NOT NULL AND s.Section <> '' ORDER BY s.Section ASC;"
                 )
                 For Each r As DataRow In dtUserSec.Rows
                     Dim sName As String = If(IsDBNull(r("Section")), "", r("Section").ToString().Trim())
@@ -128,7 +128,7 @@ Public Class AdminStudentsForm
                 Next
 
                 Dim dtUserSec As DataTable = db.ExecuteQuery(
-                    "SELECT DISTINCT COALESCE(s.Section, u.Section) AS Section FROM Users u LEFT JOIN Students s ON s.UserID = u.UserID WHERE u.Role = 'Student' AND COALESCE(s.Course, u.Course) = @Course AND COALESCE(s.Section, u.Section) IS NOT NULL AND COALESCE(s.Section, u.Section) <> '' ORDER BY Section ASC;",
+                    "SELECT DISTINCT s.Section FROM Students s INNER JOIN Users u ON s.UserID = u.UserID WHERE u.Role = 'Student' AND s.Course = @Course AND s.Section IS NOT NULL AND s.Section <> '' ORDER BY s.Section ASC;",
                     New Dictionary(Of String, Object) From {{"@Course", selectedCourse}}
                 )
                 For Each r As DataRow In dtUserSec.Rows
@@ -260,13 +260,13 @@ Public Class AdminStudentsForm
             Dim query As String =
                 "SELECT " &
                 "  u.UserID, " &
-                "  COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
+                "  COALESCE(s.StudentNo, '') AS StudentNo, " &
                 "  u.FullName, " &
-                "  COALESCE(s.Course, u.Course, '') AS Course, " &
-                "  COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
-                "  COALESCE(s.Section, u.Section, '') AS Section " &
+                "  COALESCE(s.Course, '') AS Course, " &
+                "  COALESCE(s.YearLevel, '') AS YearLevel, " &
+                "  COALESCE(s.Section, '') AS Section " &
                 "FROM Users u " &
-                "LEFT JOIN Students s ON s.UserID = u.UserID " &
+                "INNER JOIN Students s ON s.UserID = u.UserID " &
                 "WHERE u.Role = 'Student' " &
                 "AND u.IsActive = 1 "
 
@@ -276,23 +276,23 @@ Public Class AdminStudentsForm
                 query &=
                     "AND (" &
                     "u.FullName LIKE @Search " &
-                    "OR COALESCE(s.StudentNo, u.StudentNo) LIKE @Search" &
+                    "OR s.StudentNo LIKE @Search" &
                     ") "
                 parameters.Add("@Search", "%" & searchText & "%")
             End If
 
             If Not String.IsNullOrWhiteSpace(selectedCourse) AndAlso Not selectedCourse.Equals("All Courses", StringComparison.OrdinalIgnoreCase) Then
-                query &= "AND COALESCE(s.Course, u.Course) = @Course "
+                query &= "AND s.Course = @Course "
                 parameters.Add("@Course", selectedCourse)
             End If
 
             If Not String.IsNullOrWhiteSpace(selectedYear) AndAlso Not selectedYear.Equals("All Year Levels", StringComparison.OrdinalIgnoreCase) Then
-                query &= "AND COALESCE(s.YearLevel, u.YearLevel) = @YearLevel "
+                query &= "AND s.YearLevel = @YearLevel "
                 parameters.Add("@YearLevel", selectedYear)
             End If
 
             If Not String.IsNullOrWhiteSpace(selectedSection) AndAlso Not selectedSection.Equals("All Sections", StringComparison.OrdinalIgnoreCase) Then
-                query &= "AND COALESCE(s.Section, u.Section) = @Section "
+                query &= "AND s.Section = @Section "
                 parameters.Add("@Section", selectedSection)
             End If
 

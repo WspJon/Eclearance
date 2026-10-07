@@ -431,12 +431,16 @@ Public Class ClearanceWorkflowHelper
             Next
 
             ' 2. Filter Step 6 (Dean offices): Keep ONLY the student's applicable Dean office requirement
+            ' Also completely hide CTHM Stock Room if it is not applicable to the student's program
             Dim filteredItems As New List(Of ClearanceItemInfo)()
             For Each item In result
                 If item.SequenceOrder = 6 Then
                     If item.IsApplicable Then
                         filteredItems.Add(item)
                     End If
+                ElseIf (item.DepartmentID = 8 OrElse item.RequirementName.IndexOf("CTHM Stock Room", StringComparison.OrdinalIgnoreCase) >= 0) AndAlso Not item.IsApplicable Then
+                    ' Non-applicable CTHM Stock Room is hidden from clearance list
+                    Continue For
                 Else
                     filteredItems.Add(item)
                 End If
@@ -542,8 +546,8 @@ Public Class ClearanceWorkflowHelper
         Try
             Dim dt = db.ExecuteQuery(
                 "SELECT cr.StudentID, cr.TermID, r.SequenceOrder, r.RequirementName, " &
-                "       COALESCE(s.Course, u.Course, '') AS Course, " &
-                "       COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel " &
+                "       COALESCE(s.Course, '') AS Course, " &
+                "       COALESCE(s.YearLevel, '') AS YearLevel " &
                 "FROM ClearanceRecords cr " &
                 "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
                 "INNER JOIN Users u ON cr.StudentID = u.UserID " &

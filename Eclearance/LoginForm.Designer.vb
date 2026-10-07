@@ -22,10 +22,8 @@ Partial Class LoginForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        pnlLeftHero = New Panel()
-        pnlHeroDivider = New Panel()
-        lblHeroTitle = New Label()
-        picSchoolLogo = New PictureBox()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(LoginForm))
+        PicSchoolLogo = New PictureBox()
         pnlRightLogin = New Panel()
         pnlLoginCard = New Panel()
         btnSignIn = New Button()
@@ -36,52 +34,23 @@ Partial Class LoginForm
         lblUsername = New Label()
         lblWelcomeSub = New Label()
         lblWelcomeTitle = New Label()
-        pnlLeftHero.SuspendLayout()
-        CType(picSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
+        pnlLeftHero = New Panel()
+        CType(PicSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
         pnlRightLogin.SuspendLayout()
         pnlLoginCard.SuspendLayout()
+        pnlLeftHero.SuspendLayout()
         SuspendLayout()
         ' 
-        ' pnlLeftHero
+        ' PicSchoolLogo
         ' 
-        pnlLeftHero.BackColor = Color.FromArgb(CByte(11), CByte(44), CByte(99))
-        pnlLeftHero.Controls.Add(pnlHeroDivider)
-        pnlLeftHero.Controls.Add(lblHeroTitle)
-        pnlLeftHero.Controls.Add(picSchoolLogo)
-        pnlLeftHero.Dock = DockStyle.Left
-        pnlLeftHero.Location = New Point(0, 0)
-        pnlLeftHero.Name = "pnlLeftHero"
-        pnlLeftHero.Padding = New Padding(50)
-        pnlLeftHero.Size = New Size(430, 650)
-        pnlLeftHero.TabIndex = 0
-        ' 
-        ' pnlHeroDivider
-        ' 
-        pnlHeroDivider.BackColor = Color.FromArgb(CByte(30), CByte(96), CByte(198))
-        pnlHeroDivider.Location = New Point(53, 357)
-        pnlHeroDivider.Name = "pnlHeroDivider"
-        pnlHeroDivider.Size = New Size(60, 4)
-        pnlHeroDivider.TabIndex = 3
-        ' 
-        ' lblHeroTitle
-        ' 
-        lblHeroTitle.AutoSize = True
-        lblHeroTitle.Font = New Font("Segoe UI", 26F, FontStyle.Bold)
-        lblHeroTitle.ForeColor = Color.White
-        lblHeroTitle.Location = New Point(50, 285)
-        lblHeroTitle.Name = "lblHeroTitle"
-        lblHeroTitle.Size = New Size(199, 47)
-        lblHeroTitle.TabIndex = 1
-        lblHeroTitle.Text = "EClearance"
-        ' 
-        ' picSchoolLogo
-        ' 
-        picSchoolLogo.Location = New Point(53, 201)
-        picSchoolLogo.Name = "picSchoolLogo"
-        picSchoolLogo.Size = New Size(80, 80)
-        picSchoolLogo.SizeMode = PictureBoxSizeMode.Zoom
-        picSchoolLogo.TabIndex = 0
-        picSchoolLogo.TabStop = False
+        PicSchoolLogo.Dock = DockStyle.Fill
+        PicSchoolLogo.Image = CType(resources.GetObject("PicSchoolLogo.Image"), Image)
+        PicSchoolLogo.Location = New Point(0, 0)
+        PicSchoolLogo.Name = "PicSchoolLogo"
+        PicSchoolLogo.Size = New Size(430, 650)
+        PicSchoolLogo.SizeMode = PictureBoxSizeMode.StretchImage
+        PicSchoolLogo.TabIndex = 4
+        PicSchoolLogo.TabStop = False
         ' 
         ' pnlRightLogin
         ' 
@@ -204,6 +173,16 @@ Partial Class LoginForm
         lblWelcomeTitle.TabIndex = 0
         lblWelcomeTitle.Text = "Welcome"
         ' 
+        ' pnlLeftHero
+        ' 
+        pnlLeftHero.BackColor = Color.FromArgb(CByte(11), CByte(44), CByte(99))
+        pnlLeftHero.Controls.Add(PicSchoolLogo)
+        pnlLeftHero.Dock = DockStyle.Left
+        pnlLeftHero.Location = New Point(0, 0)
+        pnlLeftHero.Name = "pnlLeftHero"
+        pnlLeftHero.Size = New Size(510, 650)
+        pnlLeftHero.TabIndex = 0
+        ' 
         ' LoginForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -217,20 +196,14 @@ Partial Class LoginForm
         Name = "LoginForm"
         StartPosition = FormStartPosition.CenterScreen
         Text = "EClearance - Sign in"
-        pnlLeftHero.ResumeLayout(False)
-        pnlLeftHero.PerformLayout()
-        CType(picSchoolLogo, ComponentModel.ISupportInitialize).EndInit()
+        CType(PicSchoolLogo, ComponentModel.ISupportInitialize).EndInit()
         pnlRightLogin.ResumeLayout(False)
         pnlLoginCard.ResumeLayout(False)
         pnlLoginCard.PerformLayout()
+        pnlLeftHero.ResumeLayout(False)
         ResumeLayout(False)
     End Sub
-
-    Friend WithEvents pnlLeftHero As Panel
-    Friend WithEvents picSchoolLogo As PictureBox
-    Friend WithEvents lblHeroTitle As Label
     Friend WithEvents lblHeroSubtitle As Label
-    Friend WithEvents pnlHeroDivider As Panel
     Friend WithEvents lblHeroTagline As Label
     Friend WithEvents pnlRightLogin As Panel
     Friend WithEvents pnlLoginCard As Panel
@@ -242,5 +215,7 @@ Partial Class LoginForm
     Friend WithEvents txtPassword As TextBox
     Friend WithEvents chkShowPassword As CheckBox
     Friend WithEvents btnSignIn As Button
+    Friend WithEvents PicSchoolLogo As PictureBox
+    Friend WithEvents pnlLeftHero As Panel
 
 End Class

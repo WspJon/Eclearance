@@ -77,33 +77,38 @@ Public Class CreateStaffForm
 
             Dim deptID As Integer = officeDict(officeName)
 
-            Dim insertQuery As String =
-                "INSERT INTO Users (Username, Password, FullName, Role, DepartmentID, IsActive) " &
-                "VALUES (@Username, @Password, @FullName, 'Staff', @DepartmentID, 1);"
+            Using conn As MySqlConnection = db.GetConnection()
+                conn.Open()
+                Using transaction As MySqlTransaction = conn.BeginTransaction()
+                    Try
+                        Dim insertUserQuery As String =
+                            "INSERT INTO Users (Username, Password, FullName, Role, IsActive) " &
+                            "VALUES (@Username, @Password, @FullName, 'Staff', 1);"
 
-            Dim insertParams As New Dictionary(Of String, Object) From {
-                {"@Username", username},
-                {"@Password", password},
-                {"@FullName", fullName},
-                {"@DepartmentID", deptID}
-            }
+                        Dim newUserID As Integer = 0
+                        Using cmdUser As New MySqlCommand(insertUserQuery, conn, transaction)
+                            cmdUser.Parameters.AddWithValue("@Username", username)
+                            cmdUser.Parameters.AddWithValue("@Password", password)
+                            cmdUser.Parameters.AddWithValue("@FullName", fullName)
+                            cmdUser.ExecuteNonQuery()
+                            newUserID = Convert.ToInt32(cmdUser.LastInsertedId)
+                        End Using
 
-            db.ExecuteNonQuery(insertQuery, insertParams)
+                        Dim insertStaffQuery As String =
+                            "INSERT INTO Staff (UserID, DepartmentID, IsActive) VALUES (@UserID, @DeptID, 1);"
+                        Using cmdStaff As New MySqlCommand(insertStaffQuery, conn, transaction)
+                            cmdStaff.Parameters.AddWithValue("@UserID", newUserID)
+                            cmdStaff.Parameters.AddWithValue("@DeptID", deptID)
+                            cmdStaff.ExecuteNonQuery()
+                        End Using
 
-            ' Also insert into Staff table
-            Try
-                Dim newUserID As Integer = Convert.ToInt32(db.ExecuteScalar("SELECT LAST_INSERT_ID();"))
-                If newUserID > 0 Then
-                    db.ExecuteNonQuery(
-                        "INSERT INTO Staff (UserID, DepartmentID, IsActive) VALUES (@UserID, @DeptID, 1);",
-                        New Dictionary(Of String, Object) From {
-                            {"@UserID", newUserID},
-                            {"@DeptID", deptID}
-                        }
-                    )
-                End If
-            Catch
-            End Try
+                        transaction.Commit()
+                    Catch
+                        transaction.Rollback()
+                        Throw
+                    End Try
+                End Using
+            End Using
 
             MessageBox.Show(
                 "Staff account created successfully." & Environment.NewLine & Environment.NewLine &

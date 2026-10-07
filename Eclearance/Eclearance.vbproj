@@ -35,9 +35,7 @@
 
 	<ItemGroup>
 
-		<Compile Update="LoginForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="LoginForm.vb" />
 
 		<Compile Update="LoginForm.Designer.vb">
 			<DependentUpon>LoginForm.vb</DependentUpon>
@@ -52,6 +50,12 @@
 		<Compile Update="AdminStudentsForm.Designer.vb">
 			<DependentUpon>AdminStudentsForm.vb</DependentUpon>
 			<SubType>Code</SubType>
+		</Compile>
+
+		<Compile Update="My Project\Resources.Designer.vb">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
 
 
@@ -81,6 +85,16 @@
 
 		<Compile Update="CreateStaffForm.Designer.vb">
 			<DependentUpon>CreateStaffForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+
+		<Compile Update="EditStaffForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="EditStaffForm.Designer.vb">
+			<DependentUpon>EditStaffForm.vb</DependentUpon>
 			<SubType>Code</SubType>
 		</Compile>
 
@@ -139,6 +153,12 @@
 			<DependentUpon>ReviewClearanceForm.vb</DependentUpon>
 			<SubType>Code</SubType>
 		</Compile>
+
+		<EmbeddedResource Update="My Project\Resources.resx">
+		  <CustomToolNamespace>My.Resources</CustomToolNamespace>
+		  <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+		</EmbeddedResource>
 
 		<EmbeddedResource Update="ReviewClearanceForm.resx">
 			<DependentUpon>ReviewClearanceForm.vb</DependentUpon>

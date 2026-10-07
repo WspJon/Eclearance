@@ -34,18 +34,18 @@ Public Class StudentProfileForm
         Try
             Dim queryUser As String =
                 "SELECT u.UserID, u.Username, u.FullName, " &
-                "       COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
-                "       COALESCE(s.Course, u.Course, '') AS Course, " &
-                "       COALESCE(s.Section, u.Section, '') AS Section, " &
-                "       COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
-                "       COALESCE(s.StudentType, u.StudentType, 'Regular') AS StudentType, " &
-                "       COALESCE(s.ContactNo, u.ContactNo, '') AS ContactNo, " &
-                "       COALESCE(s.Email, u.Email, '') AS Email, " &
-                "       COALESCE(s.Address, u.Address, '') AS Address, " &
-                "       COALESCE(s.CivilStatus, u.CivilStatus, '') AS CivilStatus, " &
-                "       COALESCE(s.EmergencyContactName, u.EmergencyContactName, '') AS EmergencyContactName, " &
-                "       COALESCE(s.EmergencyContactNo, u.EmergencyContactNo, '') AS EmergencyContactNo, " &
-                "       COALESCE(s.Relationship, u.Relationship, '') AS Relationship, " &
+                "       COALESCE(s.StudentNo, '') AS StudentNo, " &
+                "       COALESCE(s.Course, '') AS Course, " &
+                "       COALESCE(s.Section, '') AS Section, " &
+                "       COALESCE(s.YearLevel, '') AS YearLevel, " &
+                "       COALESCE(s.StudentType, 'Regular') AS StudentType, " &
+                "       COALESCE(s.ContactNo, '') AS ContactNo, " &
+                "       COALESCE(s.Email, '') AS Email, " &
+                "       COALESCE(s.Address, '') AS Address, " &
+                "       COALESCE(s.CivilStatus, '') AS CivilStatus, " &
+                "       COALESCE(s.EmergencyContactName, '') AS EmergencyContactName, " &
+                "       COALESCE(s.EmergencyContactNo, '') AS EmergencyContactNo, " &
+                "       COALESCE(s.Relationship, '') AS Relationship, " &
                 "       u.IsActive, u.CreatedAt " &
                 "FROM Users u " &
                 "LEFT JOIN Students s ON s.UserID = u.UserID " &

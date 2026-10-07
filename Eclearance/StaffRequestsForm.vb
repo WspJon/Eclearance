@@ -180,7 +180,7 @@ Public Class StaffRequestsForm
             Dim query As String =
             "SELECT " &
             "cr.RecordID, " &
-            "COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo, " &
+            "COALESCE(s.StudentNo, '') AS StudentNo, " &
             "u.FullName AS StudentName, " &
             "r.RequirementName, " &
             "cr.SubmittedAt, " &

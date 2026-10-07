@@ -54,16 +54,15 @@ Public Class StudentClearanceForm
 
         Try
 
-            ' Refresh student metadata from Students (with Users fallback)
+            ' Refresh student metadata from Students
             Try
                 Dim studentInfoQuery As String =
-                    "SELECT COALESCE(s.StudentType, u.StudentType, 'Regular') AS StudentType, " &
-                    "       COALESCE(s.Course, u.Course, '') AS Course, " &
-                    "       COALESCE(s.YearLevel, u.YearLevel, '') AS YearLevel, " &
-                    "       COALESCE(s.StudentNo, u.StudentNo, '') AS StudentNo " &
-                    "FROM Users u " &
-                    "LEFT JOIN Students s ON s.UserID = u.UserID " &
-                    "WHERE u.UserID = @UserID LIMIT 1;"
+                    "SELECT COALESCE(s.StudentType, 'Regular') AS StudentType, " &
+                    "       COALESCE(s.Course, '') AS Course, " &
+                    "       COALESCE(s.YearLevel, '') AS YearLevel, " &
+                    "       COALESCE(s.StudentNo, '') AS StudentNo " &
+                    "FROM Students s " &
+                    "WHERE s.UserID = @UserID LIMIT 1;"
                 Dim studentInfoDt As DataTable = db.ExecuteQuery(studentInfoQuery, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
                 If studentInfoDt.Rows.Count > 0 Then
                     Dim sRow = studentInfoDt.Rows(0)
@@ -87,6 +86,12 @@ Public Class StudentClearanceForm
             LoadCurrentTerm(activeTermID)
 
             allClearanceItems = ClearanceWorkflowHelper.GetStudentClearanceItems(AppSession.UserID, activeTermID, AppSession.Course, AppSession.YearLevel, db)
+
+            ' Ensure CTHM Stock Room is completely hidden when not applicable to the student's program
+            If allClearanceItems IsNot Nothing Then
+                allClearanceItems = allClearanceItems.Where(Function(i) Not ((i.DepartmentID = 8 OrElse i.RequirementName.IndexOf("CTHM Stock Room", StringComparison.OrdinalIgnoreCase) >= 0) AndAlso Not i.IsApplicable)).ToList()
+            End If
+
             ClearanceWorkflowHelper.UnlockNextStepsInDatabase(AppSession.UserID, activeTermID, AppSession.Course, AppSession.YearLevel, db)
 
             DisplayClearanceTable()
