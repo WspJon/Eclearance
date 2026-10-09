@@ -109,7 +109,7 @@ Public Class StartNewTermForm
                         ' Batch generate clearance records for all active students and active requirements
                         ' Parallel initialization for Steps 1-5, Gated/Sequential for Steps 6-9
                         Dim dtStudents As New DataTable()
-                        Using cmdStudents As New MySqlCommand("SELECT u.UserID, COALESCE(s.Course, '') AS Course, COALESCE(s.YearLevel, '') AS YearLevel FROM Users u INNER JOIN Students s ON s.UserID = u.UserID WHERE u.Role = 'Student' AND u.IsActive = 1;", conn, transaction)
+                        Using cmdStudents As New MySqlCommand("SELECT u.UserID, COALESCE(s.Course, '') AS Course, COALESCE(s.YearLevel, '') AS YearLevel, COALESCE(s.EnrolledInNSTP, 0) AS EnrolledInNSTP FROM Users u INNER JOIN Students s ON s.UserID = u.UserID WHERE u.Role = 'Student' AND u.IsActive = 1;", conn, transaction)
                             Using daStudents As New MySqlDataAdapter(cmdStudents)
                                 daStudents.Fill(dtStudents)
                             End Using
@@ -132,10 +132,15 @@ Public Class StartNewTermForm
                             cmdRecords.Parameters.Add("@TermID", MySqlDbType.Int32).Value = newTermID
                             cmdRecords.Parameters.Add("@Status", MySqlDbType.VarChar, 30)
 
+                            Dim dbHelper As New DatabaseHelper()
+
                             For Each sRow As DataRow In dtStudents.Rows
                                 Dim sID As Integer = Convert.ToInt32(sRow("UserID"))
                                 Dim sCourse As String = If(IsDBNull(sRow("Course")), "", sRow("Course").ToString())
                                 Dim sYear As String = If(IsDBNull(sRow("YearLevel")), "", sRow("YearLevel").ToString())
+                                Dim sEnrolledInNSTP As Boolean = Convert.ToBoolean(sRow("EnrolledInNSTP"))
+
+                                Dim targetDeanReqID As Integer = ClearanceWorkflowHelper.GetDeanRequirementForCourse(sCourse, dbHelper)
 
                                 For Each rRow As DataRow In dtReqs.Rows
                                     Dim rID As Integer = Convert.ToInt32(rRow("RequirementID"))
@@ -145,11 +150,16 @@ Public Class StartNewTermForm
                                     Dim appCourses As String = If(IsDBNull(rRow("ApplicableCourses")), "", rRow("ApplicableCourses").ToString())
                                     Dim appYears As String = If(IsDBNull(rRow("ApplicableYearLevels")), "", rRow("ApplicableYearLevels").ToString())
 
-                                    Dim isApp As Boolean = ClearanceWorkflowHelper.IsRequirementApplicable(sCourse, sYear, appliesToCourse, reqNSTP, appCourses, appYears)
+                                    Dim isApp As Boolean = ClearanceWorkflowHelper.IsRequirementApplicable(sCourse, sYear, sEnrolledInNSTP, appliesToCourse, reqNSTP, appCourses, appYears)
 
-                                    ' Step 6 (Dean offices): Only create record for the student's applicable Dean!
-                                    If seq = 6 AndAlso Not isApp Then
-                                        Continue For
+                                    ' Step 6 (Dean offices): Only create record for the student's specific Dean!
+                                    If seq = 6 Then
+                                        If targetDeanReqID > 0 AndAlso rID <> targetDeanReqID Then
+                                            Continue For
+                                        End If
+                                        If targetDeanReqID > 0 AndAlso rID = targetDeanReqID Then
+                                            isApp = True
+                                        End If
                                     End If
 
                                     Dim initStatus As String = "Locked"

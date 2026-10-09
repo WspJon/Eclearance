@@ -602,7 +602,7 @@ Public Class ReviewClearanceForm
 
                         ' If cleared, automatically unlock next sequential step in the active term
                         If newStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
-                            ClearanceWorkflowHelper.UnlockNextStepsInDatabase(_studentID, _termID, _studentCourse, _studentYearLevel, db, conn, transaction)
+                            ClearanceWorkflowHelper.UnlockNextStepsInDatabase(_studentID, _termID, _studentCourse, _studentYearLevel, db, conn, transaction, TargetRecordID, newStatus)
                         End If
 
                         transaction.Commit()

@@ -96,6 +96,21 @@ Public Class StudentClearanceForm
 
             DisplayClearanceTable()
 
+            ' Notify student of any rejected requirements once per session
+            Static _hasShownNotification As Boolean = False
+            If Not _hasShownNotification AndAlso allClearanceItems IsNot Nothing Then
+                Dim rejectedItems = allClearanceItems.Where(Function(i) i.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase)).ToList()
+                If rejectedItems.Count > 0 Then
+                    _hasShownNotification = True
+                    Dim msg = "You have " & rejectedItems.Count & " requirement(s) that require your attention:" & vbCrLf & vbCrLf
+                    For Each item In rejectedItems
+                        msg &= "• " & item.DepartmentName & vbCrLf
+                    Next
+                    msg &= vbCrLf & "Please review the remarks and resubmit."
+                    MessageBox.Show(msg, "Action Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                End If
+            End If
+
         Catch ex As Exception
 
             MessageBox.Show(

@@ -6,6 +6,8 @@ Public Class AdminStudentsForm
     ' ============================================================
     ' FORM LOAD
     ' ============================================================
+    Private WithEvents btnExportCSV As Button
+
     Private Sub AdminStudentsForm_Load(
         sender As Object,
         e As EventArgs
@@ -14,6 +16,21 @@ Public Class AdminStudentsForm
         ApplySchoolLogo(picSchoolLogo)
         LoadCurrentTermLabel()
         InitializeFilters()
+
+        ' Dynamically add Export CSV button to preserve Designer
+        btnExportCSV = New Button()
+        btnExportCSV.Text = "⬇ Export CSV"
+        btnExportCSV.Size = New Size(105, 38)
+        btnExportCSV.Location = New Point(btnAddStudent.Location.X - 115, btnAddStudent.Location.Y)
+        btnExportCSV.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btnExportCSV.BackColor = Color.White
+        btnExportCSV.ForeColor = Color.FromArgb(51, 65, 85)
+        btnExportCSV.FlatStyle = FlatStyle.Flat
+        btnExportCSV.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225)
+        btnExportCSV.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        btnExportCSV.Cursor = Cursors.Hand
+        pnlHeader.Controls.Add(btnExportCSV)
+
         LoadStudents()
 
     End Sub
@@ -974,6 +991,50 @@ Public Class AdminStudentsForm
 
         End If
 
+    End Sub
+
+    ' ============================================================
+    ' EXPORT CSV REPORT
+    ' ============================================================
+    Private Sub btnExportCSV_Click(sender As Object, e As EventArgs) Handles btnExportCSV.Click
+        If dgvStudents.Rows.Count = 0 Then
+            MessageBox.Show("No student records available to export.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
+        Try
+            Dim sfd As New SaveFileDialog()
+            sfd.Filter = "CSV Files (*.csv)|*.csv"
+            sfd.FileName = "Student_Clearance_Report_" & DateTime.Now.ToString("yyyyMMdd") & ".csv"
+            
+            If sfd.ShowDialog() = DialogResult.OK Then
+                Dim sb As New System.Text.StringBuilder()
+                
+                ' Headers
+                Dim headers = {"Student No", "Name", "Course", "Year", "Progress", "Status"}
+                sb.AppendLine(String.Join(",", headers))
+
+                ' Rows
+                For Each row As DataGridViewRow In dgvStudents.Rows
+                    If Not row.IsNewRow Then
+                        Dim vals As New List(Of String)()
+                        For i As Integer = 0 To 5
+                            Dim cellVal As String = ""
+                            If row.Cells(i).Value IsNot Nothing Then
+                                cellVal = row.Cells(i).Value.ToString().Replace("""", """""")
+                            End If
+                            vals.Add("""" & cellVal & """")
+                        Next
+                        sb.AppendLine(String.Join(",", vals))
+                    End If
+                Next
+
+                System.IO.File.WriteAllText(sfd.FileName, sb.ToString())
+                MessageBox.Show("Report exported successfully!", "Export Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error exporting report: " & ex.Message, "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
 End Class

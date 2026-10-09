@@ -125,12 +125,12 @@ Public Class UploadClearanceModalForm
                         ' 2. Copy files and insert into ClearanceRecordFiles
                         Dim primaryFilePath As String = ""
                         Dim primaryFileName As String = ""
-                        Dim timeStampStr As String = DateTime.Now.ToString("yyyyMMddHHmmss")
 
                         For i As Integer = 0 To selectedFilePaths.Count - 1
                             Dim sourcePath As String = selectedFilePaths(i)
                             Dim fi As New FileInfo(sourcePath)
-                            Dim uniqueName As String = RecordID.ToString() & "_" & timeStampStr & "_" & (i + 1).ToString() & fi.Extension.ToLowerInvariant()
+                            Dim guidStr As String = Guid.NewGuid().ToString("N").Substring(0, 8)
+                            Dim uniqueName As String = RecordID.ToString() & "_" & guidStr & "_" & (i + 1).ToString() & fi.Extension.ToLowerInvariant()
                             Dim destPath As String = Path.Combine(uploadFolder, uniqueName)
 
                             File.Copy(sourcePath, destPath, True)

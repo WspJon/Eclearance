@@ -7,9 +7,26 @@ Public Class StaffDashboardForm
     Private currentDepartmentName As String = "Assigned Office"
 
 
+    Private WithEvents btnChangePassword As Button
+
     Private Sub StaffDashboardForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ApplySchoolLogo(picSchoolLogo)
         InitializeStaffInfo()
+
+        ' Dynamically add Change Password button
+        btnChangePassword = New Button()
+        btnChangePassword.Text = "🔑 Change Password"
+        btnChangePassword.Size = New Size(208, 42)
+        btnChangePassword.Location = New Point(16, btnNavLogout.Location.Y - 50)
+        btnChangePassword.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        btnChangePassword.BackColor = Color.FromArgb(15, 23, 42)
+        btnChangePassword.ForeColor = Color.FromArgb(148, 163, 184)
+        btnChangePassword.FlatStyle = FlatStyle.Flat
+        btnChangePassword.FlatAppearance.BorderSize = 0
+        btnChangePassword.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular)
+        btnChangePassword.Cursor = Cursors.Hand
+        pnlSidebar.Controls.Add(btnChangePassword)
+
         LoadDashboardData()
     End Sub
 
@@ -386,4 +403,27 @@ Public Class StaffDashboardForm
     Private Sub lblLogoTitle_Click(sender As Object, e As EventArgs) Handles lblLogoTitle.Click
 
     End Sub
+    Private Sub btnChangePassword_Click(sender As Object, e As EventArgs) Handles btnChangePassword.Click
+        Dim newPassword As String = InputBox("Enter your new password:", "Change Password", "")
+        If String.IsNullOrWhiteSpace(newPassword) Then Return
+        
+        Dim confirmPassword As String = InputBox("Confirm your new password:", "Change Password", "")
+        If newPassword <> confirmPassword Then
+            MessageBox.Show("Passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+        
+        Try
+            Dim db As New DatabaseHelper()
+            Dim query As String = "UPDATE Users SET Password = @Password WHERE UserID = @UserID;"
+            db.ExecuteNonQuery(query, New Dictionary(Of String, Object) From {
+                {"@Password", newPassword},
+                {"@UserID", AppSession.UserID}
+            })
+            MessageBox.Show("Password updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            MessageBox.Show("Failed to update password: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
 End Class

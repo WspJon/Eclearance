@@ -36,6 +36,7 @@ Public Class ClearanceWorkflowHelper
     Public Shared Function IsRequirementApplicable(
         studentCourse As String,
         studentYearLevel As String,
+        enrolledInNSTP As Boolean,
         appliesToCourse As String,
         requiresNSTP As Boolean,
         applicableCourses As String,
@@ -45,21 +46,32 @@ Public Class ClearanceWorkflowHelper
         Dim course As String = If(studentCourse, "").Trim().ToUpperInvariant()
         Dim yearLevel As String = If(studentYearLevel, "").Trim().ToLowerInvariant()
 
-        ' 1. Check NSTP year-level applicability
-        If requiresNSTP OrElse Not String.IsNullOrWhiteSpace(applicableYearLevels) Then
-            Dim isFirstYear As Boolean =
-                yearLevel.Contains("1st") OrElse
-                yearLevel.Contains("first") OrElse
-                yearLevel.StartsWith("1") OrElse
-                yearLevel.Equals("1")
+        ' 1. Check actual NSTP enrollment applicability
+        If requiresNSTP AndAlso Not enrolledInNSTP Then
+            Return False
+        End If
 
-            If Not isFirstYear Then
-                ' Non-first-year students skip NSTP
+        ' 2. Check Year Level applicability
+        If Not String.IsNullOrWhiteSpace(applicableYearLevels) Then
+            Dim allowedLevels = applicableYearLevels.Split(New Char() {","c, ";"c, "|"c}, StringSplitOptions.RemoveEmptyEntries)
+            Dim isYearLevelMatched As Boolean = False
+            
+            For Each allowed In allowedLevels
+                Dim cleanAllowed = allowed.Trim().ToLowerInvariant()
+                If Not String.IsNullOrWhiteSpace(cleanAllowed) Then
+                    If yearLevel = cleanAllowed OrElse yearLevel.Contains(cleanAllowed) Then
+                        isYearLevelMatched = True
+                        Exit For
+                    End If
+                End If
+            Next
+            
+            If Not isYearLevelMatched Then
                 Return False
             End If
         End If
 
-        ' 2. Check Course applicability (e.g. CTHM Stock Room)
+        ' 3. Check Course applicability (e.g. CTHM Stock Room)
         Dim courseFilter As String = ""
         If Not String.IsNullOrWhiteSpace(applicableCourses) Then
             courseFilter = applicableCourses
@@ -73,11 +85,9 @@ Public Class ClearanceWorkflowHelper
 
             For Each allowed In allowedCourses
                 Dim cleanAllowed = allowed.Trim().ToUpperInvariant()
-                If Not String.IsNullOrWhiteSpace(cleanAllowed) Then
-                    If course.Contains(cleanAllowed) OrElse cleanAllowed.Contains(course) Then
-                        isCourseMatched = True
-                        Exit For
-                    End If
+                If Not String.IsNullOrWhiteSpace(cleanAllowed) AndAlso course = cleanAllowed Then
+                    isCourseMatched = True
+                    Exit For
                 End If
             Next
 
@@ -104,7 +114,8 @@ Public Class ClearanceWorkflowHelper
     Public Shared Sub EvaluateSequentialWorkflow(
         items As List(Of ClearanceItemInfo),
         studentCourse As String,
-        studentYearLevel As String
+        studentYearLevel As String,
+        enrolledInNSTP As Boolean
     )
         If items Is Nothing Then Return
 
@@ -113,6 +124,7 @@ Public Class ClearanceWorkflowHelper
             item.IsApplicable = IsRequirementApplicable(
                 studentCourse,
                 studentYearLevel,
+                enrolledInNSTP,
                 item.AppliesToCourse,
                 item.RequiresNSTP,
                 item.ApplicableCourses,
@@ -360,6 +372,18 @@ Public Class ClearanceWorkflowHelper
         Dim result As New List(Of ClearanceItemInfo)()
         If studentID <= 0 OrElse termID <= 0 Then Return result
 
+        Dim enrolledInNSTP As Boolean = False
+        Try
+            Dim nstpRes = db.ExecuteScalar(
+                "SELECT EnrolledInNSTP FROM Students WHERE UserID = @UID",
+                New Dictionary(Of String, Object) From {{"@UID", studentID}}
+            )
+            If nstpRes IsNot Nothing AndAlso Not IsDBNull(nstpRes) Then
+                enrolledInNSTP = Convert.ToBoolean(nstpRes)
+            End If
+        Catch
+        End Try
+
         Try
             Dim query As String =
                 "SELECT " &
@@ -423,6 +447,7 @@ Public Class ClearanceWorkflowHelper
                 item.IsApplicable = IsRequirementApplicable(
                     studentCourse,
                     studentYearLevel,
+                    enrolledInNSTP,
                     item.AppliesToCourse,
                     item.RequiresNSTP,
                     item.ApplicableCourses,
@@ -457,7 +482,7 @@ Public Class ClearanceWorkflowHelper
 
             result = filteredItems.OrderBy(Function(i) i.SequenceOrder).ToList()
 
-            EvaluateSequentialWorkflow(result, studentCourse, studentYearLevel)
+            EvaluateSequentialWorkflow(result, studentCourse, studentYearLevel, enrolledInNSTP)
 
         Catch ex As Exception
         End Try
@@ -541,7 +566,10 @@ Public Class ClearanceWorkflowHelper
     ) As Boolean
 
         blockerReason = ""
-        If recordID <= 0 Then Return True
+        If recordID <= 0 Then
+            blockerReason = "Invalid Record ID."
+            Return False
+        End If
 
         Try
             Dim dt = db.ExecuteQuery(
@@ -556,7 +584,10 @@ Public Class ClearanceWorkflowHelper
                 New Dictionary(Of String, Object) From {{"@RecordID", recordID}}
             )
 
-            If dt.Rows.Count = 0 Then Return True
+            If dt.Rows.Count = 0 Then
+                blockerReason = "Record not found."
+                Return False
+            End If
 
             Dim row = dt.Rows(0)
             Dim studentID As Integer = Convert.ToInt32(row("StudentID"))
@@ -589,7 +620,8 @@ Public Class ClearanceWorkflowHelper
 
             Return True
         Catch ex As Exception
-            Return True
+            blockerReason = "An error occurred while validating clearance prerequisites."
+            Return False
         End Try
     End Function
 
@@ -603,13 +635,32 @@ Public Class ClearanceWorkflowHelper
         studentYearLevel As String,
         db As DatabaseHelper,
         Optional conn As MySqlConnection = Nothing,
-        Optional tx As MySqlTransaction = Nothing
+        Optional tx As MySqlTransaction = Nothing,
+        Optional overrideRecordID As Integer = 0,
+        Optional overrideStatus As String = ""
     )
         If studentID <= 0 OrElse termID <= 0 Then Return
 
         Try
             Dim items = GetStudentClearanceItems(studentID, termID, studentCourse, studentYearLevel, db)
             If items Is Nothing OrElse items.Count = 0 Then Return
+
+            ' If we're inside a transaction, the DB read might not see the uncommitted new status.
+            ' Manually override the status in memory before evaluating the workflow.
+            If overrideRecordID > 0 AndAlso Not String.IsNullOrWhiteSpace(overrideStatus) Then
+                Dim targetItem = items.FirstOrDefault(Function(x) x.RecordID = overrideRecordID)
+                If targetItem IsNot Nothing Then
+                    targetItem.DBStatus = overrideStatus
+                    targetItem.EffectiveStatus = overrideStatus
+                End If
+
+                ' We need to re-evaluate the workflow since we mutated an item manually.
+                Dim enrolledInNSTP As Boolean = False
+                Dim nstpRes = db.ExecuteScalar("SELECT EnrolledInNSTP FROM Students WHERE UserID = " & studentID)
+                If nstpRes IsNot Nothing AndAlso Not IsDBNull(nstpRes) Then enrolledInNSTP = Convert.ToBoolean(nstpRes)
+                
+                EvaluateSequentialWorkflow(items, studentCourse, studentYearLevel, enrolledInNSTP)
+            End If
 
             Dim updateStepStatus = Sub(seq As Integer, newStat As String)
                 Dim itm = items.FirstOrDefault(Function(x) x.SequenceOrder = seq)

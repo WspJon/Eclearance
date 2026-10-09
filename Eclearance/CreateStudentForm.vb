@@ -505,6 +505,9 @@ Public Class CreateStudentForm
             "INSERT INTO ClearanceRecords (StudentID, RequirementID, TermID, Status) " &
             "VALUES (@StudentID, @RequirementID, @TermID, @Status);"
 
+        Dim dbHelper As New DatabaseHelper()
+        Dim targetDeanReqID As Integer = ClearanceWorkflowHelper.GetDeanRequirementForCourse(course, dbHelper)
+
         For Each row As DataRow In dtReqs.Rows
             Dim reqID As Integer = Convert.ToInt32(row("RequirementID"))
             Dim seqOrder As Integer = Convert.ToInt32(row("SequenceOrder"))
@@ -513,11 +516,16 @@ Public Class CreateStudentForm
             Dim appCourses As String = If(IsDBNull(row("ApplicableCourses")), "", row("ApplicableCourses").ToString())
             Dim appYears As String = If(IsDBNull(row("ApplicableYearLevels")), "", row("ApplicableYearLevels").ToString())
 
-            Dim isApp As Boolean = ClearanceWorkflowHelper.IsRequirementApplicable(course, yearLevel, appliesToCourse, reqNSTP, appCourses, appYears)
+            Dim isApp As Boolean = ClearanceWorkflowHelper.IsRequirementApplicable(course, yearLevel, enrolledInNSTP, appliesToCourse, reqNSTP, appCourses, appYears)
 
-            ' Step 6 (Dean offices): Only create record for the student's applicable Dean!
-            If seqOrder = 6 AndAlso Not isApp Then
-                Continue For
+            ' Step 6 (Dean offices): Only create record for the student's specific Dean!
+            If seqOrder = 6 Then
+                If targetDeanReqID > 0 AndAlso reqID <> targetDeanReqID Then
+                    Continue For
+                End If
+                If targetDeanReqID > 0 AndAlso reqID = targetDeanReqID Then
+                    isApp = True
+                End If
             End If
 
             Dim initStatus As String = "Locked"

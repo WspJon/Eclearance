@@ -10,9 +10,33 @@ Public Class StaffRequestsForm
     Private currentFilterStatus As String = "All"
     Private allRequestsTable As DataTable = Nothing
 
+    Private WithEvents btnApproveSelected As Button
+
     Private Sub StaffRequestsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ApplySchoolLogo(picSchoolLogo)
         InitializeStaffInfo()
+
+        ' Add Checkbox Column
+        Dim chkCol As New DataGridViewCheckBoxColumn()
+        chkCol.HeaderText = "Select"
+        chkCol.Name = "colSelect"
+        chkCol.Width = 60
+        dgvRequests.Columns.Insert(0, chkCol)
+
+        ' Add Batch Approve Button
+        btnApproveSelected = New Button()
+        btnApproveSelected.Text = "✓ Approve Selected"
+        btnApproveSelected.Size = New Size(140, 36)
+        btnApproveSelected.Location = New Point(btnRefresh.Location.X - 150, btnRefresh.Location.Y)
+        btnApproveSelected.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btnApproveSelected.BackColor = Color.FromArgb(11, 99, 229)
+        btnApproveSelected.ForeColor = Color.White
+        btnApproveSelected.FlatStyle = FlatStyle.Flat
+        btnApproveSelected.FlatAppearance.BorderSize = 0
+        btnApproveSelected.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        btnApproveSelected.Cursor = Cursors.Hand
+        pnlFilterBar.Controls.Add(btnApproveSelected)
+
         UpdateFilterButtonsUI(btnFilterAll)
         LayoutFilterBar()
         LoadRequestsData()
@@ -642,4 +666,51 @@ Public Class StaffRequestsForm
     Private Sub dgvRequests_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRequests.CellContentClick
 
     End Sub
+    Private Sub btnApproveSelected_Click(sender As Object, e As EventArgs) Handles btnApproveSelected.Click
+        Dim selectedIds As New List(Of Integer)()
+        For Each row As DataGridViewRow In dgvRequests.Rows
+            If Convert.ToBoolean(row.Cells("colSelect").Value) = True AndAlso row.Cells(colReqStatus.Index).Value.ToString() = "Pending" Then
+                selectedIds.Add(Convert.ToInt32(row.Cells(colReqRecordID.Index).Value))
+            End If
+        Next
+
+        If selectedIds.Count = 0 Then
+            MessageBox.Show("Please select at least one 'Pending' record to approve.", "Batch Approve", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return
+        End If
+
+        Dim confirm = MessageBox.Show($"Are you sure you want to unconditionally approve {selectedIds.Count} pending records?", "Confirm Batch Approval", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        If confirm = DialogResult.Yes Then
+            Try
+                Dim db As New DatabaseHelper()
+                Dim approvedCount As Integer = 0
+                For Each recID In selectedIds
+                    Dim blocker As String = ""
+                    If Not ClearanceWorkflowHelper.CanStaffApproveRecord(recID, db, blocker) Then
+                        Continue For
+                    End If
+
+                    Dim dt = db.ExecuteQuery("SELECT cr.StudentID, cr.TermID, cr.Status, COALESCE(s.Course, '') AS Course, COALESCE(s.YearLevel, '') AS YearLevel FROM ClearanceRecords cr INNER JOIN Users u ON cr.StudentID = u.UserID LEFT JOIN Students s ON s.UserID = u.UserID WHERE cr.RecordID = " & recID)
+                    If dt.Rows.Count > 0 Then
+                        Dim r = dt.Rows(0)
+                        Dim sID = Convert.ToInt32(r("StudentID"))
+                        Dim tID = Convert.ToInt32(r("TermID"))
+                        Dim course = r("Course").ToString()
+                        Dim year = r("YearLevel").ToString()
+                        Dim oldStatus = r("Status").ToString()
+
+                        db.ExecuteNonQuery("UPDATE ClearanceRecords SET Status = 'Cleared' WHERE RecordID = " & recID)
+                        db.ExecuteNonQuery("INSERT INTO ClearanceHistory (RecordID, ActionBy, ActionType, OldStatus, NewStatus, Remarks) VALUES (" & recID & ", " & AppSession.UserID & ", 'Approved (Batch)', '" & oldStatus & "', 'Cleared', 'Batch Approved by Staff')")
+                        ClearanceWorkflowHelper.UnlockNextStepsInDatabase(sID, tID, course, year, db, Nothing, Nothing, recID, "Cleared")
+                        approvedCount += 1
+                    End If
+                Next
+                MessageBox.Show($"{approvedCount} records approved successfully.", "Batch Approve", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                LoadRequestsData()
+            Catch ex As Exception
+                MessageBox.Show("Error processing batch approval: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End If
+    End Sub
+
 End Class
