@@ -445,8 +445,8 @@ Public Class StudentClearanceForm
         lblNum.Text = (rowIndex + 1).ToString()
         lblDept.Text = item.DepartmentName
         lblReq.Text = If(String.IsNullOrWhiteSpace(item.Instructions), item.RequirementName, item.RequirementName & " — " & item.Instructions)
-        lblStatus.Text = item.EffectiveStatus
-        ApplyStatusStyle(lblStatus, item.EffectiveStatus)
+        lblStatus.Text = item.DisplayStatus
+        ApplyStatusStyle(lblStatus, item.DisplayStatus)
 
         btnAct.Tag = item
         btnReeval.Tag = item
@@ -455,7 +455,7 @@ Public Class StudentClearanceForm
         Dim isGuidance As Boolean = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
         Dim hasFile As Boolean = (Not String.IsNullOrWhiteSpace(item.SubmittedFileName) OrElse item.FileCount > 0)
 
-        Select Case item.EffectiveStatus.ToLowerInvariant()
+        Select Case item.DisplayStatus.ToLowerInvariant()
 
             Case "cleared"
                 btnAct.Visible = True
@@ -481,14 +481,14 @@ Public Class StudentClearanceForm
                 btnViewReq.Visible = False
                 lblDash.Visible = False
 
-            Case "pending"
+            Case "not submitted", "pending"
                 btnReeval.Visible = False
                 lblDash.Visible = False
 
                 If item.RequiresFile Then
                     btnAct.Visible = True
                     btnAct.Enabled = True
-                    btnAct.Text = "Upload Requirement"
+                    btnAct.Text = "Submit Requirement"
                     btnAct.BackColor = Color.FromArgb(2, 132, 199)
                     btnAct.ForeColor = Color.White
                     btnAct.Size = New Size(125, 32)
@@ -556,17 +556,17 @@ Public Class StudentClearanceForm
                 ElseIf item.RequiresFile Then
                     btnAct.Visible = True
                     btnAct.Enabled = True
-                    btnAct.Text = "Upload Corrected"
+                    btnAct.Text = "Resubmit Requirement"
                     btnAct.BackColor = Color.FromArgb(220, 38, 38)
                     btnAct.ForeColor = Color.White
-                    btnAct.Size = New Size(120, 32)
+                    btnAct.Size = New Size(130, 32)
                     btnAct.Location = New Point(0, 0)
 
                     btnReeval.Visible = False
 
                     btnViewReq.Visible = True
                     btnViewReq.Text = "View Requirements"
-                    btnViewReq.Location = New Point(126, 0)
+                    btnViewReq.Location = New Point(136, 0)
                     btnViewReq.Size = New Size(120, 32)
 
                 Else

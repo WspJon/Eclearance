@@ -1737,6 +1737,7 @@ Partial Class StudentClearanceForm
         MinimumSize = New Size(1000, 650)
         Name = "StudentClearanceForm"
         StartPosition = FormStartPosition.CenterScreen
+        WindowState = FormWindowState.Maximized
         Text = "EClearance - Student Clearance"
         pnlSidebar.ResumeLayout(False)
         pnlLogo.ResumeLayout(False)

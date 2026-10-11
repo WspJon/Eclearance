@@ -20,7 +20,8 @@ Public Class StaffRequestsForm
         Dim chkCol As New DataGridViewCheckBoxColumn()
         chkCol.HeaderText = "Select"
         chkCol.Name = "colSelect"
-        chkCol.Width = 60
+        chkCol.Width = 65
+        chkCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
         dgvRequests.Columns.Insert(0, chkCol)
 
         ' Add Batch Approve Button
@@ -290,12 +291,12 @@ Public Class StaffRequestsForm
                 actionText = "View"
             End If
 
-            Dim rowIndex As Integer = dgvRequests.Rows.Add(num, recordID, studentNo, studentName, requirement, submittedAtText, status, actionText)
+            Dim rowIndex As Integer = dgvRequests.Rows.Add(False, num, recordID, studentNo, studentName, requirement, submittedAtText, status, actionText)
             dgvRequests.Rows(rowIndex).Tag = recordID
             num += 1
         Next
 
-        lblRecordCount.Text = "Showing " & dgvRequests.Rows.Count.ToString() & " requests"
+        lblRecordCount.Text = "Showing " & dgvRequests.Rows.Count.ToString() & " submissions"
     End Sub
 
     ' Search event
@@ -664,22 +665,29 @@ Public Class StaffRequestsForm
     End Sub
 
     Private Sub dgvRequests_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRequests.CellContentClick
-
+        If e.RowIndex >= 0 AndAlso dgvRequests.Columns.Contains("colSelect") AndAlso e.ColumnIndex = dgvRequests.Columns("colSelect").Index Then
+            Dim cell = dgvRequests.Rows(e.RowIndex).Cells("colSelect")
+            Dim currentVal As Boolean = False
+            If cell.Value IsNot Nothing AndAlso Not DBNull.Value.Equals(cell.Value) Then
+                currentVal = Convert.ToBoolean(cell.Value)
+            End If
+            cell.Value = Not currentVal
+        End If
     End Sub
     Private Sub btnApproveSelected_Click(sender As Object, e As EventArgs) Handles btnApproveSelected.Click
         Dim selectedIds As New List(Of Integer)()
         For Each row As DataGridViewRow In dgvRequests.Rows
-            If Convert.ToBoolean(row.Cells("colSelect").Value) = True AndAlso row.Cells(colReqStatus.Index).Value.ToString() = "Pending" Then
+            If Convert.ToBoolean(row.Cells("colSelect").Value) = True AndAlso row.Cells(colReqStatus.Index).Value.ToString().Equals("Under Review", StringComparison.OrdinalIgnoreCase) Then
                 selectedIds.Add(Convert.ToInt32(row.Cells(colReqRecordID.Index).Value))
             End If
         Next
 
         If selectedIds.Count = 0 Then
-            MessageBox.Show("Please select at least one 'Pending' record to approve.", "Batch Approve", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Please select at least one 'Under Review' record to approve.", "Batch Approve", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return
         End If
 
-        Dim confirm = MessageBox.Show($"Are you sure you want to unconditionally approve {selectedIds.Count} pending records?", "Confirm Batch Approval", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        Dim confirm = MessageBox.Show($"Are you sure you want to unconditionally approve {selectedIds.Count} selected records?", "Confirm Batch Approval", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If confirm = DialogResult.Yes Then
             Try
                 Dim db As New DatabaseHelper()

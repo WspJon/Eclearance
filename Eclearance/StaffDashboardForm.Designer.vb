@@ -22,6 +22,7 @@ Partial Class StaffDashboardForm
         pnlSidebar = New Panel()
         pnlNavIndicator = New Panel()
         btnNavLogout = New Button()
+        btnChangePassword = New Button()
         btnNavHistory = New Button()
         btnNavRequests = New Button()
         btnNavDashboard = New Button()
@@ -118,6 +119,7 @@ Partial Class StaffDashboardForm
         pnlSidebar.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         pnlSidebar.Controls.Add(pnlNavIndicator)
         pnlSidebar.Controls.Add(btnNavLogout)
+        pnlSidebar.Controls.Add(btnChangePassword)
         pnlSidebar.Controls.Add(btnNavHistory)
         pnlSidebar.Controls.Add(btnNavRequests)
         pnlSidebar.Controls.Add(btnNavDashboard)
@@ -137,6 +139,23 @@ Partial Class StaffDashboardForm
         pnlNavIndicator.Size = New Size(4, 44)
         pnlNavIndicator.TabIndex = 6
         ' 
+        ' 
+        ' btnChangePassword
+        ' 
+        btnChangePassword.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        btnChangePassword.BackColor = Color.Transparent
+        btnChangePassword.Cursor = Cursors.Hand
+        btnChangePassword.FlatAppearance.BorderSize = 0
+        btnChangePassword.FlatStyle = FlatStyle.Flat
+        btnChangePassword.Font = New Font("Segoe UI", 9.5F)
+        btnChangePassword.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
+        btnChangePassword.Location = New Point(16, 680)
+        btnChangePassword.Name = "btnChangePassword"
+        btnChangePassword.Size = New Size(188, 44)
+        btnChangePassword.TabIndex = 6
+        btnChangePassword.Text = "  🔑 Change Password"
+        btnChangePassword.TextAlign = ContentAlignment.MiddleLeft
+        btnChangePassword.UseVisualStyleBackColor = False
         ' btnNavLogout
         ' 
         btnNavLogout.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
@@ -179,7 +198,7 @@ Partial Class StaffDashboardForm
         btnNavRequests.Name = "btnNavRequests"
         btnNavRequests.Size = New Size(188, 44)
         btnNavRequests.TabIndex = 3
-        btnNavRequests.Text = "  Requests"
+        btnNavRequests.Text = "  Submissions"
         btnNavRequests.TextAlign = ContentAlignment.MiddleLeft
         btnNavRequests.UseVisualStyleBackColor = True
         ' 
@@ -815,7 +834,7 @@ Partial Class StaffDashboardForm
         lblReviewTitle.Name = "lblReviewTitle"
         lblReviewTitle.Size = New Size(79, 15)
         lblReviewTitle.TabIndex = 2
-        lblReviewTitle.Text = "Under Review"
+        lblReviewTitle.Text = "Awaiting Review"
         ' 
         ' lblReviewCount
         ' 
@@ -875,7 +894,7 @@ Partial Class StaffDashboardForm
         lblPendingSub.Name = "lblPendingSub"
         lblPendingSub.Size = New Size(95, 12)
         lblPendingSub.TabIndex = 3
-        lblPendingSub.Text = "Awaiting your review"
+        lblPendingSub.Text = "All clearance submissions"
         ' 
         ' lblPendingTitle
         ' 
@@ -886,7 +905,7 @@ Partial Class StaffDashboardForm
         lblPendingTitle.Name = "lblPendingTitle"
         lblPendingTitle.Size = New Size(101, 15)
         lblPendingTitle.TabIndex = 2
-        lblPendingTitle.Text = "Pending Requests"
+        lblPendingTitle.Text = "Total Submissions"
         ' 
         ' lblPendingCount
         ' 
@@ -1050,6 +1069,7 @@ Partial Class StaffDashboardForm
         MinimumSize = New Size(1100, 750)
         Name = "StaffDashboardForm"
         StartPosition = FormStartPosition.CenterScreen
+        WindowState = FormWindowState.Maximized
         Text = "EClearance - Staff Dashboard"
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
@@ -1094,6 +1114,7 @@ Partial Class StaffDashboardForm
     Friend WithEvents btnNavRequests As Button
     Friend WithEvents btnNavHistory As Button
     Friend WithEvents btnNavLogout As Button
+    Friend WithEvents btnChangePassword As Button
     Friend WithEvents pnlMain As Panel
     Friend WithEvents lblHeaderTitle As Label
     Friend WithEvents lblHeaderSub As Label

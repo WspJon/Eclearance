@@ -7,25 +7,11 @@ Public Class StaffDashboardForm
     Private currentDepartmentName As String = "Assigned Office"
 
 
-    Private WithEvents btnChangePassword As Button
+
 
     Private Sub StaffDashboardForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ApplySchoolLogo(picSchoolLogo)
         InitializeStaffInfo()
-
-        ' Dynamically add Change Password button
-        btnChangePassword = New Button()
-        btnChangePassword.Text = "🔑 Change Password"
-        btnChangePassword.Size = New Size(208, 42)
-        btnChangePassword.Location = New Point(16, btnNavLogout.Location.Y - 50)
-        btnChangePassword.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnChangePassword.BackColor = Color.FromArgb(15, 23, 42)
-        btnChangePassword.ForeColor = Color.FromArgb(148, 163, 184)
-        btnChangePassword.FlatStyle = FlatStyle.Flat
-        btnChangePassword.FlatAppearance.BorderSize = 0
-        btnChangePassword.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular)
-        btnChangePassword.Cursor = Cursors.Hand
-        pnlSidebar.Controls.Add(btnChangePassword)
 
         LoadDashboardData()
     End Sub
@@ -76,7 +62,7 @@ Public Class StaffDashboardForm
         Try
             Dim countQuery As String =
                 "SELECT " &
-                "  SUM(CASE WHEN cr.Status = 'Pending' THEN 1 ELSE 0 END) AS PendingCount, " &
+                "  SUM(CASE WHEN cr.SubmittedAt IS NOT NULL THEN 1 ELSE 0 END) AS TotalSubCount, " &
                 "  SUM(CASE WHEN cr.Status = 'Under Review' THEN 1 ELSE 0 END) AS ReviewCount, " &
                 "  SUM(CASE WHEN cr.Status = 'Cleared' AND DATE(cr.ReviewedAt) = CURDATE() THEN 1 ELSE 0 END) AS ApprovedToday, " &
                 "  SUM(CASE WHEN cr.Status = 'Rejected' AND DATE(cr.ReviewedAt) = CURDATE() THEN 1 ELSE 0 END) AS RejectedToday " &
@@ -92,7 +78,7 @@ Public Class StaffDashboardForm
             })
             If dtCounts.Rows.Count > 0 Then
                 Dim row = dtCounts.Rows(0)
-                lblPendingCount.Text = If(IsDBNull(row("PendingCount")), "0", row("PendingCount").ToString())
+                lblPendingCount.Text = If(IsDBNull(row("TotalSubCount")), "0", row("TotalSubCount").ToString())
                 lblReviewCount.Text = If(IsDBNull(row("ReviewCount")), "0", row("ReviewCount").ToString())
                 lblApprovedCount.Text = If(IsDBNull(row("ApprovedToday")), "0", row("ApprovedToday").ToString())
                 lblRejectedCount.Text = If(IsDBNull(row("RejectedToday")), "0", row("RejectedToday").ToString())
@@ -404,26 +390,63 @@ Public Class StaffDashboardForm
 
     End Sub
     Private Sub btnChangePassword_Click(sender As Object, e As EventArgs) Handles btnChangePassword.Click
-        Dim newPassword As String = InputBox("Enter your new password:", "Change Password", "")
-        If String.IsNullOrWhiteSpace(newPassword) Then Return
-        
-        Dim confirmPassword As String = InputBox("Confirm your new password:", "Change Password", "")
-        If newPassword <> confirmPassword Then
-            MessageBox.Show("Passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Return
-        End If
-        
-        Try
-            Dim db As New DatabaseHelper()
-            Dim query As String = "UPDATE Users SET Password = @Password WHERE UserID = @UserID;"
-            db.ExecuteNonQuery(query, New Dictionary(Of String, Object) From {
-                {"@Password", newPassword},
-                {"@UserID", AppSession.UserID}
-            })
-            MessageBox.Show("Password updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Catch ex As Exception
-            MessageBox.Show("Failed to update password: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
+        Using dialog As New Form()
+            dialog.Text = "Change Password"
+            dialog.Size = New Size(350, 300)
+            dialog.StartPosition = FormStartPosition.CenterParent
+            dialog.FormBorderStyle = FormBorderStyle.FixedDialog
+            dialog.MaximizeBox = False
+            dialog.MinimizeBox = False
+            dialog.BackColor = Color.White
+
+            Dim lblOld = New Label() With {.Text = "Old Password:", .Location = New Point(20, 20), .AutoSize = True}
+            Dim txtOld = New TextBox() With {.Location = New Point(20, 45), .Size = New Size(290, 30), .UseSystemPasswordChar = True}
+
+            Dim lblNew = New Label() With {.Text = "New Password:", .Location = New Point(20, 85), .AutoSize = True}
+            Dim txtNew = New TextBox() With {.Location = New Point(20, 110), .Size = New Size(290, 30), .UseSystemPasswordChar = True}
+
+            Dim lblConfirm = New Label() With {.Text = "Confirm New Password:", .Location = New Point(20, 150), .AutoSize = True}
+            Dim txtConfirm = New TextBox() With {.Location = New Point(20, 175), .Size = New Size(290, 30), .UseSystemPasswordChar = True}
+
+            Dim btnOk = New Button() With {.Text = "Save", .DialogResult = DialogResult.OK, .Location = New Point(135, 215), .Size = New Size(90, 30), .BackColor = Color.FromArgb(15, 39, 74), .ForeColor = Color.White, .FlatStyle = FlatStyle.Flat}
+            Dim btnCancel = New Button() With {.Text = "Cancel", .DialogResult = DialogResult.Cancel, .Location = New Point(235, 215), .Size = New Size(75, 30), .BackColor = Color.White, .FlatStyle = FlatStyle.Flat}
+
+            dialog.Controls.AddRange(New Control() {lblOld, txtOld, lblNew, txtNew, lblConfirm, txtConfirm, btnOk, btnCancel})
+            dialog.AcceptButton = btnOk
+            dialog.CancelButton = btnCancel
+
+            If dialog.ShowDialog(Me) = DialogResult.OK Then
+                If String.IsNullOrWhiteSpace(txtOld.Text) OrElse String.IsNullOrWhiteSpace(txtNew.Text) Then
+                    MessageBox.Show("All fields are required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Return
+                End If
+
+                If txtNew.Text <> txtConfirm.Text Then
+                    MessageBox.Show("New passwords do not match.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return
+                End If
+
+                Try
+                    Dim dbHelper As New DatabaseHelper()
+                    Dim queryCheck = "SELECT Password FROM Users WHERE UserID = @UserID LIMIT 1;"
+                    Dim dt = dbHelper.ExecuteQuery(queryCheck, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})
+                    
+                    If dt.Rows.Count = 0 OrElse dt.Rows(0)("Password").ToString() <> txtOld.Text Then
+                        MessageBox.Show("Incorrect old password.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return
+                    End If
+
+                    Dim queryUpdate = "UPDATE Users SET Password = @Password WHERE UserID = @UserID;"
+                    dbHelper.ExecuteNonQuery(queryUpdate, New Dictionary(Of String, Object) From {
+                        {"@Password", txtNew.Text},
+                        {"@UserID", AppSession.UserID}
+                    })
+                    MessageBox.Show("Password updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Catch ex As Exception
+                    MessageBox.Show("Failed to update password: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
+            End If
+        End Using
     End Sub
 
 End Class

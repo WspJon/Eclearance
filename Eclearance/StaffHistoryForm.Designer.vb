@@ -179,7 +179,7 @@ Partial Class StaffHistoryForm
         btnNavRequests.Name = "btnNavRequests"
         btnNavRequests.Size = New Size(188, 44)
         btnNavRequests.TabIndex = 3
-        btnNavRequests.Text = "  Requests"
+        btnNavRequests.Text = "  Submissions"
         btnNavRequests.TextAlign = ContentAlignment.MiddleLeft
         btnNavRequests.UseVisualStyleBackColor = True
         ' 
@@ -530,7 +530,7 @@ Partial Class StaffHistoryForm
         lblDetailTitle.Name = "lblDetailTitle"
         lblDetailTitle.Size = New Size(118, 20)
         lblDetailTitle.TabIndex = 1
-        lblDetailTitle.Text = "Request Details"
+        lblDetailTitle.Text = "Submission Details"
         ' 
         ' lblDetailIcon
         ' 

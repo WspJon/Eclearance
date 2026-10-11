@@ -21,6 +21,18 @@ Partial Class ReviewClearanceForm
         Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlCard = New Panel()
         btnClose = New Button()
+        btnMinimize = New Button()
+        btnEditGuidance = New Button()
+        btnSaveGuidance = New Button()
+        btnCancelGuidance = New Button()
+        txtAddress = New TextBox()
+        txtEmergencyName = New TextBox()
+        txtContact = New TextBox()
+        txtRelationship = New TextBox()
+        txtEmail = New TextBox()
+        txtEmergencyContact = New TextBox()
+        txtCivilStatus = New TextBox()
+        txtNotes = New TextBox()
         lblHeaderTitle = New Label()
         lblHeaderSub = New Label()
         pnlOfficeBadge = New Panel()
@@ -146,6 +158,7 @@ Partial Class ReviewClearanceForm
         ' 
         pnlCard.BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         pnlCard.BorderStyle = BorderStyle.FixedSingle
+        pnlCard.Controls.Add(btnMinimize)
         pnlCard.Controls.Add(btnClose)
         pnlCard.Controls.Add(lblHeaderTitle)
         pnlCard.Controls.Add(lblHeaderSub)
@@ -160,6 +173,108 @@ Partial Class ReviewClearanceForm
         pnlCard.Size = New Size(1140, 720)
         pnlCard.TabIndex = 0
         ' 
+        ' btnMinimize
+        btnMinimize.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btnMinimize.BackColor = Color.Transparent
+        btnMinimize.Cursor = Cursors.Hand
+        btnMinimize.FlatAppearance.BorderSize = 0
+        btnMinimize.FlatAppearance.MouseOverBackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnMinimize.FlatStyle = FlatStyle.Flat
+        btnMinimize.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
+        btnMinimize.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        btnMinimize.Location = New Point(1046, 13)
+        btnMinimize.Name = "btnMinimize"
+        btnMinimize.Size = New Size(38, 40)
+        btnMinimize.TabIndex = 3
+        btnMinimize.Text = "-"
+        btnMinimize.UseVisualStyleBackColor = False
+        ' btnEditGuidance
+        btnEditGuidance.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btnEditGuidance.BackColor = Color.FromArgb(15, 39, 74)
+        btnEditGuidance.ForeColor = Color.White
+        btnEditGuidance.FlatStyle = FlatStyle.Flat
+        btnEditGuidance.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnEditGuidance.Location = New Point(550, 15)
+        btnEditGuidance.Name = "btnEditGuidance"
+        btnEditGuidance.Size = New Size(125, 30)
+        btnEditGuidance.Text = "✎ Edit Information"
+        btnEditGuidance.Cursor = Cursors.Hand
+        btnEditGuidance.UseVisualStyleBackColor = False
+        btnEditGuidance.Visible = False
+        ' btnSaveGuidance
+        btnSaveGuidance.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btnSaveGuidance.BackColor = Color.FromArgb(22, 163, 74)
+        btnSaveGuidance.ForeColor = Color.White
+        btnSaveGuidance.FlatStyle = FlatStyle.Flat
+        btnSaveGuidance.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnSaveGuidance.Location = New Point(420, 15)
+        btnSaveGuidance.Name = "btnSaveGuidance"
+        btnSaveGuidance.Size = New Size(120, 30)
+        btnSaveGuidance.Text = "✓ Save Changes"
+        btnSaveGuidance.Cursor = Cursors.Hand
+        btnSaveGuidance.UseVisualStyleBackColor = False
+        btnSaveGuidance.Visible = False
+        ' btnCancelGuidance
+        btnCancelGuidance.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btnCancelGuidance.BackColor = Color.White
+        btnCancelGuidance.ForeColor = Color.FromArgb(51, 65, 85)
+        btnCancelGuidance.FlatStyle = FlatStyle.Flat
+        btnCancelGuidance.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnCancelGuidance.Location = New Point(550, 15)
+        btnCancelGuidance.Name = "btnCancelGuidance"
+        btnCancelGuidance.Size = New Size(125, 30)
+        btnCancelGuidance.Text = "✗ Cancel"
+        btnCancelGuidance.Cursor = Cursors.Hand
+        btnCancelGuidance.UseVisualStyleBackColor = False
+        btnCancelGuidance.Visible = False
+        ' txtAddress
+        txtAddress.Location = New Point(18, 32)
+        txtAddress.Size = New Size(310, 36)
+        txtAddress.Font = New Font("Segoe UI", 9.0F)
+        txtAddress.Multiline = True
+        txtAddress.Visible = False
+        ' txtEmergencyName
+        txtEmergencyName.Location = New Point(354, 32)
+        txtEmergencyName.Size = New Size(310, 36)
+        txtEmergencyName.Font = New Font("Segoe UI", 9.0F)
+        txtEmergencyName.Multiline = True
+        txtEmergencyName.Visible = False
+        ' txtContact
+        txtContact.Location = New Point(18, 98)
+        txtContact.Size = New Size(310, 36)
+        txtContact.Font = New Font("Segoe UI", 9.0F)
+        txtContact.Multiline = True
+        txtContact.Visible = False
+        ' txtRelationship
+        txtRelationship.Location = New Point(354, 98)
+        txtRelationship.Size = New Size(310, 36)
+        txtRelationship.Font = New Font("Segoe UI", 9.0F)
+        txtRelationship.Multiline = True
+        txtRelationship.Visible = False
+        ' txtEmail
+        txtEmail.Location = New Point(18, 164)
+        txtEmail.Size = New Size(310, 36)
+        txtEmail.Font = New Font("Segoe UI", 9.0F)
+        txtEmail.Multiline = True
+        txtEmail.Visible = False
+        ' txtEmergencyContact
+        txtEmergencyContact.Location = New Point(354, 164)
+        txtEmergencyContact.Size = New Size(310, 36)
+        txtEmergencyContact.Font = New Font("Segoe UI", 9.0F)
+        txtEmergencyContact.Multiline = True
+        txtEmergencyContact.Visible = False
+        ' txtCivilStatus
+        txtCivilStatus.Location = New Point(18, 230)
+        txtCivilStatus.Size = New Size(310, 36)
+        txtCivilStatus.Font = New Font("Segoe UI", 9.0F)
+        txtCivilStatus.Multiline = True
+        txtCivilStatus.Visible = False
+        ' txtNotes
+        txtNotes.Location = New Point(354, 230)
+        txtNotes.Size = New Size(310, 36)
+        txtNotes.Font = New Font("Segoe UI", 9.0F)
+        txtNotes.Multiline = True
+        txtNotes.Visible = False
         ' btnClose
         ' 
         btnClose.Anchor = AnchorStyles.Top Or AnchorStyles.Right
@@ -827,6 +942,14 @@ Partial Class ReviewClearanceForm
         pnlGuidanceFields.Controls.Add(lblCivilStatusValue)
         pnlGuidanceFields.Controls.Add(lblNotesTitle)
         pnlGuidanceFields.Controls.Add(lblNotesValue)
+        pnlGuidanceFields.Controls.Add(txtAddress)
+        pnlGuidanceFields.Controls.Add(txtEmergencyName)
+        pnlGuidanceFields.Controls.Add(txtContact)
+        pnlGuidanceFields.Controls.Add(txtRelationship)
+        pnlGuidanceFields.Controls.Add(txtEmail)
+        pnlGuidanceFields.Controls.Add(txtEmergencyContact)
+        pnlGuidanceFields.Controls.Add(txtCivilStatus)
+        pnlGuidanceFields.Controls.Add(txtNotes)
         pnlGuidanceFields.Controls.Add(pnlGuidanceInfoNote)
         pnlGuidanceFields.Dock = DockStyle.Fill
         pnlGuidanceFields.Location = New Point(0, 0)
@@ -1075,6 +1198,9 @@ Partial Class ReviewClearanceForm
         pnlGuidanceHeader.Controls.Add(lblGuidanceIcon)
         pnlGuidanceHeader.Controls.Add(lblGuidanceInfoTitle)
         pnlGuidanceHeader.Controls.Add(lblGuidanceInfoSubtitle)
+        pnlGuidanceHeader.Controls.Add(btnEditGuidance)
+        pnlGuidanceHeader.Controls.Add(btnSaveGuidance)
+        pnlGuidanceHeader.Controls.Add(btnCancelGuidance)
         pnlGuidanceHeader.Dock = DockStyle.Top
         pnlGuidanceHeader.Location = New Point(0, 0)
         pnlGuidanceHeader.Name = "pnlGuidanceHeader"
@@ -1452,6 +1578,18 @@ Partial Class ReviewClearanceForm
     Friend WithEvents pnlCard As Panel
 
     Friend WithEvents btnClose As Button
+    Friend WithEvents btnMinimize As Button
+    Friend WithEvents btnEditGuidance As Button
+    Friend WithEvents btnSaveGuidance As Button
+    Friend WithEvents btnCancelGuidance As Button
+    Friend WithEvents txtAddress As TextBox
+    Friend WithEvents txtEmergencyName As TextBox
+    Friend WithEvents txtContact As TextBox
+    Friend WithEvents txtRelationship As TextBox
+    Friend WithEvents txtEmail As TextBox
+    Friend WithEvents txtEmergencyContact As TextBox
+    Friend WithEvents txtCivilStatus As TextBox
+    Friend WithEvents txtNotes As TextBox
 
     Friend WithEvents lblHeaderTitle As Label
     Friend WithEvents lblHeaderSub As Label

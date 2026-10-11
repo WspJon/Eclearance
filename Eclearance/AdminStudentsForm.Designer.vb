@@ -817,6 +817,7 @@ Partial Class AdminStudentsForm
         MinimumSize = New Size(1100, 750)
         Name = "AdminStudentsForm"
         StartPosition = FormStartPosition.CenterScreen
+        WindowState = FormWindowState.Maximized
         Text = "EClearance - Administration (Students)"
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()

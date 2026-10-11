@@ -26,6 +26,19 @@ Public Class ClearanceWorkflowHelper
         Public Property IsApplicable As Boolean
         Public Property CanSubmit As Boolean
         Public Property FileCount As Integer = 0
+
+        Public ReadOnly Property DisplayStatus As String
+            Get
+                If EffectiveStatus.Equals("Pending", StringComparison.OrdinalIgnoreCase) AndAlso Not HasSubmitted() Then
+                    Return "Not Submitted"
+                End If
+                Return EffectiveStatus
+            End Get
+        End Property
+
+        Public Function HasSubmitted() As Boolean
+            Return SubmittedAt IsNot Nothing AndAlso Not DBNull.Value.Equals(SubmittedAt)
+        End Function
     End Class
 
     ''' <summary>
@@ -573,7 +586,8 @@ Public Class ClearanceWorkflowHelper
 
         Try
             Dim dt = db.ExecuteQuery(
-                "SELECT cr.StudentID, cr.TermID, r.SequenceOrder, r.RequirementName, " &
+                "SELECT cr.StudentID, cr.TermID, cr.Status, cr.SubmittedAt, " &
+                "       r.SequenceOrder, r.RequirementName, r.DepartmentID, " &
                 "       COALESCE(s.Course, '') AS Course, " &
                 "       COALESCE(s.YearLevel, '') AS YearLevel " &
                 "FROM ClearanceRecords cr " &
@@ -593,13 +607,52 @@ Public Class ClearanceWorkflowHelper
             Dim studentID As Integer = Convert.ToInt32(row("StudentID"))
             Dim termID As Integer = Convert.ToInt32(row("TermID"))
             Dim seqOrder As Integer = Convert.ToInt32(row("SequenceOrder"))
+            Dim deptID As Integer = Convert.ToInt32(row("DepartmentID"))
+            Dim status As String = row("Status").ToString()
             Dim course As String = If(IsDBNull(row("Course")), "", row("Course").ToString())
             Dim yearLevel As String = If(IsDBNull(row("YearLevel")), "", row("YearLevel").ToString())
+            Dim isSubmitted As Boolean = Not IsDBNull(row("SubmittedAt"))
 
-            ' Steps 1-5: Parallel and independent. Staff can review and approve anytime.
-            If seqOrder <= 5 Then Return True
+            ' Business Rule: Correct Department
+            If AppSession.DepartmentID.HasValue AndAlso AppSession.DepartmentID.Value <> deptID Then
+                blockerReason = "You do not have permission to review requirements for this department."
+                Return False
+            End If
 
+            ' Business Rule: Active Academic Term
+            Dim activeTermQuery = "SELECT TermID FROM AcademicTerms WHERE IsActive = 1 ORDER BY TermID DESC LIMIT 1;"
+            Dim activeTermDt = db.ExecuteQuery(activeTermQuery)
+            If activeTermDt.Rows.Count > 0 Then
+                Dim activeTermID As Integer = Convert.ToInt32(activeTermDt.Rows(0)("TermID"))
+                If termID <> activeTermID Then
+                    blockerReason = "This record belongs to a previous academic term and cannot be approved now."
+                    Return False
+                End If
+            End If
+
+            ' Business Rule: Actually Submitted and Under Review
+            If Not isSubmitted Then
+                blockerReason = "This requirement has not been submitted by the student."
+                Return False
+            End If
+
+            If status.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
+                blockerReason = "This requirement has already been approved."
+                Return False
+            End If
+
+            If Not status.Equals("Under Review", StringComparison.OrdinalIgnoreCase) Then
+                blockerReason = "Only requirements that are 'Under Review' can be approved."
+                Return False
+            End If
+
+            ' Business Rule: Prerequisites (Workflow)
             Dim items = GetStudentClearanceItems(studentID, termID, course, yearLevel, db)
+            Dim currentItem = items.FirstOrDefault(Function(i) i.RecordID = recordID)
+            If currentItem IsNot Nothing AndAlso currentItem.EffectiveStatus.Equals("Locked", StringComparison.OrdinalIgnoreCase) Then
+                blockerReason = "This requirement is currently locked due to incomplete prerequisites."
+                Return False
+            End If
 
             If seqOrder = 6 Then
                 ' College Dean: all applicable Steps 1-5 must be Cleared
@@ -609,7 +662,7 @@ Public Class ClearanceWorkflowHelper
                     blockerReason = "Cannot approve College Dean clearance because the student has incomplete prerequisite steps: " & names & "."
                     Return False
                 End If
-            Else
+            ElseIf seqOrder > 6 Then
                 ' Steps 7+: Previous sequential step must be Cleared or Not Applicable
                 Dim prevStep = items.FirstOrDefault(Function(i) i.SequenceOrder = seqOrder - 1)
                 If prevStep IsNot Nothing AndAlso prevStep.IsApplicable AndAlso Not prevStep.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then

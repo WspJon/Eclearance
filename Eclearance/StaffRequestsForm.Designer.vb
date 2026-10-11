@@ -165,7 +165,7 @@ Partial Class StaffRequestsForm
         btnNavRequests.Name = "btnNavRequests"
         btnNavRequests.Size = New Size(188, 44)
         btnNavRequests.TabIndex = 3
-        btnNavRequests.Text = "  Requests"
+        btnNavRequests.Text = "  Submissions"
         btnNavRequests.TextAlign = ContentAlignment.MiddleLeft
         btnNavRequests.UseVisualStyleBackColor = False
         ' 
@@ -598,7 +598,7 @@ Partial Class StaffRequestsForm
         lblTableTitle.Name = "lblTableTitle"
         lblTableTitle.Size = New Size(221, 21)
         lblTableTitle.TabIndex = 1
-        lblTableTitle.Text = "Student Clearance Requests"
+        lblTableTitle.Text = "Student Clearance Submissions"
         ' 
         ' lblTableIcon
         ' 
@@ -862,7 +862,7 @@ Partial Class StaffRequestsForm
         lblTotalTitle.Name = "lblTotalTitle"
         lblTotalTitle.Size = New Size(83, 15)
         lblTotalTitle.TabIndex = 2
-        lblTotalTitle.Text = "Total Requests"
+        lblTotalTitle.Text = "Total Submissions"
         ' 
         ' lblTotalCount
         ' 
@@ -1011,7 +1011,7 @@ Partial Class StaffRequestsForm
         lblHeaderTitle.Name = "lblHeaderTitle"
         lblHeaderTitle.Size = New Size(199, 37)
         lblHeaderTitle.TabIndex = 0
-        lblHeaderTitle.Text = "Staff Requests"
+        lblHeaderTitle.Text = "Submissions"
         ' 
         ' StaffRequestsForm
         ' 
@@ -1025,7 +1025,7 @@ Partial Class StaffRequestsForm
         MinimumSize = New Size(1200, 728)
         Name = "StaffRequestsForm"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "EClearance - Staff Requests"
+        Text = "EClearance - Submissions"
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)

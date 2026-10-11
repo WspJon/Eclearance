@@ -20,6 +20,8 @@ Public Class ReviewClearanceForm
     Private _termID As Integer = 0
     Private _studentCourse As String = ""
     Private _studentYearLevel As String = ""
+    Private _isEditingGuidance As Boolean = False
+    Private _guidanceProfileID As Integer = 0
 
     Private Sub ReviewClearanceForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Not AppSession.DepartmentID.HasValue Then
@@ -184,8 +186,14 @@ Public Class ReviewClearanceForm
                 lblStatusVal.Text = currentStatus
                 ApplyStatusBadgeStyle(lblStatusVal, currentStatus)
 
+                btnEditGuidance.Visible = False
+                btnSaveGuidance.Visible = False
+                btnCancelGuidance.Visible = False
+
                 If dtGProfile.Rows.Count > 0 Then
                     Dim gRow = dtGProfile.Rows(0)
+                    _guidanceProfileID = Convert.ToInt32(gRow("ProfileID"))
+                    btnEditGuidance.Visible = True
                     Dim addressStr = If(IsDBNull(gRow("Address")), "", gRow("Address").ToString().Trim())
                     Dim contactStr = If(IsDBNull(gRow("ContactNo")), "", gRow("ContactNo").ToString().Trim())
                     Dim emailStr = If(IsDBNull(gRow("Email")), "", gRow("Email").ToString().Trim())
@@ -457,6 +465,11 @@ Public Class ReviewClearanceForm
 
     ' Decision: Approve / Clear
     Private Sub btnApprove_Click(sender As Object, e As EventArgs) Handles btnApprove.Click
+        If _isEditingGuidance Then
+            MessageBox.Show("Please save or cancel your Guidance information changes before approving.", "Unsaved Changes", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
         If Not AppSession.DepartmentID.HasValue Then
             MessageBox.Show("Security Error: Your account is not authorized for any department.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
@@ -514,6 +527,11 @@ Public Class ReviewClearanceForm
 
     ' Decision: Reject (Remarks REQUIRED!)
     Private Sub btnReject_Click(sender As Object, e As EventArgs) Handles btnReject.Click
+        If _isEditingGuidance Then
+            MessageBox.Show("Please save or cancel your Guidance information changes before rejecting.", "Unsaved Changes", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
         If Not AppSession.DepartmentID.HasValue Then
             MessageBox.Show("Security Error: Your account is not authorized for any department.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
@@ -634,7 +652,28 @@ Public Class ReviewClearanceForm
         Me.Close()
     End Sub
 
+    Private Sub btnMinimize_Click(sender As Object, e As EventArgs) Handles btnMinimize.Click
+        If _isEditingGuidance Then
+            MessageBox.Show("Please save or cancel your changes before minimizing.", "Editing", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+        
+        Dim rootForm As Form = Me.Owner
+        While rootForm IsNot Nothing AndAlso rootForm.Owner IsNot Nothing
+            rootForm = rootForm.Owner
+        End While
+        If rootForm IsNot Nothing Then
+            rootForm.WindowState = FormWindowState.Minimized
+        Else
+            Me.WindowState = FormWindowState.Minimized
+        End If
+    End Sub
+
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click, btnBackToRequests.Click
+        If _isEditingGuidance Then
+            Dim confirm = MessageBox.Show("You have unsaved changes to the Guidance information. Are you sure you want to close and discard them?", "Unsaved Changes", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)
+            If confirm <> DialogResult.Yes Then Return
+        End If
         ReturnToRequests()
     End Sub
 
@@ -658,5 +697,128 @@ Public Class ReviewClearanceForm
 
     Private Sub lblOfficeName_Click(sender As Object, e As EventArgs) Handles lblOfficeName.Click
 
+    End Sub
+
+    Private Sub btnEditGuidance_Click(sender As Object, e As EventArgs) Handles btnEditGuidance.Click
+        _isEditingGuidance = True
+        btnEditGuidance.Visible = False
+        btnSaveGuidance.Visible = True
+        btnCancelGuidance.Visible = True
+
+        ' Populate TextBoxes with label values (except "Not provided")
+        txtAddress.Text = If(lblAddressValue.Text = "Not provided", "", lblAddressValue.Text)
+        txtContact.Text = If(lblContactValue.Text = "Not provided", "", lblContactValue.Text)
+        txtEmail.Text = If(lblEmailValue.Text = "Not provided", "", lblEmailValue.Text)
+        txtCivilStatus.Text = If(lblCivilStatusValue.Text = "Not provided", "", lblCivilStatusValue.Text)
+        txtEmergencyName.Text = If(lblEmergencyNameValue.Text = "Not provided", "", lblEmergencyNameValue.Text)
+        txtRelationship.Text = If(lblRelationshipValue.Text = "Not provided", "", lblRelationshipValue.Text)
+        txtEmergencyContact.Text = If(lblEmergencyContactValue.Text = "Not provided", "", lblEmergencyContactValue.Text)
+        txtNotes.Text = If(lblNotesValue.Text = "Not provided", "", lblNotesValue.Text)
+
+        ' Toggle visibility
+        lblAddressValue.Visible = False
+        txtAddress.Visible = True
+        lblContactValue.Visible = False
+        txtContact.Visible = True
+        lblEmailValue.Visible = False
+        txtEmail.Visible = True
+        lblCivilStatusValue.Visible = False
+        txtCivilStatus.Visible = True
+        lblEmergencyNameValue.Visible = False
+        txtEmergencyName.Visible = True
+        lblRelationshipValue.Visible = False
+        txtRelationship.Visible = True
+        lblEmergencyContactValue.Visible = False
+        txtEmergencyContact.Visible = True
+        lblNotesValue.Visible = False
+        txtNotes.Visible = True
+    End Sub
+
+    Private Sub EndGuidanceEditMode()
+        _isEditingGuidance = False
+        btnEditGuidance.Visible = True
+        btnSaveGuidance.Visible = False
+        btnCancelGuidance.Visible = False
+
+        lblAddressValue.Visible = True
+        txtAddress.Visible = False
+        lblContactValue.Visible = True
+        txtContact.Visible = False
+        lblEmailValue.Visible = True
+        txtEmail.Visible = False
+        lblCivilStatusValue.Visible = True
+        txtCivilStatus.Visible = False
+        lblEmergencyNameValue.Visible = True
+        txtEmergencyName.Visible = False
+        lblRelationshipValue.Visible = True
+        txtRelationship.Visible = False
+        lblEmergencyContactValue.Visible = True
+        txtEmergencyContact.Visible = False
+        lblNotesValue.Visible = True
+        txtNotes.Visible = False
+    End Sub
+
+    Private Sub btnCancelGuidance_Click(sender As Object, e As EventArgs) Handles btnCancelGuidance.Click
+        EndGuidanceEditMode()
+    End Sub
+
+    Private Sub btnSaveGuidance_Click(sender As Object, e As EventArgs) Handles btnSaveGuidance.Click
+        If _guidanceProfileID = 0 Then Return
+
+        ' Basic validation
+        If String.IsNullOrWhiteSpace(txtAddress.Text) OrElse String.IsNullOrWhiteSpace(txtContact.Text) OrElse String.IsNullOrWhiteSpace(txtEmergencyName.Text) Then
+            MessageBox.Show("Address, Contact Number, and Emergency Contact Name are required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
+        Try
+            ' Check changes for audit
+            Dim changedFields As New List(Of String)()
+            If txtAddress.Text <> If(lblAddressValue.Text = "Not provided", "", lblAddressValue.Text) Then changedFields.Add("Address")
+            If txtContact.Text <> If(lblContactValue.Text = "Not provided", "", lblContactValue.Text) Then changedFields.Add("ContactNo")
+            If txtEmail.Text <> If(lblEmailValue.Text = "Not provided", "", lblEmailValue.Text) Then changedFields.Add("Email")
+            If txtCivilStatus.Text <> If(lblCivilStatusValue.Text = "Not provided", "", lblCivilStatusValue.Text) Then changedFields.Add("CivilStatus")
+            If txtEmergencyName.Text <> If(lblEmergencyNameValue.Text = "Not provided", "", lblEmergencyNameValue.Text) Then changedFields.Add("EmergencyContactName")
+            If txtRelationship.Text <> If(lblRelationshipValue.Text = "Not provided", "", lblRelationshipValue.Text) Then changedFields.Add("Relationship")
+            If txtEmergencyContact.Text <> If(lblEmergencyContactValue.Text = "Not provided", "", lblEmergencyContactValue.Text) Then changedFields.Add("EmergencyContactNo")
+            If txtNotes.Text <> If(lblNotesValue.Text = "Not provided", "", lblNotesValue.Text) Then changedFields.Add("AdditionalNotes")
+
+            If changedFields.Count = 0 Then
+                EndGuidanceEditMode()
+                Return
+            End If
+
+            Dim updateQuery = "UPDATE GuidanceStudentProfiles SET Address = @a, ContactNo = @c, Email = @e, CivilStatus = @cs, EmergencyContactName = @en, Relationship = @er, EmergencyContactNo = @ec, AdditionalNotes = @n, UpdatedAt = CURRENT_TIMESTAMP() WHERE ProfileID = @pid"
+            Dim p As New Dictionary(Of String, Object) From {
+                {"@a", txtAddress.Text.Trim()},
+                {"@c", txtContact.Text.Trim()},
+                {"@e", txtEmail.Text.Trim()},
+                {"@cs", txtCivilStatus.Text.Trim()},
+                {"@en", txtEmergencyName.Text.Trim()},
+                {"@er", txtRelationship.Text.Trim()},
+                {"@ec", txtEmergencyContact.Text.Trim()},
+                {"@n", txtNotes.Text.Trim()},
+                {"@pid", _guidanceProfileID}
+            }
+
+            db.ExecuteNonQuery(updateQuery, p)
+
+            Dim auditMsg = "Guidance staff edited: " & String.Join(", ", changedFields) & " (Sensitive values protected)."
+            Dim histQuery = "INSERT INTO ClearanceHistory (RecordID, ActionBy, Action, Remarks, ActionAt) VALUES (@r, @u, 'Updated Profile', @rm, CURRENT_TIMESTAMP())"
+            db.ExecuteNonQuery(histQuery, New Dictionary(Of String, Object) From {
+                {"@r", TargetRecordID},
+                {"@u", AppSession.UserID},
+                {"@rm", auditMsg}
+            })
+
+            MessageBox.Show("Guidance information updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            
+            EndGuidanceEditMode()
+            LoadSubmissionDetails()
+            LoadTimeline()
+
+        Catch ex As Exception
+            MessageBox.Show("Error saving changes: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 End Class
