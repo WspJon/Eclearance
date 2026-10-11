@@ -17,8 +17,8 @@ Partial Class ClearanceHistoryForm
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim dataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim dataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         lblNavSection = New Label()
         btnNavStudents = New Button()
@@ -65,6 +65,7 @@ Partial Class ClearanceHistoryForm
         lblHeaderTitle = New Label()
         pnlSidebar.SuspendLayout()
         pnlLogo.SuspendLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
         pnlMain.SuspendLayout()
         pnlEventDetails.SuspendLayout()
         pnlFileBox.SuspendLayout()
@@ -75,7 +76,7 @@ Partial Class ClearanceHistoryForm
         ' 
         ' pnlSidebar
         ' 
-        pnlSidebar.BackColor = Color.FromArgb(15, 39, 74)
+        pnlSidebar.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         pnlSidebar.Controls.Add(lblNavSection)
         pnlSidebar.Controls.Add(btnNavStudents)
         pnlSidebar.Controls.Add(btnNavStaff)
@@ -92,21 +93,21 @@ Partial Class ClearanceHistoryForm
         ' lblNavSection
         ' 
         lblNavSection.AutoSize = True
-        lblNavSection.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblNavSection.ForeColor = Color.FromArgb(91, 122, 159)
+        lblNavSection.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
+        lblNavSection.ForeColor = Color.FromArgb(CByte(91), CByte(122), CByte(159))
         lblNavSection.Location = New Point(18, 90)
         lblNavSection.Name = "lblNavSection"
-        lblNavSection.Size = New Size(94, 12)
+        lblNavSection.Size = New Size(93, 12)
         lblNavSection.TabIndex = 1
         lblNavSection.Text = "ADMINISTRATION"
         ' 
         ' btnNavStudents
         ' 
-        btnNavStudents.BackColor = Color.FromArgb(15, 39, 74)
+        btnNavStudents.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         btnNavStudents.FlatAppearance.BorderSize = 0
         btnNavStudents.FlatStyle = FlatStyle.Flat
-        btnNavStudents.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        btnNavStudents.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavStudents.Font = New Font("Segoe UI", 9.5F)
+        btnNavStudents.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavStudents.Location = New Point(12, 115)
         btnNavStudents.Name = "btnNavStudents"
         btnNavStudents.Padding = New Padding(12, 0, 0, 0)
@@ -118,11 +119,11 @@ Partial Class ClearanceHistoryForm
         ' 
         ' btnNavStaff
         ' 
-        btnNavStaff.BackColor = Color.FromArgb(15, 39, 74)
+        btnNavStaff.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         btnNavStaff.FlatAppearance.BorderSize = 0
         btnNavStaff.FlatStyle = FlatStyle.Flat
-        btnNavStaff.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        btnNavStaff.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavStaff.Font = New Font("Segoe UI", 9.5F)
+        btnNavStaff.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavStaff.Location = New Point(12, 163)
         btnNavStaff.Name = "btnNavStaff"
         btnNavStaff.Padding = New Padding(12, 0, 0, 0)
@@ -134,10 +135,10 @@ Partial Class ClearanceHistoryForm
         ' 
         ' btnNavHistory
         ' 
-        btnNavHistory.BackColor = Color.FromArgb(28, 91, 184)
+        btnNavHistory.BackColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         btnNavHistory.FlatAppearance.BorderSize = 0
         btnNavHistory.FlatStyle = FlatStyle.Flat
-        btnNavHistory.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
+        btnNavHistory.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnNavHistory.ForeColor = Color.White
         btnNavHistory.Location = New Point(12, 211)
         btnNavHistory.Name = "btnNavHistory"
@@ -150,11 +151,11 @@ Partial Class ClearanceHistoryForm
         ' 
         ' btnNavStartTerm
         ' 
-        btnNavStartTerm.BackColor = Color.FromArgb(15, 39, 74)
+        btnNavStartTerm.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         btnNavStartTerm.FlatAppearance.BorderSize = 0
         btnNavStartTerm.FlatStyle = FlatStyle.Flat
-        btnNavStartTerm.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        btnNavStartTerm.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavStartTerm.Font = New Font("Segoe UI", 9.5F)
+        btnNavStartTerm.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavStartTerm.Location = New Point(12, 259)
         btnNavStartTerm.Name = "btnNavStartTerm"
         btnNavStartTerm.Padding = New Padding(12, 0, 0, 0)
@@ -169,8 +170,8 @@ Partial Class ClearanceHistoryForm
         btnNavLogout.Dock = DockStyle.Bottom
         btnNavLogout.FlatAppearance.BorderSize = 0
         btnNavLogout.FlatStyle = FlatStyle.Flat
-        btnNavLogout.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        btnNavLogout.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavLogout.Font = New Font("Segoe UI", 9.5F)
+        btnNavLogout.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
         btnNavLogout.Location = New Point(0, 752)
         btnNavLogout.Name = "btnNavLogout"
         btnNavLogout.Padding = New Padding(20, 0, 0, 0)
@@ -192,13 +193,14 @@ Partial Class ClearanceHistoryForm
         ' 
         ' lblLogoText
         ' 
-        lblLogoText.Font = New Font("Segoe UI", 11.5F, FontStyle.Bold, GraphicsUnit.Point)
+        lblLogoText.Font = New Font("Segoe UI", 11.5F, FontStyle.Bold)
         lblLogoText.ForeColor = Color.White
         lblLogoText.Location = New Point(55, 18)
         lblLogoText.Name = "lblLogoText"
         lblLogoText.Size = New Size(140, 40)
         lblLogoText.TabIndex = 1
-        lblLogoText.Text = "EClearance"        ' 
+        lblLogoText.Text = "EClearance"
+        ' 
         ' picSchoolLogo
         ' 
         picSchoolLogo.Location = New Point(12, 16)
@@ -211,7 +213,7 @@ Partial Class ClearanceHistoryForm
         ' pnlMain
         ' 
         pnlMain.AutoScroll = True
-        pnlMain.BackColor = Color.FromArgb(244, 247, 251)
+        pnlMain.BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         pnlMain.Controls.Add(lblReadOnlyNotice)
         pnlMain.Controls.Add(pnlEventDetails)
         pnlMain.Controls.Add(dgvHistory)
@@ -228,11 +230,11 @@ Partial Class ClearanceHistoryForm
         ' 
         lblReadOnlyNotice.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         lblReadOnlyNotice.AutoSize = True
-        lblReadOnlyNotice.Font = New Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point)
-        lblReadOnlyNotice.ForeColor = Color.FromArgb(148, 163, 184)
+        lblReadOnlyNotice.Font = New Font("Segoe UI", 8.5F)
+        lblReadOnlyNotice.ForeColor = Color.FromArgb(CByte(148), CByte(163), CByte(184))
         lblReadOnlyNotice.Location = New Point(28, 765)
         lblReadOnlyNotice.Name = "lblReadOnlyNotice"
-        lblReadOnlyNotice.Size = New Size(116, 15)
+        lblReadOnlyNotice.Size = New Size(128, 15)
         lblReadOnlyNotice.TabIndex = 4
         lblReadOnlyNotice.Text = "ℹ History is read-only."
         ' 
@@ -265,10 +267,10 @@ Partial Class ClearanceHistoryForm
         ' 
         btnViewSavedFile.BackColor = Color.White
         btnViewSavedFile.Cursor = Cursors.Hand
-        btnViewSavedFile.FlatAppearance.BorderColor = Color.FromArgb(11, 99, 229)
+        btnViewSavedFile.FlatAppearance.BorderColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         btnViewSavedFile.FlatStyle = FlatStyle.Flat
-        btnViewSavedFile.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        btnViewSavedFile.ForeColor = Color.FromArgb(11, 99, 229)
+        btnViewSavedFile.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        btnViewSavedFile.ForeColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         btnViewSavedFile.Location = New Point(770, 185)
         btnViewSavedFile.Name = "btnViewSavedFile"
         btnViewSavedFile.Size = New Size(120, 48)
@@ -278,7 +280,7 @@ Partial Class ClearanceHistoryForm
         ' 
         ' pnlFileBox
         ' 
-        pnlFileBox.BackColor = Color.FromArgb(248, 250, 252)
+        pnlFileBox.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
         pnlFileBox.BorderStyle = BorderStyle.FixedSingle
         pnlFileBox.Controls.Add(lblFileMeta)
         pnlFileBox.Controls.Add(lblFileName)
@@ -291,30 +293,30 @@ Partial Class ClearanceHistoryForm
         ' lblFileMeta
         ' 
         lblFileMeta.AutoSize = True
-        lblFileMeta.Font = New Font("Segoe UI", 7.5F, FontStyle.Regular, GraphicsUnit.Point)
-        lblFileMeta.ForeColor = Color.FromArgb(148, 163, 184)
+        lblFileMeta.Font = New Font("Segoe UI", 7.5F)
+        lblFileMeta.ForeColor = Color.FromArgb(CByte(148), CByte(163), CByte(184))
         lblFileMeta.Location = New Point(38, 26)
         lblFileMeta.Name = "lblFileMeta"
-        lblFileMeta.Size = New Size(14, 12)
+        lblFileMeta.Size = New Size(13, 12)
         lblFileMeta.TabIndex = 2
         lblFileMeta.Text = "--"
         ' 
         ' lblFileName
         ' 
         lblFileName.AutoSize = True
-        lblFileName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblFileName.ForeColor = Color.FromArgb(30, 41, 59)
+        lblFileName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblFileName.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
         lblFileName.Location = New Point(38, 8)
         lblFileName.Name = "lblFileName"
-        lblFileName.Size = New Size(93, 15)
+        lblFileName.Size = New Size(91, 15)
         lblFileName.TabIndex = 1
         lblFileName.Text = "No file attached"
         ' 
         ' lblFileIcon
         ' 
-        lblFileIcon.BackColor = Color.FromArgb(254, 226, 226)
-        lblFileIcon.Font = New Font("Segoe UI Emoji", 12.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblFileIcon.ForeColor = Color.FromArgb(220, 38, 38)
+        lblFileIcon.BackColor = Color.FromArgb(CByte(254), CByte(226), CByte(226))
+        lblFileIcon.Font = New Font("Segoe UI Emoji", 12F)
+        lblFileIcon.ForeColor = Color.FromArgb(CByte(220), CByte(38), CByte(38))
         lblFileIcon.Location = New Point(6, 8)
         lblFileIcon.Name = "lblFileIcon"
         lblFileIcon.Size = New Size(28, 30)
@@ -325,8 +327,8 @@ Partial Class ClearanceHistoryForm
         ' lblFileAttachmentLabel
         ' 
         lblFileAttachmentLabel.AutoSize = True
-        lblFileAttachmentLabel.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblFileAttachmentLabel.ForeColor = Color.FromArgb(100, 116, 139)
+        lblFileAttachmentLabel.Font = New Font("Segoe UI", 9F)
+        lblFileAttachmentLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblFileAttachmentLabel.Location = New Point(420, 200)
         lblFileAttachmentLabel.Name = "lblFileAttachmentLabel"
         lblFileAttachmentLabel.Size = New Size(89, 15)
@@ -336,19 +338,19 @@ Partial Class ClearanceHistoryForm
         ' lblRemarksVal
         ' 
         lblRemarksVal.AutoSize = True
-        lblRemarksVal.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblRemarksVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblRemarksVal.Font = New Font("Segoe UI", 9F)
+        lblRemarksVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblRemarksVal.Location = New Point(550, 135)
         lblRemarksVal.Name = "lblRemarksVal"
-        lblRemarksVal.Size = New Size(16, 15)
+        lblRemarksVal.Size = New Size(17, 15)
         lblRemarksVal.TabIndex = 10
         lblRemarksVal.Text = "--"
         ' 
         ' lblRemarksLabel
         ' 
         lblRemarksLabel.AutoSize = True
-        lblRemarksLabel.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblRemarksLabel.ForeColor = Color.FromArgb(100, 116, 139)
+        lblRemarksLabel.Font = New Font("Segoe UI", 9F)
+        lblRemarksLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblRemarksLabel.Location = New Point(420, 135)
         lblRemarksLabel.Name = "lblRemarksLabel"
         lblRemarksLabel.Size = New Size(52, 15)
@@ -357,9 +359,9 @@ Partial Class ClearanceHistoryForm
         ' 
         ' lblNewStatusBadge
         ' 
-        lblNewStatusBadge.BackColor = Color.FromArgb(241, 245, 249)
-        lblNewStatusBadge.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblNewStatusBadge.ForeColor = Color.FromArgb(71, 85, 105)
+        lblNewStatusBadge.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        lblNewStatusBadge.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblNewStatusBadge.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
         lblNewStatusBadge.Location = New Point(550, 68)
         lblNewStatusBadge.Name = "lblNewStatusBadge"
         lblNewStatusBadge.Size = New Size(100, 26)
@@ -370,8 +372,8 @@ Partial Class ClearanceHistoryForm
         ' lblNewStatusLabel
         ' 
         lblNewStatusLabel.AutoSize = True
-        lblNewStatusLabel.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblNewStatusLabel.ForeColor = Color.FromArgb(100, 116, 139)
+        lblNewStatusLabel.Font = New Font("Segoe UI", 9F)
+        lblNewStatusLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblNewStatusLabel.Location = New Point(420, 72)
         lblNewStatusLabel.Name = "lblNewStatusLabel"
         lblNewStatusLabel.Size = New Size(65, 15)
@@ -380,9 +382,9 @@ Partial Class ClearanceHistoryForm
         ' 
         ' lblPrevStatusBadge
         ' 
-        lblPrevStatusBadge.BackColor = Color.FromArgb(241, 245, 249)
-        lblPrevStatusBadge.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblPrevStatusBadge.ForeColor = Color.FromArgb(71, 85, 105)
+        lblPrevStatusBadge.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        lblPrevStatusBadge.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblPrevStatusBadge.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
         lblPrevStatusBadge.Location = New Point(140, 195)
         lblPrevStatusBadge.Name = "lblPrevStatusBadge"
         lblPrevStatusBadge.Size = New Size(100, 26)
@@ -393,8 +395,8 @@ Partial Class ClearanceHistoryForm
         ' lblPrevStatusLabel
         ' 
         lblPrevStatusLabel.AutoSize = True
-        lblPrevStatusLabel.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblPrevStatusLabel.ForeColor = Color.FromArgb(100, 116, 139)
+        lblPrevStatusLabel.Font = New Font("Segoe UI", 9F)
+        lblPrevStatusLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblPrevStatusLabel.Location = New Point(20, 200)
         lblPrevStatusLabel.Name = "lblPrevStatusLabel"
         lblPrevStatusLabel.Size = New Size(86, 15)
@@ -404,8 +406,8 @@ Partial Class ClearanceHistoryForm
         ' lblChangedByVal
         ' 
         lblChangedByVal.AutoSize = True
-        lblChangedByVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblChangedByVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblChangedByVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        lblChangedByVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblChangedByVal.Location = New Point(140, 133)
         lblChangedByVal.Name = "lblChangedByVal"
         lblChangedByVal.Size = New Size(18, 17)
@@ -415,19 +417,19 @@ Partial Class ClearanceHistoryForm
         ' lblChangedByLabel
         ' 
         lblChangedByLabel.AutoSize = True
-        lblChangedByLabel.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblChangedByLabel.ForeColor = Color.FromArgb(100, 116, 139)
+        lblChangedByLabel.Font = New Font("Segoe UI", 9F)
+        lblChangedByLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblChangedByLabel.Location = New Point(20, 135)
         lblChangedByLabel.Name = "lblChangedByLabel"
-        lblChangedByLabel.Size = New Size(70, 15)
+        lblChangedByLabel.Size = New Size(71, 15)
         lblChangedByLabel.TabIndex = 3
         lblChangedByLabel.Text = "Changed by"
         ' 
         ' lblActionVal
         ' 
         lblActionVal.AutoSize = True
-        lblActionVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblActionVal.ForeColor = Color.FromArgb(15, 23, 42)
+        lblActionVal.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        lblActionVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblActionVal.Location = New Point(140, 70)
         lblActionVal.Name = "lblActionVal"
         lblActionVal.Size = New Size(18, 17)
@@ -437,8 +439,8 @@ Partial Class ClearanceHistoryForm
         ' lblActionLabel
         ' 
         lblActionLabel.AutoSize = True
-        lblActionLabel.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblActionLabel.ForeColor = Color.FromArgb(100, 116, 139)
+        lblActionLabel.Font = New Font("Segoe UI", 9F)
+        lblActionLabel.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblActionLabel.Location = New Point(20, 72)
         lblActionLabel.Name = "lblActionLabel"
         lblActionLabel.Size = New Size(42, 15)
@@ -448,8 +450,8 @@ Partial Class ClearanceHistoryForm
         ' lblEventDetailsTitle
         ' 
         lblEventDetailsTitle.AutoSize = True
-        lblEventDetailsTitle.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblEventDetailsTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblEventDetailsTitle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        lblEventDetailsTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblEventDetailsTitle.Location = New Point(20, 18)
         lblEventDetailsTitle.Name = "lblEventDetailsTitle"
         lblEventDetailsTitle.Size = New Size(108, 21)
@@ -462,29 +464,28 @@ Partial Class ClearanceHistoryForm
         dgvHistory.AllowUserToDeleteRows = False
         dgvHistory.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         dgvHistory.BackgroundColor = Color.White
-        dgvHistory.BorderStyle = BorderStyle.FixedSingle
         dgvHistory.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
         dgvHistory.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
-        dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle1.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        dataGridViewCellStyle1.ForeColor = Color.FromArgb(71, 85, 105)
-        dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(248, 250, 252)
-        dataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(71, 85, 105)
-        dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
-        dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1
+        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle3.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        DataGridViewCellStyle3.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        DataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        DataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.True
+        dgvHistory.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
         dgvHistory.ColumnHeadersHeight = 36
         dgvHistory.Columns.AddRange(New DataGridViewColumn() {colDateTime, colTerm, colOffice, colAction, colChangedBy, colStatus})
-        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
-        dataGridViewCellStyle2.BackColor = Color.White
-        dataGridViewCellStyle2.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        dataGridViewCellStyle2.ForeColor = Color.FromArgb(15, 23, 42)
-        dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(224, 238, 255)
-        dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(15, 23, 42)
-        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
-        dgvHistory.DefaultCellStyle = dataGridViewCellStyle2
+        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = Color.White
+        DataGridViewCellStyle4.Font = New Font("Segoe UI", 9F)
+        DataGridViewCellStyle4.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(CByte(224), CByte(238), CByte(255))
+        DataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        DataGridViewCellStyle4.WrapMode = DataGridViewTriState.False
+        dgvHistory.DefaultCellStyle = DataGridViewCellStyle4
         dgvHistory.EnableHeadersVisualStyles = False
-        dgvHistory.GridColor = Color.FromArgb(241, 245, 249)
+        dgvHistory.GridColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         dgvHistory.Location = New Point(28, 160)
         dgvHistory.Name = "dgvHistory"
         dgvHistory.ReadOnly = True
@@ -539,7 +540,7 @@ Partial Class ClearanceHistoryForm
         ' pnlInfoCallout
         ' 
         pnlInfoCallout.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        pnlInfoCallout.BackColor = Color.FromArgb(241, 246, 254)
+        pnlInfoCallout.BackColor = Color.FromArgb(CByte(241), CByte(246), CByte(254))
         pnlInfoCallout.BorderStyle = BorderStyle.FixedSingle
         pnlInfoCallout.Controls.Add(lblCalloutText)
         pnlInfoCallout.Controls.Add(lblCalloutIcon)
@@ -551,18 +552,18 @@ Partial Class ClearanceHistoryForm
         ' lblCalloutText
         ' 
         lblCalloutText.AutoSize = True
-        lblCalloutText.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        lblCalloutText.ForeColor = Color.FromArgb(30, 58, 138)
+        lblCalloutText.Font = New Font("Segoe UI", 9F)
+        lblCalloutText.ForeColor = Color.FromArgb(CByte(30), CByte(58), CByte(138))
         lblCalloutText.Location = New Point(45, 15)
         lblCalloutText.Name = "lblCalloutText"
-        lblCalloutText.Size = New Size(302, 15)
+        lblCalloutText.Size = New Size(297, 15)
         lblCalloutText.TabIndex = 1
         lblCalloutText.Text = "Previous submissions and decisions are preserved here."
         ' 
         ' lblCalloutIcon
         ' 
-        lblCalloutIcon.Font = New Font("Segoe UI Semibold", 10.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblCalloutIcon.ForeColor = Color.FromArgb(37, 99, 235)
+        lblCalloutIcon.Font = New Font("Segoe UI Semibold", 10.5F, FontStyle.Bold)
+        lblCalloutIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
         lblCalloutIcon.Location = New Point(15, 12)
         lblCalloutIcon.Name = "lblCalloutIcon"
         lblCalloutIcon.Size = New Size(24, 20)
@@ -583,11 +584,11 @@ Partial Class ClearanceHistoryForm
         ' btnRefresh
         ' 
         btnRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnRefresh.BackColor = Color.FromArgb(11, 99, 229)
+        btnRefresh.BackColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         btnRefresh.Cursor = Cursors.Hand
         btnRefresh.FlatAppearance.BorderSize = 0
         btnRefresh.FlatStyle = FlatStyle.Flat
-        btnRefresh.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
+        btnRefresh.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnRefresh.ForeColor = Color.White
         btnRefresh.Location = New Point(816, 12)
         btnRefresh.Name = "btnRefresh"
@@ -599,34 +600,34 @@ Partial Class ClearanceHistoryForm
         ' lblSubHeader
         ' 
         lblSubHeader.AutoSize = True
-        lblSubHeader.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        lblSubHeader.ForeColor = Color.FromArgb(100, 116, 139)
+        lblSubHeader.Font = New Font("Segoe UI", 9.5F)
+        lblSubHeader.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSubHeader.Location = New Point(0, 38)
         lblSubHeader.Name = "lblSubHeader"
-        lblSubHeader.Size = New Size(170, 17)
+        lblSubHeader.Size = New Size(181, 17)
         lblSubHeader.TabIndex = 1
         lblSubHeader.Text = "Student Name  •  Student No."
         ' 
         ' lblHeaderTitle
         ' 
         lblHeaderTitle.AutoSize = True
-        lblHeaderTitle.Font = New Font("Segoe UI", 20.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblHeaderTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblHeaderTitle.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
+        lblHeaderTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblHeaderTitle.Location = New Point(-3, 0)
         lblHeaderTitle.Name = "lblHeaderTitle"
-        lblHeaderTitle.Size = New Size(230, 37)
+        lblHeaderTitle.Size = New Size(240, 37)
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "Clearance history"
         ' 
         ' ClearanceHistoryForm
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        BackColor = Color.FromArgb(244, 247, 251)
+        BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         ClientSize = New Size(1200, 800)
         Controls.Add(pnlMain)
         Controls.Add(pnlSidebar)
-        Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1100, 750)
         Name = "ClearanceHistoryForm"
         StartPosition = FormStartPosition.CenterScreen
@@ -634,7 +635,7 @@ Partial Class ClearanceHistoryForm
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)
-        pnlLogo.PerformLayout()
+        CType(picSchoolLogo, ComponentModel.ISupportInitialize).EndInit()
         pnlMain.ResumeLayout(False)
         pnlMain.PerformLayout()
         pnlEventDetails.ResumeLayout(False)
