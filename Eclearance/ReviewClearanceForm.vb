@@ -22,9 +22,14 @@ Public Class ReviewClearanceForm
     Private _studentYearLevel As String = ""
     Private _isEditingGuidance As Boolean = False
     Private _guidanceProfileID As Integer = 0
+    Private _isClinicOffice As Boolean = False
+    Private _hasClinicAssessment As Boolean = False
+    Private _clinicStudentID As Integer = 0
+    Private _clinicAttachedFilePath As String = ""
+    Private _clinicAcademicYear As String = ""
 
     Private Sub ReviewClearanceForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If Not AppSession.DepartmentID.HasValue Then
+        If Not AppSession.Role.Equals("Staff", StringComparison.OrdinalIgnoreCase) OrElse Not AppSession.DepartmentID.HasValue Then
             MessageBox.Show(
                 "Access Denied: You do not have an assigned office/department.",
                 "Security Authorization Required",
@@ -148,9 +153,15 @@ Public Class ReviewClearanceForm
             Dim deptName As String = row("DepartmentName").ToString()
             Dim requiresFile As Boolean = Convert.ToBoolean(row("RequiresFile"))
             Dim isGuidanceOffice As Boolean = (deptID = 6 OrElse deptName.ToLowerInvariant().Contains("guidance"))
+            Dim isClinicOffice As Boolean = (deptID = 9 OrElse deptName.ToLowerInvariant().Contains("clinic"))
 
             _isGuidanceOffice = isGuidanceOffice
-            _requiresFile = requiresFile
+            _isClinicOffice = isClinicOffice
+            _requiresFile = requiresFile AndAlso Not isClinicOffice
+            _hasClinicAssessment = False
+            _clinicStudentID = 0
+            _clinicAttachedFilePath = ""
+            pnlClinicInfo.Visible = False
 
             If isGuidanceOffice Then
                 Dim studentID As Integer = Convert.ToInt32(row("StudentID"))
@@ -235,6 +246,27 @@ Public Class ReviewClearanceForm
                     lblNoUpdateMessage.Text = "No Guidance information has been submitted for the current academic year (" & academicYear & ")." & vbCrLf & vbCrLf & "The student must complete or review/update their Guidance student information before this clearance can be approved."
                 End If
 
+            ElseIf isClinicOffice Then
+                pnlGuidanceInfo.Visible = False
+                pnlDocumentCard.Visible = False
+                pnlClinicInfo.Visible = True
+                _clinicStudentID = _studentID
+                _clinicAcademicYear = row("AcademicYear").ToString()
+
+                lblFileTitle.Visible = False
+                lblFileVal.Visible = False
+                lblStatusTitle.Visible = True
+                lblStatusVal.Visible = True
+                Dim clinicStatus As String = If(currentStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase), "Needs Completion", currentStatus)
+                lblStatusBadge.Text = clinicStatus
+                lblStatusVal.Text = clinicStatus
+                ApplyStatusBadgeStyle(lblStatusBadge, clinicStatus)
+                ApplyStatusBadgeStyle(lblStatusVal, clinicStatus)
+                btnReject.Text = "Return for Completion"
+                btnReject.BackColor = Color.FromArgb(234, 88, 12)
+                btnReject.ForeColor = Color.White
+                lblStatusSubText.Text = "Review the submitted assessment. Supporting documents are only required when requested by Clinic staff."
+                LoadClinicAssessment()
             Else
                 ' Standard file-based offices: Show document preview, hide guidance panel
                 pnlGuidanceInfo.Visible = False
@@ -299,6 +331,139 @@ Public Class ReviewClearanceForm
         End Try
     End Sub
 
+    Private Function HasClinicReviewAccess() As Boolean
+        If Not AppSession.Role.Equals("Staff", StringComparison.OrdinalIgnoreCase) OrElse
+           Not AppSession.DepartmentID.HasValue OrElse AppSession.DepartmentID.Value <> 9 Then Return False
+
+        Try
+            ' Check the current account assignment as well as the session.
+            Dim sql As String =
+                "SELECT COUNT(*) FROM Staff st INNER JOIN Users u ON st.UserID = u.UserID " &
+                "WHERE u.UserID = @UserID AND u.Role = 'Staff' AND u.IsActive = 1 AND st.DepartmentID = 9;"
+            Return Convert.ToInt32(db.ExecuteScalar(sql, New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}})) > 0
+        Catch
+            Return False
+        End Try
+    End Function
+
+    Private Sub LoadClinicAssessment()
+        _hasClinicAssessment = False
+        _clinicAttachedFilePath = ""
+        btnViewClinicDoc.Visible = False
+        btnOpenAssessmentModal.Enabled = False
+        pnlClinicFields.Visible = False
+        pnlClinicNoUpdate.Visible = False
+        pnlClinicRestricted.Visible = Not HasClinicReviewAccess()
+
+        If pnlClinicRestricted.Visible Then
+            btnApprove.Enabled = False
+            btnReject.Enabled = False
+            Return
+        End If
+
+        Dim sql As String =
+            "SELECT a.HasMedicalCondition, a.MedicalConditionDetails, a.HasAllergies, a.AllergiesDetails, " &
+            "a.HasMedications, a.MedicationsDetails, a.HasHealthConcerns, a.HealthConcernsDetails, " &
+            "a.EmergencyContactName, a.Relationship, a.EmergencyContactNo, a.IsConfirmed, a.SubmittedAt " &
+            "FROM ClinicHealthAssessments a " &
+            "INNER JOIN ClearanceRecords cr ON a.RecordID = cr.RecordID AND a.StudentID = cr.StudentID AND a.TermID = cr.TermID " &
+            "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
+            "WHERE a.RecordID = @RecordID AND a.StudentID = @StudentID AND a.TermID = @TermID " &
+            "AND r.DepartmentID = 9 AND a.IsDraft = 0 LIMIT 1;"
+        Dim parameters As New Dictionary(Of String, Object) From {
+            {"@RecordID", TargetRecordID}, {"@StudentID", _clinicStudentID}, {"@TermID", _termID}
+        }
+        Dim assessment As DataTable = db.ExecuteQuery(sql, parameters)
+        _hasClinicAssessment = assessment.Rows.Count > 0
+        pnlClinicFields.Visible = _hasClinicAssessment
+        pnlClinicNoUpdate.Visible = Not _hasClinicAssessment
+        btnOpenAssessmentModal.Enabled = _hasClinicAssessment
+        btnApprove.Enabled = _hasClinicAssessment
+
+        If Not _hasClinicAssessment Then Return
+
+        Dim row As DataRow = assessment.Rows(0)
+        FormatGuidanceField(lblClinicMedVal, FormatClinicAnswer(row, "HasMedicalCondition", "MedicalConditionDetails"))
+        FormatGuidanceField(lblClinicAlgVal, FormatClinicAnswer(row, "HasAllergies", "AllergiesDetails"))
+        FormatGuidanceField(lblClinicMedsVal, FormatClinicAnswer(row, "HasMedications", "MedicationsDetails"))
+        FormatGuidanceField(lblClinicConcernsVal, FormatClinicAnswer(row, "HasHealthConcerns", "HealthConcernsDetails"))
+        FormatGuidanceField(lblClinicEmVal, String.Join(" / ", {row("EmergencyContactName").ToString(), row("Relationship").ToString(), row("EmergencyContactNo").ToString()}))
+        lblClinicDecVal.Text = If(Convert.ToBoolean(row("IsConfirmed")), "Confirmed by student", "Not confirmed by student")
+        If Not IsDBNull(row("SubmittedAt")) Then
+            lblDateVal.Text = Convert.ToDateTime(row("SubmittedAt")).ToString("MMM dd, yyyy hh:mm tt")
+        End If
+
+        Dim filesSql As String =
+            "SELECT f.StoredFilePath, f.OriginalFileName FROM ClearanceRecordFiles f " &
+            "INNER JOIN ClearanceRecords cr ON f.RecordID = cr.RecordID " &
+            "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
+            "WHERE cr.RecordID = @RecordID AND cr.StudentID = @StudentID AND cr.TermID = @TermID " &
+            "AND r.DepartmentID = 9 ORDER BY f.FileID DESC;"
+        Dim files As DataTable = db.ExecuteQuery(filesSql, parameters)
+        lblClinicDocVal.Text = "No document attached (optional unless requested)"
+        If files.Rows.Count > 0 Then
+            _clinicAttachedFilePath = files.Rows(0)("StoredFilePath").ToString()
+            lblClinicDocVal.Text = files.Rows(0)("OriginalFileName").ToString()
+            If files.Rows.Count > 1 Then lblClinicDocVal.Text &= " (+" & (files.Rows.Count - 1).ToString() & " earlier document(s))"
+        Else
+            Dim record As DataTable = db.ExecuteQuery(
+                "SELECT cr.SubmittedFilePath, cr.SubmittedFileName FROM ClearanceRecords cr " &
+                "INNER JOIN ClearanceRequirements r ON cr.RequirementID = r.RequirementID " &
+                "WHERE cr.RecordID = @RecordID AND cr.StudentID = @StudentID AND cr.TermID = @TermID AND r.DepartmentID = 9;", parameters)
+            If record.Rows.Count > 0 AndAlso Not IsDBNull(record.Rows(0)("SubmittedFilePath")) Then
+                _clinicAttachedFilePath = record.Rows(0)("SubmittedFilePath").ToString()
+                If Not String.IsNullOrWhiteSpace(_clinicAttachedFilePath) Then lblClinicDocVal.Text = record.Rows(0)("SubmittedFileName").ToString()
+            End If
+        End If
+        btnViewClinicDoc.Visible = Not String.IsNullOrWhiteSpace(_clinicAttachedFilePath)
+    End Sub
+
+    Private Function FormatClinicAnswer(row As DataRow, answerColumn As String, detailsColumn As String) As String
+        If IsDBNull(row(answerColumn)) Then Return "Not answered"
+        If Not Convert.ToBoolean(row(answerColumn)) Then Return "No"
+        Dim details As String = row(detailsColumn).ToString().Trim()
+        Return If(String.IsNullOrWhiteSpace(details), "Yes (no optional details provided)", "Yes — " & details)
+    End Function
+
+    Private Sub btnOpenAssessmentModal_Click(sender As Object, e As EventArgs) Handles btnOpenAssessmentModal.Click
+        If Not _isClinicOffice OrElse Not HasClinicReviewAccess() Then Return
+        Try
+            LoadClinicAssessment()
+            If Not _hasClinicAssessment Then Return
+            Using modal As New ClinicHealthAssessmentForm() With {
+                .RecordID = TargetRecordID, .StudentID = _clinicStudentID, .TermID = _termID, .AcademicYear = _clinicAcademicYear,
+                .IsReadOnly = True, .IsStaffReview = True
+            }
+                modal.ShowDialog(Me)
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Unable to open the submitted Clinic assessment: " & ex.Message, "Clinic Assessment", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End Try
+    End Sub
+
+    Private Sub btnViewClinicDoc_Click(sender As Object, e As EventArgs) Handles btnViewClinicDoc.Click
+        If Not _isClinicOffice OrElse Not HasClinicReviewAccess() Then Return
+        Try
+            LoadClinicAssessment()
+            If Not _hasClinicAssessment OrElse String.IsNullOrWhiteSpace(_clinicAttachedFilePath) Then Return
+            Dim documentPath As String = _clinicAttachedFilePath
+            If Not Path.IsPathRooted(documentPath) Then documentPath = Path.Combine(Application.StartupPath, documentPath)
+            documentPath = Path.GetFullPath(documentPath)
+            Dim extension As String = Path.GetExtension(documentPath).ToLowerInvariant()
+            If Not {".pdf", ".jpg", ".jpeg", ".png"}.Contains(extension) Then
+                MessageBox.Show("Only PDF, JPG, JPEG, and PNG Clinic supporting documents can be opened.", "Unsupported Document", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+            If Not File.Exists(documentPath) Then
+                MessageBox.Show("The attached Clinic document could not be found.", "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+            Process.Start(New ProcessStartInfo(documentPath) With {.UseShellExecute = True})
+        Catch ex As Exception
+            MessageBox.Show("Unable to open the Clinic document: " & ex.Message, "Clinic Document", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End Try
+    End Sub
+
     Private Sub FormatGuidanceField(lbl As Label, value As String)
         If String.IsNullOrWhiteSpace(value) Then
             lbl.Text = "Not provided"
@@ -313,6 +478,9 @@ Public Class ReviewClearanceForm
 
     Private Sub ApplyStatusBadgeStyle(lbl As Label, status As String)
         Select Case status.ToLowerInvariant()
+            Case "needs completion"
+                lbl.BackColor = Color.FromArgb(255, 237, 213)
+                lbl.ForeColor = Color.FromArgb(194, 65, 12)
             Case "cleared"
                 lbl.BackColor = Color.FromArgb(220, 252, 231)
                 lbl.ForeColor = Color.FromArgb(22, 101, 52)
@@ -475,6 +643,11 @@ Public Class ReviewClearanceForm
             Return
         End If
 
+        If _isClinicOffice AndAlso (Not HasClinicReviewAccess() OrElse Not _hasClinicAssessment) Then
+            MessageBox.Show("Clinic approval requires an assessment submitted by the student and an authorized Clinic officer.", "Clinic Assessment Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
         ' Validation: Guidance requirement requires student to have submitted their guidance information for the current academic year!
         If _isGuidanceOffice AndAlso Not _hasGuidanceInfo Then
             MessageBox.Show(
@@ -541,7 +714,7 @@ Public Class ReviewClearanceForm
 
         If String.IsNullOrWhiteSpace(remarks) Then
             MessageBox.Show(
-                "Remarks are REQUIRED when rejecting a clearance request." & vbCrLf & vbCrLf &
+                If(_isClinicOffice, "Remarks are REQUIRED when returning a Clinic assessment for completion.", "Remarks are REQUIRED when rejecting a clearance request.") & vbCrLf & vbCrLf &
                 "Please explain to the student what is missing or needs correction.",
                 "Remarks Required",
                 MessageBoxButtons.OK,
@@ -552,20 +725,25 @@ Public Class ReviewClearanceForm
         End If
 
         Dim confirm = MessageBox.Show(
-            "Are you sure you want to REJECT this requirement?",
-            "Confirm Rejection",
+            If(_isClinicOffice, "Return this assessment to the student for completion?", "Are you sure you want to REJECT this requirement?"),
+            If(_isClinicOffice, "Confirm Return for Completion", "Confirm Rejection"),
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning
         )
 
         If confirm <> DialogResult.Yes Then Return
 
-        UpdateClearanceStatus("Rejected", remarks, "Requirement Rejected")
+        UpdateClearanceStatus("Rejected", remarks, If(_isClinicOffice, "Returned for Completion", "Requirement Rejected"))
     End Sub
 
     Private Sub UpdateClearanceStatus(newStatus As String, remarks As String, actionTypeName As String)
         If Not AppSession.DepartmentID.HasValue Then
             MessageBox.Show("Security Error: No assigned department found in session.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+
+        If _isClinicOffice AndAlso Not HasClinicReviewAccess() Then
+            MessageBox.Show("Clinic decisions are restricted to authorized Clinic personnel.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
 
@@ -581,7 +759,12 @@ Public Class ReviewClearanceForm
                             "    cr.Remarks = @Remarks, " &
                             "    cr.ReviewedBy = @ReviewedBy, " &
                             "    cr.ReviewedAt = CURRENT_TIMESTAMP " &
-                            "WHERE cr.RecordID = @RecordID AND r.DepartmentID = @DeptID;"
+                            "WHERE cr.RecordID = @RecordID AND r.DepartmentID = @DeptID " &
+                            "AND (r.DepartmentID <> 9 OR EXISTS (SELECT 1 FROM Staff st INNER JOIN Users u ON st.UserID = u.UserID " &
+                            "WHERE u.UserID = @ReviewedBy AND u.Role = 'Staff' AND u.IsActive = 1 AND st.DepartmentID = 9)) " &
+                            "AND (@NewStatus <> 'Cleared' OR r.DepartmentID <> 9 OR EXISTS " &
+                            "(SELECT 1 FROM ClinicHealthAssessments a WHERE a.RecordID = cr.RecordID " &
+                            "AND a.StudentID = cr.StudentID AND a.TermID = cr.TermID AND a.IsDraft = 0));"
 
                         Using updateCmd As New MySqlCommand(updateQuery, conn, transaction)
                             updateCmd.Parameters.AddWithValue("@NewStatus", newStatus)
@@ -633,7 +816,9 @@ Public Class ReviewClearanceForm
             End Using
 
             MessageBox.Show(
-                "Clearance status has been updated to: " & newStatus & " successfully.",
+                If(_isClinicOffice AndAlso newStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase),
+                   "The assessment has been returned to the student for completion with your remarks.",
+                   "Clearance status has been updated to: " & newStatus & " successfully."),
                 "Decision Saved",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information

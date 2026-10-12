@@ -526,9 +526,15 @@ Public Class StaffRequestsForm
                         pillFg = Color.FromArgb(22, 163, 74)
                         displayBadgeText = "Approved"
                     Case "rejected"
-                        pillBg = Color.FromArgb(254, 226, 226)
-                        pillFg = Color.FromArgb(220, 38, 38)
-                        displayBadgeText = "Rejected"
+                        If AppSession.DepartmentID.HasValue AndAlso AppSession.DepartmentID.Value = 9 Then
+                            pillBg = Color.FromArgb(255, 237, 213)
+                            pillFg = Color.FromArgb(194, 65, 12)
+                            displayBadgeText = "Needs Completion"
+                        Else
+                            pillBg = Color.FromArgb(254, 226, 226)
+                            pillFg = Color.FromArgb(220, 38, 38)
+                            displayBadgeText = "Rejected"
+                        End If
                     Case Else ' Pending
                         pillBg = Color.FromArgb(254, 243, 199)
                         pillFg = Color.FromArgb(217, 119, 6)
@@ -540,6 +546,12 @@ Public Class StaffRequestsForm
                     Dim pillWidth As Integer = Math.Max(textSize.Width + 18, 88)
                     If pillWidth > e.CellBounds.Width - 8 Then pillWidth = e.CellBounds.Width - 8
                     Dim pillHeight As Integer = 24
+                    Dim textFlags As TextFormatFlags = TextFormatFlags.HorizontalCenter Or TextFormatFlags.VerticalCenter Or TextFormatFlags.SingleLine
+                    If displayBadgeText = "Needs Completion" AndAlso textSize.Width > pillWidth - 8 Then
+                        ' Keep the full Clinic label readable inside the existing fixed-width column.
+                        pillHeight = Math.Min(34, e.CellBounds.Height - 8)
+                        textFlags = TextFormatFlags.HorizontalCenter Or TextFormatFlags.VerticalCenter Or TextFormatFlags.WordBreak
+                    End If
                     Dim pillX As Integer = e.CellBounds.X + (e.CellBounds.Width - pillWidth) \ 2
                     Dim pillY As Integer = e.CellBounds.Y + (e.CellBounds.Height - pillHeight) \ 2
                     Dim pillRect As New Rectangle(pillX, pillY, pillWidth, pillHeight)
@@ -557,7 +569,7 @@ Public Class StaffRequestsForm
                         pillFont,
                         pillRect,
                         pillFg,
-                        TextFormatFlags.HorizontalCenter Or TextFormatFlags.VerticalCenter Or TextFormatFlags.SingleLine
+                        textFlags
                     )
                 End Using
             End If

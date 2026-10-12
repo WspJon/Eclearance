@@ -453,6 +453,7 @@ Public Class StudentClearanceForm
         btnViewReq.Tag = item
 
         Dim isGuidance As Boolean = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
+        Dim isClinic As Boolean = (item.SequenceOrder = 3 OrElse item.DepartmentName.ToLowerInvariant().Contains("clinic"))
         Dim hasFile As Boolean = (Not String.IsNullOrWhiteSpace(item.SubmittedFileName) OrElse item.FileCount > 0)
 
         Select Case item.DisplayStatus.ToLowerInvariant()
@@ -518,6 +519,19 @@ Public Class StudentClearanceForm
                         btnViewReq.Text = "View Requirements"
                         btnViewReq.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 6, 0)
                         btnViewReq.Size = New Size(125, 32)
+                    ElseIf isClinic Then
+                        btnAct.Visible = True
+                        btnAct.Enabled = True
+                        btnAct.Text = "Complete Health Assessment"
+                        btnAct.BackColor = Color.FromArgb(2, 132, 199)
+                        btnAct.ForeColor = Color.White
+                        btnAct.Size = New Size(185, 32)
+                        btnAct.Location = New Point(0, 0)
+
+                        btnViewReq.Visible = True
+                        btnViewReq.Text = "View Requirements"
+                        btnViewReq.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 6, 0)
+                        btnViewReq.Size = New Size(125, 32)
                     Else
                         btnAct.Visible = False
 
@@ -528,7 +542,7 @@ Public Class StudentClearanceForm
                     End If
                 End If
 
-            Case "rejected"
+            Case "needs completion", "rejected"
                 lblDash.Visible = False
 
                 If isGuidance Then
@@ -553,6 +567,22 @@ Public Class StudentClearanceForm
                     btnViewReq.Size = New Size(125, 32)
                     btnViewReq.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 6, 0)
 
+                ElseIf isClinic Then
+                    btnAct.Visible = True
+                    btnAct.Enabled = True
+                    btnAct.Text = "Update Assessment"
+                    btnAct.BackColor = Color.FromArgb(234, 88, 12)
+                    btnAct.ForeColor = Color.White
+                    btnAct.Size = New Size(150, 32)
+                    btnAct.Location = New Point(0, 0)
+
+                    btnReeval.Visible = False
+
+                    btnViewReq.Visible = True
+                    btnViewReq.Text = "View Requirements"
+                    btnViewReq.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 6, 0)
+                    btnViewReq.Size = New Size(125, 32)
+
                 ElseIf item.RequiresFile Then
                     btnAct.Visible = True
                     btnAct.Enabled = True
@@ -570,7 +600,7 @@ Public Class StudentClearanceForm
                     btnViewReq.Size = New Size(120, 32)
 
                 Else
-                    ' Non-guidance non-file (e.g. Clinic)
+                    ' Non-guidance non-file
                     btnAct.Visible = True
                     btnAct.Enabled = True
                     btnAct.Text = "Request Re-evaluation"
@@ -622,6 +652,10 @@ Public Class StudentClearanceForm
                 lblStatus.BackColor = Color.FromArgb(219, 234, 254)
                 lblStatus.ForeColor = Color.FromArgb(30, 64, 175)
 
+            Case "needs completion"
+                lblStatus.BackColor = Color.FromArgb(254, 243, 199)
+                lblStatus.ForeColor = Color.FromArgb(180, 83, 9)
+
             Case "rejected"
                 lblStatus.BackColor = Color.FromArgb(254, 226, 226)
                 lblStatus.ForeColor = Color.FromArgb(185, 28, 28)
@@ -657,6 +691,7 @@ Public Class StudentClearanceForm
 
         Dim item = DirectCast(button.Tag, ClearanceWorkflowHelper.ClearanceItemInfo)
         Dim isGuidance As Boolean = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
+        Dim isClinic As Boolean = (item.SequenceOrder = 3 OrElse item.DepartmentName.ToLowerInvariant().Contains("clinic"))
 
         If item.EffectiveStatus.Equals("Locked", StringComparison.OrdinalIgnoreCase) Then
             MessageBox.Show("This clearance step is currently locked. Complete the preceding required clearance steps to unlock it.", "Requirement Locked", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -672,6 +707,8 @@ Public Class StudentClearanceForm
         If button.Text.Equals("View Details", StringComparison.OrdinalIgnoreCase) Then
             If isGuidance Then
                 OpenGuidanceUpdateModal(item)
+            ElseIf isClinic Then
+                OpenClinicAssessmentModal(item)
             Else
                 If item.RequiresFile AndAlso Not String.IsNullOrWhiteSpace(item.SubmittedFilePath) Then
                     OpenSubmittedDocument(item.SubmittedFilePath)
@@ -679,6 +716,15 @@ Public Class StudentClearanceForm
                     OpenRequirementDetailsModal(item)
                 End If
             End If
+            Return
+        End If
+
+        ' Complete / Update Health Assessment for Clinic
+        If isClinic AndAlso (button.Text.Equals("Complete Health Assessment", StringComparison.OrdinalIgnoreCase) OrElse
+                             button.Text.Equals("Update Assessment", StringComparison.OrdinalIgnoreCase) OrElse
+                             button.Text.Equals("Complete Assessment", StringComparison.OrdinalIgnoreCase) OrElse
+                             button.Text.Equals("View Assessment", StringComparison.OrdinalIgnoreCase)) Then
+            OpenClinicAssessmentModal(item)
             Return
         End If
 
@@ -748,6 +794,14 @@ Public Class StudentClearanceForm
         End If
 
         Dim item = DirectCast(button.Tag, ClearanceWorkflowHelper.ClearanceItemInfo)
+        Dim isClinic As Boolean = (item.SequenceOrder = 3 OrElse item.DepartmentName.ToLowerInvariant().Contains("clinic"))
+
+        If isClinic AndAlso (button.Text.Equals("Update Assessment", StringComparison.OrdinalIgnoreCase) OrElse
+                             button.Text.Equals("Complete Health Assessment", StringComparison.OrdinalIgnoreCase) OrElse
+                             button.Text.Equals("Complete Assessment", StringComparison.OrdinalIgnoreCase)) Then
+            OpenClinicAssessmentModal(item)
+            Return
+        End If
 
         If button.Text.Equals("Update Information", StringComparison.OrdinalIgnoreCase) OrElse
            button.Text.Equals("Review / Update Information", StringComparison.OrdinalIgnoreCase) OrElse
@@ -777,6 +831,25 @@ Public Class StudentClearanceForm
             modal.AcademicYear = GetCurrentAcademicYear()
             modal.TermID = GetActiveTermID()
 
+            modal.ShowDialog(Me)
+        End Using
+
+        LoadClearanceData()
+
+    End Sub
+
+    ' ============================================================
+    ' OPEN CLINIC HEALTH ASSESSMENT MODAL
+    ' ============================================================
+    Private Sub OpenClinicAssessmentModal(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+
+        Using modal As New ClinicHealthAssessmentForm()
+            modal.RecordID = item.RecordID
+            modal.StudentID = AppSession.UserID
+            modal.TermID = GetActiveTermID()
+            modal.AcademicYear = GetCurrentAcademicYear()
+            modal.IsReadOnly = item.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) OrElse
+                               item.EffectiveStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase)
             modal.ShowDialog(Me)
         End Using
 

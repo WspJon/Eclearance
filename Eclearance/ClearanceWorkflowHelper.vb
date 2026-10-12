@@ -32,6 +32,9 @@ Public Class ClearanceWorkflowHelper
                 If EffectiveStatus.Equals("Pending", StringComparison.OrdinalIgnoreCase) AndAlso Not HasSubmitted() Then
                     Return "Not Submitted"
                 End If
+                If (DepartmentID = 9 OrElse (DepartmentName IsNot Nothing AndAlso DepartmentName.ToLowerInvariant().Contains("clinic"))) AndAlso EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase) Then
+                    Return "Needs Completion"
+                End If
                 Return EffectiveStatus
             End Get
         End Property
@@ -644,6 +647,16 @@ Public Class ClearanceWorkflowHelper
             If Not status.Equals("Under Review", StringComparison.OrdinalIgnoreCase) Then
                 blockerReason = "Only requirements that are 'Under Review' can be approved."
                 Return False
+            End If
+
+            ' Business Rule: If Clinic Office (DepartmentID = 9), verify student has actually submitted Health Assessment
+            If deptID = 9 Then
+                Dim assessQuery = "SELECT AssessmentID FROM ClinicHealthAssessments WHERE RecordID = @RecordID AND IsDraft = 0 LIMIT 1;"
+                Dim dtAssess = db.ExecuteQuery(assessQuery, New Dictionary(Of String, Object) From {{"@RecordID", recordID}})
+                If dtAssess.Rows.Count = 0 Then
+                    blockerReason = "The student has not submitted their Clinic Health Assessment."
+                    Return False
+                End If
             End If
 
             ' Business Rule: Prerequisites (Workflow)

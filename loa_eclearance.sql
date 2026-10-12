@@ -194,7 +194,7 @@ CREATE TABLE `clearancerequirements` (
 
 LOCK TABLES `clearancerequirements` WRITE;
 /*!40000 ALTER TABLE `clearancerequirements` DISABLE KEYS */;
-INSERT INTO `clearancerequirements` VALUES (1,1,'Finance Clearance','Settle all outstanding balances and submit the required proof if requested.',1,NULL,0,7,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(2,2,'Registrar Clearance','Student must have no outstanding balance or pending obligation required by the Registrar before clearance approval.',1,NULL,0,8,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(3,3,'Library Clearance','Submit a screenshot of the completed Library survey for verification and clearance approval.',1,NULL,0,2,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(4,4,'OSA Clearance','Inactive legacy clearance requirement.',0,NULL,0,0,NULL,NULL,NULL,0,'2026-10-01 19:13:15'),(5,5,'OAA Clearance','Obtain final academic affairs approval. All previous applicable clearance steps must be cleared.',1,NULL,0,9,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(6,6,'Guidance Clearance','Complete the required Guidance process and review or update your student information for the current academic year.',0,NULL,0,1,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(7,7,'NSTP Clearance','Complete the required NSTP clearance.',1,NULL,1,5,NULL,NULL,'1st Year,First Year,1',1,'2026-10-01 19:13:15'),(8,8,'CTHM Stock Room Clearance','Return or settle all required CTHM stock room items.',1,'CTHM,BSHM,BSTM',0,4,NULL,'CTHM,BSHM,BSTM,Hospitality,Tourism',NULL,1,'2026-10-01 19:13:15'),(9,9,'Clinic Clearance','Requirement pending confirmation from the Clinic office.',0,NULL,0,3,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(10,10,'College Dean Clearance','Submit proof of payment for the required organization fee.',1,NULL,0,6,NULL,NULL,NULL,0,'2026-10-01 19:13:15'),(11,11,'CCS Clearance','Submit required clearance documents for CCS students.',1,'BSIT',0,6,NULL,'BSIT',NULL,1,'2026-10-04 17:18:13'),(12,12,'CTHM Clearance','Submit required clearance documents for CTHM students.',1,'BSHM,BSTM,CTHM',0,6,NULL,'BSHM,BSTM,CTHM',NULL,1,'2026-10-04 17:18:13'),(13,13,'CBA Clearance','Submit required clearance documents for CBA students.',1,'BSA,BSBA',0,6,NULL,'BSA,BSBA',NULL,1,'2026-10-04 17:18:13'),(14,14,'COE Clearance','Submit required clearance documents for College of Engineering (BSCpE) students.',1,'BSCpE',0,6,NULL,'BSCpE',NULL,1,'2026-10-04 17:18:13');
+INSERT INTO `clearancerequirements` VALUES (1,1,'Finance Clearance','Settle all outstanding balances and submit the required proof if requested.',1,NULL,0,7,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(2,2,'Registrar Clearance','Student must have no outstanding balance or pending obligation required by the Registrar before clearance approval.',1,NULL,0,8,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(3,3,'Library Clearance','Submit a screenshot of the completed Library survey for verification and clearance approval.',1,NULL,0,2,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(4,4,'OSA Clearance','Inactive legacy clearance requirement.',0,NULL,0,0,NULL,NULL,NULL,0,'2026-10-01 19:13:15'),(5,5,'OAA Clearance','Obtain final academic affairs approval. All previous applicable clearance steps must be cleared.',1,NULL,0,9,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(6,6,'Guidance Clearance','Complete the required Guidance process and review or update your student information for the current academic year.',0,NULL,0,1,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(7,7,'NSTP Clearance','Complete the required NSTP clearance.',1,NULL,1,5,NULL,NULL,'1st Year,First Year,1',1,'2026-10-01 19:13:15'),(8,8,'CTHM Stock Room Clearance','Return or settle all required CTHM stock room items.',1,'CTHM,BSHM,BSTM',0,4,NULL,'CTHM,BSHM,BSTM,Hospitality,Tourism',NULL,1,'2026-10-01 19:13:15'),(9,9,'Clinic Clearance','Complete the digital Health Assessment Form. Submit additional medical certificates or examination results only if requested by Clinic staff.',0,NULL,0,3,NULL,NULL,NULL,1,'2026-10-01 19:13:15'),(10,10,'College Dean Clearance','Submit proof of payment for the required organization fee.',1,NULL,0,6,NULL,NULL,NULL,0,'2026-10-01 19:13:15'),(11,11,'CCS Clearance','Submit required clearance documents for CCS students.',1,'BSIT',0,6,NULL,'BSIT',NULL,1,'2026-10-04 17:18:13'),(12,12,'CTHM Clearance','Submit required clearance documents for CTHM students.',1,'BSHM,BSTM,CTHM',0,6,NULL,'BSHM,BSTM,CTHM',NULL,1,'2026-10-04 17:18:13'),(13,13,'CBA Clearance','Submit required clearance documents for CBA students.',1,'BSA,BSBA',0,6,NULL,'BSA,BSBA',NULL,1,'2026-10-04 17:18:13'),(14,14,'COE Clearance','Submit required clearance documents for College of Engineering (BSCpE) students.',1,'BSCpE',0,6,NULL,'BSCpE',NULL,1,'2026-10-04 17:18:13');
 /*!40000 ALTER TABLE `clearancerequirements` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -295,6 +295,45 @@ LOCK TABLES `guidancestudentprofiles` WRITE;
 INSERT INTO `guidancestudentprofiles` VALUES (1,13,'2026-2027',1,'brgy. putatan muntilupa city','09123543453','jancris@gmail.com','Single','jancris','09123123123','Father','','2026-10-02 00:38:32','2026-10-02 00:38:32'),(6,11,'2026-2027',1,'13 muntinlupta ciry','09323123123','stundte@gmail.com','Single','rwerwe','09123123122','Mother','','2026-10-02 17:53:31','2026-10-02 17:53:31');
 /*!40000 ALTER TABLE `guidancestudentprofiles` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `clinichealthassessments`
+--
+
+DROP TABLE IF EXISTS `clinichealthassessments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clinichealthassessments` (
+  `AssessmentID` int(11) NOT NULL AUTO_INCREMENT,
+  `RecordID` int(11) NOT NULL,
+  `StudentID` int(11) NOT NULL,
+  `TermID` int(11) NOT NULL,
+  `AcademicYear` varchar(50) NOT NULL,
+  `HasMedicalCondition` tinyint(1) NOT NULL DEFAULT 0,
+  `MedicalConditionDetails` text DEFAULT NULL,
+  `HasAllergies` tinyint(1) NOT NULL DEFAULT 0,
+  `AllergiesDetails` text DEFAULT NULL,
+  `HasMedications` tinyint(1) NOT NULL DEFAULT 0,
+  `MedicationsDetails` text DEFAULT NULL,
+  `HasHealthConcerns` tinyint(1) NOT NULL DEFAULT 0,
+  `HealthConcernsDetails` text DEFAULT NULL,
+  `EmergencyContactName` varchar(150) NOT NULL,
+  `Relationship` varchar(100) NOT NULL,
+  `EmergencyContactNo` varchar(50) NOT NULL,
+  `IsConfirmed` tinyint(1) NOT NULL DEFAULT 0,
+  `IsDraft` tinyint(1) NOT NULL DEFAULT 0,
+  `SubmittedAt` datetime DEFAULT NULL,
+  `CreatedAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `UpdatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`AssessmentID`),
+  UNIQUE KEY `uq_clinic_record` (`RecordID`),
+  KEY `idx_clinic_student` (`StudentID`),
+  KEY `idx_clinic_term` (`TermID`),
+  CONSTRAINT `fk_clinic_assessment_record` FOREIGN KEY (`RecordID`) REFERENCES `clearancerecords` (`RecordID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_clinic_assessment_student` FOREIGN KEY (`StudentID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_clinic_assessment_term` FOREIGN KEY (`TermID`) REFERENCES `academicterms` (`TermID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `sections`

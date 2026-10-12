@@ -194,6 +194,19 @@
 			<SubType>Code</SubType>
 		</Compile>
 
+		<Compile Update="ClinicHealthAssessmentForm.vb">
+			<SubType>Form</SubType>
+		</Compile>
+
+		<Compile Update="ClinicHealthAssessmentForm.Designer.vb">
+			<DependentUpon>ClinicHealthAssessmentForm.vb</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+
+		<EmbeddedResource Update="ClinicHealthAssessmentForm.resx">
+			<DependentUpon>ClinicHealthAssessmentForm.vb</DependentUpon>
+		</EmbeddedResource>
+
 	</ItemGroup>
 
 </Project>

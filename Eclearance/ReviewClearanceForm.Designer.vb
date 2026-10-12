@@ -110,6 +110,39 @@ Partial Class ReviewClearanceForm
         lblGuidanceIcon = New Label()
         lblGuidanceInfoTitle = New Label()
         lblGuidanceInfoSubtitle = New Label()
+        pnlClinicInfo = New Panel()
+        pnlClinicHeader = New Panel()
+        lblClinicIcon = New Label()
+        lblClinicInfoTitle = New Label()
+        lblClinicInfoSubtitle = New Label()
+        btnOpenAssessmentModal = New Button()
+        pnlClinicBody = New Panel()
+        pnlClinicRestricted = New Panel()
+        pnlClinicRestrictedCard = New Panel()
+        lblRestrictedIcon = New Label()
+        lblRestrictedTitle = New Label()
+        lblRestrictedMessage = New Label()
+        pnlClinicNoUpdate = New Panel()
+        pnlClinicNoUpdateCard = New Panel()
+        lblClinicNoUpdateIcon = New Label()
+        lblClinicNoUpdateTitle = New Label()
+        lblClinicNoUpdateMessage = New Label()
+        pnlClinicFields = New Panel()
+        lblClinicMedLabel = New Label()
+        lblClinicMedVal = New Label()
+        lblClinicAlgLabel = New Label()
+        lblClinicAlgVal = New Label()
+        lblClinicMedsLabel = New Label()
+        lblClinicMedsVal = New Label()
+        lblClinicConcernsLabel = New Label()
+        lblClinicConcernsVal = New Label()
+        lblClinicEmLabel = New Label()
+        lblClinicEmVal = New Label()
+        lblClinicDecLabel = New Label()
+        lblClinicDecVal = New Label()
+        lblClinicDocLabel = New Label()
+        lblClinicDocVal = New Label()
+        btnViewClinicDoc = New Button()
         pnlRightSection = New Panel()
         pnlCurrentStatusCard = New Panel()
         lblStatusHeader = New Label()
@@ -147,6 +180,14 @@ Partial Class ReviewClearanceForm
         pnlGuidanceFields.SuspendLayout()
         pnlGuidanceInfoNote.SuspendLayout()
         pnlGuidanceHeader.SuspendLayout()
+        pnlClinicInfo.SuspendLayout()
+        pnlClinicHeader.SuspendLayout()
+        pnlClinicBody.SuspendLayout()
+        pnlClinicRestricted.SuspendLayout()
+        pnlClinicRestrictedCard.SuspendLayout()
+        pnlClinicNoUpdate.SuspendLayout()
+        pnlClinicNoUpdateCard.SuspendLayout()
+        pnlClinicFields.SuspendLayout()
         pnlRightSection.SuspendLayout()
         pnlCurrentStatusCard.SuspendLayout()
         pnlDecisionCard.SuspendLayout()
@@ -422,6 +463,7 @@ Partial Class ReviewClearanceForm
         pnlLeftSection.Controls.Add(pnlStudentInfoCard)
         pnlLeftSection.Controls.Add(pnlDocumentCard)
         pnlLeftSection.Controls.Add(pnlGuidanceInfo)
+        pnlLeftSection.Controls.Add(pnlClinicInfo)
         pnlLeftSection.Location = New Point(20, 82)
         pnlLeftSection.Name = "pnlLeftSection"
         pnlLeftSection.Size = New Size(700, 618)
@@ -1240,6 +1282,398 @@ Partial Class ReviewClearanceForm
         lblGuidanceInfoSubtitle.TabIndex = 2
         lblGuidanceInfoSubtitle.Text = "Below is the information submitted by the student for the current academic year."
         ' 
+        ' pnlClinicInfo
+        ' 
+        pnlClinicInfo.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlClinicInfo.BackColor = Color.White
+        pnlClinicInfo.BorderStyle = BorderStyle.FixedSingle
+        pnlClinicInfo.Controls.Add(pnlClinicBody)
+        pnlClinicInfo.Controls.Add(pnlClinicHeader)
+        pnlClinicInfo.Location = New Point(0, 202)
+        pnlClinicInfo.Name = "pnlClinicInfo"
+        pnlClinicInfo.Size = New Size(700, 416)
+        pnlClinicInfo.TabIndex = 3
+        pnlClinicInfo.Visible = False
+        ' 
+        ' pnlClinicHeader
+        ' 
+        pnlClinicHeader.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        pnlClinicHeader.Controls.Add(lblClinicIcon)
+        pnlClinicHeader.Controls.Add(lblClinicInfoTitle)
+        pnlClinicHeader.Controls.Add(lblClinicInfoSubtitle)
+        pnlClinicHeader.Controls.Add(btnOpenAssessmentModal)
+        pnlClinicHeader.Dock = DockStyle.Top
+        pnlClinicHeader.Location = New Point(0, 0)
+        pnlClinicHeader.Name = "pnlClinicHeader"
+        pnlClinicHeader.Size = New Size(698, 66)
+        pnlClinicHeader.TabIndex = 0
+        ' 
+        ' lblClinicIcon
+        ' 
+        lblClinicIcon.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
+        lblClinicIcon.ForeColor = Color.FromArgb(CByte(2), CByte(132), CByte(199))
+        lblClinicIcon.Location = New Point(14, 13)
+        lblClinicIcon.Name = "lblClinicIcon"
+        lblClinicIcon.Size = New Size(24, 28)
+        lblClinicIcon.TabIndex = 0
+        lblClinicIcon.Text = "✚"
+        lblClinicIcon.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblClinicInfoTitle
+        ' 
+        lblClinicInfoTitle.AutoSize = True
+        lblClinicInfoTitle.Font = New Font("Segoe UI", 9.5F, FontStyle.Bold)
+        lblClinicInfoTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblClinicInfoTitle.Location = New Point(42, 11)
+        lblClinicInfoTitle.Name = "lblClinicInfoTitle"
+        lblClinicInfoTitle.Size = New Size(245, 21)
+        lblClinicInfoTitle.TabIndex = 1
+        lblClinicInfoTitle.Text = "Clinic Health Assessment Information"
+        ' 
+        ' lblClinicInfoSubtitle
+        ' 
+        lblClinicInfoSubtitle.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblClinicInfoSubtitle.Font = New Font("Segoe UI", 7.4F)
+        lblClinicInfoSubtitle.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblClinicInfoSubtitle.Location = New Point(42, 35)
+        lblClinicInfoSubtitle.Name = "lblClinicInfoSubtitle"
+        lblClinicInfoSubtitle.Size = New Size(470, 20)
+        lblClinicInfoSubtitle.TabIndex = 2
+        lblClinicInfoSubtitle.Text = "Review the student's digital health assessment responses and medical declarations."
+        ' 
+        ' btnOpenAssessmentModal
+        ' 
+        btnOpenAssessmentModal.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btnOpenAssessmentModal.BackColor = Color.White
+        btnOpenAssessmentModal.Cursor = Cursors.Hand
+        btnOpenAssessmentModal.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnOpenAssessmentModal.FlatStyle = FlatStyle.Flat
+        btnOpenAssessmentModal.Font = New Font("Segoe UI Semibold", 8.0F, FontStyle.Bold)
+        btnOpenAssessmentModal.ForeColor = Color.FromArgb(CByte(2), CByte(132), CByte(199))
+        btnOpenAssessmentModal.Location = New Point(520, 16)
+        btnOpenAssessmentModal.Name = "btnOpenAssessmentModal"
+        btnOpenAssessmentModal.Size = New Size(165, 32)
+        btnOpenAssessmentModal.TabIndex = 3
+        btnOpenAssessmentModal.Text = "Open Full Assessment"
+        btnOpenAssessmentModal.UseVisualStyleBackColor = False
+        ' 
+        ' pnlClinicBody
+        ' 
+        pnlClinicBody.BackColor = Color.White
+        pnlClinicBody.Controls.Add(pnlClinicRestricted)
+        pnlClinicBody.Controls.Add(pnlClinicNoUpdate)
+        pnlClinicBody.Controls.Add(pnlClinicFields)
+        pnlClinicBody.Dock = DockStyle.Fill
+        pnlClinicBody.Location = New Point(0, 66)
+        pnlClinicBody.Name = "pnlClinicBody"
+        pnlClinicBody.Size = New Size(698, 348)
+        pnlClinicBody.TabIndex = 1
+        ' 
+        ' pnlClinicRestricted
+        ' 
+        pnlClinicRestricted.BackColor = Color.White
+        pnlClinicRestricted.Controls.Add(pnlClinicRestrictedCard)
+        pnlClinicRestricted.Dock = DockStyle.Fill
+        pnlClinicRestricted.Location = New Point(0, 0)
+        pnlClinicRestricted.Name = "pnlClinicRestricted"
+        pnlClinicRestricted.Size = New Size(698, 348)
+        pnlClinicRestricted.TabIndex = 2
+        pnlClinicRestricted.Visible = False
+        ' 
+        ' pnlClinicRestrictedCard
+        ' 
+        pnlClinicRestrictedCard.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlClinicRestrictedCard.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        pnlClinicRestrictedCard.BorderStyle = BorderStyle.FixedSingle
+        pnlClinicRestrictedCard.Controls.Add(lblRestrictedIcon)
+        pnlClinicRestrictedCard.Controls.Add(lblRestrictedTitle)
+        pnlClinicRestrictedCard.Controls.Add(lblRestrictedMessage)
+        pnlClinicRestrictedCard.Location = New Point(20, 25)
+        pnlClinicRestrictedCard.Name = "pnlClinicRestrictedCard"
+        pnlClinicRestrictedCard.Size = New Size(655, 165)
+        pnlClinicRestrictedCard.TabIndex = 0
+        ' 
+        ' lblRestrictedIcon
+        ' 
+        lblRestrictedIcon.Font = New Font("Segoe UI", 15.0F, FontStyle.Bold)
+        lblRestrictedIcon.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblRestrictedIcon.Location = New Point(18, 23)
+        lblRestrictedIcon.Name = "lblRestrictedIcon"
+        lblRestrictedIcon.Size = New Size(35, 38)
+        lblRestrictedIcon.TabIndex = 0
+        lblRestrictedIcon.Text = "🔒"
+        lblRestrictedIcon.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblRestrictedTitle
+        ' 
+        lblRestrictedTitle.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        lblRestrictedTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblRestrictedTitle.Location = New Point(65, 23)
+        lblRestrictedTitle.Name = "lblRestrictedTitle"
+        lblRestrictedTitle.Size = New Size(555, 25)
+        lblRestrictedTitle.TabIndex = 1
+        lblRestrictedTitle.Text = "Confidential Medical Information"
+        ' 
+        ' lblRestrictedMessage
+        ' 
+        lblRestrictedMessage.Font = New Font("Segoe UI", 8.3F)
+        lblRestrictedMessage.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
+        lblRestrictedMessage.Location = New Point(65, 58)
+        lblRestrictedMessage.Name = "lblRestrictedMessage"
+        lblRestrictedMessage.Size = New Size(565, 85)
+        lblRestrictedMessage.TabIndex = 2
+        lblRestrictedMessage.Text = "Digital health assessment details are strictly confidential." & vbCrLf & vbCrLf & "Detailed medical responses and health declarations are restricted to authorized School Clinic personnel."
+        ' 
+        ' pnlClinicNoUpdate
+        ' 
+        pnlClinicNoUpdate.BackColor = Color.White
+        pnlClinicNoUpdate.Controls.Add(pnlClinicNoUpdateCard)
+        pnlClinicNoUpdate.Dock = DockStyle.Fill
+        pnlClinicNoUpdate.Location = New Point(0, 0)
+        pnlClinicNoUpdate.Name = "pnlClinicNoUpdate"
+        pnlClinicNoUpdate.Size = New Size(698, 348)
+        pnlClinicNoUpdate.TabIndex = 1
+        pnlClinicNoUpdate.Visible = False
+        ' 
+        ' pnlClinicNoUpdateCard
+        ' 
+        pnlClinicNoUpdateCard.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlClinicNoUpdateCard.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        pnlClinicNoUpdateCard.BorderStyle = BorderStyle.FixedSingle
+        pnlClinicNoUpdateCard.Controls.Add(lblClinicNoUpdateIcon)
+        pnlClinicNoUpdateCard.Controls.Add(lblClinicNoUpdateTitle)
+        pnlClinicNoUpdateCard.Controls.Add(lblClinicNoUpdateMessage)
+        pnlClinicNoUpdateCard.Location = New Point(20, 25)
+        pnlClinicNoUpdateCard.Name = "pnlClinicNoUpdateCard"
+        pnlClinicNoUpdateCard.Size = New Size(655, 165)
+        pnlClinicNoUpdateCard.TabIndex = 0
+        ' 
+        ' lblClinicNoUpdateIcon
+        ' 
+        lblClinicNoUpdateIcon.Font = New Font("Segoe UI", 15.0F, FontStyle.Bold)
+        lblClinicNoUpdateIcon.ForeColor = Color.FromArgb(CByte(2), CByte(132), CByte(199))
+        lblClinicNoUpdateIcon.Location = New Point(18, 23)
+        lblClinicNoUpdateIcon.Name = "lblClinicNoUpdateIcon"
+        lblClinicNoUpdateIcon.Size = New Size(35, 38)
+        lblClinicNoUpdateIcon.TabIndex = 0
+        lblClinicNoUpdateIcon.Text = "✚"
+        lblClinicNoUpdateIcon.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblClinicNoUpdateTitle
+        ' 
+        lblClinicNoUpdateTitle.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        lblClinicNoUpdateTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblClinicNoUpdateTitle.Location = New Point(65, 23)
+        lblClinicNoUpdateTitle.Name = "lblClinicNoUpdateTitle"
+        lblClinicNoUpdateTitle.Size = New Size(555, 25)
+        lblClinicNoUpdateTitle.TabIndex = 1
+        lblClinicNoUpdateTitle.Text = "No Health Assessment Submitted"
+        ' 
+        ' lblClinicNoUpdateMessage
+        ' 
+        lblClinicNoUpdateMessage.Font = New Font("Segoe UI", 8.3F)
+        lblClinicNoUpdateMessage.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
+        lblClinicNoUpdateMessage.Location = New Point(65, 58)
+        lblClinicNoUpdateMessage.Name = "lblClinicNoUpdateMessage"
+        lblClinicNoUpdateMessage.Size = New Size(565, 85)
+        lblClinicNoUpdateMessage.TabIndex = 2
+        lblClinicNoUpdateMessage.Text = "No digital Health Assessment has been submitted by the student for this clearance requirement." & vbCrLf & vbCrLf & "The student must complete and submit their Health Assessment Form before this clearance can be approved."
+        ' 
+        ' pnlClinicFields
+        ' 
+        pnlClinicFields.AutoScroll = True
+        pnlClinicFields.Controls.Add(lblClinicMedLabel)
+        pnlClinicFields.Controls.Add(lblClinicMedVal)
+        pnlClinicFields.Controls.Add(lblClinicAlgLabel)
+        pnlClinicFields.Controls.Add(lblClinicAlgVal)
+        pnlClinicFields.Controls.Add(lblClinicMedsLabel)
+        pnlClinicFields.Controls.Add(lblClinicMedsVal)
+        pnlClinicFields.Controls.Add(lblClinicConcernsLabel)
+        pnlClinicFields.Controls.Add(lblClinicConcernsVal)
+        pnlClinicFields.Controls.Add(lblClinicEmLabel)
+        pnlClinicFields.Controls.Add(lblClinicEmVal)
+        pnlClinicFields.Controls.Add(lblClinicDecLabel)
+        pnlClinicFields.Controls.Add(lblClinicDecVal)
+        pnlClinicFields.Controls.Add(lblClinicDocLabel)
+        pnlClinicFields.Controls.Add(lblClinicDocVal)
+        pnlClinicFields.Controls.Add(btnViewClinicDoc)
+        pnlClinicFields.Dock = DockStyle.Fill
+        pnlClinicFields.Location = New Point(0, 0)
+        pnlClinicFields.Name = "pnlClinicFields"
+        pnlClinicFields.Padding = New Padding(14)
+        pnlClinicFields.Size = New Size(698, 348)
+        pnlClinicFields.TabIndex = 0
+        ' 
+        ' lblClinicMedLabel
+        ' 
+        lblClinicMedLabel.AutoSize = True
+        lblClinicMedLabel.Font = New Font("Segoe UI Semibold", 8.2F, FontStyle.Bold)
+        lblClinicMedLabel.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        lblClinicMedLabel.Location = New Point(14, 10)
+        lblClinicMedLabel.Name = "lblClinicMedLabel"
+        lblClinicMedLabel.Size = New Size(160, 15)
+        lblClinicMedLabel.TabIndex = 0
+        lblClinicMedLabel.Text = "1. Known Medical Conditions:"
+        ' 
+        ' lblClinicMedVal
+        ' 
+        lblClinicMedVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblClinicMedVal.Font = New Font("Segoe UI", 8.5F)
+        lblClinicMedVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblClinicMedVal.Location = New Point(14, 28)
+        lblClinicMedVal.Name = "lblClinicMedVal"
+        lblClinicMedVal.Size = New Size(650, 32)
+        lblClinicMedVal.TabIndex = 1
+        lblClinicMedVal.Text = "No"
+        ' 
+        ' lblClinicAlgLabel
+        ' 
+        lblClinicAlgLabel.AutoSize = True
+        lblClinicAlgLabel.Font = New Font("Segoe UI Semibold", 8.2F, FontStyle.Bold)
+        lblClinicAlgLabel.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        lblClinicAlgLabel.Location = New Point(14, 65)
+        lblClinicAlgLabel.Name = "lblClinicAlgLabel"
+        lblClinicAlgLabel.Size = New Size(69, 15)
+        lblClinicAlgLabel.TabIndex = 2
+        lblClinicAlgLabel.Text = "2. Allergies:"
+        ' 
+        ' lblClinicAlgVal
+        ' 
+        lblClinicAlgVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblClinicAlgVal.Font = New Font("Segoe UI", 8.5F)
+        lblClinicAlgVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblClinicAlgVal.Location = New Point(14, 83)
+        lblClinicAlgVal.Name = "lblClinicAlgVal"
+        lblClinicAlgVal.Size = New Size(650, 32)
+        lblClinicAlgVal.TabIndex = 3
+        lblClinicAlgVal.Text = "No"
+        ' 
+        ' lblClinicMedsLabel
+        ' 
+        lblClinicMedsLabel.AutoSize = True
+        lblClinicMedsLabel.Font = New Font("Segoe UI Semibold", 8.2F, FontStyle.Bold)
+        lblClinicMedsLabel.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        lblClinicMedsLabel.Location = New Point(14, 120)
+        lblClinicMedsLabel.Name = "lblClinicMedsLabel"
+        lblClinicMedsLabel.Size = New Size(129, 15)
+        lblClinicMedsLabel.TabIndex = 4
+        lblClinicMedsLabel.Text = "3. Current Medications:"
+        ' 
+        ' lblClinicMedsVal
+        ' 
+        lblClinicMedsVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblClinicMedsVal.Font = New Font("Segoe UI", 8.5F)
+        lblClinicMedsVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblClinicMedsVal.Location = New Point(14, 138)
+        lblClinicMedsVal.Name = "lblClinicMedsVal"
+        lblClinicMedsVal.Size = New Size(650, 32)
+        lblClinicMedsVal.TabIndex = 5
+        lblClinicMedsVal.Text = "No"
+        ' 
+        ' lblClinicConcernsLabel
+        ' 
+        lblClinicConcernsLabel.AutoSize = True
+        lblClinicConcernsLabel.Font = New Font("Segoe UI Semibold", 8.2F, FontStyle.Bold)
+        lblClinicConcernsLabel.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        lblClinicConcernsLabel.Location = New Point(14, 175)
+        lblClinicConcernsLabel.Name = "lblClinicConcernsLabel"
+        lblClinicConcernsLabel.Size = New Size(108, 15)
+        lblClinicConcernsLabel.TabIndex = 6
+        lblClinicConcernsLabel.Text = "4. Health Concerns:"
+        ' 
+        ' lblClinicConcernsVal
+        ' 
+        lblClinicConcernsVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblClinicConcernsVal.Font = New Font("Segoe UI", 8.5F)
+        lblClinicConcernsVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblClinicConcernsVal.Location = New Point(14, 193)
+        lblClinicConcernsVal.Name = "lblClinicConcernsVal"
+        lblClinicConcernsVal.Size = New Size(650, 32)
+        lblClinicConcernsVal.TabIndex = 7
+        lblClinicConcernsVal.Text = "No"
+        ' 
+        ' lblClinicEmLabel
+        ' 
+        lblClinicEmLabel.AutoSize = True
+        lblClinicEmLabel.Font = New Font("Segoe UI Semibold", 8.2F, FontStyle.Bold)
+        lblClinicEmLabel.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        lblClinicEmLabel.Location = New Point(14, 230)
+        lblClinicEmLabel.Name = "lblClinicEmLabel"
+        lblClinicEmLabel.Size = New Size(125, 15)
+        lblClinicEmLabel.TabIndex = 8
+        lblClinicEmLabel.Text = "5. Emergency Contact:"
+        ' 
+        ' lblClinicEmVal
+        ' 
+        lblClinicEmVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblClinicEmVal.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblClinicEmVal.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblClinicEmVal.Location = New Point(14, 248)
+        lblClinicEmVal.Name = "lblClinicEmVal"
+        lblClinicEmVal.Size = New Size(650, 20)
+        lblClinicEmVal.TabIndex = 9
+        lblClinicEmVal.Text = "-"
+        ' 
+        ' lblClinicDecLabel
+        ' 
+        lblClinicDecLabel.AutoSize = True
+        lblClinicDecLabel.Font = New Font("Segoe UI Semibold", 8.2F, FontStyle.Bold)
+        lblClinicDecLabel.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        lblClinicDecLabel.Location = New Point(14, 275)
+        lblClinicDecLabel.Name = "lblClinicDecLabel"
+        lblClinicDecLabel.Size = New Size(124, 15)
+        lblClinicDecLabel.TabIndex = 10
+        lblClinicDecLabel.Text = "6. Student Declaration:"
+        ' 
+        ' lblClinicDecVal
+        ' 
+        lblClinicDecVal.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblClinicDecVal.Font = New Font("Segoe UI", 8.5F)
+        lblClinicDecVal.ForeColor = Color.FromArgb(CByte(22), CByte(101), CByte(52))
+        lblClinicDecVal.Location = New Point(14, 293)
+        lblClinicDecVal.Name = "lblClinicDecVal"
+        lblClinicDecVal.Size = New Size(650, 20)
+        lblClinicDecVal.TabIndex = 11
+        lblClinicDecVal.Text = "Confirmed by student"
+        ' 
+        ' lblClinicDocLabel
+        ' 
+        lblClinicDocLabel.AutoSize = True
+        lblClinicDocLabel.Font = New Font("Segoe UI Semibold", 8.2F, FontStyle.Bold)
+        lblClinicDocLabel.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        lblClinicDocLabel.Location = New Point(14, 320)
+        lblClinicDocLabel.Name = "lblClinicDocLabel"
+        lblClinicDocLabel.Size = New Size(225, 15)
+        lblClinicDocLabel.TabIndex = 12
+        lblClinicDocLabel.Text = "7. Supporting Medical Document (if any):"
+        ' 
+        ' lblClinicDocVal
+        ' 
+        lblClinicDocVal.Font = New Font("Segoe UI", 8.5F, FontStyle.Italic)
+        lblClinicDocVal.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblClinicDocVal.Location = New Point(14, 340)
+        lblClinicDocVal.Name = "lblClinicDocVal"
+        lblClinicDocVal.Size = New Size(450, 25)
+        lblClinicDocVal.TabIndex = 13
+        lblClinicDocVal.Text = "No document attached"
+        lblClinicDocVal.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' btnViewClinicDoc
+        ' 
+        btnViewClinicDoc.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        btnViewClinicDoc.Cursor = Cursors.Hand
+        btnViewClinicDoc.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewClinicDoc.FlatStyle = FlatStyle.Flat
+        btnViewClinicDoc.Font = New Font("Segoe UI Semibold", 8.0F, FontStyle.Bold)
+        btnViewClinicDoc.ForeColor = Color.FromArgb(CByte(2), CByte(132), CByte(199))
+        btnViewClinicDoc.Location = New Point(475, 336)
+        btnViewClinicDoc.Name = "btnViewClinicDoc"
+        btnViewClinicDoc.Size = New Size(135, 30)
+        btnViewClinicDoc.TabIndex = 14
+        btnViewClinicDoc.Text = "View Document"
+        btnViewClinicDoc.UseVisualStyleBackColor = False
+        btnViewClinicDoc.Visible = False
+        ' 
         ' pnlRightSection
         ' 
         pnlRightSection.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
@@ -1563,6 +1997,16 @@ Partial Class ReviewClearanceForm
         pnlGuidanceInfoNote.ResumeLayout(False)
         pnlGuidanceHeader.ResumeLayout(False)
         pnlGuidanceHeader.PerformLayout()
+        pnlClinicFields.ResumeLayout(False)
+        pnlClinicFields.PerformLayout()
+        pnlClinicNoUpdateCard.ResumeLayout(False)
+        pnlClinicNoUpdate.ResumeLayout(False)
+        pnlClinicRestrictedCard.ResumeLayout(False)
+        pnlClinicRestricted.ResumeLayout(False)
+        pnlClinicBody.ResumeLayout(False)
+        pnlClinicHeader.ResumeLayout(False)
+        pnlClinicHeader.PerformLayout()
+        pnlClinicInfo.ResumeLayout(False)
         pnlRightSection.ResumeLayout(False)
         pnlCurrentStatusCard.ResumeLayout(False)
         pnlCurrentStatusCard.PerformLayout()
@@ -1744,5 +2188,39 @@ Partial Class ReviewClearanceForm
     Friend WithEvents colActivityRemarks As DataGridViewTextBoxColumn
 
     Friend WithEvents lblTimelineEmpty As Label
+
+    Friend WithEvents pnlClinicInfo As Panel
+    Friend WithEvents pnlClinicHeader As Panel
+    Friend WithEvents lblClinicIcon As Label
+    Friend WithEvents lblClinicInfoTitle As Label
+    Friend WithEvents lblClinicInfoSubtitle As Label
+    Friend WithEvents btnOpenAssessmentModal As Button
+    Friend WithEvents pnlClinicBody As Panel
+    Friend WithEvents pnlClinicRestricted As Panel
+    Friend WithEvents pnlClinicRestrictedCard As Panel
+    Friend WithEvents lblRestrictedIcon As Label
+    Friend WithEvents lblRestrictedTitle As Label
+    Friend WithEvents lblRestrictedMessage As Label
+    Friend WithEvents pnlClinicNoUpdate As Panel
+    Friend WithEvents pnlClinicNoUpdateCard As Panel
+    Friend WithEvents lblClinicNoUpdateIcon As Label
+    Friend WithEvents lblClinicNoUpdateTitle As Label
+    Friend WithEvents lblClinicNoUpdateMessage As Label
+    Friend WithEvents pnlClinicFields As Panel
+    Friend WithEvents lblClinicMedLabel As Label
+    Friend WithEvents lblClinicMedVal As Label
+    Friend WithEvents lblClinicAlgLabel As Label
+    Friend WithEvents lblClinicAlgVal As Label
+    Friend WithEvents lblClinicMedsLabel As Label
+    Friend WithEvents lblClinicMedsVal As Label
+    Friend WithEvents lblClinicConcernsLabel As Label
+    Friend WithEvents lblClinicConcernsVal As Label
+    Friend WithEvents lblClinicEmLabel As Label
+    Friend WithEvents lblClinicEmVal As Label
+    Friend WithEvents lblClinicDecLabel As Label
+    Friend WithEvents lblClinicDecVal As Label
+    Friend WithEvents lblClinicDocLabel As Label
+    Friend WithEvents lblClinicDocVal As Label
+    Friend WithEvents btnViewClinicDoc As Button
 
 End Class

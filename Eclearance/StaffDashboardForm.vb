@@ -247,6 +247,7 @@ Public Class StaffDashboardForm
             If Not String.IsNullOrWhiteSpace(statusText) Then
                 Dim pillBg As Color
                 Dim pillFg As Color
+                Dim displayBadgeText As String = statusText
 
                 Select Case statusText.ToLowerInvariant()
                     Case "under review"
@@ -256,18 +257,29 @@ Public Class StaffDashboardForm
                         pillBg = Color.FromArgb(220, 252, 231)
                         pillFg = Color.FromArgb(21, 128, 61)
                     Case "rejected"
-                        pillBg = Color.FromArgb(254, 226, 226)
-                        pillFg = Color.FromArgb(185, 28, 28)
+                        If AppSession.DepartmentID.HasValue AndAlso AppSession.DepartmentID.Value = 9 Then
+                            pillBg = Color.FromArgb(255, 237, 213)
+                            pillFg = Color.FromArgb(194, 65, 12)
+                            displayBadgeText = "Needs Completion"
+                        Else
+                            pillBg = Color.FromArgb(254, 226, 226)
+                            pillFg = Color.FromArgb(185, 28, 28)
+                        End If
                     Case Else ' Pending
                         pillBg = Color.FromArgb(254, 243, 199)
                         pillFg = Color.FromArgb(180, 83, 9)
                 End Select
 
                 Using pillFont As New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
-                    Dim textSize As Size = TextRenderer.MeasureText(e.Graphics, statusText, pillFont)
+                    Dim textSize As Size = TextRenderer.MeasureText(e.Graphics, displayBadgeText, pillFont)
                     Dim pillWidth As Integer = Math.Max(textSize.Width + 18, 92)
                     If pillWidth > e.CellBounds.Width - 8 Then pillWidth = e.CellBounds.Width - 8
                     Dim pillHeight As Integer = 24
+                    Dim textFlags As TextFormatFlags = TextFormatFlags.HorizontalCenter Or TextFormatFlags.VerticalCenter Or TextFormatFlags.SingleLine
+                    If displayBadgeText = "Needs Completion" AndAlso textSize.Width > pillWidth - 8 Then
+                        pillHeight = Math.Min(34, e.CellBounds.Height - 8)
+                        textFlags = TextFormatFlags.HorizontalCenter Or TextFormatFlags.VerticalCenter Or TextFormatFlags.WordBreak
+                    End If
                     Dim pillX As Integer = e.CellBounds.X + (e.CellBounds.Width - pillWidth) \ 2
                     Dim pillY As Integer = e.CellBounds.Y + (e.CellBounds.Height - pillHeight) \ 2
                     Dim pillRect As New Rectangle(pillX, pillY, pillWidth, pillHeight)
@@ -281,11 +293,11 @@ Public Class StaffDashboardForm
 
                     TextRenderer.DrawText(
                         e.Graphics,
-                        statusText,
+                        displayBadgeText,
                         pillFont,
                         pillRect,
                         pillFg,
-                        TextFormatFlags.HorizontalCenter Or TextFormatFlags.VerticalCenter Or TextFormatFlags.SingleLine
+                        textFlags
                     )
                 End Using
             End If
