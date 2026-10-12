@@ -141,6 +141,7 @@ Partial Class StudentClearanceForm
         lblStudentName = New Label()
         lblHeaderSubtitle = New Label()
         lblHeaderTitle = New Label()
+        HScrollBar1 = New HScrollBar()
         pnlSidebar.SuspendLayout()
         pnlLogo.SuspendLayout()
         CType(picSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
@@ -310,6 +311,7 @@ Partial Class StudentClearanceForm
         pnlClearanceTable.AutoScroll = True
         pnlClearanceTable.BackColor = Color.White
         pnlClearanceTable.BorderStyle = BorderStyle.FixedSingle
+        pnlClearanceTable.Controls.Add(HScrollBar1)
         pnlClearanceTable.Controls.Add(pnlRow9)
         pnlClearanceTable.Controls.Add(pnlRow8)
         pnlClearanceTable.Controls.Add(pnlRow7)
@@ -1725,6 +1727,13 @@ Partial Class StudentClearanceForm
         lblHeaderTitle.TabIndex = 0
         lblHeaderTitle.Text = "My Clearance"
         ' 
+        ' HScrollBar1
+        ' 
+        HScrollBar1.Location = New Point(0, 631)
+        HScrollBar1.Name = "HScrollBar1"
+        HScrollBar1.Size = New Size(932, 17)
+        HScrollBar1.TabIndex = 10
+        ' 
         ' StudentClearanceForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -1737,8 +1746,8 @@ Partial Class StudentClearanceForm
         MinimumSize = New Size(1000, 650)
         Name = "StudentClearanceForm"
         StartPosition = FormStartPosition.CenterScreen
-        WindowState = FormWindowState.Maximized
         Text = "EClearance - Student Clearance"
+        WindowState = FormWindowState.Maximized
         pnlSidebar.ResumeLayout(False)
         pnlLogo.ResumeLayout(False)
         pnlLogo.PerformLayout()
@@ -1895,5 +1904,6 @@ Partial Class StudentClearanceForm
     Friend WithEvents btnReeval7 As Button
     Friend WithEvents btnReeval8 As Button
     Friend WithEvents btnReeval9 As Button
+    Friend WithEvents HScrollBar1 As HScrollBar
 
 End Class
