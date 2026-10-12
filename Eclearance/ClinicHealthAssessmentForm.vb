@@ -512,49 +512,49 @@ Public Class ClinicHealthAssessmentForm
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
         ' Validation for final submission
         If Not (rdoMedHistoryYes.Checked OrElse rdoMedHistoryNo.Checked) Then
-            MessageBox.Show("Please answer the Medical History question (Section 2).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please answer the Medical History question (2).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             rdoMedHistoryNo.Focus()
             Return
         End If
 
         If Not (rdoAllergiesYes.Checked OrElse rdoAllergiesNo.Checked) Then
-            MessageBox.Show("Please answer the Allergies question (Section 3).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please answer the Allergies question (3).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             rdoAllergiesNo.Focus()
             Return
         End If
 
         If Not (rdoMedicationsYes.Checked OrElse rdoMedicationsNo.Checked) Then
-            MessageBox.Show("Please answer the Current Medications question (Section 4).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please answer the Current Medications question (4).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             rdoMedicationsNo.Focus()
             Return
         End If
 
         If Not (rdoHealthConcernsYes.Checked OrElse rdoHealthConcernsNo.Checked) Then
-            MessageBox.Show("Please answer the Health Concerns question (Section 5).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please answer the Health Concerns question (5).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             rdoHealthConcernsNo.Focus()
             Return
         End If
 
         If String.IsNullOrWhiteSpace(txtEmergencyName.Text.Trim()) Then
-            MessageBox.Show("Please provide an Emergency Contact Name (Section 6).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please provide an Emergency Contact Name (6).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             txtEmergencyName.Focus()
             Return
         End If
 
         If String.IsNullOrWhiteSpace(txtRelationship.Text.Trim()) Then
-            MessageBox.Show("Please provide your relationship with the emergency contact (Section 6).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please provide your relationship with the emergency contact (6).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             txtRelationship.Focus()
             Return
         End If
 
         If String.IsNullOrWhiteSpace(txtEmergencyContactNo.Text.Trim()) Then
-            MessageBox.Show("Please provide an Emergency Contact Number (Section 6).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please provide an Emergency Contact Number (6).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             txtEmergencyContactNo.Focus()
             Return
         End If
 
         If Not chkDeclaration.Checked Then
-            MessageBox.Show("You must check the confirmation declaration in Section 8 before submitting.", "Confirmation Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("You must check the confirmation declaration (8) before submitting.", "Confirmation Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             chkDeclaration.Focus()
             Return
         End If

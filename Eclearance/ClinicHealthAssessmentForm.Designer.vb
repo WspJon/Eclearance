@@ -346,7 +346,7 @@ Partial Class ClinicHealthAssessmentForm
         lblStudentInfoTitle.Name = "lblStudentInfoTitle"
         lblStudentInfoTitle.Size = New Size(198, 17)
         lblStudentInfoTitle.TabIndex = 0
-        lblStudentInfoTitle.Text = "SECTION 1: Student Information"
+        lblStudentInfoTitle.Text = "1. Student Information"
         ' 
         ' lblStudentNo
         ' 
@@ -481,7 +481,7 @@ Partial Class ClinicHealthAssessmentForm
         lblMedHistoryTitle.Name = "lblMedHistoryTitle"
         lblMedHistoryTitle.Size = New Size(176, 17)
         lblMedHistoryTitle.TabIndex = 0
-        lblMedHistoryTitle.Text = "SECTION 2: Medical History"
+        lblMedHistoryTitle.Text = "2. Medical History"
         ' 
         ' lblMedHistoryQuestion
         ' 
@@ -569,7 +569,7 @@ Partial Class ClinicHealthAssessmentForm
         lblAllergiesTitle.Name = "lblAllergiesTitle"
         lblAllergiesTitle.Size = New Size(134, 17)
         lblAllergiesTitle.TabIndex = 0
-        lblAllergiesTitle.Text = "SECTION 3: Allergies"
+        lblAllergiesTitle.Text = "3. Allergies"
         ' 
         ' lblAllergiesQuestion
         ' 
@@ -657,7 +657,7 @@ Partial Class ClinicHealthAssessmentForm
         lblMedicationsTitle.Name = "lblMedicationsTitle"
         lblMedicationsTitle.Size = New Size(207, 17)
         lblMedicationsTitle.TabIndex = 0
-        lblMedicationsTitle.Text = "SECTION 4: Current Medications"
+        lblMedicationsTitle.Text = "4. Current Medications"
         ' 
         ' lblMedicationsQuestion
         ' 
@@ -745,7 +745,7 @@ Partial Class ClinicHealthAssessmentForm
         lblHealthConcernsTitle.Name = "lblHealthConcernsTitle"
         lblHealthConcernsTitle.Size = New Size(185, 17)
         lblHealthConcernsTitle.TabIndex = 0
-        lblHealthConcernsTitle.Text = "SECTION 5: Health Concerns"
+        lblHealthConcernsTitle.Text = "5. Health Concerns"
         ' 
         ' lblHealthConcernsQuestion
         ' 
@@ -835,7 +835,7 @@ Partial Class ClinicHealthAssessmentForm
         lblEmergencyTitle.Name = "lblEmergencyTitle"
         lblEmergencyTitle.Size = New Size(260, 17)
         lblEmergencyTitle.TabIndex = 0
-        lblEmergencyTitle.Text = "SECTION 6: Emergency Contact Details *"
+        lblEmergencyTitle.Text = "6. Emergency Contact Details *"
         ' 
         ' lblEmergencySubtitle
         ' 
@@ -932,7 +932,7 @@ Partial Class ClinicHealthAssessmentForm
         lblDocumentsTitle.Name = "lblDocumentsTitle"
         lblDocumentsTitle.Size = New Size(393, 17)
         lblDocumentsTitle.TabIndex = 0
-        lblDocumentsTitle.Text = "SECTION 7: Supporting Medical Documents (Conditional / Optional)"
+        lblDocumentsTitle.Text = "7. Supporting Medical Documents (Conditional / Optional)"
         ' 
         ' lblDocumentsSubtitle
         ' 
@@ -1028,7 +1028,7 @@ Partial Class ClinicHealthAssessmentForm
         lblDeclarationTitle.Name = "lblDeclarationTitle"
         lblDeclarationTitle.Size = New Size(218, 17)
         lblDeclarationTitle.TabIndex = 0
-        lblDeclarationTitle.Text = "SECTION 8: Student Declaration *"
+        lblDeclarationTitle.Text = "8. Student Declaration *"
         ' 
         ' chkDeclaration
         ' 
