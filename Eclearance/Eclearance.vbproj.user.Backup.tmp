@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Update="ChangePasswordModalForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ClearanceHistoryForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CreateStudentForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LoginForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ReviewClearanceForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StaffDashboardForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StaffRequestsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StartNewTermForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StudentClearanceForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StudentProfileForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UploadClearanceModalForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ViewRequirementModalForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
