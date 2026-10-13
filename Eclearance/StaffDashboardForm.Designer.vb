@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StaffDashboardForm
     Inherits System.Windows.Forms.Form
 
@@ -32,6 +32,7 @@ Partial Class StaffDashboardForm
         lblLogoTitle = New Label()
         picSchoolLogo = New PictureBox()
         pnlViewHost = New Panel()
+        pnlContentViewport = New Panel()
         pnlMain = New Panel()
         pnlRightColumn = New Panel()
         pnlMyOfficeCard = New Panel()
@@ -331,7 +332,7 @@ Partial Class StaffDashboardForm
         pnlOfficeInner.Controls.Add(lblOfficeBadgeIcon)
         pnlOfficeInner.Location = New Point(16, 48)
         pnlOfficeInner.Name = "pnlOfficeInner"
-        pnlOfficeInner.Size = New Size(238, 80)
+        pnlOfficeInner.Size = New Size(238, 86)
         pnlOfficeInner.TabIndex = 1
         ' 
         ' lblOfficeDescSub
@@ -339,7 +340,7 @@ Partial Class StaffDashboardForm
         lblOfficeDescSub.AutoSize = True
         lblOfficeDescSub.Font = New Font("Segoe UI", 8F)
         lblOfficeDescSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblOfficeDescSub.Location = New Point(58, 44)
+        lblOfficeDescSub.Location = New Point(68, 62)
         lblOfficeDescSub.Name = "lblOfficeDescSub"
         lblOfficeDescSub.Size = New Size(161, 13)
         lblOfficeDescSub.TabIndex = 3
@@ -347,11 +348,11 @@ Partial Class StaffDashboardForm
         ' 
         ' lblMyOfficeStatus
         ' 
-        lblMyOfficeStatus.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        lblMyOfficeStatus.Anchor = AnchorStyles.Top Or AnchorStyles.Left
         lblMyOfficeStatus.BackColor = Color.FromArgb(CByte(220), CByte(252), CByte(231))
         lblMyOfficeStatus.Font = New Font("Segoe UI Semibold", 7.5F, FontStyle.Bold)
         lblMyOfficeStatus.ForeColor = Color.FromArgb(CByte(21), CByte(128), CByte(61))
-        lblMyOfficeStatus.Location = New Point(180, 14)
+        lblMyOfficeStatus.Location = New Point(12, 58)
         lblMyOfficeStatus.Name = "lblMyOfficeStatus"
         lblMyOfficeStatus.Size = New Size(48, 20)
         lblMyOfficeStatus.TabIndex = 2
@@ -360,12 +361,12 @@ Partial Class StaffDashboardForm
         ' 
         ' lblMyOfficeTitle
         ' 
-        lblMyOfficeTitle.AutoSize = True
+        lblMyOfficeTitle.AutoSize = False
         lblMyOfficeTitle.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
         lblMyOfficeTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblMyOfficeTitle.Location = New Point(58, 14)
         lblMyOfficeTitle.Name = "lblMyOfficeTitle"
-        lblMyOfficeTitle.Size = New Size(102, 19)
+        lblMyOfficeTitle.Size = New Size(172, 42)
         lblMyOfficeTitle.TabIndex = 1
         lblMyOfficeTitle.Text = "Library Office"
         ' 
@@ -998,7 +999,7 @@ Partial Class StaffDashboardForm
         pnlOfficeBadge.Controls.Add(lblOfficeIcon)
         pnlOfficeBadge.Location = New Point(504, 16)
         pnlOfficeBadge.Name = "pnlOfficeBadge"
-        pnlOfficeBadge.Size = New Size(168, 48)
+        pnlOfficeBadge.Size = New Size(168, 60)
         pnlOfficeBadge.TabIndex = 3
         ' 
         ' lblOfficeSub
@@ -1006,7 +1007,7 @@ Partial Class StaffDashboardForm
         lblOfficeSub.AutoSize = True
         lblOfficeSub.Font = New Font("Segoe UI", 7.5F)
         lblOfficeSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblOfficeSub.Location = New Point(38, 26)
+        lblOfficeSub.Location = New Point(38, 40)
         lblOfficeSub.Name = "lblOfficeSub"
         lblOfficeSub.Size = New Size(73, 12)
         lblOfficeSub.TabIndex = 2
@@ -1014,12 +1015,12 @@ Partial Class StaffDashboardForm
         ' 
         ' lblOfficeName
         ' 
-        lblOfficeName.AutoSize = True
+        lblOfficeName.AutoSize = False
         lblOfficeName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         lblOfficeName.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblOfficeName.Location = New Point(38, 8)
         lblOfficeName.Name = "lblOfficeName"
-        lblOfficeName.Size = New Size(90, 15)
+        lblOfficeName.Size = New Size(124, 34)
         lblOfficeName.TabIndex = 1
         lblOfficeName.Text = "Assigned Office"
         ' 
@@ -1063,7 +1064,12 @@ Partial Class StaffDashboardForm
         BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         ClientSize = New Size(1200, 800)
         Controls.Add(pnlViewHost)
-        Controls.Add(pnlMain)
+        pnlContentViewport.AutoScroll = True
+        pnlContentViewport.Dock = DockStyle.Fill
+        pnlContentViewport.Name = "pnlContentViewport"
+        pnlContentViewport.Size = New Size(980, 800)
+        pnlContentViewport.Controls.Add(pnlMain)
+        Controls.Add(pnlContentViewport)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1100, 750)
@@ -1102,6 +1108,8 @@ Partial Class StaffDashboardForm
         pnlOfficeBadge.ResumeLayout(False)
         pnlOfficeBadge.PerformLayout()
         ResumeLayout(False)
+        PerformLayout()
+        pnlContentViewport.AutoScrollMinSize = New Size(1240, 780)
     End Sub
 
     Friend WithEvents pnlSidebar As Panel
@@ -1181,4 +1189,5 @@ Partial Class StaffDashboardForm
     Friend WithEvents pnlNavIndicator As Panel
     Friend WithEvents pnlViewHost As Panel
 
+    Friend WithEvents pnlContentViewport As Panel
 End Class

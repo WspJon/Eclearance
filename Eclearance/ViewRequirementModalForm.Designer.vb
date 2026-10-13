@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class ViewRequirementModalForm
     Inherits System.Windows.Forms.Form
 
@@ -19,6 +19,9 @@ Partial Class ViewRequirementModalForm
     Private Sub InitializeComponent()
         pnlMainCard = New Panel()
         lblModalHeader = New Label()
+        pnlStudentAffairsRemarks = New Panel()
+        lblStudentAffairsRemarks = New Label()
+        txtStudentAffairsRemarks = New TextBox()
         pnlDetails = New Panel()
         pnlGuidanceSection = New Panel()
         lblGuidanceNotice = New Label()
@@ -88,7 +91,30 @@ Partial Class ViewRequirementModalForm
         lblModalHeader.Size = New Size(662, 52)
         lblModalHeader.TabIndex = 1
         lblModalHeader.Text = "Requirement Instructions"
-        lblModalHeader.TextAlign = ContentAlignment.MiddleLeft
+        lblModalHeader.TextAlign = ContentAlignment.MiddleLeft        ' Student Affairs remarks are visible only for that office.
+        pnlStudentAffairsRemarks.Location = New Point(22, 309)
+        pnlStudentAffairsRemarks.Size = New Size(671, 220)
+        pnlStudentAffairsRemarks.Name = "pnlStudentAffairsRemarks"
+        pnlStudentAffairsRemarks.BackColor = Color.White
+        pnlStudentAffairsRemarks.BorderStyle = BorderStyle.FixedSingle
+        pnlStudentAffairsRemarks.Visible = False
+        pnlStudentAffairsRemarks.Controls.Add(lblStudentAffairsRemarks)
+        pnlStudentAffairsRemarks.Controls.Add(txtStudentAffairsRemarks)
+        lblStudentAffairsRemarks.Location = New Point(14, 14)
+        lblStudentAffairsRemarks.Size = New Size(638, 28)
+        lblStudentAffairsRemarks.Name = "lblStudentAffairsRemarks"
+        lblStudentAffairsRemarks.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
+        lblStudentAffairsRemarks.Text = "Staff Remarks / Compliance Instructions"
+        txtStudentAffairsRemarks.Location = New Point(14, 50)
+        txtStudentAffairsRemarks.Size = New Size(638, 150)
+        txtStudentAffairsRemarks.Name = "txtStudentAffairsRemarks"
+        txtStudentAffairsRemarks.Multiline = True
+        txtStudentAffairsRemarks.ReadOnly = True
+        txtStudentAffairsRemarks.ScrollBars = ScrollBars.Vertical
+        txtStudentAffairsRemarks.Font = New Font("Segoe UI", 10F)
+        txtStudentAffairsRemarks.BackColor = Color.White
+        txtStudentAffairsRemarks.TabIndex = 0
+
         ' 
         ' pnlDetails
         ' 
@@ -99,6 +125,7 @@ Partial Class ViewRequirementModalForm
         pnlDetails.Controls.Add(pnlGuidanceSection)
         pnlDetails.Controls.Add(pnlLinkSection)
         pnlDetails.Controls.Add(pnlProofSection)
+        pnlDetails.Controls.Add(pnlStudentAffairsRemarks)
         pnlDetails.Controls.Add(pnlInstructionsSection)
         pnlDetails.Controls.Add(lblStatusBadge)
         pnlDetails.Controls.Add(lblRequirementTitle)
@@ -472,6 +499,7 @@ Partial Class ViewRequirementModalForm
         ' 
         ' pnlInstructionsSection
         ' 
+        pnlInstructionsSection.AutoScroll = True
         pnlInstructionsSection.BackColor = Color.White
         pnlInstructionsSection.BorderStyle = BorderStyle.FixedSingle
         pnlInstructionsSection.Controls.Add(lblInstructionsValue)
@@ -486,6 +514,8 @@ Partial Class ViewRequirementModalForm
         ' lblInstructionsValue
         ' 
         lblInstructionsValue.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblInstructionsValue.AutoSize = True
+        lblInstructionsValue.MaximumSize = New Size(610, 0)
         lblInstructionsValue.Font = New Font("Segoe UI", 9.0F)
         lblInstructionsValue.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblInstructionsValue.Location = New Point(14, 44)
@@ -638,4 +668,7 @@ Partial Class ViewRequirementModalForm
 
     Friend WithEvents btnDismiss As Button
 
+    Friend WithEvents pnlStudentAffairsRemarks As Panel
+    Friend WithEvents lblStudentAffairsRemarks As Label
+    Friend WithEvents txtStudentAffairsRemarks As TextBox
 End Class

@@ -1,4 +1,4 @@
-Imports System.Diagnostics
+﻿Imports System.Diagnostics
 Imports System.Text.RegularExpressions
 Imports MySql.Data.MySqlClient
 
@@ -7,6 +7,7 @@ Public Class ViewRequirementModalForm
     Private ReadOnly db As New DatabaseHelper()
 
     Public Property DepartmentName As String = ""
+    Public Property StaffRemarks As String = ""
     Public Property RequirementName As String = ""
     Public Property SequenceOrder As Integer = 0
     Public Property EffectiveStatus As String = "Pending"
@@ -22,6 +23,8 @@ Public Class ViewRequirementModalForm
         lblRequirementTitle.Text = RequirementName
         lblStepOrder.Text = "Step " & SequenceOrder.ToString()
         lblStatusBadge.Text = EffectiveStatus
+        pnlStudentAffairsRemarks.Visible = DepartmentName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase)
+        txtStudentAffairsRemarks.Text = If(String.IsNullOrWhiteSpace(StaffRemarks), "No staff remarks yet.", StaffRemarks)
 
         ApplyStatusStyle(lblStatusBadge, EffectiveStatus)
 

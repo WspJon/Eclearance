@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StaffOfficesForm
     Inherits System.Windows.Forms.Form
 
@@ -29,6 +29,7 @@ Partial Class StaffOfficesForm
         pnlLogo = New Panel()
         lblLogoText = New Label()
         picSchoolLogo = New PictureBox()
+        pnlContentViewport = New Panel()
         pnlMain = New Panel()
         pnlBottomDetails = New Panel()
         pnlActionsCard = New Panel()
@@ -572,7 +573,12 @@ Partial Class StaffOfficesForm
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         ClientSize = New Size(1200, 800)
-        Controls.Add(pnlMain)
+        pnlContentViewport.AutoScroll = True
+        pnlContentViewport.Dock = DockStyle.Fill
+        pnlContentViewport.Name = "pnlContentViewport"
+        pnlContentViewport.Size = New Size(980, 800)
+        pnlContentViewport.Controls.Add(pnlMain)
+        Controls.Add(pnlContentViewport)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1100, 750)
@@ -595,6 +601,8 @@ Partial Class StaffOfficesForm
         pnlHeader.ResumeLayout(False)
         pnlHeader.PerformLayout()
         ResumeLayout(False)
+        PerformLayout()
+        pnlContentViewport.AutoScrollMinSize = New Size(1240, 780)
     End Sub
 
     Friend WithEvents pnlSidebar As Panel
@@ -637,4 +645,5 @@ Partial Class StaffOfficesForm
     Friend WithEvents btnResetPassword As Button
     Friend WithEvents btnRemoveStaff As Button
 
+    Friend WithEvents pnlContentViewport As Panel
 End Class

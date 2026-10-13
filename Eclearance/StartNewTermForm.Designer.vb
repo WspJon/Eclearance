@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StartNewTermForm
     Inherits System.Windows.Forms.Form
 
@@ -27,6 +27,7 @@ Partial Class StartNewTermForm
         pnlLogo = New Panel()
         lblLogoText = New Label()
         picSchoolLogo = New PictureBox()
+        pnlContentViewport = New Panel()
         pnlMain = New Panel()
         lblNoteOnce = New Label()
         pnlTermModalCard = New Panel()
@@ -471,7 +472,12 @@ Partial Class StartNewTermForm
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         ClientSize = New Size(1200, 800)
-        Controls.Add(pnlMain)
+        pnlContentViewport.AutoScroll = True
+        pnlContentViewport.Dock = DockStyle.Fill
+        pnlContentViewport.Name = "pnlContentViewport"
+        pnlContentViewport.Size = New Size(980, 800)
+        pnlContentViewport.Controls.Add(pnlMain)
+        Controls.Add(pnlContentViewport)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1100, 750)
@@ -492,6 +498,8 @@ Partial Class StartNewTermForm
         pnlHeader.ResumeLayout(False)
         pnlHeader.PerformLayout()
         ResumeLayout(False)
+        PerformLayout()
+        pnlContentViewport.AutoScrollMinSize = New Size(1240, 780)
     End Sub
 
     Friend WithEvents pnlSidebar As Panel
@@ -527,4 +535,5 @@ Partial Class StartNewTermForm
     Friend WithEvents btnStartTerm As Button
     Friend WithEvents lblNoteOnce As Label
 
+    Friend WithEvents pnlContentViewport As Panel
 End Class

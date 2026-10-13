@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StaffHistoryForm
     Inherits System.Windows.Forms.Form
 
@@ -31,6 +31,7 @@ Partial Class StaffHistoryForm
         lblLogoSub = New Label()
         lblLogoTitle = New Label()
         picSchoolLogo = New PictureBox()
+        pnlContentViewport = New Panel()
         pnlMain = New Panel()
         pnlHistoryDetailCard = New Panel()
         btnReReview = New Button()
@@ -1108,7 +1109,7 @@ Partial Class StaffHistoryForm
         pnlOfficeBadge.Controls.Add(lblOfficeIcon)
         pnlOfficeBadge.Location = New Point(504, 16)
         pnlOfficeBadge.Name = "pnlOfficeBadge"
-        pnlOfficeBadge.Size = New Size(168, 48)
+        pnlOfficeBadge.Size = New Size(168, 60)
         pnlOfficeBadge.TabIndex = 2
         ' 
         ' lblOfficeSub
@@ -1116,7 +1117,7 @@ Partial Class StaffHistoryForm
         lblOfficeSub.AutoSize = True
         lblOfficeSub.Font = New Font("Segoe UI", 7.5F)
         lblOfficeSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblOfficeSub.Location = New Point(38, 26)
+        lblOfficeSub.Location = New Point(38, 40)
         lblOfficeSub.Name = "lblOfficeSub"
         lblOfficeSub.Size = New Size(73, 12)
         lblOfficeSub.TabIndex = 2
@@ -1124,12 +1125,12 @@ Partial Class StaffHistoryForm
         ' 
         ' lblOfficeName
         ' 
-        lblOfficeName.AutoSize = True
+        lblOfficeName.AutoSize = False
         lblOfficeName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         lblOfficeName.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblOfficeName.Location = New Point(38, 8)
         lblOfficeName.Name = "lblOfficeName"
-        lblOfficeName.Size = New Size(90, 15)
+        lblOfficeName.Size = New Size(124, 34)
         lblOfficeName.TabIndex = 1
         lblOfficeName.Text = "Assigned Office"
         ' 
@@ -1172,7 +1173,12 @@ Partial Class StaffHistoryForm
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         ClientSize = New Size(1200, 800)
-        Controls.Add(pnlMain)
+        pnlContentViewport.AutoScroll = True
+        pnlContentViewport.Dock = DockStyle.Fill
+        pnlContentViewport.Name = "pnlContentViewport"
+        pnlContentViewport.Size = New Size(980, 800)
+        pnlContentViewport.Controls.Add(pnlMain)
+        Controls.Add(pnlContentViewport)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1200, 728)
@@ -1205,6 +1211,8 @@ Partial Class StaffHistoryForm
         pnlOfficeBadge.ResumeLayout(False)
         pnlOfficeBadge.PerformLayout()
         ResumeLayout(False)
+        PerformLayout()
+        pnlContentViewport.AutoScrollMinSize = New Size(1240, 780)
     End Sub
 
     Friend WithEvents pnlSidebar As Panel
@@ -1292,4 +1300,5 @@ Partial Class StaffHistoryForm
     Friend WithEvents lblDetailRemarksVal As Label
     Friend WithEvents btnReReview As Button
 
+    Friend WithEvents pnlContentViewport As Panel
 End Class

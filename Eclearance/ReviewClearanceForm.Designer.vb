@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class ReviewClearanceForm
     Inherits System.Windows.Forms.Form
 
@@ -19,6 +19,7 @@ Partial Class ReviewClearanceForm
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        pnlContentViewport = New Panel()
         pnlCard = New Panel()
         btnClose = New Button()
         btnMinimize = New Button()
@@ -44,6 +45,10 @@ Partial Class ReviewClearanceForm
         lblStaffName = New Label()
         lblStaffRole = New Label()
         lblDateTimeBadge = New Label()
+        pnlStudentAffairs = New Panel()
+        lblStudentAffairsTitle = New Label()
+        lblStudentAffairsInstructions = New Label()
+        chkStudentAffairsVerified = New CheckBox()
         pnlLeftSection = New Panel()
         pnlStudentInfoCard = New Panel()
         lblInfoIcon = New Label()
@@ -363,9 +368,9 @@ Partial Class ReviewClearanceForm
         pnlOfficeBadge.Controls.Add(lblOfficeIcon)
         pnlOfficeBadge.Controls.Add(lblOfficeName)
         pnlOfficeBadge.Controls.Add(lblOfficeSub)
-        pnlOfficeBadge.Location = New Point(620, 14)
+        pnlOfficeBadge.Location = New Point(550, 14)
         pnlOfficeBadge.Name = "pnlOfficeBadge"
-        pnlOfficeBadge.Size = New Size(140, 55)
+        pnlOfficeBadge.Size = New Size(210, 55)
         pnlOfficeBadge.TabIndex = 3
         ' 
         ' lblOfficeIcon
@@ -386,7 +391,7 @@ Partial Class ReviewClearanceForm
         lblOfficeName.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblOfficeName.Location = New Point(32, 7)
         lblOfficeName.Name = "lblOfficeName"
-        lblOfficeName.Size = New Size(117, 19)
+        lblOfficeName.Size = New Size(174, 32)
         lblOfficeName.TabIndex = 1
         lblOfficeName.Text = "Guidance Office"
         ' 
@@ -394,7 +399,7 @@ Partial Class ReviewClearanceForm
         ' 
         lblOfficeSub.Font = New Font("Segoe UI", 6.8F)
         lblOfficeSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblOfficeSub.Location = New Point(30, 26)
+        lblOfficeSub.Location = New Point(30, 39)
         lblOfficeSub.Name = "lblOfficeSub"
         lblOfficeSub.Size = New Size(92, 18)
         lblOfficeSub.TabIndex = 2
@@ -455,11 +460,43 @@ Partial Class ReviewClearanceForm
         lblDateTimeBadge.Size = New Size(155, 55)
         lblDateTimeBadge.TabIndex = 5
         lblDateTimeBadge.Text = "Today"
-        lblDateTimeBadge.TextAlign = ContentAlignment.MiddleRight
+        lblDateTimeBadge.TextAlign = ContentAlignment.MiddleRight        ' Office of Student Affairs verification controls remain editable in Designer.
+        pnlStudentAffairs.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlStudentAffairs.BackColor = Color.White
+        pnlStudentAffairs.BorderStyle = BorderStyle.FixedSingle
+        pnlStudentAffairs.Location = New Point(0, 202)
+        pnlStudentAffairs.Name = "pnlStudentAffairs"
+        pnlStudentAffairs.Size = New Size(700, 416)
+        pnlStudentAffairs.Visible = False
+        pnlStudentAffairs.Controls.Add(lblStudentAffairsTitle)
+        pnlStudentAffairs.Controls.Add(lblStudentAffairsInstructions)
+        pnlStudentAffairs.Controls.Add(chkStudentAffairsVerified)
+        lblStudentAffairsTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblStudentAffairsTitle.Font = New Font("Segoe UI", 13F, FontStyle.Bold)
+        lblStudentAffairsTitle.Location = New Point(20, 20)
+        lblStudentAffairsTitle.Size = New Size(655, 34)
+        lblStudentAffairsTitle.Name = "lblStudentAffairsTitle"
+        lblStudentAffairsTitle.Text = "Office of Student Affairs Verification"
+        lblStudentAffairsInstructions.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblStudentAffairsInstructions.Font = New Font("Segoe UI", 10F)
+        lblStudentAffairsInstructions.Location = New Point(20, 72)
+        lblStudentAffairsInstructions.Size = New Size(655, 140)
+        lblStudentAffairsInstructions.Name = "lblStudentAffairsInstructions"
+        lblStudentAffairsInstructions.Text = "Check the student record before making a decision. Students without outstanding concerns do not need an office visit." & vbCrLf & vbCrLf & "If there is an unresolved concern, return the request with remarks explaining the required compliance and any necessary office visit. Approve only after compliance has been verified."
+        chkStudentAffairsVerified.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        chkStudentAffairsVerified.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
+        chkStudentAffairsVerified.Location = New Point(20, 232)
+        chkStudentAffairsVerified.Size = New Size(655, 64)
+        chkStudentAffairsVerified.Name = "chkStudentAffairsVerified"
+        chkStudentAffairsVerified.Text = "I verified the student record and confirm that there are no unresolved concerns."
+        chkStudentAffairsVerified.TabIndex = 0
+        chkStudentAffairsVerified.UseVisualStyleBackColor = True
+
         ' 
         ' pnlLeftSection
         ' 
         pnlLeftSection.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlLeftSection.Controls.Add(pnlStudentAffairs)
         pnlLeftSection.Controls.Add(pnlStudentInfoCard)
         pnlLeftSection.Controls.Add(pnlDocumentCard)
         pnlLeftSection.Controls.Add(pnlGuidanceInfo)
@@ -1966,7 +2003,12 @@ Partial Class ReviewClearanceForm
         AutoScaleMode = AutoScaleMode.None
         BackColor = Color.White
         ClientSize = New Size(1140, 720)
-        Controls.Add(pnlCard)
+        pnlContentViewport.AutoScroll = True
+        pnlContentViewport.Dock = DockStyle.Fill
+        pnlContentViewport.Name = "pnlContentViewport"
+        pnlContentViewport.Size = New Size(1140, 720)
+        pnlContentViewport.Controls.Add(pnlCard)
+        Controls.Add(pnlContentViewport)
         Font = New Font("Segoe UI", 9.0F)
         FormBorderStyle = FormBorderStyle.None
         MaximizeBox = False
@@ -2017,6 +2059,8 @@ Partial Class ReviewClearanceForm
         CType(dgvTimeline, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
 
+        PerformLayout()
+        pnlContentViewport.AutoScrollMinSize = New Size(1140, 720)
     End Sub
 
     Friend WithEvents pnlCard As Panel
@@ -2223,4 +2267,9 @@ Partial Class ReviewClearanceForm
     Friend WithEvents lblClinicDocVal As Label
     Friend WithEvents btnViewClinicDoc As Button
 
+    Friend WithEvents pnlStudentAffairs As Panel
+    Friend WithEvents lblStudentAffairsTitle As Label
+    Friend WithEvents lblStudentAffairsInstructions As Label
+    Friend WithEvents chkStudentAffairsVerified As CheckBox
+    Friend WithEvents pnlContentViewport As Panel
 End Class

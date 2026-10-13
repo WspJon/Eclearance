@@ -1,4 +1,4 @@
-Imports System.Data
+﻿Imports System.Data
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports MySql.Data.MySqlClient
@@ -10,33 +10,10 @@ Public Class StaffRequestsForm
     Private currentFilterStatus As String = "All"
     Private allRequestsTable As DataTable = Nothing
 
-    Private WithEvents btnApproveSelected As Button
 
     Private Sub StaffRequestsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ApplySchoolLogo(picSchoolLogo)
         InitializeStaffInfo()
-
-        ' Add Checkbox Column
-        Dim chkCol As New DataGridViewCheckBoxColumn()
-        chkCol.HeaderText = "Select"
-        chkCol.Name = "colSelect"
-        chkCol.Width = 65
-        chkCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        dgvRequests.Columns.Insert(0, chkCol)
-
-        ' Add Batch Approve Button
-        btnApproveSelected = New Button()
-        btnApproveSelected.Text = "✓ Approve Selected"
-        btnApproveSelected.Size = New Size(140, 36)
-        btnApproveSelected.Location = New Point(btnRefresh.Location.X - 150, btnRefresh.Location.Y)
-        btnApproveSelected.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnApproveSelected.BackColor = Color.FromArgb(11, 99, 229)
-        btnApproveSelected.ForeColor = Color.White
-        btnApproveSelected.FlatStyle = FlatStyle.Flat
-        btnApproveSelected.FlatAppearance.BorderSize = 0
-        btnApproveSelected.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
-        btnApproveSelected.Cursor = Cursors.Hand
-        pnlFilterBar.Controls.Add(btnApproveSelected)
 
         UpdateFilterButtonsUI(btnFilterAll)
         LayoutFilterBar()
@@ -109,6 +86,9 @@ Public Class StaffRequestsForm
 
         lblOfficeName.Text = currentDepartmentName
         lblMyOfficeTitle.Text = currentDepartmentName
+        Dim needsIndividualReview = currentDepartmentName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase)
+        btnApproveSelected.Visible = Not needsIndividualReview
+        colSelect.Visible = Not needsIndividualReview
     End Sub
 
     Public Sub LoadRequestsData()
@@ -705,6 +685,15 @@ Public Class StaffRequestsForm
                 Dim db As New DatabaseHelper()
                 Dim approvedCount As Integer = 0
                 For Each recID In selectedIds
+                    Dim individualReview = Convert.ToInt32(db.ExecuteScalar(
+                        "SELECT COUNT(*) FROM ClearanceRecords cr INNER JOIN ClearanceRequirements r ON r.RequirementID = cr.RequirementID " &
+                        "INNER JOIN Departments d ON d.DepartmentID = r.DepartmentID " &
+                        "WHERE cr.RecordID = @RecordID AND d.DepartmentName = 'Office of Student Affairs';",
+                        New Dictionary(Of String, Object) From {{"@RecordID", recID}})) > 0
+                    If individualReview Then
+                        MessageBox.Show("Office of Student Affairs requests require individual record verification in the review form.", "Individual Review Required", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        Continue For
+                    End If
                     Dim blocker As String = ""
                     If Not ClearanceWorkflowHelper.CanStaffApproveRecord(recID, db, blocker) Then
                         Continue For

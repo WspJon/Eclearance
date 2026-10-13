@@ -1,4 +1,4 @@
-Imports MySql.Data.MySqlClient
+﻿Imports MySql.Data.MySqlClient
 Imports System.Data
 
 Public Class ClearanceWorkflowHelper
@@ -13,6 +13,13 @@ Public Class ClearanceWorkflowHelper
         Public Property RequirementLink As String
         Public Property RequiresFile As Boolean
         Public Property SequenceOrder As Integer
+        Public Property DisplayOrder As Integer
+
+        Public ReadOnly Property IsStudentAffairs As Boolean
+            Get
+                Return String.Equals(DepartmentName, "Office of Student Affairs", StringComparison.OrdinalIgnoreCase)
+            End Get
+        End Property
         Public Property AppliesToCourse As String
         Public Property RequiresNSTP As Boolean
         Public Property ApplicableCourses As String
@@ -407,7 +414,7 @@ Public Class ClearanceWorkflowHelper
                 "  r.RequirementName, " &
                 "  r.Instructions, " &
                 "  r.RequiresFile, " &
-                "  r.SequenceOrder, " &
+                "  r.SequenceOrder, r.DisplayOrder, " &
                 "  r.RequirementLink, " &
                 "  r.AppliesToCourse, " &
                 "  r.RequiresNSTP, " &
@@ -425,8 +432,10 @@ Public Class ClearanceWorkflowHelper
                 "FROM ClearanceRequirements r " &
                 "INNER JOIN Departments d ON r.DepartmentID = d.DepartmentID " &
                 "LEFT JOIN ClearanceRecords cr ON cr.RequirementID = r.RequirementID AND cr.StudentID = @StudentID AND cr.TermID = @TermID " &
-                "WHERE r.IsActive = 1 " &
-                "ORDER BY r.SequenceOrder ASC;"
+                "WHERE r.IsActive = 1 AND d.IsActive = 1 " &
+                "AND (d.DepartmentName <> 'Office of Student Affairs' OR cr.RecordID IS NOT NULL " &
+                "OR EXISTS (SELECT 1 FROM AcademicTerms t WHERE t.TermID = @TermID AND t.IsActive = 1)) " &
+                "ORDER BY r.DisplayOrder, r.SequenceOrder, r.RequirementID;"
 
             Dim dt As DataTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
                 {"@StudentID", studentID},
@@ -444,6 +453,7 @@ Public Class ClearanceWorkflowHelper
                     .RequirementLink = If(IsDBNull(row("RequirementLink")), "", row("RequirementLink").ToString()),
                     .RequiresFile = Convert.ToBoolean(row("RequiresFile")),
                     .SequenceOrder = Convert.ToInt32(row("SequenceOrder")),
+                    .DisplayOrder = Convert.ToInt32(row("DisplayOrder")),
                     .AppliesToCourse = If(IsDBNull(row("AppliesToCourse")), "", row("AppliesToCourse").ToString()),
                     .RequiresNSTP = Convert.ToBoolean(row("RequiresNSTP")),
                     .ApplicableCourses = If(IsDBNull(row("ApplicableCourses")), "", row("ApplicableCourses").ToString()),
@@ -496,7 +506,7 @@ Public Class ClearanceWorkflowHelper
                 End If
             End If
 
-            result = filteredItems.OrderBy(Function(i) i.SequenceOrder).ToList()
+            result = filteredItems.OrderBy(Function(i) i.DisplayOrder).ThenBy(Function(i) i.SequenceOrder).ToList()
 
             EvaluateSequentialWorkflow(result, studentCourse, studentYearLevel, enrolledInNSTP)
 
@@ -575,6 +585,62 @@ Public Class ClearanceWorkflowHelper
     ''' Step 6 (College Dean) requires all applicable Steps 1-5 to be Cleared.
     ''' Steps 7+ require the immediate predecessor step to be Cleared or Not Applicable.
     ''' </summary>
+    Public Shared Function HasStaffDepartmentAccess(departmentID As Integer, db As DatabaseHelper) As Boolean
+        If Not String.Equals(AppSession.Role, "Staff", StringComparison.OrdinalIgnoreCase) OrElse
+           Not AppSession.DepartmentID.HasValue OrElse AppSession.DepartmentID.Value <> departmentID Then Return False
+        Dim count = db.ExecuteScalar(
+            "SELECT COUNT(*) FROM Staff st INNER JOIN Users u ON u.UserID = st.UserID " &
+            "INNER JOIN Departments d ON d.DepartmentID = st.DepartmentID " &
+            "WHERE st.UserID = @UserID AND st.DepartmentID = @DepartmentID " &
+            "AND u.Role = 'Staff' AND u.IsActive = 1 AND st.IsActive = 1 AND d.IsActive = 1;",
+            New Dictionary(Of String, Object) From {{"@UserID", AppSession.UserID}, {"@DepartmentID", departmentID}})
+        Return Convert.ToInt32(count) = 1
+    End Function
+
+    ' A student explicitly requests review; adding an account never counts as submission.
+    Public Shared Sub SubmitStudentAffairsRequest(recordID As Integer, db As DatabaseHelper)
+        If Not String.Equals(AppSession.Role, "Student", StringComparison.OrdinalIgnoreCase) Then
+            Throw New InvalidOperationException("Only the student can submit this request.")
+        End If
+        Using conn = db.GetConnection()
+            conn.Open()
+            Using tx = conn.BeginTransaction()
+                Dim oldStatus As String
+                Using cmd As New MySqlCommand(
+                    "SELECT cr.Status FROM ClearanceRecords cr " &
+                    "INNER JOIN ClearanceRequirements r ON r.RequirementID = cr.RequirementID " &
+                    "INNER JOIN Departments d ON d.DepartmentID = r.DepartmentID " &
+                    "INNER JOIN AcademicTerms t ON t.TermID = cr.TermID " &
+                    "INNER JOIN Users u ON u.UserID = cr.StudentID " &
+                    "WHERE cr.RecordID = @RecordID AND cr.StudentID = @StudentID " &
+                    "AND d.DepartmentName = 'Office of Student Affairs' AND d.IsActive = 1 AND r.IsActive = 1 " &
+                    "AND t.IsActive = 1 AND u.Role = 'Student' AND u.IsActive = 1 " &
+                    "AND cr.Status IN ('Pending', 'Rejected') FOR UPDATE;", conn, tx)
+                    cmd.Parameters.AddWithValue("@RecordID", recordID)
+                    cmd.Parameters.AddWithValue("@StudentID", AppSession.UserID)
+                    Dim value = cmd.ExecuteScalar()
+                    If value Is Nothing Then Throw New InvalidOperationException("This request is not available for submission. Refresh My Clearance.")
+                    oldStatus = CStr(value)
+                End Using
+                Using cmd As New MySqlCommand("UPDATE ClearanceRecords SET Status = 'Under Review', SubmittedAt = NOW() WHERE RecordID = @RecordID;", conn, tx)
+                    cmd.Parameters.AddWithValue("@RecordID", recordID)
+                    cmd.ExecuteNonQuery()
+                End Using
+                Using cmd As New MySqlCommand(
+                    "INSERT INTO ClearanceHistory (RecordID, ActionBy, ActionType, OldStatus, NewStatus, Remarks) " &
+                    "VALUES (@RecordID, @StudentID, @Action, @OldStatus, 'Under Review', @Remarks);", conn, tx)
+                    cmd.Parameters.AddWithValue("@RecordID", recordID)
+                    cmd.Parameters.AddWithValue("@StudentID", AppSession.UserID)
+                    cmd.Parameters.AddWithValue("@OldStatus", oldStatus)
+                    cmd.Parameters.AddWithValue("@Action", If(oldStatus = "Rejected", "Re-evaluation Requested", "Clearance Requested"))
+                    cmd.Parameters.AddWithValue("@Remarks", If(oldStatus = "Rejected", "Student requested review after addressing staff instructions.", "Student requested Office of Student Affairs verification."))
+                    cmd.ExecuteNonQuery()
+                End Using
+                tx.Commit()
+            End Using
+        End Using
+    End Sub
+
     Public Shared Function CanStaffApproveRecord(
         recordID As Integer,
         db As DatabaseHelper,
@@ -616,8 +682,8 @@ Public Class ClearanceWorkflowHelper
             Dim yearLevel As String = If(IsDBNull(row("YearLevel")), "", row("YearLevel").ToString())
             Dim isSubmitted As Boolean = Not IsDBNull(row("SubmittedAt"))
 
-            ' Business Rule: Correct Department
-            If AppSession.DepartmentID.HasValue AndAlso AppSession.DepartmentID.Value <> deptID Then
+            ' Validate the current account and assignment, not only a cached session.
+            If Not HasStaffDepartmentAccess(deptID, db) Then
                 blockerReason = "You do not have permission to review requirements for this department."
                 Return False
             End If
@@ -625,6 +691,10 @@ Public Class ClearanceWorkflowHelper
             ' Business Rule: Active Academic Term
             Dim activeTermQuery = "SELECT TermID FROM AcademicTerms WHERE IsActive = 1 ORDER BY TermID DESC LIMIT 1;"
             Dim activeTermDt = db.ExecuteQuery(activeTermQuery)
+            If activeTermDt.Rows.Count = 0 Then
+                blockerReason = "There is no active academic term."
+                Return False
+            End If
             If activeTermDt.Rows.Count > 0 Then
                 Dim activeTermID As Integer = Convert.ToInt32(activeTermDt.Rows(0)("TermID"))
                 If termID <> activeTermID Then
@@ -662,7 +732,7 @@ Public Class ClearanceWorkflowHelper
             ' Business Rule: Prerequisites (Workflow)
             Dim items = GetStudentClearanceItems(studentID, termID, course, yearLevel, db)
             Dim currentItem = items.FirstOrDefault(Function(i) i.RecordID = recordID)
-            If currentItem IsNot Nothing AndAlso currentItem.EffectiveStatus.Equals("Locked", StringComparison.OrdinalIgnoreCase) Then
+            If currentItem Is Nothing OrElse Not currentItem.IsApplicable OrElse currentItem.EffectiveStatus.Equals("Locked", StringComparison.OrdinalIgnoreCase) Then
                 blockerReason = "This requirement is currently locked due to incomplete prerequisites."
                 Return False
             End If

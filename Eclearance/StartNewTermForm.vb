@@ -1,4 +1,4 @@
-Imports MySql.Data.MySqlClient
+﻿Imports MySql.Data.MySqlClient
 
 Public Class StartNewTermForm
 
@@ -184,7 +184,7 @@ Public Class StartNewTermForm
 
                         MessageBox.Show(
                             "New school term " & schoolYear & " - " & semester & " started successfully!" & Environment.NewLine &
-                            "Clearance requirements have been initialized (Steps 1–5 Pending, Steps 6–9 Locked).",
+                            "Clearance requirements have been initialized (parallel offices Pending; College Dean and subsequent offices Locked).",
                             "Term Started",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information

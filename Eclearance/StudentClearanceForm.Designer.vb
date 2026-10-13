@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StudentClearanceForm
     Inherits System.Windows.Forms.Form
 
@@ -26,8 +26,20 @@ Partial Class StudentClearanceForm
         lblLogoSubtitle = New Label()
         picSchoolLogo = New PictureBox()
         lblLogoTitle = New Label()
+        pnlContentViewport = New Panel()
         pnlMain = New Panel()
         pnlClearanceTable = New Panel()
+        pnlRow10 = New Panel()
+        lblNum10 = New Label()
+        lblDept10 = New Label()
+        lblReq10 = New Label()
+        lblStatus10 = New Label()
+        pnlAction10 = New Panel()
+        btnAction10 = New Button()
+        btnViewReq10 = New Button()
+        lblDash10 = New Label()
+        pnlDivider10 = New Panel()
+        btnReeval10 = New Button()
         pnlRow9 = New Panel()
         pnlDivider9 = New Panel()
         pnlAction9 = New Panel()
@@ -146,6 +158,8 @@ Partial Class StudentClearanceForm
         CType(picSchoolLogo, ComponentModel.ISupportInitialize).BeginInit()
         pnlMain.SuspendLayout()
         pnlClearanceTable.SuspendLayout()
+        pnlRow10.SuspendLayout()
+        pnlAction10.SuspendLayout()
         pnlRow9.SuspendLayout()
         pnlAction9.SuspendLayout()
         pnlRow8.SuspendLayout()
@@ -310,6 +324,7 @@ Partial Class StudentClearanceForm
         pnlClearanceTable.AutoScroll = True
         pnlClearanceTable.BackColor = Color.White
         pnlClearanceTable.BorderStyle = BorderStyle.FixedSingle
+        pnlClearanceTable.Controls.Add(pnlRow10)
         pnlClearanceTable.Controls.Add(pnlRow9)
         pnlClearanceTable.Controls.Add(pnlRow8)
         pnlClearanceTable.Controls.Add(pnlRow7)
@@ -325,6 +340,144 @@ Partial Class StudentClearanceForm
         pnlClearanceTable.Size = New Size(934, 650)
         pnlClearanceTable.TabIndex = 2
         ' 
+        ' pnlRow10
+        '
+        pnlRow10.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlRow10.BackColor = Color.White
+        pnlRow10.Controls.Add(pnlDivider10)
+        pnlRow10.Controls.Add(pnlAction10)
+        pnlRow10.Controls.Add(lblStatus10)
+        pnlRow10.Controls.Add(lblReq10)
+        pnlRow10.Controls.Add(lblDept10)
+        pnlRow10.Controls.Add(lblNum10)
+        pnlRow10.Location = New Point(0, 564)
+        pnlRow10.Name = "pnlRow10"
+        pnlRow10.Size = New Size(932, 58)
+        pnlRow10.TabIndex = 10
+        '
+        ' pnlDivider10
+        '
+        pnlDivider10.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        pnlDivider10.Dock = DockStyle.Bottom
+        pnlDivider10.Location = New Point(0, 57)
+        pnlDivider10.Name = "pnlDivider10"
+        pnlDivider10.Size = New Size(932, 1)
+        pnlDivider10.TabIndex = 5
+        '
+        ' pnlAction10
+        '
+        pnlAction10.BackColor = Color.Transparent
+        pnlAction10.Controls.Add(lblDash10)
+        pnlAction10.Controls.Add(btnViewReq10)
+        pnlAction10.Controls.Add(btnReeval10)
+        pnlAction10.Controls.Add(btnAction10)
+        pnlAction10.Location = New Point(580, 13)
+        pnlAction10.Name = "pnlAction10"
+        pnlAction10.Size = New Size(345, 32)
+        pnlAction10.TabIndex = 4
+        '
+        ' lblDash10
+        '
+        lblDash10.Font = New Font("Segoe UI", 10F)
+        lblDash10.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
+        lblDash10.Location = New Point(0, 0)
+        lblDash10.Name = "lblDash10"
+        lblDash10.Size = New Size(345, 32)
+        lblDash10.TabIndex = 2
+        lblDash10.Text = "-"
+        lblDash10.TextAlign = ContentAlignment.MiddleCenter
+        lblDash10.Visible = False
+        '
+        ' btnViewReq10
+        '
+        btnViewReq10.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        btnViewReq10.Cursor = Cursors.Hand
+        btnViewReq10.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
+        btnViewReq10.FlatStyle = FlatStyle.Flat
+        btnViewReq10.Font = New Font("Segoe UI Semibold", 8F, FontStyle.Bold)
+        btnViewReq10.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
+        btnViewReq10.Location = New Point(116, 0)
+        btnViewReq10.Name = "btnViewReq10"
+        btnViewReq10.Size = New Size(114, 32)
+        btnViewReq10.TabIndex = 1
+        btnViewReq10.Text = "View Requirements"
+        btnViewReq10.UseVisualStyleBackColor = False
+        '
+        ' btnReeval10
+        '
+        btnReeval10.BackColor = Color.FromArgb(CByte(2), CByte(132), CByte(199))
+        btnReeval10.Cursor = Cursors.Hand
+        btnReeval10.FlatAppearance.BorderSize = 0
+        btnReeval10.FlatStyle = FlatStyle.Flat
+        btnReeval10.Font = New Font("Segoe UI Semibold", 8F, FontStyle.Bold)
+        btnReeval10.ForeColor = Color.White
+        btnReeval10.Location = New Point(110, 0)
+        btnReeval10.Name = "btnReeval10"
+        btnReeval10.Size = New Size(122, 32)
+        btnReeval10.TabIndex = 3
+        btnReeval10.Text = "Request Re-evaluation"
+        btnReeval10.UseVisualStyleBackColor = False
+        btnReeval10.Visible = False
+        '
+        ' btnAction10
+        '
+        btnAction10.BackColor = Color.FromArgb(CByte(2), CByte(132), CByte(199))
+        btnAction10.Cursor = Cursors.Hand
+        btnAction10.FlatAppearance.BorderSize = 0
+        btnAction10.FlatStyle = FlatStyle.Flat
+        btnAction10.Font = New Font("Segoe UI Semibold", 8F, FontStyle.Bold)
+        btnAction10.ForeColor = Color.White
+        btnAction10.Location = New Point(0, 0)
+        btnAction10.Name = "btnAction10"
+        btnAction10.Size = New Size(110, 32)
+        btnAction10.TabIndex = 0
+        btnAction10.Text = "Upload Requirement"
+        btnAction10.UseVisualStyleBackColor = False
+        '
+        ' lblStatus10
+        '
+        lblStatus10.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblStatus10.Location = New Point(485, 15)
+        lblStatus10.Name = "lblStatus10"
+        lblStatus10.Size = New Size(90, 28)
+        lblStatus10.TabIndex = 3
+        lblStatus10.Text = "Pending"
+        lblStatus10.TextAlign = ContentAlignment.MiddleCenter
+        '
+        ' lblReq10
+        '
+        lblReq10.Font = New Font("Segoe UI", 8.5F)
+        lblReq10.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        lblReq10.Location = New Point(184, 10)
+        lblReq10.Name = "lblReq10"
+        lblReq10.Size = New Size(295, 38)
+        lblReq10.TabIndex = 2
+        lblReq10.Text = "Requirement description and instructions 9"
+        lblReq10.TextAlign = ContentAlignment.MiddleLeft
+        '
+        ' lblDept10
+        '
+        lblDept10.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        lblDept10.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
+        lblDept10.Location = New Point(48, 19)
+        lblDept10.Name = "lblDept10"
+        lblDept10.Size = New Size(130, 20)
+        lblDept10.TabIndex = 1
+        lblDept10.Text = "Department 9"
+        lblDept10.TextAlign = ContentAlignment.MiddleLeft
+        '
+        ' lblNum10
+        '
+        lblNum10.BackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
+        lblNum10.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        lblNum10.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
+        lblNum10.Location = New Point(12, 15)
+        lblNum10.Name = "lblNum10"
+        lblNum10.Size = New Size(28, 28)
+        lblNum10.TabIndex = 0
+        lblNum10.Text = "9"
+        lblNum10.TextAlign = ContentAlignment.MiddleCenter
+        '
         ' pnlRow9
         ' 
         pnlRow9.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
@@ -1731,7 +1884,12 @@ Partial Class StudentClearanceForm
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
         ClientSize = New Size(1200, 800)
-        Controls.Add(pnlMain)
+        pnlContentViewport.AutoScroll = True
+        pnlContentViewport.Dock = DockStyle.Fill
+        pnlContentViewport.Name = "pnlContentViewport"
+        pnlContentViewport.Size = New Size(990, 800)
+        pnlContentViewport.Controls.Add(pnlMain)
+        Controls.Add(pnlContentViewport)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1000, 650)
@@ -1745,6 +1903,8 @@ Partial Class StudentClearanceForm
         CType(picSchoolLogo, ComponentModel.ISupportInitialize).EndInit()
         pnlMain.ResumeLayout(False)
         pnlClearanceTable.ResumeLayout(False)
+        pnlRow10.ResumeLayout(False)
+        pnlAction10.ResumeLayout(False)
         pnlRow9.ResumeLayout(False)
         pnlAction9.ResumeLayout(False)
         pnlRow8.ResumeLayout(False)
@@ -1769,6 +1929,8 @@ Partial Class StudentClearanceForm
         pnlHeader.ResumeLayout(False)
         pnlHeader.PerformLayout()
         ResumeLayout(False)
+        PerformLayout()
+        pnlContentViewport.AutoScrollMinSize = New Size(1240, 780)
     End Sub
 
     Friend WithEvents pnlSidebar As Panel
@@ -1896,4 +2058,16 @@ Partial Class StudentClearanceForm
     Friend WithEvents btnReeval8 As Button
     Friend WithEvents btnReeval9 As Button
 
+    Friend WithEvents pnlRow10 As Panel
+    Friend WithEvents lblNum10 As Label
+    Friend WithEvents lblDept10 As Label
+    Friend WithEvents lblReq10 As Label
+    Friend WithEvents lblStatus10 As Label
+    Friend WithEvents pnlAction10 As Panel
+    Friend WithEvents btnAction10 As Button
+    Friend WithEvents btnViewReq10 As Button
+    Friend WithEvents lblDash10 As Label
+    Friend WithEvents pnlDivider10 As Panel
+    Friend WithEvents btnReeval10 As Button
+    Friend WithEvents pnlContentViewport As Panel
 End Class

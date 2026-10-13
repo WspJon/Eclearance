@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StudentProfileForm
     Inherits System.Windows.Forms.Form
 
@@ -26,6 +26,7 @@ Partial Class StudentProfileForm
         lblLogoSubtitle = New Label()
         picSchoolLogo = New PictureBox()
         lblLogoTitle = New Label()
+        pnlContentViewport = New Panel()
         pnlMain = New Panel()
         pnlScrollContent = New Panel()
         tlpCards = New TableLayoutPanel()
@@ -1108,7 +1109,12 @@ Partial Class StudentProfileForm
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
         ClientSize = New Size(1200, 780)
-        Controls.Add(pnlMain)
+        pnlContentViewport.AutoScroll = True
+        pnlContentViewport.Dock = DockStyle.Fill
+        pnlContentViewport.Name = "pnlContentViewport"
+        pnlContentViewport.Size = New Size(980, 780)
+        pnlContentViewport.Controls.Add(pnlMain)
+        Controls.Add(pnlContentViewport)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(900, 600)
@@ -1137,6 +1143,8 @@ Partial Class StudentProfileForm
         pnlHeader.ResumeLayout(False)
         pnlHeader.PerformLayout()
         ResumeLayout(False)
+        PerformLayout()
+        pnlContentViewport.AutoScrollMinSize = New Size(1240, 780)
     End Sub
 
     Friend WithEvents pnlSidebar As Panel
@@ -1221,4 +1229,5 @@ Partial Class StudentProfileForm
     Friend WithEvents lblAccountStatusBadge As Label
     Friend WithEvents lblAccountCreatedTitle As Label
     Friend WithEvents lblAccountCreatedVal As Label
+    Friend WithEvents pnlContentViewport As Panel
 End Class

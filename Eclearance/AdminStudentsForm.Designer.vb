@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class AdminStudentsForm
     Inherits System.Windows.Forms.Form
 
@@ -31,6 +31,7 @@ Partial Class AdminStudentsForm
         pnlLogo = New Panel()
         lblLogoText = New Label()
         picSchoolLogo = New PictureBox()
+        pnlContentViewport = New Panel()
         pnlMain = New Panel()
         lblFooterNotice = New Label()
         pnlBottomDetails = New Panel()
@@ -811,7 +812,12 @@ Partial Class AdminStudentsForm
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(244, 247, 251)
         ClientSize = New Size(1200, 800)
-        Controls.Add(pnlMain)
+        pnlContentViewport.AutoScroll = True
+        pnlContentViewport.Dock = DockStyle.Fill
+        pnlContentViewport.Name = "pnlContentViewport"
+        pnlContentViewport.Size = New Size(980, 800)
+        pnlContentViewport.Controls.Add(pnlMain)
+        Controls.Add(pnlContentViewport)
         Controls.Add(pnlSidebar)
         Font = New Font("Segoe UI", 9F)
         MinimumSize = New Size(1100, 750)
@@ -844,6 +850,8 @@ Partial Class AdminStudentsForm
         pnlHeader.ResumeLayout(False)
         pnlHeader.PerformLayout()
         ResumeLayout(False)
+        PerformLayout()
+        pnlContentViewport.AutoScrollMinSize = New Size(1240, 780)
     End Sub
 
     Friend WithEvents pnlSidebar As Panel
@@ -904,4 +912,5 @@ Partial Class AdminStudentsForm
     Friend WithEvents btnResetTerm As Button
     Friend WithEvents lblFooterNotice As Label
 
+    Friend WithEvents pnlContentViewport As Panel
 End Class

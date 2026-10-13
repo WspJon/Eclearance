@@ -1,4 +1,4 @@
-Imports MySql.Data.MySqlClient
+﻿Imports MySql.Data.MySqlClient
 Imports System.IO
 Imports System.Diagnostics
 Imports System.Linq
@@ -90,6 +90,8 @@ Public Class StudentClearanceForm
             ' Ensure CTHM Stock Room is completely hidden when not applicable to the student's program
             If allClearanceItems IsNot Nothing Then
                 allClearanceItems = allClearanceItems.Where(Function(i) Not ((i.DepartmentID = 8 OrElse i.RequirementName.IndexOf("CTHM Stock Room", StringComparison.OrdinalIgnoreCase) >= 0) AndAlso Not i.IsApplicable)).ToList()
+                ' Hide NSTP when the existing enrollment/year applicability rules exclude it.
+                allClearanceItems = allClearanceItems.Where(Function(i) Not (i.RequiresNSTP AndAlso Not i.IsApplicable)).ToList()
             End If
 
             ClearanceWorkflowHelper.UnlockNextStepsInDatabase(AppSession.UserID, activeTermID, AppSession.Course, AppSession.YearLevel, db)
@@ -184,7 +186,7 @@ Public Class StudentClearanceForm
 
         Dim count As Integer = allClearanceItems.Count
 
-        For i As Integer = 0 To Math.Min(count - 1, 8)
+        For i As Integer = 0 To Math.Min(count - 1, 9)
             PopulateRow(i, allClearanceItems(i))
         Next
 
@@ -204,6 +206,7 @@ Public Class StudentClearanceForm
         pnlRow7.Visible = False
         pnlRow8.Visible = False
         pnlRow9.Visible = False
+        pnlRow10.Visible = False
 
     End Sub
 
@@ -245,7 +248,7 @@ Public Class StudentClearanceForm
             Dim deptX As Integer = 48
             Dim deptWidth As Integer = 138
 
-            Dim actionWidth As Integer = 270
+            Dim actionWidth As Integer = 330
             Dim actionX As Integer = totalWidth - actionWidth - 12
 
             Dim statusWidth As Integer = 96
@@ -279,16 +282,16 @@ Public Class StudentClearanceForm
 
             ' Row configuration
             Dim rowHeight As Integer = 72
-            Dim rowPanels = {pnlRow1, pnlRow2, pnlRow3, pnlRow4, pnlRow5, pnlRow6, pnlRow7, pnlRow8, pnlRow9}
-            Dim numLabels = {lblNum1, lblNum2, lblNum3, lblNum4, lblNum5, lblNum6, lblNum7, lblNum8, lblNum9}
-            Dim deptLabels = {lblDept1, lblDept2, lblDept3, lblDept4, lblDept5, lblDept6, lblDept7, lblDept8, lblDept9}
-            Dim reqLabels = {lblReq1, lblReq2, lblReq3, lblReq4, lblReq5, lblReq6, lblReq7, lblReq8, lblReq9}
-            Dim statusLabels = {lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblStatus9}
-            Dim actionPanels = {pnlAction1, pnlAction2, pnlAction3, pnlAction4, pnlAction5, pnlAction6, pnlAction7, pnlAction8, pnlAction9}
-            Dim dashLabels = {lblDash1, lblDash2, lblDash3, lblDash4, lblDash5, lblDash6, lblDash7, lblDash8, lblDash9}
-            Dim dividers = {pnlDivider1, pnlDivider2, pnlDivider3, pnlDivider4, pnlDivider5, pnlDivider6, pnlDivider7, pnlDivider8, pnlDivider9}
+            Dim rowPanels = {pnlRow1, pnlRow2, pnlRow3, pnlRow4, pnlRow5, pnlRow6, pnlRow7, pnlRow8, pnlRow9, pnlRow10}
+            Dim numLabels = {lblNum1, lblNum2, lblNum3, lblNum4, lblNum5, lblNum6, lblNum7, lblNum8, lblNum9, lblNum10}
+            Dim deptLabels = {lblDept1, lblDept2, lblDept3, lblDept4, lblDept5, lblDept6, lblDept7, lblDept8, lblDept9, lblDept10}
+            Dim reqLabels = {lblReq1, lblReq2, lblReq3, lblReq4, lblReq5, lblReq6, lblReq7, lblReq8, lblReq9, lblReq10}
+            Dim statusLabels = {lblStatus1, lblStatus2, lblStatus3, lblStatus4, lblStatus5, lblStatus6, lblStatus7, lblStatus8, lblStatus9, lblStatus10}
+            Dim actionPanels = {pnlAction1, pnlAction2, pnlAction3, pnlAction4, pnlAction5, pnlAction6, pnlAction7, pnlAction8, pnlAction9, pnlAction10}
+            Dim dashLabels = {lblDash1, lblDash2, lblDash3, lblDash4, lblDash5, lblDash6, lblDash7, lblDash8, lblDash9, lblDash10}
+            Dim dividers = {pnlDivider1, pnlDivider2, pnlDivider3, pnlDivider4, pnlDivider5, pnlDivider6, pnlDivider7, pnlDivider8, pnlDivider9, pnlDivider10}
 
-            For i As Integer = 0 To 8
+            For i As Integer = 0 To 9
                 Dim rPanel = rowPanels(i)
                 Dim curY As Integer = 42 + (i * rowHeight)
                 rPanel.Location = New Point(0, curY)
@@ -299,8 +302,8 @@ Public Class StudentClearanceForm
                 numLbl.Size = New Size(28, 28)
 
                 Dim deptLbl = deptLabels(i)
-                deptLbl.Location = New Point(deptX, (rowHeight - 20) \ 2)
-                deptLbl.Size = New Size(deptWidth, 20)
+                deptLbl.Location = New Point(deptX, 8)
+                deptLbl.Size = New Size(deptWidth, rowHeight - 16)
 
                 Dim reqLbl = reqLabels(i)
                 reqLbl.AutoEllipsis = False
@@ -437,6 +440,16 @@ Public Class StudentClearanceForm
                 btnReeval = btnReeval9
                 btnViewReq = btnViewReq9
                 lblDash = lblDash9
+            Case 9
+                rowPanel = pnlRow10
+                lblNum = lblNum10
+                lblDept = lblDept10
+                lblReq = lblReq10
+                lblStatus = lblStatus10
+                btnAct = btnAction10
+                btnReeval = btnReeval10
+                btnViewReq = btnViewReq10
+                lblDash = lblDash10
             Case Else
                 Return
         End Select
@@ -445,6 +458,7 @@ Public Class StudentClearanceForm
         lblNum.Text = (rowIndex + 1).ToString()
         lblDept.Text = item.DepartmentName
         lblReq.Text = If(String.IsNullOrWhiteSpace(item.Instructions), item.RequirementName, item.RequirementName & " — " & item.Instructions)
+        If item.IsStudentAffairs Then lblReq.Text = item.RequirementName & " — Request verification online. Visit only when staff instruct you to."
         lblStatus.Text = item.DisplayStatus
         ApplyStatusStyle(lblStatus, item.DisplayStatus)
 
@@ -531,6 +545,18 @@ Public Class StudentClearanceForm
                         btnViewReq.Visible = True
                         btnViewReq.Text = "View Requirements"
                         btnViewReq.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 6, 0)
+                        btnViewReq.Size = New Size(125, 32)
+                    ElseIf item.IsStudentAffairs Then
+                        btnAct.Visible = True
+                        btnAct.Enabled = item.CanSubmit
+                        btnAct.Text = "Request Clearance"
+                        btnAct.BackColor = Color.FromArgb(2, 132, 199)
+                        btnAct.ForeColor = Color.White
+                        btnAct.Size = New Size(125, 32)
+                        btnAct.Location = New Point(0, 0)
+                        btnViewReq.Visible = True
+                        btnViewReq.Text = "View Requirements"
+                        btnViewReq.Location = New Point(132, 0)
                         btnViewReq.Size = New Size(125, 32)
                     Else
                         btnAct.Visible = False
@@ -682,7 +708,7 @@ Public Class StudentClearanceForm
         sender As Object,
         e As EventArgs
     ) Handles btnAction1.Click, btnAction2.Click, btnAction3.Click, btnAction4.Click,
-              btnAction5.Click, btnAction6.Click, btnAction7.Click, btnAction8.Click, btnAction9.Click
+              btnAction5.Click, btnAction6.Click, btnAction7.Click, btnAction8.Click, btnAction9.Click, btnAction10.Click
 
         Dim button = DirectCast(sender, Button)
         If button.Tag Is Nothing OrElse Not (TypeOf button.Tag Is ClearanceWorkflowHelper.ClearanceItemInfo) Then
@@ -738,6 +764,11 @@ Public Class StudentClearanceForm
             Return
         End If
 
+        If item.IsStudentAffairs Then
+            RequestStudentAffairsClearance(item)
+            Return
+        End If
+
         ' Request Re-evaluation (Rejected non-file)
         If button.Text.Equals("Request Re-evaluation", StringComparison.OrdinalIgnoreCase) Then
             RequestReevaluation(item)
@@ -766,7 +797,7 @@ Public Class StudentClearanceForm
         sender As Object,
         e As EventArgs
     ) Handles btnReeval1.Click, btnReeval2.Click, btnReeval3.Click, btnReeval4.Click,
-              btnReeval5.Click, btnReeval6.Click, btnReeval7.Click, btnReeval8.Click, btnReeval9.Click
+              btnReeval5.Click, btnReeval6.Click, btnReeval7.Click, btnReeval8.Click, btnReeval9.Click, btnReeval10.Click
 
         Dim button = DirectCast(sender, Button)
         If button.Tag Is Nothing OrElse Not (TypeOf button.Tag Is ClearanceWorkflowHelper.ClearanceItemInfo) Then
@@ -786,7 +817,7 @@ Public Class StudentClearanceForm
         sender As Object,
         e As EventArgs
     ) Handles btnViewReq1.Click, btnViewReq2.Click, btnViewReq3.Click, btnViewReq4.Click,
-              btnViewReq5.Click, btnViewReq6.Click, btnViewReq7.Click, btnViewReq8.Click, btnViewReq9.Click
+              btnViewReq5.Click, btnViewReq6.Click, btnViewReq7.Click, btnViewReq8.Click, btnViewReq9.Click, btnViewReq10.Click
 
         Dim button = DirectCast(sender, Button)
         If button.Tag Is Nothing OrElse Not (TypeOf button.Tag Is ClearanceWorkflowHelper.ClearanceItemInfo) Then
@@ -822,9 +853,10 @@ Public Class StudentClearanceForm
         Using modal As New ViewRequirementModalForm()
             modal.DepartmentName = item.DepartmentName
             modal.RequirementName = item.RequirementName
-            modal.SequenceOrder = item.SequenceOrder
+            modal.SequenceOrder = item.DisplayOrder
             modal.EffectiveStatus = item.EffectiveStatus
             modal.InstructionsText = item.Instructions
+            modal.StaffRemarks = item.Remarks
             modal.RequiresFile = item.RequiresFile
             modal.RequirementLink = item.RequirementLink
             modal.IsGuidanceOffice = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
@@ -865,9 +897,10 @@ Public Class StudentClearanceForm
         Using modal As New ViewRequirementModalForm()
             modal.DepartmentName = item.DepartmentName
             modal.RequirementName = item.RequirementName
-            modal.SequenceOrder = item.SequenceOrder
+            modal.SequenceOrder = item.DisplayOrder
             modal.EffectiveStatus = item.EffectiveStatus
             modal.InstructionsText = item.Instructions
+            modal.StaffRemarks = item.Remarks
             modal.RequiresFile = item.RequiresFile
             modal.RequirementLink = item.RequirementLink
             modal.IsGuidanceOffice = True
@@ -884,7 +917,24 @@ Public Class StudentClearanceForm
     ' ============================================================
     ' REQUEST RE-EVALUATION
     ' ============================================================
+    Private Sub RequestStudentAffairsClearance(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+        Dim message = If(item.DBStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase),
+            "Have you completed the instructions in the staff remarks? Request verification of your compliance?",
+            "Request clearance verification from the Office of Student Affairs? No office visit is required unless staff identify an unresolved concern.")
+        If MessageBox.Show(message, "Office of Student Affairs", MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then Return
+        Try
+            ClearanceWorkflowHelper.SubmitStudentAffairsRequest(item.RecordID, db)
+            LoadClearanceData()
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Request Not Submitted", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End Try
+    End Sub
+
     Private Sub RequestReevaluation(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+        If item.IsStudentAffairs Then
+            RequestStudentAffairsClearance(item)
+            Return
+        End If
 
         Dim msg As String =
             "Have you addressed the remarks and completed the requirements for " & item.DepartmentName & "?" & Environment.NewLine & Environment.NewLine &

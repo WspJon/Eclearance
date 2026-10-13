@@ -1,4 +1,4 @@
-Imports System.Data
+﻿Imports System.Data
 Imports System.Diagnostics
 Imports System.IO
 Imports MySql.Data.MySqlClient
@@ -11,6 +11,7 @@ Public Class ReviewClearanceForm
     Private currentDepartmentName As String = "Assigned Office"
     Private currentFilePath As String = ""
     Private currentStatus As String = "Pending"
+    Private _isStudentAffairs As Boolean = False
     Private _isGuidanceOffice As Boolean = False
     Private _requiresFile As Boolean = True
     Private _hasGuidanceInfo As Boolean = False
@@ -75,6 +76,9 @@ Public Class ReviewClearanceForm
 
     Private Sub LoadSubmissionDetails()
         Try
+            If Not AppSession.DepartmentID.HasValue OrElse Not ClearanceWorkflowHelper.HasStaffDepartmentAccess(AppSession.DepartmentID.Value, db) Then
+                Throw New UnauthorizedAccessException("Your staff assignment is not authorized to review this request.")
+            End If
             Dim query As String =
                 "SELECT " &
                 "  cr.RecordID, " &
@@ -155,6 +159,9 @@ Public Class ReviewClearanceForm
             Dim isGuidanceOffice As Boolean = (deptID = 6 OrElse deptName.ToLowerInvariant().Contains("guidance"))
             Dim isClinicOffice As Boolean = (deptID = 9 OrElse deptName.ToLowerInvariant().Contains("clinic"))
 
+            _isStudentAffairs = deptName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase)
+            pnlStudentAffairs.Visible = False
+            chkStudentAffairsVerified.Checked = False
             _isGuidanceOffice = isGuidanceOffice
             _isClinicOffice = isClinicOffice
             _requiresFile = requiresFile AndAlso Not isClinicOffice
@@ -203,7 +210,7 @@ Public Class ReviewClearanceForm
 
                 If dtGProfile.Rows.Count > 0 Then
                     Dim gRow = dtGProfile.Rows(0)
-                    _guidanceProfileID = Convert.ToInt32(gRow("ProfileID"))
+                    _guidanceProfileID = Convert.ToInt32(gRow("GuidanceProfileID"))
                     btnEditGuidance.Visible = True
                     Dim addressStr = If(IsDBNull(gRow("Address")), "", gRow("Address").ToString().Trim())
                     Dim contactStr = If(IsDBNull(gRow("ContactNo")), "", gRow("ContactNo").ToString().Trim())
@@ -246,6 +253,20 @@ Public Class ReviewClearanceForm
                     lblNoUpdateMessage.Text = "No Guidance information has been submitted for the current academic year (" & academicYear & ")." & vbCrLf & vbCrLf & "The student must complete or review/update their Guidance student information before this clearance can be approved."
                 End If
 
+            ElseIf _isStudentAffairs Then
+                pnlGuidanceInfo.Visible = False
+                pnlDocumentCard.Visible = False
+                pnlStudentAffairs.Visible = True
+                lblFileTitle.Visible = False
+                lblFileVal.Visible = False
+                lblStatusTitle.Visible = True
+                lblStatusVal.Visible = True
+                lblStatusVal.Text = currentStatus
+                ApplyStatusBadgeStyle(lblStatusVal, currentStatus)
+                lblStatusSubText.Text = "Verify the student record. Return unresolved concerns with clear instructions."
+                btnReject.Text = "Return for Compliance"
+                btnApprove.Enabled = False
+                btnReject.Enabled = currentStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase) AndAlso Not IsDBNull(row("SubmittedAt"))
             ElseIf isClinicOffice Then
                 pnlGuidanceInfo.Visible = False
                 pnlDocumentCard.Visible = False
@@ -685,6 +706,11 @@ Public Class ReviewClearanceForm
             Return
         End If
 
+        If _isStudentAffairs AndAlso Not chkStudentAffairsVerified.Checked Then
+            MessageBox.Show("Verify that there are no unresolved concerns before approval.", "Verification Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
         Dim remarks As String = txtRemarks.Text.Trim()
         Dim confirm = MessageBox.Show(
             "Are you sure you want to APPROVE and CLEAR this requirement for " & lblStudentNameVal.Text & "?",
@@ -733,7 +759,11 @@ Public Class ReviewClearanceForm
 
         If confirm <> DialogResult.Yes Then Return
 
-        UpdateClearanceStatus("Rejected", remarks, If(_isClinicOffice, "Returned for Completion", "Requirement Rejected"))
+        UpdateClearanceStatus("Rejected", remarks, If(_isStudentAffairs, "Returned for Compliance", If(_isClinicOffice, "Returned for Completion", "Requirement Rejected")))
+    End Sub
+
+    Private Sub chkStudentAffairsVerified_CheckedChanged(sender As Object, e As EventArgs) Handles chkStudentAffairsVerified.CheckedChanged
+        If _isStudentAffairs Then btnApprove.Enabled = chkStudentAffairsVerified.Checked AndAlso currentStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase)
     End Sub
 
     Private Sub UpdateClearanceStatus(newStatus As String, remarks As String, actionTypeName As String)
@@ -742,10 +772,28 @@ Public Class ReviewClearanceForm
             Return
         End If
 
+        If _isStudentAffairs AndAlso newStatus = "Cleared" AndAlso Not chkStudentAffairsVerified.Checked Then
+            MessageBox.Show("Verify that there are no unresolved concerns before approval.", "Verification Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+        If Not ClearanceWorkflowHelper.HasStaffDepartmentAccess(AppSession.DepartmentID.Value, db) Then
+            MessageBox.Show("Your staff assignment is no longer authorized.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
         If _isClinicOffice AndAlso Not HasClinicReviewAccess() Then
             MessageBox.Show("Clinic decisions are restricted to authorized Clinic personnel.", "Authorization Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
+
+        If newStatus = "Cleared" Then
+            Dim reason As String = ""
+            If Not ClearanceWorkflowHelper.CanStaffApproveRecord(TargetRecordID, db, reason) Then
+                MessageBox.Show(reason, "Approval Blocked", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+        End If
+        If newStatus = "Rejected" AndAlso String.IsNullOrWhiteSpace(remarks) Then Return
 
         Try
             Using conn As MySqlConnection = db.GetConnection()
@@ -760,6 +808,10 @@ Public Class ReviewClearanceForm
                             "    cr.ReviewedBy = @ReviewedBy, " &
                             "    cr.ReviewedAt = CURRENT_TIMESTAMP " &
                             "WHERE cr.RecordID = @RecordID AND r.DepartmentID = @DeptID " &
+                            "AND cr.Status = 'Under Review' AND cr.SubmittedAt IS NOT NULL " &
+                            "AND EXISTS (SELECT 1 FROM AcademicTerms t WHERE t.TermID = cr.TermID AND t.IsActive = 1) " &
+                            "AND EXISTS (SELECT 1 FROM Staff st INNER JOIN Users u ON u.UserID = st.UserID " &
+                            "WHERE st.UserID = @ReviewedBy AND st.DepartmentID = r.DepartmentID AND u.Role = 'Staff' AND u.IsActive = 1 AND st.IsActive = 1) " &
                             "AND (r.DepartmentID <> 9 OR EXISTS (SELECT 1 FROM Staff st INNER JOIN Users u ON st.UserID = u.UserID " &
                             "WHERE u.UserID = @ReviewedBy AND u.Role = 'Staff' AND u.IsActive = 1 AND st.DepartmentID = 9)) " &
                             "AND (@NewStatus <> 'Cleared' OR r.DepartmentID <> 9 OR EXISTS " &
@@ -797,7 +849,10 @@ Public Class ReviewClearanceForm
                             histCmd.Parameters.AddWithValue("@ActionType", actionTypeName)
                             histCmd.Parameters.AddWithValue("@OldStatus", currentStatus)
                             histCmd.Parameters.AddWithValue("@NewStatus", newStatus)
-                            histCmd.Parameters.AddWithValue("@Remarks", If(String.IsNullOrWhiteSpace(remarks), actionTypeName, remarks))
+                            Dim historyRemarks = If(_isStudentAffairs AndAlso newStatus = "Cleared",
+                                "Staff verified: no unresolved concerns. " & remarks,
+                                If(String.IsNullOrWhiteSpace(remarks), actionTypeName, remarks))
+                            histCmd.Parameters.AddWithValue("@Remarks", historyRemarks.Substring(0, Math.Min(500, historyRemarks.Length)))
                             histCmd.ExecuteNonQuery()
                         End Using
 
@@ -973,7 +1028,7 @@ Public Class ReviewClearanceForm
                 Return
             End If
 
-            Dim updateQuery = "UPDATE GuidanceStudentProfiles SET Address = @a, ContactNo = @c, Email = @e, CivilStatus = @cs, EmergencyContactName = @en, Relationship = @er, EmergencyContactNo = @ec, AdditionalNotes = @n, UpdatedAt = CURRENT_TIMESTAMP() WHERE ProfileID = @pid"
+            Dim updateQuery = "UPDATE GuidanceStudentProfiles SET Address = @a, ContactNo = @c, Email = @e, CivilStatus = @cs, EmergencyContactName = @en, Relationship = @er, EmergencyContactNo = @ec, AdditionalNotes = @n, UpdatedAt = CURRENT_TIMESTAMP() WHERE GuidanceProfileID = @pid"
             Dim p As New Dictionary(Of String, Object) From {
                 {"@a", txtAddress.Text.Trim()},
                 {"@c", txtContact.Text.Trim()},
@@ -989,7 +1044,7 @@ Public Class ReviewClearanceForm
             db.ExecuteNonQuery(updateQuery, p)
 
             Dim auditMsg = "Guidance staff edited: " & String.Join(", ", changedFields) & " (Sensitive values protected)."
-            Dim histQuery = "INSERT INTO ClearanceHistory (RecordID, ActionBy, Action, Remarks, ActionAt) VALUES (@r, @u, 'Updated Profile', @rm, CURRENT_TIMESTAMP())"
+            Dim histQuery = "INSERT INTO ClearanceHistory (RecordID, ActionBy, ActionType, Remarks, ActionAt) VALUES (@r, @u, 'Updated Profile', @rm, CURRENT_TIMESTAMP())"
             db.ExecuteNonQuery(histQuery, New Dictionary(Of String, Object) From {
                 {"@r", TargetRecordID},
                 {"@u", AppSession.UserID},
