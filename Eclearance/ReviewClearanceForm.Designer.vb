@@ -993,7 +993,7 @@ Partial Class ReviewClearanceForm
         pnlDocPreview.Controls.Add(pnlPdfFallback)
         pnlDocPreview.Location = New Point(14, 50)
         pnlDocPreview.Name = "pnlDocPreview"
-        pnlDocPreview.Size = New Size(670, 350)
+        pnlDocPreview.Size = New Size(670, 238)
         pnlDocPreview.TabIndex = 5
         ' 
         ' picPreview
@@ -1002,7 +1002,7 @@ Partial Class ReviewClearanceForm
         picPreview.Dock = DockStyle.Fill
         picPreview.Location = New Point(0, 0)
         picPreview.Name = "picPreview"
-        picPreview.Size = New Size(668, 348)
+        picPreview.Size = New Size(668, 236)
         picPreview.SizeMode = PictureBoxSizeMode.Zoom
         picPreview.TabIndex = 0
         picPreview.TabStop = False
@@ -1015,7 +1015,7 @@ Partial Class ReviewClearanceForm
         pnlPdfFallback.Controls.Add(lblPdfPrompt)
         pnlPdfFallback.Controls.Add(lblPdfSub)
         pnlPdfFallback.Controls.Add(btnOpenPdfCenter)
-        pnlPdfFallback.Location = New Point(174, 55)
+        pnlPdfFallback.Location = New Point(174, 3)
         pnlPdfFallback.Name = "pnlPdfFallback"
         pnlPdfFallback.Size = New Size(320, 230)
         pnlPdfFallback.TabIndex = 1
