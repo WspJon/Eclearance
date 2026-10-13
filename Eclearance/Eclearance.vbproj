@@ -59,9 +59,7 @@
 		</Compile>
 
 
-		<Compile Update="StudentClearanceForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="StudentClearanceForm.vb" />
 
 		<Compile Update="StudentClearanceForm.Designer.vb">
 			<DependentUpon>StudentClearanceForm.vb</DependentUpon>

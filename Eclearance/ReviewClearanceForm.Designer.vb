@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class ReviewClearanceForm
     Inherits System.Windows.Forms.Form
 
@@ -17,6 +17,7 @@ Partial Class ReviewClearanceForm
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As New System.ComponentModel.ComponentResourceManager(GetType(ReviewClearanceForm))
         Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlContentViewport = New Panel()
@@ -45,6 +46,22 @@ Partial Class ReviewClearanceForm
         lblStaffName = New Label()
         lblStaffRole = New Label()
         lblDateTimeBadge = New Label()
+        pnlPrerequisiteAccent = New Panel()
+        picPrerequisiteStatus = New PictureBox()
+        lblPrerequisiteApprovedBy = New Label()
+        lblPrerequisiteApproverName = New Label()
+        lblPrerequisiteDateCaption = New Label()
+        lblPrerequisiteApprovalDate = New Label()
+        pnlPrerequisiteApproval = New Panel()
+        lblPrerequisiteApprovalTitle = New Label()
+        lblPrerequisiteApprovalDetails = New Label()
+        pnlSequentialReview = New Panel()
+        lblSequentialReviewTitle = New Label()
+        lblSequentialReviewInstructions = New Label()
+        pnlFinanceVerification = New Panel()
+        lblFinanceVerificationTitle = New Label()
+        lblFinanceVerificationInstructions = New Label()
+        chkFinanceVerified = New CheckBox()
         pnlStudentAffairs = New Panel()
         lblStudentAffairsTitle = New Label()
         lblStudentAffairsInstructions = New Label()
@@ -204,8 +221,8 @@ Partial Class ReviewClearanceForm
         ' 
         pnlCard.BackColor = Color.FromArgb(CByte(244), CByte(247), CByte(251))
         pnlCard.BorderStyle = BorderStyle.FixedSingle
-        pnlCard.Controls.Add(btnMinimize)
-        pnlCard.Controls.Add(btnClose)
+
+
         pnlCard.Controls.Add(lblHeaderTitle)
         pnlCard.Controls.Add(lblHeaderSub)
         pnlCard.Controls.Add(pnlOfficeBadge)
@@ -213,10 +230,10 @@ Partial Class ReviewClearanceForm
         pnlCard.Controls.Add(lblDateTimeBadge)
         pnlCard.Controls.Add(pnlLeftSection)
         pnlCard.Controls.Add(pnlRightSection)
-        pnlCard.Dock = DockStyle.Fill
+        pnlCard.Dock = DockStyle.None
         pnlCard.Location = New Point(0, 0)
         pnlCard.Name = "pnlCard"
-        pnlCard.Size = New Size(1140, 720)
+        pnlCard.Size = New Size(1140, 748)
         pnlCard.TabIndex = 0
         ' 
         ' btnMinimize
@@ -370,40 +387,41 @@ Partial Class ReviewClearanceForm
         pnlOfficeBadge.Controls.Add(lblOfficeSub)
         pnlOfficeBadge.Location = New Point(550, 14)
         pnlOfficeBadge.Name = "pnlOfficeBadge"
-        pnlOfficeBadge.Size = New Size(210, 55)
+        pnlOfficeBadge.Size = New Size(260, 62)
         pnlOfficeBadge.TabIndex = 3
         ' 
         ' lblOfficeIcon
         ' 
-        lblOfficeIcon.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
+        lblOfficeIcon.Font = New Font("Segoe UI Emoji", 14.0F)
         lblOfficeIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
-        lblOfficeIcon.Location = New Point(7, 13)
+        lblOfficeIcon.Location = New Point(8, 12)
         lblOfficeIcon.Name = "lblOfficeIcon"
-        lblOfficeIcon.Size = New Size(28, 28)
+        lblOfficeIcon.Size = New Size(32, 34)
         lblOfficeIcon.TabIndex = 0
-        lblOfficeIcon.Text = "O"
+        lblOfficeIcon.Text = "🏛"
         lblOfficeIcon.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' lblOfficeName
         ' 
         lblOfficeName.AutoEllipsis = True
-        lblOfficeName.Font = New Font("Segoe UI Semibold", 7.5F, FontStyle.Bold)
+        lblOfficeName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         lblOfficeName.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
-        lblOfficeName.Location = New Point(32, 7)
+        lblOfficeName.Location = New Point(44, 8)
         lblOfficeName.Name = "lblOfficeName"
-        lblOfficeName.Size = New Size(174, 32)
+        lblOfficeName.Size = New Size(204, 28)
+        lblOfficeName.TextAlign = ContentAlignment.MiddleLeft
         lblOfficeName.TabIndex = 1
         lblOfficeName.Text = "Guidance Office"
         ' 
         ' lblOfficeSub
         ' 
-        lblOfficeSub.Font = New Font("Segoe UI", 6.8F)
+        lblOfficeSub.Font = New Font("Segoe UI", 7.5F)
         lblOfficeSub.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblOfficeSub.Location = New Point(30, 39)
+        lblOfficeSub.Location = New Point(44, 36)
         lblOfficeSub.Name = "lblOfficeSub"
-        lblOfficeSub.Size = New Size(92, 18)
+        lblOfficeSub.Size = New Size(204, 18)
         lblOfficeSub.TabIndex = 2
-        lblOfficeSub.Text = "Clearing Office"
+        lblOfficeSub.Text = "Assigned Office"
         ' 
         ' pnlStaffBadge
         ' 
@@ -413,60 +431,186 @@ Partial Class ReviewClearanceForm
         pnlStaffBadge.Controls.Add(lblStaffIcon)
         pnlStaffBadge.Controls.Add(lblStaffName)
         pnlStaffBadge.Controls.Add(lblStaffRole)
-        pnlStaffBadge.Location = New Point(768, 14)
+        pnlStaffBadge.Location = New Point(822, 14)
         pnlStaffBadge.Name = "pnlStaffBadge"
-        pnlStaffBadge.Size = New Size(145, 55)
+        pnlStaffBadge.Size = New Size(210, 62)
         pnlStaffBadge.TabIndex = 4
         ' 
         ' lblStaffIcon
         ' 
-        lblStaffIcon.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
+        lblStaffIcon.Font = New Font("Segoe UI Emoji", 14.0F)
         lblStaffIcon.ForeColor = Color.FromArgb(CByte(37), CByte(99), CByte(235))
-        lblStaffIcon.Location = New Point(7, 13)
+        lblStaffIcon.Location = New Point(8, 12)
         lblStaffIcon.Name = "lblStaffIcon"
-        lblStaffIcon.Size = New Size(28, 28)
+        lblStaffIcon.Size = New Size(32, 34)
         lblStaffIcon.TabIndex = 0
-        lblStaffIcon.Text = "S"
+        lblStaffIcon.Text = "👤"
         lblStaffIcon.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' lblStaffName
         ' 
         lblStaffName.AutoEllipsis = True
-        lblStaffName.Font = New Font("Segoe UI Semibold", 7.5F, FontStyle.Bold)
+        lblStaffName.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
         lblStaffName.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
-        lblStaffName.Location = New Point(40, 7)
+        lblStaffName.Location = New Point(44, 8)
         lblStaffName.Name = "lblStaffName"
-        lblStaffName.Size = New Size(98, 19)
+        lblStaffName.Size = New Size(154, 28)
+        lblStaffName.TextAlign = ContentAlignment.MiddleLeft
         lblStaffName.TabIndex = 1
         lblStaffName.Text = "Staff Member"
         ' 
         ' lblStaffRole
         ' 
-        lblStaffRole.Font = New Font("Segoe UI", 6.8F)
+        lblStaffRole.Font = New Font("Segoe UI", 7.5F)
         lblStaffRole.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblStaffRole.Location = New Point(40, 28)
+        lblStaffRole.Location = New Point(44, 36)
         lblStaffRole.Name = "lblStaffRole"
-        lblStaffRole.Size = New Size(98, 18)
+        lblStaffRole.Size = New Size(154, 18)
         lblStaffRole.TabIndex = 2
         lblStaffRole.Text = "Clearing Officer"
         ' 
         ' lblDateTimeBadge
         ' 
-        lblDateTimeBadge.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        lblDateTimeBadge.Anchor = AnchorStyles.Top Or AnchorStyles.Left
         lblDateTimeBadge.Font = New Font("Segoe UI", 7.0F)
         lblDateTimeBadge.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
-        lblDateTimeBadge.Location = New Point(920, 14)
+        lblDateTimeBadge.Location = New Point(22, 78)
         lblDateTimeBadge.Name = "lblDateTimeBadge"
-        lblDateTimeBadge.Size = New Size(155, 55)
+        lblDateTimeBadge.Size = New Size(490, 22)
         lblDateTimeBadge.TabIndex = 5
         lblDateTimeBadge.Text = "Today"
-        lblDateTimeBadge.TextAlign = ContentAlignment.MiddleRight        ' Office of Student Affairs verification controls remain editable in Designer.
+        lblDateTimeBadge.TextAlign = ContentAlignment.MiddleLeft        ' Office of Student Affairs verification controls remain editable in Designer.
+        pnlPrerequisiteAccent.Dock = DockStyle.Left
+        pnlPrerequisiteAccent.BackColor = Color.FromArgb(37, 99, 235)
+        pnlPrerequisiteAccent.Size = New Size(5, 98)
+        pnlPrerequisiteAccent.Name = "pnlPrerequisiteAccent"
+        picPrerequisiteStatus.Location = New Point(20, 18)
+        picPrerequisiteStatus.Size = New Size(64, 64)
+        picPrerequisiteStatus.SizeMode = PictureBoxSizeMode.Zoom
+        picPrerequisiteStatus.Image = CType(resources.GetObject("PrerequisiteInfoIcon"), Image)
+        picPrerequisiteStatus.Name = "picPrerequisiteStatus"
+        picPrerequisiteStatus.TabStop = False
+        lblPrerequisiteApprovedBy.Location = New Point(100, 45)
+        lblPrerequisiteApprovedBy.Size = New Size(90, 20)
+        lblPrerequisiteApprovedBy.Font = New Font("Segoe UI", 9.5F)
+        lblPrerequisiteApprovedBy.ForeColor = Color.FromArgb(100, 116, 139)
+        lblPrerequisiteApprovedBy.Text = "Approved by:"
+        lblPrerequisiteApprovedBy.Name = "lblPrerequisiteApprovedBy"
+        lblPrerequisiteApprovedBy.Visible = False
+        lblPrerequisiteApproverName.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblPrerequisiteApproverName.Location = New Point(195, 45)
+        lblPrerequisiteApproverName.Size = New Size(480, 20)
+        lblPrerequisiteApproverName.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
+        lblPrerequisiteApproverName.ForeColor = Color.FromArgb(15, 23, 42)
+        lblPrerequisiteApproverName.AutoEllipsis = True
+        lblPrerequisiteApproverName.Name = "lblPrerequisiteApproverName"
+        lblPrerequisiteApproverName.Visible = False
+        lblPrerequisiteDateCaption.Location = New Point(100, 69)
+        lblPrerequisiteDateCaption.Size = New Size(90, 20)
+        lblPrerequisiteDateCaption.Font = New Font("Segoe UI", 9.5F)
+        lblPrerequisiteDateCaption.ForeColor = Color.FromArgb(100, 116, 139)
+        lblPrerequisiteDateCaption.Text = "Date:"
+        lblPrerequisiteDateCaption.Name = "lblPrerequisiteDateCaption"
+        lblPrerequisiteDateCaption.Visible = False
+        lblPrerequisiteApprovalDate.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblPrerequisiteApprovalDate.Location = New Point(195, 69)
+        lblPrerequisiteApprovalDate.Size = New Size(480, 20)
+        lblPrerequisiteApprovalDate.Font = New Font("Segoe UI", 9.5F)
+        lblPrerequisiteApprovalDate.ForeColor = Color.FromArgb(15, 23, 42)
+        lblPrerequisiteApprovalDate.Name = "lblPrerequisiteApprovalDate"
+        lblPrerequisiteApprovalDate.Visible = False
+        pnlPrerequisiteApproval.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlPrerequisiteApproval.AutoScroll = True
+        pnlPrerequisiteApproval.BackColor = Color.FromArgb(239, 246, 255)
+        pnlPrerequisiteApproval.BorderStyle = BorderStyle.FixedSingle
+        pnlPrerequisiteApproval.Location = New Point(0, 202)
+        pnlPrerequisiteApproval.Size = New Size(700, 100)
+        pnlPrerequisiteApproval.Name = "pnlPrerequisiteApproval"
+        pnlPrerequisiteApproval.Controls.Add(pnlPrerequisiteAccent)
+        pnlPrerequisiteApproval.Controls.Add(picPrerequisiteStatus)
+        pnlPrerequisiteApproval.Controls.Add(lblPrerequisiteApprovedBy)
+        pnlPrerequisiteApproval.Controls.Add(lblPrerequisiteApproverName)
+        pnlPrerequisiteApproval.Controls.Add(lblPrerequisiteDateCaption)
+        pnlPrerequisiteApproval.Controls.Add(lblPrerequisiteApprovalDate)
+        pnlPrerequisiteApproval.Controls.Add(lblPrerequisiteApprovalTitle)
+        pnlPrerequisiteApproval.Controls.Add(lblPrerequisiteApprovalDetails)
+        lblPrerequisiteApprovalTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblPrerequisiteApprovalTitle.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
+        lblPrerequisiteApprovalTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblPrerequisiteApprovalTitle.Location = New Point(100, 9)
+        lblPrerequisiteApprovalTitle.Size = New Size(575, 30)
+        lblPrerequisiteApprovalTitle.Name = "lblPrerequisiteApprovalTitle"
+        lblPrerequisiteApprovalTitle.Text = "Prerequisite approvals"
+        lblPrerequisiteApprovalDetails.AutoSize = True
+        lblPrerequisiteApprovalDetails.MaximumSize = New Size(565, 0)
+        lblPrerequisiteApprovalDetails.Font = New Font("Segoe UI", 9F)
+        lblPrerequisiteApprovalDetails.ForeColor = Color.FromArgb(71, 85, 105)
+        lblPrerequisiteApprovalDetails.Location = New Point(100, 44)
+        lblPrerequisiteApprovalDetails.Size = New Size(650, 32)
+        lblPrerequisiteApprovalDetails.Name = "lblPrerequisiteApprovalDetails"
+        lblPrerequisiteApprovalDetails.Text = "Office approval details"
+        pnlSequentialReview.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlSequentialReview.BackColor = Color.White
+        pnlSequentialReview.BorderStyle = BorderStyle.FixedSingle
+        pnlSequentialReview.Location = New Point(0, 314)
+        pnlSequentialReview.Size = New Size(700, 140)
+        pnlSequentialReview.Name = "pnlSequentialReview"
+        pnlSequentialReview.Visible = False
+        pnlSequentialReview.Controls.Add(lblSequentialReviewTitle)
+        pnlSequentialReview.Controls.Add(lblSequentialReviewInstructions)
+        lblSequentialReviewTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblSequentialReviewTitle.Font = New Font("Segoe UI", 13F, FontStyle.Bold)
+        lblSequentialReviewTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblSequentialReviewTitle.Location = New Point(24, 22)
+        lblSequentialReviewTitle.Size = New Size(650, 30)
+        lblSequentialReviewTitle.Name = "lblSequentialReviewTitle"
+        lblSequentialReviewTitle.Text = "Clearance Review"
+        lblSequentialReviewInstructions.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblSequentialReviewInstructions.Font = New Font("Segoe UI", 10F)
+        lblSequentialReviewInstructions.ForeColor = Color.FromArgb(71, 85, 105)
+        lblSequentialReviewInstructions.Location = New Point(24, 62)
+        lblSequentialReviewInstructions.Size = New Size(650, 46)
+        lblSequentialReviewInstructions.Name = "lblSequentialReviewInstructions"
+        lblSequentialReviewInstructions.Text = "Review the submitted request after the preceding office has approved clearance."
+        pnlFinanceVerification.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlFinanceVerification.BackColor = Color.White
+        pnlFinanceVerification.BorderStyle = BorderStyle.FixedSingle
+        pnlFinanceVerification.Location = New Point(0, 314)
+        pnlFinanceVerification.Size = New Size(700, 190)
+        pnlFinanceVerification.Name = "pnlFinanceVerification"
+        pnlFinanceVerification.Visible = False
+        pnlFinanceVerification.Controls.Add(lblFinanceVerificationTitle)
+        pnlFinanceVerification.Controls.Add(lblFinanceVerificationInstructions)
+        pnlFinanceVerification.Controls.Add(chkFinanceVerified)
+        lblFinanceVerificationTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblFinanceVerificationTitle.Font = New Font("Segoe UI", 13F, FontStyle.Bold)
+        lblFinanceVerificationTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblFinanceVerificationTitle.Location = New Point(24, 22)
+        lblFinanceVerificationTitle.Size = New Size(650, 30)
+        lblFinanceVerificationTitle.Name = "lblFinanceVerificationTitle"
+        lblFinanceVerificationTitle.Text = "Finance Payment Verification"
+        lblFinanceVerificationInstructions.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblFinanceVerificationInstructions.Font = New Font("Segoe UI", 10F)
+        lblFinanceVerificationInstructions.ForeColor = Color.FromArgb(71, 85, 105)
+        lblFinanceVerificationInstructions.Location = New Point(24, 62)
+        lblFinanceVerificationInstructions.Size = New Size(650, 46)
+        lblFinanceVerificationInstructions.Name = "lblFinanceVerificationInstructions"
+        lblFinanceVerificationInstructions.Text = "Verify the student's payment status. Approve if fully paid; otherwise, return with remarks."
+        chkFinanceVerified.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        chkFinanceVerified.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
+        chkFinanceVerified.ForeColor = Color.FromArgb(15, 23, 42)
+        chkFinanceVerified.Location = New Point(24, 124)
+        chkFinanceVerified.Size = New Size(650, 40)
+        chkFinanceVerified.Name = "chkFinanceVerified"
+        chkFinanceVerified.Text = "Payment verified. No outstanding balance."
+        chkFinanceVerified.TabIndex = 0
+        chkFinanceVerified.UseVisualStyleBackColor = True
         pnlStudentAffairs.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         pnlStudentAffairs.BackColor = Color.White
         pnlStudentAffairs.BorderStyle = BorderStyle.FixedSingle
-        pnlStudentAffairs.Location = New Point(0, 202)
+        pnlStudentAffairs.Location = New Point(0, 314)
         pnlStudentAffairs.Name = "pnlStudentAffairs"
-        pnlStudentAffairs.Size = New Size(700, 416)
+        pnlStudentAffairs.Size = New Size(700, 304)
         pnlStudentAffairs.Visible = False
         pnlStudentAffairs.Controls.Add(lblStudentAffairsTitle)
         pnlStudentAffairs.Controls.Add(lblStudentAffairsInstructions)
@@ -496,12 +640,15 @@ Partial Class ReviewClearanceForm
         ' pnlLeftSection
         ' 
         pnlLeftSection.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlLeftSection.Controls.Add(pnlPrerequisiteApproval)
+        pnlLeftSection.Controls.Add(pnlSequentialReview)
+        pnlLeftSection.Controls.Add(pnlFinanceVerification)
         pnlLeftSection.Controls.Add(pnlStudentAffairs)
         pnlLeftSection.Controls.Add(pnlStudentInfoCard)
         pnlLeftSection.Controls.Add(pnlDocumentCard)
         pnlLeftSection.Controls.Add(pnlGuidanceInfo)
         pnlLeftSection.Controls.Add(pnlClinicInfo)
-        pnlLeftSection.Location = New Point(20, 82)
+        pnlLeftSection.Location = New Point(20, 110)
         pnlLeftSection.Name = "pnlLeftSection"
         pnlLeftSection.Size = New Size(700, 618)
         pnlLeftSection.TabIndex = 6
@@ -770,9 +917,9 @@ Partial Class ReviewClearanceForm
         pnlDocumentCard.Controls.Add(lblDocTitle)
         pnlDocumentCard.Controls.Add(lblDocIcon)
         pnlDocumentCard.Controls.Add(pnlDocPreview)
-        pnlDocumentCard.Location = New Point(0, 202)
+        pnlDocumentCard.Location = New Point(0, 314)
         pnlDocumentCard.Name = "pnlDocumentCard"
-        pnlDocumentCard.Size = New Size(700, 416)
+        pnlDocumentCard.Size = New Size(700, 304)
         pnlDocumentCard.TabIndex = 1
         ' 
         ' cmbSubmittedFiles
@@ -929,9 +1076,9 @@ Partial Class ReviewClearanceForm
         pnlGuidanceInfo.BorderStyle = BorderStyle.FixedSingle
         pnlGuidanceInfo.Controls.Add(pnlGuidanceBody)
         pnlGuidanceInfo.Controls.Add(pnlGuidanceHeader)
-        pnlGuidanceInfo.Location = New Point(0, 202)
+        pnlGuidanceInfo.Location = New Point(0, 314)
         pnlGuidanceInfo.Name = "pnlGuidanceInfo"
-        pnlGuidanceInfo.Size = New Size(700, 416)
+        pnlGuidanceInfo.Size = New Size(700, 304)
         pnlGuidanceInfo.TabIndex = 2
         pnlGuidanceInfo.Visible = False
         ' 
@@ -1326,9 +1473,9 @@ Partial Class ReviewClearanceForm
         pnlClinicInfo.BorderStyle = BorderStyle.FixedSingle
         pnlClinicInfo.Controls.Add(pnlClinicBody)
         pnlClinicInfo.Controls.Add(pnlClinicHeader)
-        pnlClinicInfo.Location = New Point(0, 202)
+        pnlClinicInfo.Location = New Point(0, 314)
         pnlClinicInfo.Name = "pnlClinicInfo"
-        pnlClinicInfo.Size = New Size(700, 416)
+        pnlClinicInfo.Size = New Size(700, 304)
         pnlClinicInfo.TabIndex = 3
         pnlClinicInfo.Visible = False
         ' 
@@ -1717,7 +1864,7 @@ Partial Class ReviewClearanceForm
         pnlRightSection.Controls.Add(pnlCurrentStatusCard)
         pnlRightSection.Controls.Add(pnlDecisionCard)
         pnlRightSection.Controls.Add(pnlTimelineCard)
-        pnlRightSection.Location = New Point(738, 82)
+        pnlRightSection.Location = New Point(738, 110)
         pnlRightSection.Name = "pnlRightSection"
         pnlRightSection.Size = New Size(382, 618)
         pnlRightSection.TabIndex = 7
@@ -1777,7 +1924,7 @@ Partial Class ReviewClearanceForm
         lblStatusSubText.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblStatusSubText.Location = New Point(56, 62)
         lblStatusSubText.Name = "lblStatusSubText"
-        lblStatusSubText.Size = New Size(310, 22)
+        lblStatusSubText.Size = New Size(310, 34)
         lblStatusSubText.TabIndex = 3
         lblStatusSubText.Text = "This submission is waiting for your evaluation."
         ' 
@@ -2002,18 +2149,20 @@ Partial Class ReviewClearanceForm
         ' 
         AutoScaleMode = AutoScaleMode.None
         BackColor = Color.White
-        ClientSize = New Size(1140, 720)
+        ClientSize = New Size(1140, 748)
         pnlContentViewport.AutoScroll = True
         pnlContentViewport.Dock = DockStyle.Fill
         pnlContentViewport.Name = "pnlContentViewport"
-        pnlContentViewport.Size = New Size(1140, 720)
+        pnlContentViewport.Size = New Size(1140, 748)
         pnlContentViewport.Controls.Add(pnlCard)
+        Controls.Add(btnClose)
+        Controls.Add(btnMinimize)
         Controls.Add(pnlContentViewport)
         Font = New Font("Segoe UI", 9.0F)
         FormBorderStyle = FormBorderStyle.None
         MaximizeBox = False
         MinimizeBox = False
-        MinimumSize = New Size(1000, 650)
+        MinimumSize = New Size(640, 480)
         Name = "ReviewClearanceForm"
         ShowInTaskbar = False
         StartPosition = FormStartPosition.CenterParent
@@ -2060,7 +2209,7 @@ Partial Class ReviewClearanceForm
         ResumeLayout(False)
 
         PerformLayout()
-        pnlContentViewport.AutoScrollMinSize = New Size(1140, 720)
+        pnlContentViewport.AutoScrollMinSize = New Size(1140, 748)
     End Sub
 
     Friend WithEvents pnlCard As Panel
@@ -2272,4 +2421,20 @@ Partial Class ReviewClearanceForm
     Friend WithEvents lblStudentAffairsInstructions As Label
     Friend WithEvents chkStudentAffairsVerified As CheckBox
     Friend WithEvents pnlContentViewport As Panel
+    Friend WithEvents pnlFinanceVerification As Panel
+    Friend WithEvents lblFinanceVerificationTitle As Label
+    Friend WithEvents lblFinanceVerificationInstructions As Label
+    Friend WithEvents chkFinanceVerified As CheckBox
+    Friend WithEvents pnlSequentialReview As Panel
+    Friend WithEvents lblSequentialReviewTitle As Label
+    Friend WithEvents lblSequentialReviewInstructions As Label
+    Friend WithEvents pnlPrerequisiteApproval As Panel
+    Friend WithEvents lblPrerequisiteApprovalTitle As Label
+    Friend WithEvents lblPrerequisiteApprovalDetails As Label
+    Friend WithEvents pnlPrerequisiteAccent As Panel
+    Friend WithEvents picPrerequisiteStatus As PictureBox
+    Friend WithEvents lblPrerequisiteApprovedBy As Label
+    Friend WithEvents lblPrerequisiteApproverName As Label
+    Friend WithEvents lblPrerequisiteDateCaption As Label
+    Friend WithEvents lblPrerequisiteApprovalDate As Label
 End Class

@@ -86,7 +86,7 @@ Public Class StaffRequestsForm
 
         lblOfficeName.Text = currentDepartmentName
         lblMyOfficeTitle.Text = currentDepartmentName
-        Dim needsIndividualReview = currentDepartmentName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase)
+        Dim needsIndividualReview = (currentDepartmentName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase) OrElse currentDepartmentName.Equals("Finance Office", StringComparison.OrdinalIgnoreCase))
         btnApproveSelected.Visible = Not needsIndividualReview
         colSelect.Visible = Not needsIndividualReview
     End Sub
@@ -471,6 +471,7 @@ Public Class StaffRequestsForm
 
             Using reviewForm As New ReviewClearanceForm()
                 reviewForm.TargetRecordID = recordID
+                reviewForm.PrepareForDisplay(modalBackdrop)
                 reviewForm.ShowDialog(modalBackdrop)
             End Using
 
@@ -688,10 +689,10 @@ Public Class StaffRequestsForm
                     Dim individualReview = Convert.ToInt32(db.ExecuteScalar(
                         "SELECT COUNT(*) FROM ClearanceRecords cr INNER JOIN ClearanceRequirements r ON r.RequirementID = cr.RequirementID " &
                         "INNER JOIN Departments d ON d.DepartmentID = r.DepartmentID " &
-                        "WHERE cr.RecordID = @RecordID AND d.DepartmentName = 'Office of Student Affairs';",
+                        "WHERE cr.RecordID = @RecordID AND d.DepartmentName IN ('Office of Student Affairs', 'Finance Office');",
                         New Dictionary(Of String, Object) From {{"@RecordID", recID}})) > 0
                     If individualReview Then
-                        MessageBox.Show("Office of Student Affairs requests require individual record verification in the review form.", "Individual Review Required", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        MessageBox.Show("This office requires individual verification in the review form.", "Individual Review Required", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         Continue For
                     End If
                     Dim blocker As String = ""
@@ -708,7 +709,9 @@ Public Class StaffRequestsForm
                         Dim year = r("YearLevel").ToString()
                         Dim oldStatus = r("Status").ToString()
 
-                        db.ExecuteNonQuery("UPDATE ClearanceRecords SET Status = 'Cleared' WHERE RecordID = " & recID)
+                        Dim changed = db.ExecuteNonQuery("UPDATE ClearanceRecords SET Status = 'Cleared' WHERE RecordID = @RecordID AND Status = 'Under Review' AND SubmittedAt IS NOT NULL;",
+                            New Dictionary(Of String, Object) From {{"@RecordID", recID}})
+                        If changed = 0 Then Continue For
                         db.ExecuteNonQuery("INSERT INTO ClearanceHistory (RecordID, ActionBy, ActionType, OldStatus, NewStatus, Remarks) VALUES (" & recID & ", " & AppSession.UserID & ", 'Approved (Batch)', '" & oldStatus & "', 'Cleared', 'Batch Approved by Staff')")
                         ClearanceWorkflowHelper.UnlockNextStepsInDatabase(sID, tID, course, year, db, Nothing, Nothing, recID, "Cleared")
                         approvedCount += 1

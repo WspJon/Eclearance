@@ -1,4 +1,4 @@
-﻿Imports System.Data
+Imports System.Data
 Imports System.Diagnostics
 Imports System.IO
 Imports MySql.Data.MySqlClient
@@ -8,10 +8,13 @@ Public Class ReviewClearanceForm
     Public Property TargetRecordID As Integer = 0
 
     Private ReadOnly db As New DatabaseHelper()
+    Private ReadOnly approvalResources As New System.ComponentModel.ComponentResourceManager(GetType(ReviewClearanceForm))
     Private currentDepartmentName As String = "Assigned Office"
     Private currentFilePath As String = ""
     Private currentStatus As String = "Pending"
     Private _isStudentAffairs As Boolean = False
+    Private _isFinance As Boolean = False
+    Private _isOfficeVerification As Boolean = False
     Private _isGuidanceOffice As Boolean = False
     Private _requiresFile As Boolean = True
     Private _hasGuidanceInfo As Boolean = False
@@ -28,6 +31,31 @@ Public Class ReviewClearanceForm
     Private _clinicStudentID As Integer = 0
     Private _clinicAttachedFilePath As String = ""
     Private _clinicAcademicYear As String = ""
+
+    Public Sub PrepareForDisplay(host As Form)
+        Dim workArea As Rectangle = Screen.FromControl(host).WorkingArea
+        Dim available As Rectangle = Rectangle.Inflate(workArea, -12, -12)
+        Dim windowSize As New Size(Math.Min(1140, available.Width), Math.Min(748, available.Height))
+        ' Keep the window on its owner's monitor; the Designer viewport handles smaller screens.
+        MinimumSize = New Size(Math.Min(640, windowSize.Width), Math.Min(480, windowSize.Height))
+        StartPosition = FormStartPosition.Manual
+        Size = windowSize
+        Dim center As Point = New Point(host.Left + host.Width \ 2, host.Top + host.Height \ 2)
+        Location = New Point(
+            Math.Max(available.Left, Math.Min(center.X - Width \ 2, available.Right - Width)),
+            Math.Max(available.Top, Math.Min(center.Y - Height \ 2, available.Bottom - Height)))
+    End Sub
+
+    Private Sub ReviewClearanceForm_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        ' Initial focus must not scroll the title out of view on a narrow display.
+        ActiveControl = btnClose
+        pnlContentViewport.AutoScrollPosition = Point.Empty
+        BeginInvoke(New Action(Sub()
+                                   If IsDisposed Then Return
+                                   ActiveControl = btnClose
+                                   pnlContentViewport.AutoScrollPosition = Point.Empty
+                               End Sub))
+    End Sub
 
     Private Sub ReviewClearanceForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Not AppSession.Role.Equals("Staff", StringComparison.OrdinalIgnoreCase) OrElse Not AppSession.DepartmentID.HasValue Then
@@ -160,7 +188,12 @@ Public Class ReviewClearanceForm
             Dim isClinicOffice As Boolean = (deptID = 9 OrElse deptName.ToLowerInvariant().Contains("clinic"))
 
             _isStudentAffairs = deptName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase)
+            _isFinance = deptName.Equals("Finance Office", StringComparison.OrdinalIgnoreCase)
+            _isOfficeVerification = _isStudentAffairs OrElse _isFinance
             pnlStudentAffairs.Visible = False
+            pnlFinanceVerification.Visible = False
+            pnlSequentialReview.Visible = False
+            chkFinanceVerified.Checked = False
             chkStudentAffairsVerified.Checked = False
             _isGuidanceOffice = isGuidanceOffice
             _isClinicOffice = isClinicOffice
@@ -253,20 +286,40 @@ Public Class ReviewClearanceForm
                     lblNoUpdateMessage.Text = "No Guidance information has been submitted for the current academic year (" & academicYear & ")." & vbCrLf & vbCrLf & "The student must complete or review/update their Guidance student information before this clearance can be approved."
                 End If
 
-            ElseIf _isStudentAffairs Then
+            ElseIf _isOfficeVerification Then
                 pnlGuidanceInfo.Visible = False
                 pnlDocumentCard.Visible = False
-                pnlStudentAffairs.Visible = True
+                pnlStudentAffairs.Visible = Not _isFinance
+                pnlFinanceVerification.Visible = _isFinance
                 lblFileTitle.Visible = False
                 lblFileVal.Visible = False
                 lblStatusTitle.Visible = True
                 lblStatusVal.Visible = True
                 lblStatusVal.Text = currentStatus
                 ApplyStatusBadgeStyle(lblStatusVal, currentStatus)
-                lblStatusSubText.Text = "Verify the student record. Return unresolved concerns with clear instructions."
+                lblStatusSubText.Text = If(_isFinance, "Verify payment status before approval. Return unpaid balances with remarks.", "Verify the student record. Return unresolved concerns with clear instructions.")
                 btnReject.Text = "Return for Compliance"
                 btnApprove.Enabled = False
                 btnReject.Enabled = currentStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase) AndAlso Not IsDBNull(row("SubmittedAt"))
+            ElseIf Not requiresFile AndAlso (deptName.Equals("Registrar", StringComparison.OrdinalIgnoreCase) OrElse deptName.Equals("OAA", StringComparison.OrdinalIgnoreCase)) Then
+                pnlGuidanceInfo.Visible = False
+                pnlDocumentCard.Visible = False
+                pnlSequentialReview.Visible = True
+                lblSequentialReviewTitle.Text = deptName & " Clearance Review"
+                lblSequentialReviewInstructions.Text = If(deptName.Equals("Registrar", StringComparison.OrdinalIgnoreCase),
+                    "Registrar staff will review your clearance after Finance approval.",
+                    "OAA staff will review your clearance after Registrar approval.")
+                lblStatusSubText.Text = lblSequentialReviewInstructions.Text
+                lblFileTitle.Visible = False
+                lblFileVal.Visible = False
+                lblStatusTitle.Visible = True
+                lblStatusVal.Visible = True
+                lblStatusVal.Text = currentStatus
+                ApplyStatusBadgeStyle(lblStatusVal, currentStatus)
+                btnReject.Text = "Return for Compliance"
+                Dim canReview = currentStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase) AndAlso Not IsDBNull(row("SubmittedAt"))
+                btnApprove.Enabled = canReview
+                btnReject.Enabled = canReview
             ElseIf isClinicOffice Then
                 pnlGuidanceInfo.Visible = False
                 pnlDocumentCard.Visible = False
@@ -347,10 +400,122 @@ Public Class ReviewClearanceForm
                 _hasSubmittedDocument = (Not String.IsNullOrWhiteSpace(currentFilePath)) OrElse (cmbSubmittedFiles.Items.Count > 0)
             End If
 
+            LoadPrerequisiteApprovals()
         Catch ex As Exception
             MessageBox.Show("Failed to load submission: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
+    Private Sub LoadPrerequisiteApprovals()
+        Dim items = ClearanceWorkflowHelper.GetStudentClearanceItems(_studentID, _termID, _studentCourse, _studentYearLevel, db)
+        Dim current = items.FirstOrDefault(Function(i) i.RecordID = TargetRecordID)
+        ApplyPrerequisiteCardStyle("info")
+        SetApprovalMetadataVisible(False)
+        lblPrerequisiteApprovalDetails.Visible = True
+        lblPrerequisiteApprovalTitle.Text = "Prerequisite approvals"
+        lblPrerequisiteApprovalDetails.Text = "Approval details unavailable."
+        If current Is Nothing Then Return
+
+        Dim prerequisites As List(Of ClearanceWorkflowHelper.ClearanceItemInfo)
+        If current.SequenceOrder = 6 Then
+            prerequisites = items.Where(Function(i) i.SequenceOrder >= 1 AndAlso i.SequenceOrder <= 5 AndAlso i.IsApplicable).ToList()
+        ElseIf current.SequenceOrder > 6 Then
+            prerequisites = items.Where(Function(i) i.SequenceOrder = current.SequenceOrder - 1 AndAlso i.IsApplicable).ToList()
+        Else
+            lblPrerequisiteApprovalTitle.Text = "Parallel clearance"
+            lblPrerequisiteApprovalDetails.Text = "This office can review independently."
+            Return
+        End If
+
+        If prerequisites.Count = 0 Then
+            lblPrerequisiteApprovalDetails.Text = "No applicable prerequisite office."
+            Return
+        End If
+        Dim allApproved = prerequisites.All(Function(i) i.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase))
+        ApplyPrerequisiteCardStyle(If(allApproved, "approved", "pending"))
+        If prerequisites.Count = 1 Then
+            Dim item = prerequisites(0)
+            ShowSinglePrerequisiteApproval(item.DepartmentName, allApproved,
+                If(allApproved, GetApprovalMetadata(item), ""), item.DisplayStatus)
+        Else
+            Dim lines As New List(Of String)
+            For Each item In prerequisites
+                If item.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase) Then
+                    lines.Add("Approved by " & item.DepartmentName & " — " & GetApprovalMetadata(item))
+                Else
+                    lines.Add(item.DepartmentName & " — " & item.DisplayStatus)
+                End If
+            Next
+            lblPrerequisiteApprovalDetails.Text = String.Join(vbCrLf, lines)
+        End If
+    End Sub
+
+    Private Sub ApplyPrerequisiteCardStyle(state As String)
+        Dim accent As Color
+        Dim iconKey As String
+        Select Case state
+            Case "approved"
+                pnlPrerequisiteApproval.BackColor = Color.FromArgb(240, 253, 244)
+                accent = Color.FromArgb(22, 163, 74)
+                lblPrerequisiteApprovalTitle.ForeColor = Color.FromArgb(22, 101, 52)
+                iconKey = "PrerequisiteApprovedIcon"
+            Case "pending"
+                pnlPrerequisiteApproval.BackColor = Color.FromArgb(255, 251, 235)
+                accent = Color.FromArgb(217, 119, 6)
+                lblPrerequisiteApprovalTitle.ForeColor = Color.FromArgb(146, 64, 14)
+                iconKey = "PrerequisitePendingIcon"
+            Case Else
+                pnlPrerequisiteApproval.BackColor = Color.FromArgb(239, 246, 255)
+                accent = Color.FromArgb(37, 99, 235)
+                lblPrerequisiteApprovalTitle.ForeColor = Color.FromArgb(30, 64, 175)
+                iconKey = "PrerequisiteInfoIcon"
+        End Select
+        pnlPrerequisiteAccent.BackColor = accent
+        picPrerequisiteStatus.Image = CType(approvalResources.GetObject(iconKey), Image)
+    End Sub
+
+    Private Sub SetApprovalMetadataVisible(visible As Boolean)
+        lblPrerequisiteApprovedBy.Visible = visible
+        lblPrerequisiteApproverName.Visible = visible
+        lblPrerequisiteDateCaption.Visible = visible
+        lblPrerequisiteApprovalDate.Visible = visible
+    End Sub
+
+    Private Sub ShowSinglePrerequisiteApproval(office As String, approved As Boolean, metadata As String, status As String)
+        Dim officeTitle = If(office.Equals("Finance Office", StringComparison.OrdinalIgnoreCase), "Finance", office)
+        ApplyPrerequisiteCardStyle(If(approved, "approved", "pending"))
+        lblPrerequisiteApprovalTitle.Text = If(approved, officeTitle & " APPROVED", "AWAITING " & officeTitle & " APPROVAL").ToUpperInvariant()
+        SetApprovalMetadataVisible(approved)
+        lblPrerequisiteApprovalDetails.Visible = Not approved
+        If approved Then
+            Dim separator = metadata.LastIndexOf(" · ", StringComparison.Ordinal)
+            lblPrerequisiteApproverName.Text = If(separator < 0, "Approving staff not recorded", metadata.Substring(0, separator))
+            lblPrerequisiteApprovalDate.Text = If(separator < 0, "Approval date not recorded", metadata.Substring(separator + 3).Replace(" am", " AM").Replace(" pm", " PM"))
+        Else
+            lblPrerequisiteApprovalDetails.Text = "Status: " & status
+        End If
+    End Sub
+
+    Private Function GetApprovalMetadata(item As ClearanceWorkflowHelper.ClearanceItemInfo) As String
+        ' Use the latest approval audit entry so older batch approvals also identify the actual actor.
+        Dim query = "SELECT approver.FullName AS ApproverName, " &
+            "CASE WHEN h.HistoryID IS NOT NULL THEN h.ActionAt ELSE cr.ReviewedAt END AS ApprovedAt " &
+            "FROM ClearanceRecords cr LEFT JOIN ClearanceHistory h ON h.HistoryID = " &
+            "(SELECT h2.HistoryID FROM ClearanceHistory h2 WHERE h2.RecordID = cr.RecordID AND h2.NewStatus = 'Cleared' " &
+            "ORDER BY h2.ActionAt DESC, h2.HistoryID DESC LIMIT 1) " &
+            "LEFT JOIN Users approver ON approver.UserID = CASE WHEN h.HistoryID IS NOT NULL THEN h.ActionBy ELSE cr.ReviewedBy END " &
+            "WHERE cr.RecordID = @RecordID AND cr.StudentID = @StudentID AND cr.TermID = @TermID AND cr.Status = 'Cleared';"
+        Dim table = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
+            {"@RecordID", item.RecordID}, {"@StudentID", _studentID}, {"@TermID", _termID}})
+        Return FormatApprovalMetadata(If(table.Rows.Count = 0, Nothing, table.Rows(0)))
+    End Function
+
+    Private Shared Function FormatApprovalMetadata(row As DataRow) As String
+        Dim name = If(row Is Nothing OrElse IsDBNull(row("ApproverName")), "", row("ApproverName").ToString().Trim())
+        If String.IsNullOrWhiteSpace(name) Then name = "Approving staff not recorded"
+        Dim dateText = If(row Is Nothing OrElse IsDBNull(row("ApprovedAt")), "Approval date not recorded", Convert.ToDateTime(row("ApprovedAt")).ToString("MMM dd, yyyy hh:mm tt"))
+        Return name & " · " & dateText
+    End Function
 
     Private Function HasClinicReviewAccess() As Boolean
         If Not AppSession.Role.Equals("Staff", StringComparison.OrdinalIgnoreCase) OrElse
@@ -706,8 +871,8 @@ Public Class ReviewClearanceForm
             Return
         End If
 
-        If _isStudentAffairs AndAlso Not chkStudentAffairsVerified.Checked Then
-            MessageBox.Show("Verify that there are no unresolved concerns before approval.", "Verification Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        If _isOfficeVerification AndAlso Not OfficeVerificationConfirmed Then
+            MessageBox.Show(If(_isFinance, "Verify that all balances are settled before approval.", "Verify that there are no unresolved concerns before approval."), "Verification Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
 
@@ -759,11 +924,17 @@ Public Class ReviewClearanceForm
 
         If confirm <> DialogResult.Yes Then Return
 
-        UpdateClearanceStatus("Rejected", remarks, If(_isStudentAffairs, "Returned for Compliance", If(_isClinicOffice, "Returned for Completion", "Requirement Rejected")))
+        UpdateClearanceStatus("Rejected", remarks, If(_isOfficeVerification, "Returned for Compliance", If(_isClinicOffice, "Returned for Completion", "Requirement Rejected")))
     End Sub
 
-    Private Sub chkStudentAffairsVerified_CheckedChanged(sender As Object, e As EventArgs) Handles chkStudentAffairsVerified.CheckedChanged
-        If _isStudentAffairs Then btnApprove.Enabled = chkStudentAffairsVerified.Checked AndAlso currentStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase)
+    Private ReadOnly Property OfficeVerificationConfirmed As Boolean
+        Get
+            Return If(_isFinance, chkFinanceVerified.Checked, chkStudentAffairsVerified.Checked)
+        End Get
+    End Property
+
+    Private Sub chkStudentAffairsVerified_CheckedChanged(sender As Object, e As EventArgs) Handles chkStudentAffairsVerified.CheckedChanged, chkFinanceVerified.CheckedChanged
+        If _isOfficeVerification Then btnApprove.Enabled = OfficeVerificationConfirmed AndAlso currentStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase)
     End Sub
 
     Private Sub UpdateClearanceStatus(newStatus As String, remarks As String, actionTypeName As String)
@@ -772,8 +943,8 @@ Public Class ReviewClearanceForm
             Return
         End If
 
-        If _isStudentAffairs AndAlso newStatus = "Cleared" AndAlso Not chkStudentAffairsVerified.Checked Then
-            MessageBox.Show("Verify that there are no unresolved concerns before approval.", "Verification Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        If _isOfficeVerification AndAlso newStatus = "Cleared" AndAlso Not OfficeVerificationConfirmed Then
+            MessageBox.Show(If(_isFinance, "Verify that all balances are settled before approval.", "Verify that there are no unresolved concerns before approval."), "Verification Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
         If Not ClearanceWorkflowHelper.HasStaffDepartmentAccess(AppSession.DepartmentID.Value, db) Then
@@ -849,8 +1020,8 @@ Public Class ReviewClearanceForm
                             histCmd.Parameters.AddWithValue("@ActionType", actionTypeName)
                             histCmd.Parameters.AddWithValue("@OldStatus", currentStatus)
                             histCmd.Parameters.AddWithValue("@NewStatus", newStatus)
-                            Dim historyRemarks = If(_isStudentAffairs AndAlso newStatus = "Cleared",
-                                "Staff verified: no unresolved concerns. " & remarks,
+                            Dim historyRemarks = If(_isOfficeVerification AndAlso newStatus = "Cleared",
+                                If(_isFinance, "Finance verified: all balances settled. ", "Staff verified: no unresolved concerns. ") & remarks,
                                 If(String.IsNullOrWhiteSpace(remarks), actionTypeName, remarks))
                             histCmd.Parameters.AddWithValue("@Remarks", historyRemarks.Substring(0, Math.Min(500, historyRemarks.Length)))
                             histCmd.ExecuteNonQuery()

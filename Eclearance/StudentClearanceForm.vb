@@ -52,6 +52,7 @@ Public Class StudentClearanceForm
     ' ============================================================
     Public Sub LoadClearanceData()
 
+        UpdateCompletionBanner(Nothing)
         Try
 
             ' Refresh student metadata from Students
@@ -86,6 +87,7 @@ Public Class StudentClearanceForm
             LoadCurrentTerm(activeTermID)
 
             allClearanceItems = ClearanceWorkflowHelper.GetStudentClearanceItems(AppSession.UserID, activeTermID, AppSession.Course, AppSession.YearLevel, db)
+            UpdateCompletionBanner(allClearanceItems)
 
             ' Ensure CTHM Stock Room is completely hidden when not applicable to the student's program
             If allClearanceItems IsNot Nothing Then
@@ -127,6 +129,15 @@ Public Class StudentClearanceForm
 
         End Try
 
+    End Sub
+
+    Private Sub UpdateCompletionBanner(items As List(Of ClearanceWorkflowHelper.ClearanceItemInfo))
+        Dim applicable = If(items, New List(Of ClearanceWorkflowHelper.ClearanceItemInfo)()).Where(Function(i) i.IsApplicable).ToList()
+        Dim completed As Boolean = applicable.Count > 0 AndAlso applicable.All(Function(i) String.Equals(i.EffectiveStatus, "Cleared", StringComparison.OrdinalIgnoreCase))
+        Dim tableBottom As Integer = pnlClearanceTable.Bottom
+        pnlCompletionBanner.Visible = completed
+        pnlClearanceTable.Top = If(completed, pnlCompletionBanner.Bottom + 10, pnlCompletionBanner.Top)
+        pnlClearanceTable.Height = Math.Max(200, tableBottom - pnlClearanceTable.Top)
     End Sub
 
     ' ============================================================
@@ -458,7 +469,7 @@ Public Class StudentClearanceForm
         lblNum.Text = (rowIndex + 1).ToString()
         lblDept.Text = item.DepartmentName
         lblReq.Text = If(String.IsNullOrWhiteSpace(item.Instructions), item.RequirementName, item.RequirementName & " — " & item.Instructions)
-        If item.IsStudentAffairs Then lblReq.Text = item.RequirementName & " — Request verification online. Visit only when staff instruct you to."
+        If item.IsStudentAffairs Then lblReq.Text = item.RequirementName & " — Approval is subject to staff verification of any outstanding concerns."
         lblStatus.Text = item.DisplayStatus
         ApplyStatusStyle(lblStatus, item.DisplayStatus)
 
@@ -492,7 +503,13 @@ Public Class StudentClearanceForm
                 btnAct.ForeColor = Color.FromArgb(30, 41, 59)
                 btnAct.Size = New Size(110, 32)
                 btnAct.Location = New Point(0, 0)
-                btnReeval.Visible = False
+                btnReeval.Visible = True
+                btnReeval.Enabled = True
+                btnReeval.Text = "Cancel Submission"
+                btnReeval.Location = New Point(116, 0)
+                btnReeval.Size = New Size(130, 32)
+                btnReeval.BackColor = Color.FromArgb(226, 232, 240)
+                btnReeval.ForeColor = Color.FromArgb(30, 41, 59)
                 btnViewReq.Visible = False
                 lblDash.Visible = False
 
@@ -546,10 +563,10 @@ Public Class StudentClearanceForm
                         btnViewReq.Text = "View Requirements"
                         btnViewReq.Location = New Point(btnAct.Location.X + btnAct.Size.Width + 6, 0)
                         btnViewReq.Size = New Size(125, 32)
-                    ElseIf item.IsStudentAffairs Then
+                    ElseIf item.IsOfficeRequest Then
                         btnAct.Visible = True
                         btnAct.Enabled = item.CanSubmit
-                        btnAct.Text = "Request Clearance"
+                        btnAct.Text = "Submit for Review"
                         btnAct.BackColor = Color.FromArgb(2, 132, 199)
                         btnAct.ForeColor = Color.White
                         btnAct.Size = New Size(125, 32)
@@ -764,8 +781,8 @@ Public Class StudentClearanceForm
             Return
         End If
 
-        If item.IsStudentAffairs Then
-            RequestStudentAffairsClearance(item)
+        If item.IsOfficeRequest Then
+            RequestOfficeVerification(item)
             Return
         End If
 
@@ -805,6 +822,16 @@ Public Class StudentClearanceForm
         End If
 
         Dim item = DirectCast(button.Tag, ClearanceWorkflowHelper.ClearanceItemInfo)
+        If button.Text.Equals("Cancel Submission", StringComparison.OrdinalIgnoreCase) Then
+            If MessageBox.Show("Cancel this submission? You can edit and submit it again.", "Cancel Submission", MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then Return
+            Try
+                ClearanceWorkflowHelper.CancelStudentSubmission(item.RecordID, db)
+                LoadClearanceData()
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, "Cannot Cancel", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            End Try
+            Return
+        End If
         RequestReevaluation(item)
 
     End Sub
@@ -917,13 +944,13 @@ Public Class StudentClearanceForm
     ' ============================================================
     ' REQUEST RE-EVALUATION
     ' ============================================================
-    Private Sub RequestStudentAffairsClearance(item As ClearanceWorkflowHelper.ClearanceItemInfo)
+    Private Sub RequestOfficeVerification(item As ClearanceWorkflowHelper.ClearanceItemInfo)
         Dim message = If(item.DBStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase),
             "Have you completed the instructions in the staff remarks? Request verification of your compliance?",
-            "Request clearance verification from the Office of Student Affairs? No office visit is required unless staff identify an unresolved concern.")
-        If MessageBox.Show(message, "Office of Student Affairs", MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then Return
+            If(item.IsFinance, "Request Finance clearance? Staff will check your payment status.", If(item.IsStudentAffairs, "Request clearance verification from the Office of Student Affairs? No office visit is required unless staff identify an unresolved concern.", "Request clearance from " & item.DepartmentName & "?")))
+        If MessageBox.Show(message, item.DepartmentName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then Return
         Try
-            ClearanceWorkflowHelper.SubmitStudentAffairsRequest(item.RecordID, db)
+            ClearanceWorkflowHelper.SubmitOfficeVerificationRequest(item.RecordID, db)
             LoadClearanceData()
         Catch ex As Exception
             MessageBox.Show(ex.Message, "Request Not Submitted", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -931,8 +958,8 @@ Public Class StudentClearanceForm
     End Sub
 
     Private Sub RequestReevaluation(item As ClearanceWorkflowHelper.ClearanceItemInfo)
-        If item.IsStudentAffairs Then
-            RequestStudentAffairsClearance(item)
+        If item.IsOfficeRequest Then
+            RequestOfficeVerification(item)
             Return
         End If
 

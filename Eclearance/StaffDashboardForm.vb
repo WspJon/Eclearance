@@ -186,6 +186,7 @@ Public Class StaffDashboardForm
 
             Using reviewForm As New ReviewClearanceForm()
                 reviewForm.TargetRecordID = recordID
+                reviewForm.PrepareForDisplay(modalBackdrop)
                 reviewForm.ShowDialog(modalBackdrop)
             End Using
 

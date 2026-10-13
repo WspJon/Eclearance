@@ -46,6 +46,20 @@ Public Class ClearanceWorkflowHelper
             End Get
         End Property
 
+        Public ReadOnly Property IsFinance As Boolean
+            Get
+                Return String.Equals(DepartmentName, "Finance Office", StringComparison.OrdinalIgnoreCase)
+            End Get
+        End Property
+
+        Public ReadOnly Property IsOfficeRequest As Boolean
+            Get
+                Return IsStudentAffairs OrElse IsFinance OrElse
+                    String.Equals(DepartmentName, "Registrar", StringComparison.OrdinalIgnoreCase) OrElse
+                    String.Equals(DepartmentName, "OAA", StringComparison.OrdinalIgnoreCase)
+            End Get
+        End Property
+
         Public Function HasSubmitted() As Boolean
             Return SubmittedAt IsNot Nothing AndAlso Not DBNull.Value.Equals(SubmittedAt)
         End Function
@@ -598,9 +612,78 @@ Public Class ClearanceWorkflowHelper
     End Function
 
     ' A student explicitly requests review; adding an account never counts as submission.
+    Public Shared Sub CancelStudentSubmission(recordID As Integer, db As DatabaseHelper)
+        If Not String.Equals(AppSession.Role, "Student", StringComparison.OrdinalIgnoreCase) Then
+            Throw New InvalidOperationException("Only the student can cancel this submission.")
+        End If
+        Using conn = db.GetConnection()
+            conn.Open()
+            Using tx = conn.BeginTransaction()
+                Dim requiresFile As Boolean
+                Using cmd As New MySqlCommand(
+                    "SELECT r.RequiresFile FROM ClearanceRecords cr " &
+                    "INNER JOIN ClearanceRequirements r ON r.RequirementID = cr.RequirementID " &
+                    "INNER JOIN AcademicTerms t ON t.TermID = cr.TermID " &
+                    "INNER JOIN Users u ON u.UserID = cr.StudentID " &
+                    "WHERE cr.RecordID = @RecordID AND cr.StudentID = @StudentID " &
+                    "AND cr.Status = 'Under Review' AND cr.SubmittedAt IS NOT NULL " &
+                    "AND t.IsActive = 1 AND u.Role = 'Student' AND u.IsActive = 1 FOR UPDATE;", conn, tx)
+                    cmd.Parameters.AddWithValue("@RecordID", recordID)
+                    cmd.Parameters.AddWithValue("@StudentID", AppSession.UserID)
+                    Dim value = cmd.ExecuteScalar()
+                    If value Is Nothing Then Throw New InvalidOperationException("This submission can no longer be cancelled. Refresh My Clearance.")
+                    requiresFile = Convert.ToBoolean(value)
+                End Using
+                Using cmd As New MySqlCommand(
+                    "UPDATE ClearanceRecords SET Status = 'Pending', SubmittedAt = NULL, " &
+                    "ReviewedBy = NULL, ReviewedAt = NULL, Remarks = NULL " &
+                    If(requiresFile, ", SubmittedFilePath = NULL, SubmittedFileName = NULL ", "") &
+                    "WHERE RecordID = @RecordID;", conn, tx)
+                    cmd.Parameters.AddWithValue("@RecordID", recordID)
+                    cmd.ExecuteNonQuery()
+                End Using
+                ' Keep entered health information as an editable draft.
+                Using cmd As New MySqlCommand("UPDATE ClinicHealthAssessments SET IsDraft = 1, SubmittedAt = NULL WHERE RecordID = @RecordID;", conn, tx)
+                    cmd.Parameters.AddWithValue("@RecordID", recordID)
+                    cmd.ExecuteNonQuery()
+                End Using
+                If requiresFile Then
+                    Using cmd As New MySqlCommand("DELETE FROM ClearanceRecordFiles WHERE RecordID = @RecordID;", conn, tx)
+                        cmd.Parameters.AddWithValue("@RecordID", recordID)
+                        cmd.ExecuteNonQuery()
+                    End Using
+                End If
+                Using cmd As New MySqlCommand(
+                    "INSERT INTO ClearanceHistory (RecordID, ActionBy, ActionType, OldStatus, NewStatus, Remarks) " &
+                    "VALUES (@RecordID, @StudentID, 'Submission Cancelled', 'Under Review', 'Pending', 'Student cancelled the submission to make corrections.');", conn, tx)
+                    cmd.Parameters.AddWithValue("@RecordID", recordID)
+                    cmd.Parameters.AddWithValue("@StudentID", AppSession.UserID)
+                    cmd.ExecuteNonQuery()
+                End Using
+                tx.Commit()
+            End Using
+        End Using
+    End Sub
+
     Public Shared Sub SubmitStudentAffairsRequest(recordID As Integer, db As DatabaseHelper)
+        SubmitOfficeVerificationRequest(recordID, db)
+    End Sub
+
+    Public Shared Sub SubmitOfficeVerificationRequest(recordID As Integer, db As DatabaseHelper)
         If Not String.Equals(AppSession.Role, "Student", StringComparison.OrdinalIgnoreCase) Then
             Throw New InvalidOperationException("Only the student can submit this request.")
+        End If
+        Dim metadata = db.ExecuteQuery(
+            "SELECT cr.TermID, s.Course, s.YearLevel FROM ClearanceRecords cr " &
+            "INNER JOIN Students s ON s.UserID = cr.StudentID " &
+            "WHERE cr.RecordID = @RecordID AND cr.StudentID = @StudentID;",
+            New Dictionary(Of String, Object) From {{"@RecordID", recordID}, {"@StudentID", AppSession.UserID}})
+        If metadata.Rows.Count <> 1 Then Throw New InvalidOperationException("This request is not available.")
+        Dim row = metadata.Rows(0)
+        Dim items = GetStudentClearanceItems(AppSession.UserID, CInt(row("TermID")), row("Course").ToString(), row("YearLevel").ToString(), db)
+        Dim item = items.FirstOrDefault(Function(i) i.RecordID = recordID)
+        If item Is Nothing OrElse Not item.CanSubmit OrElse Not item.IsOfficeRequest Then
+            Throw New InvalidOperationException("This requirement is locked or not available for submission.")
         End If
         Using conn = db.GetConnection()
             conn.Open()
@@ -613,7 +696,7 @@ Public Class ClearanceWorkflowHelper
                     "INNER JOIN AcademicTerms t ON t.TermID = cr.TermID " &
                     "INNER JOIN Users u ON u.UserID = cr.StudentID " &
                     "WHERE cr.RecordID = @RecordID AND cr.StudentID = @StudentID " &
-                    "AND d.DepartmentName = 'Office of Student Affairs' AND d.IsActive = 1 AND r.IsActive = 1 " &
+                    "AND d.DepartmentName IN ('Office of Student Affairs', 'Finance Office', 'Registrar', 'OAA') AND r.RequiresFile = 0 AND d.IsActive = 1 AND r.IsActive = 1 " &
                     "AND t.IsActive = 1 AND u.Role = 'Student' AND u.IsActive = 1 " &
                     "AND cr.Status IN ('Pending', 'Rejected') FOR UPDATE;", conn, tx)
                     cmd.Parameters.AddWithValue("@RecordID", recordID)
@@ -633,7 +716,7 @@ Public Class ClearanceWorkflowHelper
                     cmd.Parameters.AddWithValue("@StudentID", AppSession.UserID)
                     cmd.Parameters.AddWithValue("@OldStatus", oldStatus)
                     cmd.Parameters.AddWithValue("@Action", If(oldStatus = "Rejected", "Re-evaluation Requested", "Clearance Requested"))
-                    cmd.Parameters.AddWithValue("@Remarks", If(oldStatus = "Rejected", "Student requested review after addressing staff instructions.", "Student requested Office of Student Affairs verification."))
+                    cmd.Parameters.AddWithValue("@Remarks", If(oldStatus = "Rejected", "Student requested review after addressing staff instructions.", "Student requested " & item.DepartmentName & " verification."))
                     cmd.ExecuteNonQuery()
                 End Using
                 tx.Commit()

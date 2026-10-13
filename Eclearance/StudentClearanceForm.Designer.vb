@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StudentClearanceForm
     Inherits System.Windows.Forms.Form
 
@@ -28,6 +28,9 @@ Partial Class StudentClearanceForm
         lblLogoTitle = New Label()
         pnlContentViewport = New Panel()
         pnlMain = New Panel()
+        pnlCompletionBanner = New Panel()
+        lblCompletionTitle = New Label()
+        lblCompletionMessage = New Label()
         pnlClearanceTable = New Panel()
         pnlRow10 = New Panel()
         lblNum10 = New Label()
@@ -308,6 +311,7 @@ Partial Class StudentClearanceForm
         ' 
         pnlMain.AutoScroll = True
         pnlMain.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
+        pnlMain.Controls.Add(pnlCompletionBanner)
         pnlMain.Controls.Add(pnlClearanceTable)
         pnlMain.Controls.Add(pnlTermBanner)
         pnlMain.Controls.Add(pnlHeader)
@@ -317,6 +321,30 @@ Partial Class StudentClearanceForm
         pnlMain.Padding = New Padding(28, 16, 28, 20)
         pnlMain.Size = New Size(990, 800)
         pnlMain.TabIndex = 1
+        ' Completion banner controls remain editable in Visual Studio Designer.
+        pnlCompletionBanner.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlCompletionBanner.BackColor = Color.FromArgb(240, 253, 244)
+        pnlCompletionBanner.BorderStyle = BorderStyle.FixedSingle
+        pnlCompletionBanner.Location = New Point(28, 128)
+        pnlCompletionBanner.Name = "pnlCompletionBanner"
+        pnlCompletionBanner.Size = New Size(934, 76)
+        pnlCompletionBanner.Visible = False
+        pnlCompletionBanner.Controls.Add(lblCompletionTitle)
+        pnlCompletionBanner.Controls.Add(lblCompletionMessage)
+        lblCompletionTitle.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
+        lblCompletionTitle.ForeColor = Color.FromArgb(21, 128, 61)
+        lblCompletionTitle.Location = New Point(16, 10)
+        lblCompletionTitle.Name = "lblCompletionTitle"
+        lblCompletionTitle.Size = New Size(896, 26)
+        lblCompletionTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblCompletionTitle.Text = "✓ Clearance Completed"
+        lblCompletionMessage.Font = New Font("Segoe UI", 9.0F)
+        lblCompletionMessage.ForeColor = Color.FromArgb(22, 101, 52)
+        lblCompletionMessage.Location = New Point(16, 40)
+        lblCompletionMessage.Name = "lblCompletionMessage"
+        lblCompletionMessage.Size = New Size(896, 26)
+        lblCompletionMessage.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblCompletionMessage.Text = "All required departments have approved your clearance. You may now proceed with enrollment."
         ' 
         ' pnlClearanceTable
         ' 
@@ -1942,6 +1970,9 @@ Partial Class StudentClearanceForm
     Friend WithEvents btnNavHistory As Button
     Friend WithEvents btnNavProfile As Button
     Friend WithEvents btnNavLogout As Button
+    Friend WithEvents pnlCompletionBanner As Panel
+    Friend WithEvents lblCompletionTitle As Label
+    Friend WithEvents lblCompletionMessage As Label
     Friend WithEvents pnlMain As Panel
     Friend WithEvents pnlHeader As Panel
     Friend WithEvents lblHeaderTitle As Label
