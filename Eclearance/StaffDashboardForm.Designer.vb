@@ -228,7 +228,7 @@ Partial Class StaffDashboardForm
         lblNavSection.Name = "lblNavSection"
         lblNavSection.Size = New Size(74, 12)
         lblNavSection.TabIndex = 1
-        lblNavSection.Text = "DEPARTMENT HEAD PORTAL"
+        lblNavSection.Text = "OFFICE HEAD PORTAL"
         ' 
         ' pnlLogo
         ' 
@@ -976,7 +976,7 @@ Partial Class StaffDashboardForm
         lblStaffName.Name = "lblStaffName"
         lblStaffName.Size = New Size(80, 15)
         lblStaffName.TabIndex = 1
-        lblStaffName.Text = "Department Head"
+        lblStaffName.Text = "Office Head"
         ' 
         ' lblStaffIcon
         ' 
@@ -1055,7 +1055,7 @@ Partial Class StaffDashboardForm
         lblHeaderTitle.Name = "lblHeaderTitle"
         lblHeaderTitle.Size = New Size(380, 37)
         lblHeaderTitle.TabIndex = 0
-        lblHeaderTitle.Text = "Department Head Dashboard"
+        lblHeaderTitle.Text = "Office Head Dashboard"
         ' 
         ' StaffDashboardForm
         ' 
@@ -1076,7 +1076,7 @@ Partial Class StaffDashboardForm
         Name = "StaffDashboardForm"
         StartPosition = FormStartPosition.CenterScreen
         WindowState = FormWindowState.Maximized
-        Text = "EClearance - Staff Dashboard"
+        Text = "EClearance - Office Head Dashboard"
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)

@@ -36,14 +36,23 @@ Public Class StaffOfficesForm
             Dim table As DataTable = db.ExecuteQuery(query, parameters)
 
             For Each row As DataRow In table.Rows
+                Dim rawRole As String = row("Role").ToString()
+                Dim displayRole As String = rawRole
+                If rawRole.Equals("Staff", StringComparison.OrdinalIgnoreCase) Then
+                    displayRole = "Office Head"
+                ElseIf rawRole.StartsWith("Admin", StringComparison.OrdinalIgnoreCase) Then
+                    displayRole = "Administrator"
+                End If
+
                 Dim rowIndex As Integer = dgvStaff.Rows.Add(
                     row("FullName").ToString(),
                     row("AssignedOffice").ToString(),
                     row("Username").ToString(),
-                    row("Role").ToString(),
+                    displayRole,
                     row("StatusText").ToString()
                 )
                 dgvStaff.Rows(rowIndex).Tag = Convert.ToInt32(row("UserID"))
+                dgvStaff.Rows(rowIndex).Cells(colRole.Index).Tag = rawRole
             Next
 
             If dgvStaff.Rows.Count > 0 Then
@@ -54,8 +63,8 @@ Public Class StaffOfficesForm
 
         Catch ex As Exception
             MessageBox.Show(
-                "Unable to load Department Heads." & Environment.NewLine & Environment.NewLine & ex.Message,
-                "Department Head Error",
+                "Unable to load Office Heads." & Environment.NewLine & Environment.NewLine & ex.Message,
+                "Office Head Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error
             )
@@ -66,7 +75,7 @@ Public Class StaffOfficesForm
         lblSelectedStaffVal.Text = "--"
         lblSelectedUsernameVal.Text = "--"
         lblSelectedOfficeVal.Text = "--"
-        btnRemoveStaff.Text = "Deactivate Department Head"
+        btnRemoveStaff.Text = "Deactivate account"
         btnRemoveStaff.BackColor = Color.FromArgb(220, 38, 38)
     End Sub
 
@@ -83,10 +92,10 @@ Public Class StaffOfficesForm
 
         Dim statusText As String = If(row.Cells(colStatus.Index).Value IsNot Nothing, row.Cells(colStatus.Index).Value.ToString(), "Active")
         If statusText.Equals("Inactive", StringComparison.OrdinalIgnoreCase) Then
-            btnRemoveStaff.Text = "Reactivate Department Head"
+            btnRemoveStaff.Text = "Reactivate account"
             btnRemoveStaff.BackColor = Color.FromArgb(16, 185, 129)
         Else
-            btnRemoveStaff.Text = "Deactivate Department Head"
+            btnRemoveStaff.Text = "Deactivate account"
             btnRemoveStaff.BackColor = Color.FromArgb(220, 38, 38)
         End If
     End Sub
@@ -132,7 +141,7 @@ Public Class StaffOfficesForm
 
     Private Sub btnResetPassword_Click(sender As Object, e As EventArgs) Handles btnResetPassword.Click
         If dgvStaff.SelectedRows.Count = 0 OrElse dgvStaff.SelectedRows(0).Tag Is Nothing Then
-            MessageBox.Show("Please select a Department Head first.", "Reset Password", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Please select an Office Head first.", "Reset Password", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return
         End If
 
@@ -141,7 +150,7 @@ Public Class StaffOfficesForm
 
         Dim answer As DialogResult = MessageBox.Show(
             "Are you sure you want to reset the password for " & staffName & " to default (password123)?",
-            "Reset Department Head Password",
+            "Reset Office Head Password",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question
         )
@@ -173,7 +182,7 @@ Public Class StaffOfficesForm
 
     Private Sub btnEditStaff_Click(sender As Object, e As EventArgs) Handles btnEditStaff.Click
         If dgvStaff.SelectedRows.Count = 0 OrElse dgvStaff.SelectedRows(0).Tag Is Nothing Then
-            MessageBox.Show("Please select a Department Head first.", "Edit Department Head", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Please select an Office Head first.", "Edit Office Head", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return
         End If
 
@@ -206,14 +215,19 @@ Public Class StaffOfficesForm
 
     Private Sub btnRemoveStaff_Click(sender As Object, e As EventArgs) Handles btnRemoveStaff.Click
         If dgvStaff.SelectedRows.Count = 0 OrElse dgvStaff.SelectedRows(0).Tag Is Nothing Then
-            MessageBox.Show("Please select a Department Head first.", "Department Head Action", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Please select an Office Head first.", "Office Head Action", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return
         End If
 
         Dim row As DataGridViewRow = dgvStaff.SelectedRows(0)
         Dim staffID As Integer = Convert.ToInt32(row.Tag)
         Dim staffName As String = If(row.Cells(colStaffName.Index).Value IsNot Nothing, row.Cells(colStaffName.Index).Value.ToString(), "")
-        Dim role As String = If(row.Cells(colRole.Index).Value IsNot Nothing, row.Cells(colRole.Index).Value.ToString(), "")
+        Dim role As String = ""
+        If row.Cells(colRole.Index).Tag IsNot Nothing Then
+            role = row.Cells(colRole.Index).Tag.ToString()
+        ElseIf row.Cells(colRole.Index).Value IsNot Nothing Then
+            role = row.Cells(colRole.Index).Value.ToString()
+        End If
         Dim currentStatus As String = If(row.Cells(colStatus.Index).Value IsNot Nothing, row.Cells(colStatus.Index).Value.ToString(), "")
         Dim isInactive As Boolean = currentStatus.Equals("Inactive", StringComparison.OrdinalIgnoreCase)
 
@@ -232,11 +246,11 @@ Public Class StaffOfficesForm
             ' Reactivate account
             Dim confirmMsg As String =
                 "Reactivate " & staffName & "?" & Environment.NewLine & Environment.NewLine &
-                "This will restore access and allow the Department Head to log in."
+                "This will restore access and allow the Office Head to log in."
 
             Dim answer As DialogResult = MessageBox.Show(
                 confirmMsg,
-                "Confirm Reactivate Department Head",
+                "Confirm Reactivate Office Head",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             )
@@ -270,7 +284,7 @@ Public Class StaffOfficesForm
 
                 MessageBox.Show(
                     staffName & " has been successfully reactivated.",
-                    "Department Head Reactivated",
+                    "Office Head Reactivated",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 )
@@ -279,7 +293,7 @@ Public Class StaffOfficesForm
 
             Catch ex As Exception
                 MessageBox.Show(
-                    "Unable to reactivate Department Head." & Environment.NewLine & Environment.NewLine & ex.Message,
+                    "Unable to reactivate Office Head." & Environment.NewLine & Environment.NewLine & ex.Message,
                     "Reactivate Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -295,7 +309,7 @@ Public Class StaffOfficesForm
 
             Dim answer As DialogResult = MessageBox.Show(
                 confirmMsg,
-                "Confirm Deactivate Department Head",
+                "Confirm Deactivate Office Head",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning
             )
@@ -329,7 +343,7 @@ Public Class StaffOfficesForm
 
                 MessageBox.Show(
                     staffName & " has been successfully deactivated.",
-                    "Department Head Deactivated",
+                    "Office Head Deactivated",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 )
@@ -338,7 +352,7 @@ Public Class StaffOfficesForm
 
             Catch ex As Exception
                 MessageBox.Show(
-                    "Unable to deactivate Department Head." & Environment.NewLine & Environment.NewLine & ex.Message,
+                    "Unable to deactivate Office Head." & Environment.NewLine & Environment.NewLine & ex.Message,
                     "Deactivate Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error

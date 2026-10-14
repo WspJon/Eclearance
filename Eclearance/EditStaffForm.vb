@@ -48,7 +48,7 @@ Public Class EditStaffForm
             Dim dt As DataTable = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {{"@UserID", _targetUserID}})
 
             If dt.Rows.Count = 0 Then
-                MessageBox.Show("Selected staff account was not found.", "Staff Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                MessageBox.Show("Selected Office Head account was not found.", "Office Head Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Me.DialogResult = DialogResult.Cancel
                 Me.Close()
                 Return
@@ -73,7 +73,7 @@ Public Class EditStaffForm
             txtFullName.Focus()
 
         Catch ex As Exception
-            MessageBox.Show("Unable to load staff information." & Environment.NewLine & ex.Message, "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Unable to load Office Head information." & Environment.NewLine & ex.Message, "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Me.DialogResult = DialogResult.Cancel
             Me.Close()
         End Try
@@ -85,7 +85,7 @@ Public Class EditStaffForm
         Dim officeName As String = If(cmbAssignedOffice.SelectedItem IsNot Nothing, cmbAssignedOffice.SelectedItem.ToString(), "")
 
         If String.IsNullOrWhiteSpace(fullName) Then
-            ShowWarning("Please enter staff full name.")
+            ShowWarning("Please enter full name.")
             txtFullName.Focus()
             Return
         End If
@@ -175,8 +175,8 @@ Public Class EditStaffForm
             End Using
 
             MessageBox.Show(
-                "Staff account updated successfully.",
-                "Staff Updated",
+                "Office Head account updated successfully.",
+                "Office Head Updated",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
             )
@@ -186,14 +186,14 @@ Public Class EditStaffForm
 
         Catch ex As MySqlException
             MessageBox.Show(
-                "A database error occurred while updating the staff account." & Environment.NewLine & Environment.NewLine & ex.Message,
+                "A database error occurred while updating the Office Head account." & Environment.NewLine & Environment.NewLine & ex.Message,
                 "Database Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error
             )
         Catch ex As Exception
             MessageBox.Show(
-                "Unable to update staff account." & Environment.NewLine & Environment.NewLine & ex.Message,
+                "Unable to update Office Head account." & Environment.NewLine & Environment.NewLine & ex.Message,
                 "Update Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error

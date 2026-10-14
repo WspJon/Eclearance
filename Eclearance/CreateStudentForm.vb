@@ -13,6 +13,7 @@ Public Class CreateStudentForm
         LoadCourseOptions()
         LoadYearLevelOptions()
         LoadStudentTypeOptions()
+        LoadPrevEnrollmentOptions()
 
         txtPassword.UseSystemPasswordChar = True
 
@@ -61,6 +62,75 @@ Public Class CreateStudentForm
         cmbStudentType.Items.Add("Transferee")
 
         cmbStudentType.SelectedIndex = -1
+
+    End Sub
+
+
+    Private Sub LoadPrevEnrollmentOptions()
+
+        lblPrevEnrollment.Visible = False
+        cmbPrevEnrollment.Visible = False
+        cmbPrevEnrollment.Items.Clear()
+        cmbPrevEnrollment.Items.Add("N/A (New Student)")
+        cmbPrevEnrollment.SelectedIndex = 0
+        cmbPrevEnrollment.Enabled = False
+
+    End Sub
+
+
+    Private Sub cmbStudentType_SelectedIndexChanged(
+        sender As Object,
+        e As EventArgs
+    ) Handles cmbStudentType.SelectedIndexChanged
+
+        If cmbStudentType.SelectedItem Is Nothing Then
+            lblPrevEnrollment.Visible = False
+            cmbPrevEnrollment.Visible = False
+            cmbPrevEnrollment.Items.Clear()
+            cmbPrevEnrollment.Items.Add("Select student type first")
+            cmbPrevEnrollment.SelectedIndex = 0
+            cmbPrevEnrollment.Enabled = False
+            Return
+        End If
+
+        Dim selectedType As String = cmbStudentType.SelectedItem.ToString()
+        Select Case selectedType.ToLowerInvariant()
+            Case "new"
+                ' Freshmen entering for the first time - hide controls completely
+                lblPrevEnrollment.Visible = False
+                cmbPrevEnrollment.Visible = False
+                cmbPrevEnrollment.Items.Clear()
+                cmbPrevEnrollment.Items.Add("N/A (New Student)")
+                cmbPrevEnrollment.SelectedIndex = 0
+                cmbPrevEnrollment.Enabled = False
+
+            Case "transferee"
+                ' Transferees entering from other institutions - hide controls completely
+                lblPrevEnrollment.Visible = False
+                cmbPrevEnrollment.Visible = False
+                cmbPrevEnrollment.Items.Clear()
+                cmbPrevEnrollment.Items.Add("N/A (Transferee)")
+                cmbPrevEnrollment.SelectedIndex = 0
+                cmbPrevEnrollment.Enabled = False
+
+            Case "old"
+                ' Continuing students vs returnees from LOA/drop-out - show controls
+                lblPrevEnrollment.Visible = True
+                cmbPrevEnrollment.Visible = True
+                cmbPrevEnrollment.Items.Clear()
+                cmbPrevEnrollment.Items.Add("Enrolled (Continuing)")
+                cmbPrevEnrollment.Items.Add("Not Enrolled (Returnee / Drop-out)")
+                cmbPrevEnrollment.SelectedIndex = 0
+                cmbPrevEnrollment.Enabled = True
+
+            Case Else
+                lblPrevEnrollment.Visible = False
+                cmbPrevEnrollment.Visible = False
+                cmbPrevEnrollment.Items.Clear()
+                cmbPrevEnrollment.Items.Add("Select student type first")
+                cmbPrevEnrollment.SelectedIndex = 0
+                cmbPrevEnrollment.Enabled = False
+        End Select
 
     End Sub
 
@@ -413,6 +483,47 @@ Public Class CreateStudentForm
 
                         transaction.Commit()
 
+                        ' Record Previous Semester Enrollment
+                        Try
+                            Dim rawSelection As String = If(cmbPrevEnrollment.SelectedItem IsNot Nothing, cmbPrevEnrollment.SelectedItem.ToString(), "")
+                            Dim finalStatus As String = "No Record"
+                            Dim basis As String = "Recorded upon student account creation (" & studentType & ")"
+
+                            If rawSelection.IndexOf("New Student", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                                finalStatus = "N/A (New Student)"
+                                basis = "Freshman / First Term Admission at Lyceum of Alabang"
+                            ElseIf rawSelection.IndexOf("Transferee", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                                finalStatus = "N/A (Transferee)"
+                                basis = "Incoming Transferee Admission"
+                            ElseIf rawSelection.IndexOf("Continuing", StringComparison.OrdinalIgnoreCase) >= 0 OrElse rawSelection.Equals("Enrolled", StringComparison.OrdinalIgnoreCase) Then
+                                finalStatus = "Enrolled"
+                                basis = "Continuing Student Record"
+                            ElseIf rawSelection.IndexOf("Returnee", StringComparison.OrdinalIgnoreCase) >= 0 OrElse rawSelection.IndexOf("Drop-out", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                                finalStatus = "Not Enrolled (Returnee / Drop-out)"
+                                basis = "Returning Student / Drop-out Admission"
+                            ElseIf rawSelection.Equals("Not Enrolled", StringComparison.OrdinalIgnoreCase) Then
+                                finalStatus = "Not Enrolled"
+                                basis = "Recorded as Not Enrolled (" & studentType & ")"
+                            End If
+
+                            If Not finalStatus.Equals("No Record", StringComparison.OrdinalIgnoreCase) Then
+                                Dim prevTerm = ClearanceWorkflowHelper.GetPreviousAcademicTerm(termID, db)
+                                If prevTerm IsNot Nothing AndAlso prevTerm.TermID > 0 Then
+                                    ClearanceWorkflowHelper.SetStudentTermEnrollment(
+                                        newStudentID,
+                                        prevTerm.TermID,
+                                        finalStatus,
+                                        "Account setup by Administrator (" & studentType & ")",
+                                        AppSession.UserID,
+                                        basis,
+                                        db
+                                    )
+                                End If
+                            End If
+                        Catch exEnroll As Exception
+                            System.Diagnostics.Debug.WriteLine("Error recording previous enrollment: " & exEnroll.Message)
+                        End Try
+
 
                         MessageBox.Show(
                             "Student account created successfully." &
@@ -670,6 +781,12 @@ Public Class CreateStudentForm
         cmbYearLevel.SelectedIndex = -1
 
         cmbStudentType.SelectedIndex = -1
+        lblPrevEnrollment.Visible = False
+        cmbPrevEnrollment.Visible = False
+        cmbPrevEnrollment.Items.Clear()
+        cmbPrevEnrollment.Items.Add("Select student type first")
+        cmbPrevEnrollment.SelectedIndex = 0
+        cmbPrevEnrollment.Enabled = False
 
         chkNSTP.Checked = False
 

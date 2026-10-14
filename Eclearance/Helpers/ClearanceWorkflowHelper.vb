@@ -727,7 +727,7 @@ Public Class ClearanceWorkflowHelper
                     cmd.Parameters.AddWithValue("@StudentID", AppSession.UserID)
                     cmd.Parameters.AddWithValue("@OldStatus", oldStatus)
                     cmd.Parameters.AddWithValue("@Action", If(oldStatus = "Rejected", "Re-evaluation Requested", "Clearance Requested"))
-                    cmd.Parameters.AddWithValue("@Remarks", If(oldStatus = "Rejected", "Student requested review after addressing staff instructions.", "Student requested " & item.DepartmentName & " verification."))
+                    cmd.Parameters.AddWithValue("@Remarks", If(oldStatus = "Rejected", "Student requested review after addressing office head instructions.", "Student requested " & item.DepartmentName & " verification."))
                     cmd.ExecuteNonQuery()
                 End Using
                 tx.Commit()
@@ -1051,16 +1051,30 @@ Public Class ClearanceWorkflowHelper
                 "  `TermID` int(11) NOT NULL," &
                 "  `EnrollmentStatus` varchar(30) NOT NULL," &
                 "  `Remarks` varchar(255) DEFAULT NULL," &
+                "  `VerifiedBy` int(11) DEFAULT NULL," &
+                "  `VerificationBasis` varchar(100) DEFAULT NULL," &
+                "  `VerificationDate` datetime DEFAULT NULL," &
                 "  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP," &
                 "  `UpdatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," &
                 "  PRIMARY KEY (`EnrollmentID`)," &
                 "  UNIQUE KEY `uq_student_term_enrollment` (`StudentID`,`TermID`)," &
                 "  KEY `idx_enrollment_student` (`StudentID`)," &
                 "  KEY `idx_enrollment_term` (`TermID`)," &
+                "  KEY `idx_enrollment_verifier` (`VerifiedBy`)," &
                 "  CONSTRAINT `fk_enrollment_student` FOREIGN KEY (`StudentID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE," &
-                "  CONSTRAINT `fk_enrollment_term` FOREIGN KEY (`TermID`) REFERENCES `academicterms` (`TermID`) ON DELETE CASCADE ON UPDATE CASCADE" &
+                "  CONSTRAINT `fk_enrollment_term` FOREIGN KEY (`TermID`) REFERENCES `academicterms` (`TermID`) ON DELETE CASCADE ON UPDATE CASCADE," &
+                "  CONSTRAINT `fk_enrollment_verifier` FOREIGN KEY (`VerifiedBy`) REFERENCES `users` (`UserID`) ON DELETE SET NULL ON UPDATE CASCADE" &
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
             db.ExecuteNonQuery(sql)
+
+            Try
+                Dim checkColSql = "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'studenttermenrollments' AND COLUMN_NAME = 'VerifiedBy';"
+                Dim colExists = Convert.ToInt32(db.ExecuteScalar(checkColSql))
+                If colExists = 0 Then
+                    db.ExecuteNonQuery("ALTER TABLE `studenttermenrollments` ADD COLUMN `VerifiedBy` int(11) DEFAULT NULL AFTER `Remarks`, ADD COLUMN `VerificationBasis` varchar(100) DEFAULT NULL AFTER `VerifiedBy`, ADD COLUMN `VerificationDate` datetime DEFAULT NULL AFTER `VerificationBasis`;")
+                End If
+            Catch
+            End Try
         Catch
         End Try
     End Sub
@@ -1181,43 +1195,170 @@ Public Class ClearanceWorkflowHelper
             prevSem = "2nd Semester"
         End If
 
+        ' Ensure the historical predecessor term exists in AcademicTerms so foreign-key constraints work.
+        Dim foundTermID As Integer = 0
+        Try
+            Dim checkDt = db.ExecuteQuery(
+                "SELECT TermID FROM AcademicTerms WHERE (AcademicYear = @AY OR AcademicYear = @AYHyphen) AND Semester = @Sem LIMIT 1;",
+                New Dictionary(Of String, Object) From {
+                    {"@AY", prevAY},
+                    {"@AYHyphen", prevAY.Replace("–", "-")},
+                    {"@Sem", prevSem}
+                }
+            )
+            If checkDt.Rows.Count > 0 Then
+                foundTermID = Convert.ToInt32(checkDt.Rows(0)("TermID"))
+            Else
+                Dim insertSql = "INSERT INTO AcademicTerms (AcademicYear, Semester, IsActive, StartDate, EndDate) VALUES (@AY, @Sem, 0, NULL, NULL);"
+                db.ExecuteNonQuery(insertSql, New Dictionary(Of String, Object) From {
+                    {"@AY", prevAY.Replace("–", "-")},
+                    {"@Sem", prevSem}
+                })
+                Dim newIdObj = db.ExecuteScalar("SELECT LAST_INSERT_ID();")
+                If newIdObj IsNot Nothing AndAlso Not IsDBNull(newIdObj) Then
+                    foundTermID = Convert.ToInt32(newIdObj)
+                End If
+            End If
+        Catch
+        End Try
+
         Return New PreviousTermInfo With {
-            .TermID = 0,
+            .TermID = foundTermID,
             .AcademicYear = prevAY,
             .Semester = prevSem,
-            .IsSimulated = True
+            .IsSimulated = (foundTermID = 0)
         }
     End Function
 
+    Public Class StudentEnrollmentDetails
+        Public Property Status As String = "No Record"
+        Public Property Remarks As String = ""
+        Public Property VerifiedByID As Integer = 0
+        Public Property VerifiedByName As String = ""
+        Public Property VerificationBasis As String = ""
+        Public Property VerificationDate As DateTime? = Nothing
+    End Class
+
     Public Shared Function GetStudentPreviousEnrollment(studentID As Integer, prevTermID As Integer, db As DatabaseHelper) As String
+        Dim details = GetStudentPreviousEnrollmentDetails(studentID, prevTermID, db)
+        Return details.Status
+    End Function
+
+    Public Shared Function GetStudentPreviousEnrollmentDetails(studentID As Integer, prevTermID As Integer, db As DatabaseHelper) As StudentEnrollmentDetails
+        Dim result As New StudentEnrollmentDetails()
         If studentID <= 0 OrElse prevTermID <= 0 Then
-            Return "No Record"
+            Return result
         End If
 
         EnsureEnrollmentTableExists(db)
         Try
+            Dim query As String =
+                "SELECT e.EnrollmentStatus, e.Remarks, e.VerifiedBy, e.VerificationBasis, e.VerificationDate, u.FullName AS VerifierName " &
+                "FROM studenttermenrollments e " &
+                "LEFT JOIN users u ON u.UserID = e.VerifiedBy " &
+                "WHERE e.StudentID = @StudentID AND e.TermID = @TermID LIMIT 1;"
             Dim dt = db.ExecuteQuery(
-                "SELECT EnrollmentStatus FROM studenttermenrollments WHERE StudentID = @StudentID AND TermID = @TermID LIMIT 1;",
+                query,
                 New Dictionary(Of String, Object) From {
                     {"@StudentID", studentID},
                     {"@TermID", prevTermID}
                 }
             )
             If dt.Rows.Count > 0 Then
-                Dim stat = dt.Rows(0)("EnrollmentStatus").ToString().Trim()
+                Dim row = dt.Rows(0)
+                Dim stat = row("EnrollmentStatus").ToString().Trim()
                 If stat.Equals("Enrolled", StringComparison.OrdinalIgnoreCase) Then
-                    Return "Enrolled"
+                    result.Status = "Enrolled"
                 ElseIf stat.Equals("Not Enrolled", StringComparison.OrdinalIgnoreCase) Then
-                    Return "Not Enrolled"
+                    result.Status = "Not Enrolled"
+                ElseIf stat.IndexOf("Returnee", StringComparison.OrdinalIgnoreCase) >= 0 OrElse stat.IndexOf("Drop-out", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                    result.Status = "Not Enrolled (Returnee / Drop-out)"
+                ElseIf stat.IndexOf("New Student", StringComparison.OrdinalIgnoreCase) >= 0 OrElse stat.Equals("N/A", StringComparison.OrdinalIgnoreCase) Then
+                    result.Status = "N/A (New Student)"
+                ElseIf stat.IndexOf("Transferee", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                    result.Status = "N/A (Transferee)"
+                ElseIf Not String.IsNullOrWhiteSpace(stat) Then
+                    result.Status = stat
+                Else
+                    result.Status = "No Record"
                 End If
+                result.Remarks = If(IsDBNull(row("Remarks")), "", row("Remarks").ToString())
+                result.VerifiedByID = If(IsDBNull(row("VerifiedBy")), 0, Convert.ToInt32(row("VerifiedBy")))
+                result.VerifiedByName = If(IsDBNull(row("VerifierName")), "", row("VerifierName").ToString())
+                result.VerificationBasis = If(IsDBNull(row("VerificationBasis")), "", row("VerificationBasis").ToString())
+                If Not IsDBNull(row("VerificationDate")) Then
+                    result.VerificationDate = Convert.ToDateTime(row("VerificationDate"))
+                End If
+            End If
+
+            ' If no explicit record exists in studenttermenrollments, auto-infer intelligently from StudentType & Historical records!
+            If String.IsNullOrWhiteSpace(result.Status) OrElse result.Status.Equals("No Record", StringComparison.OrdinalIgnoreCase) Then
+                Try
+                    Dim dtStud = db.ExecuteQuery(
+                        "SELECT StudentType FROM Students WHERE UserID = @StudentID LIMIT 1;",
+                        New Dictionary(Of String, Object) From {{"@StudentID", studentID}}
+                    )
+                    Dim studentType As String = ""
+                    If dtStud.Rows.Count > 0 AndAlso Not IsDBNull(dtStud.Rows(0)("StudentType")) Then
+                        studentType = dtStud.Rows(0)("StudentType").ToString().Trim()
+                    End If
+
+                    If studentType.Equals("New", StringComparison.OrdinalIgnoreCase) Then
+                        result.Status = "N/A (New Student)"
+                        result.Remarks = "Freshman / First Term Admission at Lyceum of Alabang"
+                        result.VerificationBasis = "Student Type: New (Freshman)"
+                    ElseIf studentType.Equals("Transferee", StringComparison.OrdinalIgnoreCase) Then
+                        result.Status = "N/A (Transferee)"
+                        result.Remarks = "Transferred from another institution"
+                        result.VerificationBasis = "Student Type: Transferee"
+                    ElseIf studentType.Equals("Old", StringComparison.OrdinalIgnoreCase) Then
+                        Dim dtPrevClearance = db.ExecuteQuery(
+                            "SELECT COUNT(*) AS Cnt FROM ClearanceRecords WHERE StudentID = @StudentID AND TermID = @PrevTermID;",
+                            New Dictionary(Of String, Object) From {
+                                {"@StudentID", studentID},
+                                {"@PrevTermID", prevTermID}
+                            }
+                        )
+                        Dim prevClearanceCount As Integer = 0
+                        If dtPrevClearance.Rows.Count > 0 AndAlso Not IsDBNull(dtPrevClearance.Rows(0)("Cnt")) Then
+                            prevClearanceCount = Convert.ToInt32(dtPrevClearance.Rows(0)("Cnt"))
+                        End If
+
+                        If prevClearanceCount > 0 Then
+                            result.Status = "Enrolled"
+                            result.Remarks = "Continuing student with previous clearance activity"
+                            result.VerificationBasis = "Historical Term Clearance Activity"
+                        Else
+                            result.Status = "Not Enrolled (Returnee / Drop-out)"
+                            result.Remarks = "Continuing student with no previous term activity (Returnee/Drop-out)"
+                            result.VerificationBasis = "Historical Term Audit (No Prior Clearance Record)"
+                        End If
+                    Else
+                        result.Status = "No Record"
+                    End If
+                Catch
+                    result.Status = "No Record"
+                End Try
             End If
         Catch
         End Try
 
-        Return "No Record"
+        Return result
     End Function
 
     Public Shared Function SetStudentTermEnrollment(studentID As Integer, termID As Integer, status As String, remarks As String, db As DatabaseHelper) As Boolean
+        Return SetStudentTermEnrollment(studentID, termID, status, remarks, Nothing, String.Empty, db)
+    End Function
+
+    Public Shared Function SetStudentTermEnrollment(
+        studentID As Integer,
+        termID As Integer,
+        status As String,
+        remarks As String,
+        verifiedBy As Integer?,
+        verificationBasis As String,
+        db As DatabaseHelper
+    ) As Boolean
         If studentID <= 0 OrElse termID <= 0 Then Return False
         EnsureEnrollmentTableExists(db)
 
@@ -1240,16 +1381,18 @@ Public Class ClearanceWorkflowHelper
 
         Try
             Dim query As String =
-                "INSERT INTO studenttermenrollments (StudentID, TermID, EnrollmentStatus, Remarks) " &
-                "VALUES (@StudentID, @TermID, @Status, @Remarks) " &
-                "ON DUPLICATE KEY UPDATE EnrollmentStatus = @Status, Remarks = @Remarks, UpdatedAt = CURRENT_TIMESTAMP;"
+                "INSERT INTO studenttermenrollments (StudentID, TermID, EnrollmentStatus, Remarks, VerifiedBy, VerificationBasis, VerificationDate) " &
+                "VALUES (@StudentID, @TermID, @Status, @Remarks, @VerifiedBy, @Basis, NOW()) " &
+                "ON DUPLICATE KEY UPDATE EnrollmentStatus = @Status, Remarks = @Remarks, VerifiedBy = @VerifiedBy, VerificationBasis = @Basis, VerificationDate = NOW(), UpdatedAt = CURRENT_TIMESTAMP;"
             Dim rows = db.ExecuteNonQuery(
                 query,
                 New Dictionary(Of String, Object) From {
                     {"@StudentID", studentID},
                     {"@TermID", termID},
                     {"@Status", cleanStatus},
-                    {"@Remarks", If(remarks, "")}
+                    {"@Remarks", If(remarks, "")},
+                    {"@VerifiedBy", If(verifiedBy.HasValue AndAlso verifiedBy.Value > 0, CObj(verifiedBy.Value), DBNull.Value)},
+                    {"@Basis", If(String.IsNullOrWhiteSpace(verificationBasis), DBNull.Value, CObj(verificationBasis.Trim()))}
                 }
             )
             Return rows > 0

@@ -2000,11 +2000,11 @@ Partial Class StudentClearanceForm
         ' lblPrevEnrollBadge
         ' 
         lblPrevEnrollBadge.BackColor = Color.FromArgb(254, 243, 199)
-        lblPrevEnrollBadge.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblPrevEnrollBadge.Font = New Font("Segoe UI", 8.5F, FontStyle.Bold)
         lblPrevEnrollBadge.ForeColor = Color.FromArgb(146, 64, 14)
         lblPrevEnrollBadge.Location = New Point(480, 28)
         lblPrevEnrollBadge.Name = "lblPrevEnrollBadge"
-        lblPrevEnrollBadge.Size = New Size(110, 24)
+        lblPrevEnrollBadge.Size = New Size(215, 24)
         lblPrevEnrollBadge.TabIndex = 8
         lblPrevEnrollBadge.Text = "Not Enrolled"
         lblPrevEnrollBadge.TextAlign = ContentAlignment.MiddleCenter

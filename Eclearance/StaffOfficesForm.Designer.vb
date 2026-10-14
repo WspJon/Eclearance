@@ -128,7 +128,7 @@ Partial Class StaffOfficesForm
         btnNavStaff.Padding = New Padding(12, 0, 0, 0)
         btnNavStaff.Size = New Size(196, 42)
         btnNavStaff.TabIndex = 3
-        btnNavStaff.Text = "  Department Heads & Offices"
+        btnNavStaff.Text = "  Office Heads"
         btnNavStaff.TextAlign = ContentAlignment.MiddleLeft
         btnNavStaff.UseVisualStyleBackColor = False
         ' 
@@ -275,7 +275,7 @@ Partial Class StaffOfficesForm
         btnRemoveStaff.Name = "btnRemoveStaff"
         btnRemoveStaff.Size = New Size(260, 36)
         btnRemoveStaff.TabIndex = 4
-        btnRemoveStaff.Text = "Deactivate Department Head"
+        btnRemoveStaff.Text = "Deactivate account"
         btnRemoveStaff.UseVisualStyleBackColor = False
         ' 
         ' btnResetPassword
@@ -305,7 +305,7 @@ Partial Class StaffOfficesForm
         btnEditStaff.Name = "btnEditStaff"
         btnEditStaff.Size = New Size(260, 36)
         btnEditStaff.TabIndex = 2
-        btnEditStaff.Text = "✏ Edit Department Head account"
+        btnEditStaff.Text = "✏ Edit account"
         btnEditStaff.UseVisualStyleBackColor = False
         ' 
         ' lblActionsSub
@@ -411,7 +411,7 @@ Partial Class StaffOfficesForm
         lblSelectedStaff.Name = "lblSelectedStaff"
         lblSelectedStaff.Size = New Size(140, 15)
         lblSelectedStaff.TabIndex = 1
-        lblSelectedStaff.Text = "Department Head name"
+        lblSelectedStaff.Text = "Name"
         ' 
         ' lblDetailsTitle
         ' 
@@ -422,7 +422,7 @@ Partial Class StaffOfficesForm
         lblDetailsTitle.Name = "lblDetailsTitle"
         lblDetailsTitle.Size = New Size(180, 20)
         lblDetailsTitle.TabIndex = 0
-        lblDetailsTitle.Text = "Department Head details"
+        lblDetailsTitle.Text = "Account details"
         ' 
         ' dgvStaff
         ' 
@@ -463,7 +463,7 @@ Partial Class StaffOfficesForm
         ' 
         ' colStaffName
         ' 
-        colStaffName.HeaderText = "Staff name"
+        colStaffName.HeaderText = "Name"
         colStaffName.Name = "colStaffName"
         colStaffName.ReadOnly = True
         colStaffName.Width = 200
@@ -557,7 +557,7 @@ Partial Class StaffOfficesForm
         btnAddStaff.Name = "btnAddStaff"
         btnAddStaff.Size = New Size(184, 38)
         btnAddStaff.TabIndex = 2
-        btnAddStaff.Text = "+ Add Department Head"
+        btnAddStaff.Text = "+ Add Account"
         btnAddStaff.UseVisualStyleBackColor = False
         ' 
         ' lblSubHeader
@@ -569,7 +569,7 @@ Partial Class StaffOfficesForm
         lblSubHeader.Name = "lblSubHeader"
         lblSubHeader.Size = New Size(420, 17)
         lblSubHeader.TabIndex = 1
-        lblSubHeader.Text = "Manage Department Head accounts and clearance office assignments."
+        lblSubHeader.Text = "Manage Office Head accounts and clearance office assignments."
         ' 
         ' lblHeaderTitle
         ' 
@@ -580,7 +580,7 @@ Partial Class StaffOfficesForm
         lblHeaderTitle.Name = "lblHeaderTitle"
         lblHeaderTitle.Size = New Size(390, 37)
         lblHeaderTitle.TabIndex = 0
-        lblHeaderTitle.Text = "Department Heads & Offices"
+        lblHeaderTitle.Text = "Office Heads"
         ' 
         ' StaffOfficesForm
         ' 
@@ -599,7 +599,7 @@ Partial Class StaffOfficesForm
         MinimumSize = New Size(1100, 750)
         Name = "StaffOfficesForm"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "EClearance - Staff & Offices"
+        Text = "EClearance - Office Heads"
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)

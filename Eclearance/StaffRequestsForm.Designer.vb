@@ -196,7 +196,7 @@ Partial Class StaffRequestsForm
         lblNavSection.Name = "lblNavSection"
         lblNavSection.Size = New Size(74, 12)
         lblNavSection.TabIndex = 1
-        lblNavSection.Text = "DEPARTMENT HEAD PORTAL"
+        lblNavSection.Text = "OFFICE HEAD PORTAL"
         ' 
         ' pnlLogo
         ' 
@@ -951,7 +951,7 @@ Partial Class StaffRequestsForm
         lblStaffName.Name = "lblStaffName"
         lblStaffName.Size = New Size(80, 15)
         lblStaffName.TabIndex = 1
-        lblStaffName.Text = "Department Head"
+        lblStaffName.Text = "Office Head"
         ' 
         ' lblStaffIcon
         ' 

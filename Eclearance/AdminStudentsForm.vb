@@ -549,8 +549,13 @@ Public Class AdminStudentsForm
                 GetActiveTermID()
 
             If termID = 0 Then
+                lblDetailsTitle.Text = "Clearance details"
                 Return
             End If
+
+            Dim prevTerm = ClearanceWorkflowHelper.GetPreviousAcademicTerm(termID, db)
+            Dim enrollInfo = ClearanceWorkflowHelper.GetStudentPreviousEnrollmentDetails(studentID, prevTerm.TermID, db)
+            lblDetailsTitle.Text = "Clearance details  ·  Previous Semester: " & enrollInfo.Status
 
             Dim items = ClearanceWorkflowHelper.GetStudentClearanceItems(studentID, termID, course, yearLevel, db)
             For Each itm In items
@@ -648,7 +653,9 @@ Public Class AdminStudentsForm
         Dim course As String = If(dgvStudents.SelectedRows(0).Cells(colCourse.Index).Value, "").ToString()
 
         Using modal As New ManageEnrollmentModalForm(studentID, studentNo, studentName, course)
-            modal.ShowDialog(Me)
+            If modal.ShowDialog(Me) = DialogResult.OK Then
+                LoadSelectedStudentDetails()
+            End If
         End Using
 
     End Sub

@@ -67,7 +67,7 @@ Public Class StaffRequestsForm
     End Sub
 
     Private Sub InitializeStaffInfo()
-        lblStaffName.Text = If(String.IsNullOrWhiteSpace(AppSession.FullName), "Department Head", AppSession.FullName)
+        lblStaffName.Text = If(String.IsNullOrWhiteSpace(AppSession.FullName), "Office Head", AppSession.FullName)
         lblDateTimeBadge.Text = "📅 " & DateTime.Now.ToString("dddd, MMM dd, yyyy")
 
         If AppSession.DepartmentID.HasValue Then
@@ -712,7 +712,7 @@ Public Class StaffRequestsForm
                         Dim changed = db.ExecuteNonQuery("UPDATE ClearanceRecords SET Status = 'Cleared' WHERE RecordID = @RecordID AND Status = 'Under Review' AND SubmittedAt IS NOT NULL;",
                             New Dictionary(Of String, Object) From {{"@RecordID", recID}})
                         If changed = 0 Then Continue For
-                        db.ExecuteNonQuery("INSERT INTO ClearanceHistory (RecordID, ActionBy, ActionType, OldStatus, NewStatus, Remarks) VALUES (" & recID & ", " & AppSession.UserID & ", 'Approved (Batch)', '" & oldStatus & "', 'Cleared', 'Batch Approved by Staff')")
+                        db.ExecuteNonQuery("INSERT INTO ClearanceHistory (RecordID, ActionBy, ActionType, OldStatus, NewStatus, Remarks) VALUES (" & recID & ", " & AppSession.UserID & ", 'Approved (Batch)', '" & oldStatus & "', 'Cleared', 'Batch Approved by Office Head')")
                         ClearanceWorkflowHelper.UnlockNextStepsInDatabase(sID, tID, course, year, db, Nothing, Nothing, recID, "Cleared")
                         approvedCount += 1
                     End If

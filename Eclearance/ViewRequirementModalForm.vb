@@ -24,7 +24,7 @@ Public Class ViewRequirementModalForm
         lblStepOrder.Text = "Step " & SequenceOrder.ToString()
         lblStatusBadge.Text = EffectiveStatus
         pnlStudentAffairsRemarks.Visible = DepartmentName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase) OrElse DepartmentName.Equals("Finance Office", StringComparison.OrdinalIgnoreCase) OrElse DepartmentName.Equals("Registrar", StringComparison.OrdinalIgnoreCase) OrElse DepartmentName.Equals("OAA", StringComparison.OrdinalIgnoreCase)
-        txtStudentAffairsRemarks.Text = If(String.IsNullOrWhiteSpace(StaffRemarks), "No department head remarks yet.", StaffRemarks)
+        txtStudentAffairsRemarks.Text = If(String.IsNullOrWhiteSpace(StaffRemarks), "No office head remarks yet.", StaffRemarks)
 
         ApplyStatusStyle(lblStatusBadge, EffectiveStatus)
 

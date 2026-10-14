@@ -49,7 +49,7 @@ CREATE TABLE `academicterms` (
 
 LOCK TABLES `academicterms` WRITE;
 /*!40000 ALTER TABLE `academicterms` DISABLE KEYS */;
-INSERT INTO `academicterms` VALUES (1,'2026-2027','1st Semester',1,NULL,NULL,'2026-10-03 19:37:37');
+INSERT INTO `academicterms` VALUES (1,'2026-2027','1st Semester',1,NULL,NULL,'2026-10-03 19:37:37'),(2,'2025-2026','2nd Semester',0,NULL,NULL,'2026-10-01 00:00:00');
 /*!40000 ALTER TABLE `academicterms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -497,14 +497,19 @@ CREATE TABLE `studenttermenrollments` (
   `TermID` int(11) NOT NULL,
   `EnrollmentStatus` varchar(30) NOT NULL,
   `Remarks` varchar(255) DEFAULT NULL,
+  `VerifiedBy` int(11) DEFAULT NULL,
+  `VerificationBasis` varchar(100) DEFAULT NULL,
+  `VerificationDate` datetime DEFAULT NULL,
   `CreatedAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `UpdatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`EnrollmentID`),
   UNIQUE KEY `uq_student_term_enrollment` (`StudentID`,`TermID`),
   KEY `idx_enrollment_student` (`StudentID`),
   KEY `idx_enrollment_term` (`TermID`),
+  KEY `idx_enrollment_verifier` (`VerifiedBy`),
   CONSTRAINT `fk_enrollment_student` FOREIGN KEY (`StudentID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_enrollment_term` FOREIGN KEY (`TermID`) REFERENCES `academicterms` (`TermID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_enrollment_term` FOREIGN KEY (`TermID`) REFERENCES `academicterms` (`TermID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_enrollment_verifier` FOREIGN KEY (`VerifiedBy`) REFERENCES `users` (`UserID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

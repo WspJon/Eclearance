@@ -39,6 +39,8 @@ Partial Class CreateStudentForm
         lblStudentType = New Label()
         cmbStudentType = New ComboBox()
         chkNSTP = New CheckBox()
+        lblPrevEnrollment = New Label()
+        cmbPrevEnrollment = New ComboBox()
         lblGuidanceInfoRequired = New Label()
         chkGuidanceInfoRequired = New CheckBox()
         lblBadge03 = New Label()
@@ -78,6 +80,8 @@ Partial Class CreateStudentForm
         pnlCard.Controls.Add(lblStudentType)
         pnlCard.Controls.Add(cmbStudentType)
         pnlCard.Controls.Add(chkNSTP)
+        pnlCard.Controls.Add(lblPrevEnrollment)
+        pnlCard.Controls.Add(cmbPrevEnrollment)
         pnlCard.Controls.Add(lblGuidanceInfoRequired)
         pnlCard.Controls.Add(chkGuidanceInfoRequired)
         pnlCard.Controls.Add(lblBadge03)
@@ -101,10 +105,10 @@ Partial Class CreateStudentForm
         btnClose.BackColor = Color.Transparent
         btnClose.Cursor = Cursors.Hand
         btnClose.FlatAppearance.BorderSize = 0
-        btnClose.FlatAppearance.MouseOverBackColor = Color.FromArgb(241, 245, 249)
+        btnClose.FlatAppearance.MouseOverBackColor = Color.FromArgb(CByte(241), CByte(245), CByte(249))
         btnClose.FlatStyle = FlatStyle.Flat
-        btnClose.Font = New Font("Segoe UI", 12.0F, FontStyle.Regular, GraphicsUnit.Point)
-        btnClose.ForeColor = Color.FromArgb(100, 116, 139)
+        btnClose.Font = New Font("Segoe UI", 12F)
+        btnClose.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         btnClose.Location = New Point(528, 16)
         btnClose.Name = "btnClose"
         btnClose.Size = New Size(34, 34)
@@ -115,19 +119,19 @@ Partial Class CreateStudentForm
         ' lblModalTitle
         ' 
         lblModalTitle.AutoSize = True
-        lblModalTitle.Font = New Font("Segoe UI", 14.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblModalTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblModalTitle.Font = New Font("Segoe UI", 14.5F, FontStyle.Bold)
+        lblModalTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblModalTitle.Location = New Point(24, 20)
         lblModalTitle.Name = "lblModalTitle"
-        lblModalTitle.Size = New Size(225, 28)
+        lblModalTitle.Size = New Size(232, 28)
         lblModalTitle.TabIndex = 1
         lblModalTitle.Text = "Create student account"
         ' 
         ' lblBadge01
         ' 
-        lblBadge01.BackColor = Color.FromArgb(219, 234, 254)
-        lblBadge01.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblBadge01.ForeColor = Color.FromArgb(29, 78, 216)
+        lblBadge01.BackColor = Color.FromArgb(CByte(219), CByte(234), CByte(254))
+        lblBadge01.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblBadge01.ForeColor = Color.FromArgb(CByte(29), CByte(78), CByte(216))
         lblBadge01.Location = New Point(24, 68)
         lblBadge01.Name = "lblBadge01"
         lblBadge01.Size = New Size(26, 24)
@@ -138,30 +142,30 @@ Partial Class CreateStudentForm
         ' lblSec01
         ' 
         lblSec01.AutoSize = True
-        lblSec01.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblSec01.ForeColor = Color.FromArgb(15, 23, 42)
+        lblSec01.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
+        lblSec01.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblSec01.Location = New Point(58, 70)
         lblSec01.Name = "lblSec01"
-        lblSec01.Size = New Size(149, 20)
+        lblSec01.Size = New Size(152, 20)
         lblSec01.TabIndex = 3
         lblSec01.Text = "Student information"
         ' 
         ' lblStudentNo
         ' 
         lblStudentNo.AutoSize = True
-        lblStudentNo.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblStudentNo.ForeColor = Color.FromArgb(51, 65, 85)
+        lblStudentNo.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblStudentNo.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblStudentNo.Location = New Point(24, 102)
         lblStudentNo.Name = "lblStudentNo"
-        lblStudentNo.Size = New Size(92, 15)
+        lblStudentNo.Size = New Size(94, 15)
         lblStudentNo.TabIndex = 4
         lblStudentNo.Text = "Student number"
         ' 
         ' txtStudentNo
         ' 
         txtStudentNo.BorderStyle = BorderStyle.FixedSingle
-        txtStudentNo.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        txtStudentNo.ForeColor = Color.FromArgb(15, 23, 42)
+        txtStudentNo.Font = New Font("Segoe UI", 9.5F)
+        txtStudentNo.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         txtStudentNo.Location = New Point(24, 122)
         txtStudentNo.Name = "txtStudentNo"
         txtStudentNo.Size = New Size(528, 24)
@@ -170,8 +174,8 @@ Partial Class CreateStudentForm
         ' lblFirstName
         ' 
         lblFirstName.AutoSize = True
-        lblFirstName.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblFirstName.ForeColor = Color.FromArgb(51, 65, 85)
+        lblFirstName.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblFirstName.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblFirstName.Location = New Point(24, 160)
         lblFirstName.Name = "lblFirstName"
         lblFirstName.Size = New Size(62, 15)
@@ -181,8 +185,8 @@ Partial Class CreateStudentForm
         ' txtFirstName
         ' 
         txtFirstName.BorderStyle = BorderStyle.FixedSingle
-        txtFirstName.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        txtFirstName.ForeColor = Color.FromArgb(15, 23, 42)
+        txtFirstName.Font = New Font("Segoe UI", 9.5F)
+        txtFirstName.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         txtFirstName.Location = New Point(24, 180)
         txtFirstName.Name = "txtFirstName"
         txtFirstName.Size = New Size(254, 24)
@@ -191,19 +195,19 @@ Partial Class CreateStudentForm
         ' lblLastName
         ' 
         lblLastName.AutoSize = True
-        lblLastName.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblLastName.ForeColor = Color.FromArgb(51, 65, 85)
+        lblLastName.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblLastName.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblLastName.Location = New Point(298, 160)
         lblLastName.Name = "lblLastName"
-        lblLastName.Size = New Size(60, 15)
+        lblLastName.Size = New Size(61, 15)
         lblLastName.TabIndex = 8
         lblLastName.Text = "Last name"
         ' 
         ' txtLastName
         ' 
         txtLastName.BorderStyle = BorderStyle.FixedSingle
-        txtLastName.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        txtLastName.ForeColor = Color.FromArgb(15, 23, 42)
+        txtLastName.Font = New Font("Segoe UI", 9.5F)
+        txtLastName.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         txtLastName.Location = New Point(298, 180)
         txtLastName.Name = "txtLastName"
         txtLastName.Size = New Size(254, 24)
@@ -211,9 +215,9 @@ Partial Class CreateStudentForm
         ' 
         ' lblBadge02
         ' 
-        lblBadge02.BackColor = Color.FromArgb(219, 234, 254)
-        lblBadge02.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblBadge02.ForeColor = Color.FromArgb(29, 78, 216)
+        lblBadge02.BackColor = Color.FromArgb(CByte(219), CByte(234), CByte(254))
+        lblBadge02.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblBadge02.ForeColor = Color.FromArgb(CByte(29), CByte(78), CByte(216))
         lblBadge02.Location = New Point(24, 224)
         lblBadge02.Name = "lblBadge02"
         lblBadge02.Size = New Size(26, 24)
@@ -224,29 +228,29 @@ Partial Class CreateStudentForm
         ' lblSec02
         ' 
         lblSec02.AutoSize = True
-        lblSec02.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblSec02.ForeColor = Color.FromArgb(15, 23, 42)
+        lblSec02.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
+        lblSec02.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblSec02.Location = New Point(58, 226)
         lblSec02.Name = "lblSec02"
-        lblSec02.Size = New Size(128, 20)
+        lblSec02.Size = New Size(127, 20)
         lblSec02.TabIndex = 11
         lblSec02.Text = "Academic details"
         ' 
         ' lblCourse
         ' 
         lblCourse.AutoSize = True
-        lblCourse.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblCourse.ForeColor = Color.FromArgb(51, 65, 85)
+        lblCourse.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblCourse.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblCourse.Location = New Point(24, 258)
         lblCourse.Name = "lblCourse"
-        lblCourse.Size = New Size(44, 15)
+        lblCourse.Size = New Size(43, 15)
         lblCourse.TabIndex = 12
         lblCourse.Text = "Course"
         ' 
         ' cmbCourse
         ' 
         cmbCourse.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbCourse.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        cmbCourse.Font = New Font("Segoe UI", 9.5F)
         cmbCourse.FormattingEnabled = True
         cmbCourse.Location = New Point(24, 278)
         cmbCourse.Name = "cmbCourse"
@@ -256,18 +260,18 @@ Partial Class CreateStudentForm
         ' lblYearLevel
         ' 
         lblYearLevel.AutoSize = True
-        lblYearLevel.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblYearLevel.ForeColor = Color.FromArgb(51, 65, 85)
+        lblYearLevel.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblYearLevel.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblYearLevel.Location = New Point(298, 258)
         lblYearLevel.Name = "lblYearLevel"
-        lblYearLevel.Size = New Size(57, 15)
+        lblYearLevel.Size = New Size(56, 15)
         lblYearLevel.TabIndex = 14
         lblYearLevel.Text = "Year level"
         ' 
         ' cmbYearLevel
         ' 
         cmbYearLevel.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbYearLevel.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        cmbYearLevel.Font = New Font("Segoe UI", 9.5F)
         cmbYearLevel.FormattingEnabled = True
         cmbYearLevel.Location = New Point(298, 278)
         cmbYearLevel.Name = "cmbYearLevel"
@@ -277,18 +281,18 @@ Partial Class CreateStudentForm
         ' lblSection
         ' 
         lblSection.AutoSize = True
-        lblSection.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblSection.ForeColor = Color.FromArgb(51, 65, 85)
+        lblSection.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblSection.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblSection.Location = New Point(24, 318)
         lblSection.Name = "lblSection"
-        lblSection.Size = New Size(46, 15)
+        lblSection.Size = New Size(47, 15)
         lblSection.TabIndex = 16
         lblSection.Text = "Section"
         ' 
         ' cmbSection
         ' 
         cmbSection.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbSection.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        cmbSection.Font = New Font("Segoe UI", 9.5F)
         cmbSection.FormattingEnabled = True
         cmbSection.Location = New Point(24, 338)
         cmbSection.Name = "cmbSection"
@@ -298,8 +302,8 @@ Partial Class CreateStudentForm
         ' lblStudentType
         ' 
         lblStudentType.AutoSize = True
-        lblStudentType.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblStudentType.ForeColor = Color.FromArgb(51, 65, 85)
+        lblStudentType.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblStudentType.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblStudentType.Location = New Point(298, 318)
         lblStudentType.Name = "lblStudentType"
         lblStudentType.Size = New Size(75, 15)
@@ -309,7 +313,7 @@ Partial Class CreateStudentForm
         ' cmbStudentType
         ' 
         cmbStudentType.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbStudentType.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
+        cmbStudentType.Font = New Font("Segoe UI", 9.5F)
         cmbStudentType.FormattingEnabled = True
         cmbStudentType.Location = New Point(298, 338)
         cmbStudentType.Name = "cmbStudentType"
@@ -319,45 +323,68 @@ Partial Class CreateStudentForm
         ' chkNSTP
         ' 
         chkNSTP.AutoSize = True
-        chkNSTP.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        chkNSTP.ForeColor = Color.FromArgb(51, 65, 85)
+        chkNSTP.Font = New Font("Segoe UI", 9F)
+        chkNSTP.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         chkNSTP.Location = New Point(24, 385)
         chkNSTP.Name = "chkNSTP"
-        chkNSTP.Size = New Size(117, 19)
+        chkNSTP.Size = New Size(114, 19)
         chkNSTP.TabIndex = 20
         chkNSTP.Text = "Enrolled in NSTP"
         chkNSTP.UseVisualStyleBackColor = True
         ' 
+        ' lblPrevEnrollment
+        ' 
+        lblPrevEnrollment.AutoSize = True
+        lblPrevEnrollment.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblPrevEnrollment.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
+        lblPrevEnrollment.Location = New Point(298, 368)
+        lblPrevEnrollment.Name = "lblPrevEnrollment"
+        lblPrevEnrollment.Size = New Size(163, 15)
+        lblPrevEnrollment.TabIndex = 21
+        lblPrevEnrollment.Text = "Previous semester enrollment"
+        lblPrevEnrollment.Visible = False
+        ' 
+        ' cmbPrevEnrollment
+        ' 
+        cmbPrevEnrollment.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbPrevEnrollment.Font = New Font("Segoe UI", 9.5F)
+        cmbPrevEnrollment.FormattingEnabled = True
+        cmbPrevEnrollment.Location = New Point(298, 388)
+        cmbPrevEnrollment.Name = "cmbPrevEnrollment"
+        cmbPrevEnrollment.Size = New Size(254, 25)
+        cmbPrevEnrollment.TabIndex = 22
+        cmbPrevEnrollment.Visible = False
+        ' 
         ' lblGuidanceInfoRequired
         ' 
         lblGuidanceInfoRequired.AutoSize = True
-        lblGuidanceInfoRequired.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblGuidanceInfoRequired.ForeColor = Color.FromArgb(51, 65, 85)
+        lblGuidanceInfoRequired.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblGuidanceInfoRequired.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblGuidanceInfoRequired.Location = New Point(298, 372)
         lblGuidanceInfoRequired.Name = "lblGuidanceInfoRequired"
-        lblGuidanceInfoRequired.Size = New Size(211, 15)
-        lblGuidanceInfoRequired.TabIndex = 21
+        lblGuidanceInfoRequired.Size = New Size(210, 15)
+        lblGuidanceInfoRequired.TabIndex = 23
         lblGuidanceInfoRequired.Text = "Guidance information update required"
         lblGuidanceInfoRequired.Visible = False
         ' 
         ' chkGuidanceInfoRequired
         ' 
         chkGuidanceInfoRequired.AutoSize = True
-        chkGuidanceInfoRequired.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
-        chkGuidanceInfoRequired.ForeColor = Color.FromArgb(51, 65, 85)
+        chkGuidanceInfoRequired.Font = New Font("Segoe UI", 9F)
+        chkGuidanceInfoRequired.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         chkGuidanceInfoRequired.Location = New Point(298, 390)
         chkGuidanceInfoRequired.Name = "chkGuidanceInfoRequired"
-        chkGuidanceInfoRequired.Size = New Size(230, 19)
-        chkGuidanceInfoRequired.TabIndex = 22
+        chkGuidanceInfoRequired.Size = New Size(229, 19)
+        chkGuidanceInfoRequired.TabIndex = 24
         chkGuidanceInfoRequired.Text = "Require student to update information"
         chkGuidanceInfoRequired.UseVisualStyleBackColor = True
         chkGuidanceInfoRequired.Visible = False
         ' 
         ' lblBadge03
         ' 
-        lblBadge03.BackColor = Color.FromArgb(219, 234, 254)
-        lblBadge03.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold, GraphicsUnit.Point)
-        lblBadge03.ForeColor = Color.FromArgb(29, 78, 216)
+        lblBadge03.BackColor = Color.FromArgb(CByte(219), CByte(234), CByte(254))
+        lblBadge03.Font = New Font("Segoe UI Semibold", 8.5F, FontStyle.Bold)
+        lblBadge03.ForeColor = Color.FromArgb(CByte(29), CByte(78), CByte(216))
         lblBadge03.Location = New Point(24, 430)
         lblBadge03.Name = "lblBadge03"
         lblBadge03.Size = New Size(26, 24)
@@ -368,8 +395,8 @@ Partial Class CreateStudentForm
         ' lblSec03
         ' 
         lblSec03.AutoSize = True
-        lblSec03.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblSec03.ForeColor = Color.FromArgb(15, 23, 42)
+        lblSec03.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
+        lblSec03.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblSec03.Location = New Point(58, 432)
         lblSec03.Name = "lblSec03"
         lblSec03.Size = New Size(117, 20)
@@ -379,8 +406,8 @@ Partial Class CreateStudentForm
         ' lblUsername
         ' 
         lblUsername.AutoSize = True
-        lblUsername.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblUsername.ForeColor = Color.FromArgb(51, 65, 85)
+        lblUsername.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblUsername.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblUsername.Location = New Point(24, 464)
         lblUsername.Name = "lblUsername"
         lblUsername.Size = New Size(60, 15)
@@ -390,8 +417,8 @@ Partial Class CreateStudentForm
         ' txtUsername
         ' 
         txtUsername.BorderStyle = BorderStyle.FixedSingle
-        txtUsername.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        txtUsername.ForeColor = Color.FromArgb(15, 23, 42)
+        txtUsername.Font = New Font("Segoe UI", 9.5F)
+        txtUsername.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         txtUsername.Location = New Point(24, 484)
         txtUsername.Name = "txtUsername"
         txtUsername.Size = New Size(254, 24)
@@ -400,8 +427,8 @@ Partial Class CreateStudentForm
         ' lblPassword
         ' 
         lblPassword.AutoSize = True
-        lblPassword.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        lblPassword.ForeColor = Color.FromArgb(51, 65, 85)
+        lblPassword.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        lblPassword.ForeColor = Color.FromArgb(CByte(51), CByte(65), CByte(85))
         lblPassword.Location = New Point(298, 464)
         lblPassword.Name = "lblPassword"
         lblPassword.Size = New Size(57, 15)
@@ -411,8 +438,8 @@ Partial Class CreateStudentForm
         ' txtPassword
         ' 
         txtPassword.BorderStyle = BorderStyle.FixedSingle
-        txtPassword.Font = New Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point)
-        txtPassword.ForeColor = Color.FromArgb(15, 23, 42)
+        txtPassword.Font = New Font("Segoe UI", 9.5F)
+        txtPassword.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         txtPassword.Location = New Point(298, 484)
         txtPassword.Name = "txtPassword"
         txtPassword.Size = New Size(254, 24)
@@ -422,23 +449,22 @@ Partial Class CreateStudentForm
         ' lblPwdHelp
         ' 
         lblPwdHelp.AutoSize = True
-        lblPwdHelp.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point)
-        lblPwdHelp.ForeColor = Color.FromArgb(100, 116, 139)
+        lblPwdHelp.Font = New Font("Segoe UI", 8.25F)
+        lblPwdHelp.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblPwdHelp.Location = New Point(298, 514)
         lblPwdHelp.Name = "lblPwdHelp"
-        lblPwdHelp.Size = New Size(116, 13)
+        lblPwdHelp.Size = New Size(0, 13)
         lblPwdHelp.TabIndex = 29
-        lblPwdHelp.Text = ""
         lblPwdHelp.Visible = False
         ' 
         ' btnClearForm
         ' 
         btnClearForm.BackColor = Color.White
         btnClearForm.Cursor = Cursors.Hand
-        btnClearForm.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225)
+        btnClearForm.FlatAppearance.BorderColor = Color.FromArgb(CByte(203), CByte(213), CByte(225))
         btnClearForm.FlatStyle = FlatStyle.Flat
-        btnClearForm.Font = New Font("Segoe UI Semibold", 9.0F, FontStyle.Bold, GraphicsUnit.Point)
-        btnClearForm.ForeColor = Color.FromArgb(71, 85, 105)
+        btnClearForm.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnClearForm.ForeColor = Color.FromArgb(CByte(71), CByte(85), CByte(105))
         btnClearForm.Location = New Point(24, 545)
         btnClearForm.Name = "btnClearForm"
         btnClearForm.Size = New Size(120, 38)
@@ -449,11 +475,11 @@ Partial Class CreateStudentForm
         ' btnCreateAccount
         ' 
         btnCreateAccount.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnCreateAccount.BackColor = Color.FromArgb(11, 99, 229)
+        btnCreateAccount.BackColor = Color.FromArgb(CByte(11), CByte(99), CByte(229))
         btnCreateAccount.Cursor = Cursors.Hand
         btnCreateAccount.FlatAppearance.BorderSize = 0
         btnCreateAccount.FlatStyle = FlatStyle.Flat
-        btnCreateAccount.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point)
+        btnCreateAccount.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnCreateAccount.ForeColor = Color.White
         btnCreateAccount.Location = New Point(402, 545)
         btnCreateAccount.Name = "btnCreateAccount"
@@ -464,12 +490,12 @@ Partial Class CreateStudentForm
         ' 
         ' CreateStudentForm
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.White
         ClientSize = New Size(580, 610)
         Controls.Add(pnlCard)
-        Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
+        Font = New Font("Segoe UI", 9F)
         FormBorderStyle = FormBorderStyle.None
         MaximizeBox = False
         MinimizeBox = False
@@ -504,6 +530,8 @@ Partial Class CreateStudentForm
     Friend WithEvents lblStudentType As Label
     Friend WithEvents cmbStudentType As ComboBox
     Friend WithEvents chkNSTP As CheckBox
+    Friend WithEvents lblPrevEnrollment As Label
+    Friend WithEvents cmbPrevEnrollment As ComboBox
     Friend WithEvents lblGuidanceInfoRequired As Label
     Friend WithEvents chkGuidanceInfoRequired As CheckBox
     Friend WithEvents lblBadge03 As Label

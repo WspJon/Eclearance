@@ -208,7 +208,7 @@ Partial Class StaffHistoryForm
         lblNavSection.Name = "lblNavSection"
         lblNavSection.Size = New Size(74, 12)
         lblNavSection.TabIndex = 1
-        lblNavSection.Text = "DEPARTMENT HEAD PORTAL"
+        lblNavSection.Text = "OFFICE HEAD PORTAL"
         ' 
         ' pnlLogo
         ' 
@@ -1075,7 +1075,7 @@ Partial Class StaffHistoryForm
         lblStaffRole.Name = "lblStaffRole"
         lblStaffRole.Size = New Size(101, 12)
         lblStaffRole.TabIndex = 2
-        lblStaffRole.Text = "Department Head / Clearing Officer"
+        lblStaffRole.Text = "Office Head / Clearing Officer"
         ' 
         ' lblStaffName
         ' 
@@ -1086,7 +1086,7 @@ Partial Class StaffHistoryForm
         lblStaffName.Name = "lblStaffName"
         lblStaffName.Size = New Size(80, 15)
         lblStaffName.TabIndex = 1
-        lblStaffName.Text = "Department Head"
+        lblStaffName.Text = "Office Head"
         ' 
         ' lblStaffIcon
         ' 
@@ -1165,7 +1165,7 @@ Partial Class StaffHistoryForm
         lblHeaderTitle.Name = "lblHeaderTitle"
         lblHeaderTitle.Size = New Size(360, 37)
         lblHeaderTitle.TabIndex = 0
-        lblHeaderTitle.Text = "Department Head History"
+        lblHeaderTitle.Text = "Office Head History"
         ' 
         ' StaffHistoryForm
         ' 
@@ -1184,7 +1184,7 @@ Partial Class StaffHistoryForm
         MinimumSize = New Size(1200, 728)
         Name = "StaffHistoryForm"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "EClearance - Staff History"
+        Text = "EClearance - Office Head History"
         pnlSidebar.ResumeLayout(False)
         pnlSidebar.PerformLayout()
         pnlLogo.ResumeLayout(False)

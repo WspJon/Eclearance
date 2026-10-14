@@ -208,20 +208,28 @@ Public Class StudentClearanceForm
         Dim prevTerm = ClearanceWorkflowHelper.GetPreviousAcademicTerm(termID, db)
         lblPrevTermValue.Text = prevTerm.DisplayText
 
-        ' Previous Semester Enrollment Status (Enrolled, Not Enrolled, No Record)
+        ' Previous Semester Enrollment Status (Enrolled, Not Enrolled, N/A (New Student), N/A (Transferee), No Record)
         Dim prevEnrollStatus = ClearanceWorkflowHelper.GetStudentPreviousEnrollment(AppSession.UserID, prevTerm.TermID, db)
         lblPrevEnrollBadge.Text = prevEnrollStatus
-        Select Case prevEnrollStatus.ToLowerInvariant()
-            Case "enrolled"
-                lblPrevEnrollBadge.BackColor = Color.FromArgb(220, 252, 231)
-                lblPrevEnrollBadge.ForeColor = Color.FromArgb(21, 128, 61)
-            Case "not enrolled"
-                lblPrevEnrollBadge.BackColor = Color.FromArgb(254, 243, 199)
-                lblPrevEnrollBadge.ForeColor = Color.FromArgb(146, 64, 14)
-            Case Else ' "no record"
-                lblPrevEnrollBadge.BackColor = Color.FromArgb(241, 245, 249)
-                lblPrevEnrollBadge.ForeColor = Color.FromArgb(71, 85, 105)
-        End Select
+
+        Dim lowerStatus = prevEnrollStatus.ToLowerInvariant().Trim()
+        If lowerStatus = "enrolled" OrElse (lowerStatus.Contains("enrolled") AndAlso Not lowerStatus.Contains("not enrolled")) Then
+            ' Green badge for enrolled continuing students
+            lblPrevEnrollBadge.BackColor = Color.FromArgb(220, 252, 231)
+            lblPrevEnrollBadge.ForeColor = Color.FromArgb(21, 128, 61)
+        ElseIf lowerStatus.Contains("not enrolled") OrElse lowerStatus.Contains("returnee") OrElse lowerStatus.Contains("drop-out") OrElse lowerStatus.Contains("dropout") Then
+            ' Amber / Warm badge for returning students / drop-out
+            lblPrevEnrollBadge.BackColor = Color.FromArgb(254, 243, 199)
+            lblPrevEnrollBadge.ForeColor = Color.FromArgb(146, 64, 14)
+        ElseIf lowerStatus.Contains("n/a") OrElse lowerStatus.Contains("new student") OrElse lowerStatus.Contains("transferee") Then
+            ' Professional soft blue badge for new enrollees / transferees
+            lblPrevEnrollBadge.BackColor = Color.FromArgb(239, 246, 255)
+            lblPrevEnrollBadge.ForeColor = Color.FromArgb(29, 78, 216)
+        Else
+            ' Neutral gray badge for unrecorded
+            lblPrevEnrollBadge.BackColor = Color.FromArgb(241, 245, 249)
+            lblPrevEnrollBadge.ForeColor = Color.FromArgb(71, 85, 105)
+        End If
 
     End Sub
 
@@ -682,7 +690,7 @@ Public Class StudentClearanceForm
         End If
         lblDept.Text = deptName
         lblReq.Text = If(String.IsNullOrWhiteSpace(item.Instructions), item.RequirementName, item.RequirementName & " — " & item.Instructions)
-        If item.IsStudentAffairs Then lblReq.Text = item.RequirementName & " — Approval is subject to department head verification of any outstanding concerns."
+        If item.IsStudentAffairs Then lblReq.Text = item.RequirementName & " — Approval is subject to office head verification of any outstanding concerns."
         lblStatus.Text = item.DisplayStatus
         ApplyStatusStyle(lblStatus, item.DisplayStatus)
 
@@ -1159,8 +1167,8 @@ Public Class StudentClearanceForm
     ' ============================================================
     Private Sub RequestOfficeVerification(item As ClearanceWorkflowHelper.ClearanceItemInfo)
         Dim message = If(item.DBStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase),
-            "Have you completed the instructions in the department head remarks? Request verification of your compliance?",
-            If(item.IsFinance, "Request Finance clearance? The Department Head will verify your payment status.", If(item.IsStudentAffairs, "Request clearance verification from the Office of Student Affairs? No office visit is required unless the Department Head identifies an unresolved concern.", "Request clearance from " & item.DepartmentName & "?")))
+            "Have you completed the instructions in the office head remarks? Request verification of your compliance?",
+            If(item.IsFinance, "Request Finance clearance? The Office Head will verify your payment status.", If(item.IsStudentAffairs, "Request clearance verification from the Office of Student Affairs? No office visit is required unless the Office Head identifies an unresolved concern.", "Request clearance from " & item.DepartmentName & "?")))
         If MessageBox.Show(message, item.DepartmentName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then Return
         Try
             ClearanceWorkflowHelper.SubmitOfficeVerificationRequest(item.RecordID, db)

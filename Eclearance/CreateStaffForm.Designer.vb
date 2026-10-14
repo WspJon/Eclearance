@@ -95,7 +95,7 @@ Partial Class CreateStaffForm
         lblModalTitle.Name = "lblModalTitle"
         lblModalTitle.Size = New Size(198, 28)
         lblModalTitle.TabIndex = 1
-        lblModalTitle.Text = "Create Department Head account"
+        lblModalTitle.Text = "Create Office Head account"
         ' 
         ' lblBadge01
         ' 
@@ -118,7 +118,7 @@ Partial Class CreateStaffForm
         lblSec01.Name = "lblSec01"
         lblSec01.Size = New Size(180, 20)
         lblSec01.TabIndex = 3
-        lblSec01.Text = "Department Head information"
+        lblSec01.Text = "Office Head information"
         ' 
         ' lblFullName
         ' 
@@ -270,7 +270,7 @@ Partial Class CreateStaffForm
         lblOfficeHintText.Name = "lblOfficeHintText"
         lblOfficeHintText.Size = New Size(442, 13)
         lblOfficeHintText.TabIndex = 2
-        lblOfficeHintText.Text = "This Department Head account can review, approve, and manage clearance requests for the assigned office."
+        lblOfficeHintText.Text = "This Office Head account can review, approve, and manage clearance requests for the assigned office."
         ' 
         ' btnClearForm
         ' 
@@ -317,7 +317,7 @@ Partial Class CreateStaffForm
         Name = "CreateStaffForm"
         ShowInTaskbar = False
         StartPosition = FormStartPosition.CenterParent
-        Text = "Create staff account"
+        Text = "Create Office Head account"
         pnlCard.ResumeLayout(False)
         pnlCard.PerformLayout()
         pnlOfficeHint.ResumeLayout(False)

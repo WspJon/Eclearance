@@ -191,7 +191,7 @@ Partial Class ReportsForm
         btnNavStaff.Padding = New Padding(12, 0, 0, 0)
         btnNavStaff.Size = New Size(196, 42)
         btnNavStaff.TabIndex = 4
-        btnNavStaff.Text = "  Department Heads & Offices"
+        btnNavStaff.Text = "  Office Heads"
         btnNavStaff.TextAlign = ContentAlignment.MiddleLeft
         btnNavStaff.UseVisualStyleBackColor = False
         ' 
@@ -889,7 +889,7 @@ Partial Class ReportsForm
         lblReviewTitle.Name = "lblReviewTitle"
         lblReviewTitle.Size = New Size(338, 23)
         lblReviewTitle.TabIndex = 0
-        lblReviewTitle.Text = "Awaiting Department Head review"
+        lblReviewTitle.Text = "Awaiting Office Head review"
         ' 
         ' lblReviewCount
         ' 

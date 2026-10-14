@@ -91,7 +91,7 @@ Partial Class EditStaffForm
         lblModalTitle.Name = "lblModalTitle"
         lblModalTitle.Size = New Size(174, 28)
         lblModalTitle.TabIndex = 1
-        lblModalTitle.Text = "Edit Department Head account"
+        lblModalTitle.Text = "Edit Office Head account"
         ' 
         ' lblBadge01
         ' 
@@ -114,7 +114,7 @@ Partial Class EditStaffForm
         lblSec01.Name = "lblSec01"
         lblSec01.Size = New Size(180, 20)
         lblSec01.TabIndex = 3
-        lblSec01.Text = "Department Head information"
+        lblSec01.Text = "Office Head information"
         ' 
         ' lblFullName
         ' 
@@ -244,7 +244,7 @@ Partial Class EditStaffForm
         lblOfficeHintText.Name = "lblOfficeHintText"
         lblOfficeHintText.Size = New Size(428, 13)
         lblOfficeHintText.TabIndex = 2
-        lblOfficeHintText.Text = "Updating the assigned office redirects future clearance submissions to this Department Head."
+        lblOfficeHintText.Text = "Updating the assigned office redirects future clearance submissions to this Office Head."
         ' 
         ' btnCancel
         ' 
@@ -290,7 +290,7 @@ Partial Class EditStaffForm
         Name = "EditStaffForm"
         ShowInTaskbar = False
         StartPosition = FormStartPosition.CenterParent
-        Text = "Edit staff account"
+        Text = "Edit Office Head account"
         pnlCard.ResumeLayout(False)
         pnlCard.PerformLayout()
         pnlOfficeHint.ResumeLayout(False)

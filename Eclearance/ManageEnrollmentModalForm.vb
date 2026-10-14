@@ -36,11 +36,19 @@ Public Class ManageEnrollmentModalForm
         Try
             ClearanceWorkflowHelper.EnsureEnrollmentTableExists(db)
 
+            ' First determine active term and ensure predecessor term is registered
+            Dim activeTermID As Integer = 0
+            Dim dtActive = db.ExecuteQuery("SELECT TermID FROM AcademicTerms WHERE IsActive = 1 LIMIT 1;")
+            If dtActive.Rows.Count > 0 Then
+                activeTermID = Convert.ToInt32(dtActive.Rows(0)("TermID"))
+            End If
+
+            Dim prevTermInfo = ClearanceWorkflowHelper.GetPreviousAcademicTerm(activeTermID, db)
+
             cmbAcademicTerm.Items.Clear()
             Dim query As String = "SELECT TermID, AcademicYear, Semester, IsActive FROM AcademicTerms ORDER BY TermID DESC;"
             Dim dt As DataTable = db.ExecuteQuery(query)
 
-            Dim activeTermID As Integer = 0
             Dim items As New List(Of TermItem)()
 
             For Each row As DataRow In dt.Rows
@@ -48,12 +56,13 @@ Public Class ManageEnrollmentModalForm
                 Dim ay As String = row("AcademicYear").ToString()
                 Dim sem As String = row("Semester").ToString()
                 Dim isActive As Boolean = Convert.ToBoolean(row("IsActive"))
-                If isActive AndAlso activeTermID = 0 Then
-                    activeTermID = tId
-                End If
 
                 Dim text As String = ay & " | " & sem
-                If isActive Then text &= " (Active Term)"
+                If isActive Then
+                    text &= " (Current Active Term)"
+                ElseIf prevTermInfo.TermID = tId Then
+                    text &= " (Previous Semester)"
+                End If
                 items.Add(New TermItem With {.TermID = tId, .DisplayText = text})
             Next
 
@@ -61,19 +70,16 @@ Public Class ManageEnrollmentModalForm
                 cmbAcademicTerm.Items.Add(item)
             Next
 
-            ' Determine default selected term: preferably the previous semester of active term
+            ' Default selection to previous semester
             Dim defaultIndex As Integer = 0
-            If activeTermID > 0 Then
-                Dim prevTerm = ClearanceWorkflowHelper.GetPreviousAcademicTerm(activeTermID, db)
-                If prevTerm.TermID > 0 Then
-                    For i As Integer = 0 To cmbAcademicTerm.Items.Count - 1
-                        Dim itm = CType(cmbAcademicTerm.Items(i), TermItem)
-                        If itm.TermID = prevTerm.TermID Then
-                            defaultIndex = i
-                            Exit For
-                        End If
-                    Next
-                End If
+            If prevTermInfo.TermID > 0 Then
+                For i As Integer = 0 To cmbAcademicTerm.Items.Count - 1
+                    Dim itm = CType(cmbAcademicTerm.Items(i), TermItem)
+                    If itm.TermID = prevTermInfo.TermID Then
+                        defaultIndex = i
+                        Exit For
+                    End If
+                Next
             End If
 
             If cmbAcademicTerm.Items.Count > 0 Then
@@ -90,32 +96,60 @@ Public Class ManageEnrollmentModalForm
         Dim selectedTerm = CType(cmbAcademicTerm.SelectedItem, TermItem)
 
         Try
-            Dim query As String = "SELECT EnrollmentStatus, Remarks FROM studenttermenrollments WHERE StudentID = @StudentID AND TermID = @TermID LIMIT 1;"
-            Dim dt = db.ExecuteQuery(query, New Dictionary(Of String, Object) From {
-                {"@StudentID", _studentID},
-                {"@TermID", selectedTerm.TermID}
-            })
+            Dim details = ClearanceWorkflowHelper.GetStudentPreviousEnrollmentDetails(_studentID, selectedTerm.TermID, db)
 
-            If dt.Rows.Count > 0 Then
-                Dim status = dt.Rows(0)("EnrollmentStatus").ToString()
-                Dim remarks = If(IsDBNull(dt.Rows(0)("Remarks")), "", dt.Rows(0)("Remarks").ToString())
+            ' Match enrollment status
+            Dim matchedStatusIdx As Integer = cmbEnrollmentStatus.Items.Count - 1 ' default "No Record"
+            For i As Integer = 0 To cmbEnrollmentStatus.Items.Count - 1
+                Dim itemText = cmbEnrollmentStatus.Items(i).ToString()
+                If String.Equals(itemText, details.Status, StringComparison.OrdinalIgnoreCase) Then
+                    matchedStatusIdx = i
+                    Exit For
+                ElseIf (details.Status.IndexOf("Returnee", StringComparison.OrdinalIgnoreCase) >= 0 OrElse details.Status.IndexOf("Drop-out", StringComparison.OrdinalIgnoreCase) >= 0) AndAlso (itemText.IndexOf("Returnee", StringComparison.OrdinalIgnoreCase) >= 0 OrElse itemText.IndexOf("Drop-out", StringComparison.OrdinalIgnoreCase) >= 0) Then
+                    matchedStatusIdx = i
+                    Exit For
+                ElseIf (details.Status.IndexOf("New Student", StringComparison.OrdinalIgnoreCase) >= 0 OrElse details.Status.Equals("N/A", StringComparison.OrdinalIgnoreCase)) AndAlso itemText.IndexOf("New Student", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                    matchedStatusIdx = i
+                    Exit For
+                ElseIf details.Status.IndexOf("Transferee", StringComparison.OrdinalIgnoreCase) >= 0 AndAlso itemText.IndexOf("Transferee", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                    matchedStatusIdx = i
+                    Exit For
+                End If
+            Next
+            cmbEnrollmentStatus.SelectedIndex = matchedStatusIdx
 
-                Dim matchedIdx As Integer = -1
-                For i As Integer = 0 To cmbEnrollmentStatus.Items.Count - 1
-                    If String.Equals(cmbEnrollmentStatus.Items(i).ToString(), status, StringComparison.OrdinalIgnoreCase) Then
-                        matchedIdx = i
+            ' Match verification basis
+            Dim matchedBasisIdx As Integer = 0
+            If Not String.IsNullOrWhiteSpace(details.VerificationBasis) Then
+                For i As Integer = 0 To cmbVerificationBasis.Items.Count - 1
+                    If String.Equals(cmbVerificationBasis.Items(i).ToString(), details.VerificationBasis, StringComparison.OrdinalIgnoreCase) Then
+                        matchedBasisIdx = i
                         Exit For
                     End If
                 Next
-                cmbEnrollmentStatus.SelectedIndex = If(matchedIdx >= 0, matchedIdx, 2)
-                txtRemarks.Text = remarks
-            Else
-                cmbEnrollmentStatus.SelectedIndex = 2 ' "No Record"
-                txtRemarks.Text = String.Empty
+            ElseIf details.Status.Equals("No Record", StringComparison.OrdinalIgnoreCase) Then
+                matchedBasisIdx = 4 ' "No Document Available / Unestablished"
             End If
+            cmbVerificationBasis.SelectedIndex = matchedBasisIdx
+
+            txtRemarks.Text = details.Remarks
+
+            ' Update audit info text
+            If Not String.IsNullOrWhiteSpace(details.VerifiedByName) Then
+                Dim dateStr = If(details.VerificationDate.HasValue, details.VerificationDate.Value.ToString("MMM dd, yyyy hh:mm tt"), "Date unrecorded")
+                lblAuditInfo.Text = "Last verified by " & details.VerifiedByName & " on " & dateStr
+                If Not String.IsNullOrWhiteSpace(details.VerificationBasis) Then
+                    lblAuditInfo.Text &= " [" & details.VerificationBasis & "]"
+                End If
+            Else
+                lblAuditInfo.Text = "Last verified: No record recorded yet for this term."
+            End If
+
         Catch ex As Exception
             cmbEnrollmentStatus.SelectedIndex = 2
+            cmbVerificationBasis.SelectedIndex = 0
             txtRemarks.Text = String.Empty
+            lblAuditInfo.Text = "Last verified: No record recorded yet."
         End Try
     End Sub
 
@@ -132,14 +166,25 @@ Public Class ManageEnrollmentModalForm
 
         Dim selectedTerm = CType(cmbAcademicTerm.SelectedItem, TermItem)
         Dim status = cmbEnrollmentStatus.SelectedItem.ToString()
+        Dim basis = If(cmbVerificationBasis.SelectedItem IsNot Nothing, cmbVerificationBasis.SelectedItem.ToString(), "Manual Verification")
         Dim remarks = txtRemarks.Text.Trim()
 
-        Dim success = ClearanceWorkflowHelper.SetStudentTermEnrollment(_studentID, selectedTerm.TermID, status, remarks, db)
+        Dim success = ClearanceWorkflowHelper.SetStudentTermEnrollment(
+            _studentID,
+            selectedTerm.TermID,
+            status,
+            remarks,
+            AppSession.UserID,
+            basis,
+            db
+        )
+
         If success Then
             MessageBox.Show(
                 "Enrollment record updated successfully for " & _studentName & "." & vbCrLf & vbCrLf &
                 "Term: " & selectedTerm.DisplayText & vbCrLf &
-                "Status: " & status,
+                "Status: " & status & vbCrLf &
+                "Basis: " & basis,
                 "Saved",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information

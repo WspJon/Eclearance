@@ -43,9 +43,7 @@
 		</Compile>
 
 
-		<Compile Update="AdminStudentsForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="AdminStudentsForm.vb" />
 
 		<Compile Update="AdminStudentsForm.Designer.vb">
 			<DependentUpon>AdminStudentsForm.vb</DependentUpon>
@@ -67,9 +65,7 @@
 		</Compile>
 
 
-		<Compile Update="CreateStudentForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="CreateStudentForm.vb" />
 
 		<Compile Update="CreateStudentForm.Designer.vb">
 			<DependentUpon>CreateStudentForm.vb</DependentUpon>
@@ -77,9 +73,7 @@
 		</Compile>
 
 
-		<Compile Update="CreateStaffForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="CreateStaffForm.vb" />
 
 		<Compile Update="CreateStaffForm.Designer.vb">
 			<DependentUpon>CreateStaffForm.vb</DependentUpon>
@@ -87,9 +81,7 @@
 		</Compile>
 
 
-		<Compile Update="EditStaffForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="EditStaffForm.vb" />
 
 		<Compile Update="EditStaffForm.Designer.vb">
 			<DependentUpon>EditStaffForm.vb</DependentUpon>
@@ -97,9 +89,7 @@
 		</Compile>
 
 
-		<Compile Update="ClearanceHistoryForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="ClearanceHistoryForm.vb" />
 
 		<Compile Update="ClearanceHistoryForm.Designer.vb">
 			<DependentUpon>ClearanceHistoryForm.vb</DependentUpon>
@@ -107,9 +97,7 @@
 		</Compile>
 
 
-		<Compile Update="StartNewTermForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="StartNewTermForm.vb" />
 
 		<Compile Update="StartNewTermForm.Designer.vb">
 			<DependentUpon>StartNewTermForm.vb</DependentUpon>
@@ -117,9 +105,7 @@
 		</Compile>
 
 
-		<Compile Update="StaffOfficesForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="StaffOfficesForm.vb" />
 
 		<Compile Update="StaffOfficesForm.Designer.vb">
 			<DependentUpon>StaffOfficesForm.vb</DependentUpon>
@@ -163,9 +149,7 @@
 		</EmbeddedResource>
 
 
-		<Compile Update="StaffHistoryForm.vb">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="StaffHistoryForm.vb" />
 
 		<Compile Update="StaffHistoryForm.Designer.vb">
 			<DependentUpon>StaffHistoryForm.vb</DependentUpon>

@@ -41,7 +41,7 @@ Public Class CreateStaffForm
         Dim officeName As String = If(cmbAssignedOffice.SelectedItem IsNot Nothing, cmbAssignedOffice.SelectedItem.ToString(), "")
 
         If String.IsNullOrWhiteSpace(fullName) Then
-            ShowWarning("Please enter staff full name.")
+            ShowWarning("Please enter full name.")
             txtFullName.Focus()
             Return
         End If
@@ -111,11 +111,11 @@ Public Class CreateStaffForm
             End Using
 
             MessageBox.Show(
-                "Staff account created successfully." & Environment.NewLine & Environment.NewLine &
+                "Office Head account created successfully." & Environment.NewLine & Environment.NewLine &
                 "Name: " & fullName & Environment.NewLine &
                 "Office: " & officeName & Environment.NewLine &
                 "Username: " & username,
-                "Staff Created",
+                "Office Head Created",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
             )
@@ -124,7 +124,7 @@ Public Class CreateStaffForm
             Me.Close()
 
         Catch ex As Exception
-            MessageBox.Show("Failed to create staff account." & Environment.NewLine & Environment.NewLine & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Failed to create Office Head account." & Environment.NewLine & Environment.NewLine & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
