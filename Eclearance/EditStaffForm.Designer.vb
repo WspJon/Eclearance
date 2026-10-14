@@ -91,7 +91,7 @@ Partial Class EditStaffForm
         lblModalTitle.Name = "lblModalTitle"
         lblModalTitle.Size = New Size(174, 28)
         lblModalTitle.TabIndex = 1
-        lblModalTitle.Text = "Edit staff account"
+        lblModalTitle.Text = "Edit Department Head account"
         ' 
         ' lblBadge01
         ' 
@@ -112,9 +112,9 @@ Partial Class EditStaffForm
         lblSec01.ForeColor = Color.FromArgb(15, 23, 42)
         lblSec01.Location = New Point(58, 70)
         lblSec01.Name = "lblSec01"
-        lblSec01.Size = New Size(126, 20)
+        lblSec01.Size = New Size(180, 20)
         lblSec01.TabIndex = 3
-        lblSec01.Text = "Staff information"
+        lblSec01.Text = "Department Head information"
         ' 
         ' lblFullName
         ' 
@@ -244,7 +244,7 @@ Partial Class EditStaffForm
         lblOfficeHintText.Name = "lblOfficeHintText"
         lblOfficeHintText.Size = New Size(428, 13)
         lblOfficeHintText.TabIndex = 2
-        lblOfficeHintText.Text = "Updating the assigned office redirects future clearance submissions to this staff member."
+        lblOfficeHintText.Text = "Updating the assigned office redirects future clearance submissions to this Department Head."
         ' 
         ' btnCancel
         ' 

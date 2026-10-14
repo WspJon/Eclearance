@@ -5,6 +5,7 @@ Public Class StartNewTermForm
     Private ReadOnly db As New DatabaseHelper()
 
     Private Sub StartNewTermForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        btnNavReports.Visible = String.Equals(AppSession.Role, "Admin", StringComparison.OrdinalIgnoreCase)
         ApplySchoolLogo(picSchoolLogo)
         InitializeTermOptions()
     End Sub
@@ -220,6 +221,11 @@ Public Class StartNewTermForm
         Else
             Me.Close()
         End If
+    End Sub
+
+
+    Private Sub btnNavReports_Click(sender As Object, e As EventArgs) Handles btnNavReports.Click
+        AdminStudentsForm.OpenReportsFrom(Me)
     End Sub
 
 End Class

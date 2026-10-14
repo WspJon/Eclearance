@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class AdminStudentsForm
     Inherits System.Windows.Forms.Form
 
@@ -25,6 +25,7 @@ Partial Class AdminStudentsForm
         lblNavSection = New Label()
         btnNavStudents = New Button()
         btnNavStaff = New Button()
+        btnNavReports = New Button()
         btnNavHistory = New Button()
         btnNavStartTerm = New Button()
         btnNavLogout = New Button()
@@ -37,6 +38,7 @@ Partial Class AdminStudentsForm
         pnlBottomDetails = New Panel()
         pnlActionsCard = New Panel()
         btnResetTerm = New Button()
+        btnManageEnrollment = New Button()
         btnViewHistory = New Button()
         lblActionsSub = New Label()
         lblActionsTitle = New Label()
@@ -101,6 +103,7 @@ Partial Class AdminStudentsForm
         pnlSidebar.Controls.Add(lblNavSection)
         pnlSidebar.Controls.Add(btnNavStudents)
         pnlSidebar.Controls.Add(btnNavStaff)
+        pnlSidebar.Controls.Add(btnNavReports)
         pnlSidebar.Controls.Add(btnNavHistory)
         pnlSidebar.Controls.Add(btnNavStartTerm)
         pnlSidebar.Controls.Add(btnNavLogout)
@@ -150,18 +153,31 @@ Partial Class AdminStudentsForm
         btnNavStaff.Padding = New Padding(12, 0, 0, 0)
         btnNavStaff.Size = New Size(196, 42)
         btnNavStaff.TabIndex = 3
-        btnNavStaff.Text = "  Staff & offices"
+        btnNavStaff.Text = "  Department Heads & Offices"
         btnNavStaff.TextAlign = ContentAlignment.MiddleLeft
         btnNavStaff.UseVisualStyleBackColor = False
         ' 
         ' btnNavHistory
         ' 
+        btnNavReports.BackColor = Color.FromArgb(15, 39, 74)
+        btnNavReports.FlatAppearance.BorderSize = 0
+        btnNavReports.FlatStyle = FlatStyle.Flat
+        btnNavReports.Font = New Font("Segoe UI", 9.5F)
+        btnNavReports.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavReports.Location = New Point(12, 211)
+        btnNavReports.Name = "btnNavReports"
+        btnNavReports.Padding = New Padding(12, 0, 0, 0)
+        btnNavReports.Size = New Size(196, 42)
+        btnNavReports.TabIndex = 4
+        btnNavReports.Text = "  Reports"
+        btnNavReports.TextAlign = ContentAlignment.MiddleLeft
+        btnNavReports.UseVisualStyleBackColor = False
         btnNavHistory.BackColor = Color.FromArgb(15, 39, 74)
         btnNavHistory.FlatAppearance.BorderSize = 0
         btnNavHistory.FlatStyle = FlatStyle.Flat
         btnNavHistory.Font = New Font("Segoe UI", 9.5F)
         btnNavHistory.ForeColor = Color.FromArgb(160, 180, 208)
-        btnNavHistory.Location = New Point(12, 211)
+        btnNavHistory.Location = New Point(12, 259)
         btnNavHistory.Name = "btnNavHistory"
         btnNavHistory.Padding = New Padding(12, 0, 0, 0)
         btnNavHistory.Size = New Size(196, 42)
@@ -177,7 +193,7 @@ Partial Class AdminStudentsForm
         btnNavStartTerm.FlatStyle = FlatStyle.Flat
         btnNavStartTerm.Font = New Font("Segoe UI", 9.5F)
         btnNavStartTerm.ForeColor = Color.FromArgb(160, 180, 208)
-        btnNavStartTerm.Location = New Point(12, 259)
+        btnNavStartTerm.Location = New Point(12, 307)
         btnNavStartTerm.Name = "btnNavStartTerm"
         btnNavStartTerm.Padding = New Padding(12, 0, 0, 0)
         btnNavStartTerm.Size = New Size(196, 42)
@@ -275,6 +291,7 @@ Partial Class AdminStudentsForm
         pnlActionsCard.BackColor = Color.White
         pnlActionsCard.BorderStyle = BorderStyle.FixedSingle
         pnlActionsCard.Controls.Add(btnResetTerm)
+        pnlActionsCard.Controls.Add(btnManageEnrollment)
         pnlActionsCard.Controls.Add(btnViewHistory)
         pnlActionsCard.Controls.Add(lblActionsSub)
         pnlActionsCard.Controls.Add(lblActionsTitle)
@@ -292,12 +309,27 @@ Partial Class AdminStudentsForm
         btnResetTerm.FlatStyle = FlatStyle.Flat
         btnResetTerm.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnResetTerm.ForeColor = Color.FromArgb(220, 38, 38)
-        btnResetTerm.Location = New Point(16, 160)
+        btnResetTerm.Location = New Point(16, 172)
         btnResetTerm.Name = "btnResetTerm"
-        btnResetTerm.Size = New Size(260, 38)
-        btnResetTerm.TabIndex = 3
+        btnResetTerm.Size = New Size(260, 36)
+        btnResetTerm.TabIndex = 4
         btnResetTerm.Text = "🔄 Reset current term"
         btnResetTerm.UseVisualStyleBackColor = False
+        ' 
+        ' btnManageEnrollment
+        ' 
+        btnManageEnrollment.BackColor = Color.FromArgb(2, 132, 199)
+        btnManageEnrollment.Cursor = Cursors.Hand
+        btnManageEnrollment.FlatAppearance.BorderSize = 0
+        btnManageEnrollment.FlatStyle = FlatStyle.Flat
+        btnManageEnrollment.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
+        btnManageEnrollment.ForeColor = Color.White
+        btnManageEnrollment.Location = New Point(16, 130)
+        btnManageEnrollment.Name = "btnManageEnrollment"
+        btnManageEnrollment.Size = New Size(260, 36)
+        btnManageEnrollment.TabIndex = 3
+        btnManageEnrollment.Text = "🎓 Previous Enrollment"
+        btnManageEnrollment.UseVisualStyleBackColor = False
         ' 
         ' btnViewHistory
         ' 
@@ -307,9 +339,9 @@ Partial Class AdminStudentsForm
         btnViewHistory.FlatStyle = FlatStyle.Flat
         btnViewHistory.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
         btnViewHistory.ForeColor = Color.White
-        btnViewHistory.Location = New Point(16, 110)
+        btnViewHistory.Location = New Point(16, 88)
         btnViewHistory.Name = "btnViewHistory"
-        btnViewHistory.Size = New Size(260, 38)
+        btnViewHistory.Size = New Size(260, 36)
         btnViewHistory.TabIndex = 2
         btnViewHistory.Text = "📋 View history"
         btnViewHistory.UseVisualStyleBackColor = False
@@ -861,6 +893,7 @@ Partial Class AdminStudentsForm
     Friend WithEvents lblNavSection As Label
     Friend WithEvents btnNavStudents As Button
     Friend WithEvents btnNavStaff As Button
+    Friend WithEvents btnNavReports As Button
     Friend WithEvents btnNavHistory As Button
     Friend WithEvents btnNavStartTerm As Button
     Friend WithEvents btnNavLogout As Button
@@ -909,6 +942,7 @@ Partial Class AdminStudentsForm
     Friend WithEvents lblActionsTitle As Label
     Friend WithEvents lblActionsSub As Label
     Friend WithEvents btnViewHistory As Button
+    Friend WithEvents btnManageEnrollment As Button
     Friend WithEvents btnResetTerm As Button
     Friend WithEvents lblFooterNotice As Label
 

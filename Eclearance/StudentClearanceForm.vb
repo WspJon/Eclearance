@@ -1,4 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 Imports System.IO
 Imports System.Diagnostics
 Imports System.Linq
@@ -29,6 +29,10 @@ Public Class StudentClearanceForm
         e As EventArgs
     ) Handles MyBase.Resize
 
+        ApplyStepperLayout()
+        If pnlMain IsNot Nothing AndAlso pnlClearanceTable IsNot Nothing Then
+            pnlClearanceTable.Height = Math.Max(200, pnlMain.ClientSize.Height - pnlClearanceTable.Top - 20)
+        End If
         ApplyTableLayout()
 
     End Sub
@@ -87,7 +91,6 @@ Public Class StudentClearanceForm
             LoadCurrentTerm(activeTermID)
 
             allClearanceItems = ClearanceWorkflowHelper.GetStudentClearanceItems(AppSession.UserID, activeTermID, AppSession.Course, AppSession.YearLevel, db)
-            UpdateCompletionBanner(allClearanceItems)
 
             ' Ensure CTHM Stock Room is completely hidden when not applicable to the student's program
             If allClearanceItems IsNot Nothing Then
@@ -95,6 +98,9 @@ Public Class StudentClearanceForm
                 ' Hide NSTP when the existing enrollment/year applicability rules exclude it.
                 allClearanceItems = allClearanceItems.Where(Function(i) Not (i.RequiresNSTP AndAlso Not i.IsApplicable)).ToList()
             End If
+
+            UpdateProgressDisplay(allClearanceItems)
+            UpdateCompletionBanner(allClearanceItems)
 
             ClearanceWorkflowHelper.UnlockNextStepsInDatabase(AppSession.UserID, activeTermID, AppSession.Course, AppSession.YearLevel, db)
 
@@ -134,10 +140,15 @@ Public Class StudentClearanceForm
     Private Sub UpdateCompletionBanner(items As List(Of ClearanceWorkflowHelper.ClearanceItemInfo))
         Dim applicable = If(items, New List(Of ClearanceWorkflowHelper.ClearanceItemInfo)()).Where(Function(i) i.IsApplicable).ToList()
         Dim completed As Boolean = applicable.Count > 0 AndAlso applicable.All(Function(i) String.Equals(i.EffectiveStatus, "Cleared", StringComparison.OrdinalIgnoreCase))
-        Dim tableBottom As Integer = pnlClearanceTable.Bottom
         pnlCompletionBanner.Visible = completed
-        pnlClearanceTable.Top = If(completed, pnlCompletionBanner.Bottom + 10, pnlCompletionBanner.Top)
-        pnlClearanceTable.Height = Math.Max(200, tableBottom - pnlClearanceTable.Top)
+
+        If completed Then
+            pnlCompletionBanner.Location = New Point(28, 300)
+            pnlClearanceTable.Location = New Point(28, pnlCompletionBanner.Bottom + 10)
+        Else
+            pnlClearanceTable.Location = New Point(28, 300)
+        End If
+        pnlClearanceTable.Height = Math.Max(200, pnlMain.ClientSize.Height - pnlClearanceTable.Top - 20)
     End Sub
 
     ' ============================================================
@@ -163,9 +174,12 @@ Public Class StudentClearanceForm
     End Function
 
     ' ============================================================
-    ' DISPLAY CURRENT TERM
+    ' DISPLAY CURRENT & PREVIOUS TERM INFORMATION
     ' ============================================================
     Private Sub LoadCurrentTerm(termID As Integer)
+
+        Dim currentAY As String = "2026-2027"
+        Dim currentSem As String = "1st Semester"
 
         Dim query As String =
             "SELECT AcademicYear, Semester " &
@@ -181,11 +195,204 @@ Public Class StudentClearanceForm
 
         If dt.Rows.Count > 0 Then
             Dim row As DataRow = dt.Rows(0)
-            lblTermText.Text = "Academic Year: " & row("AcademicYear").ToString() & "  |  Semester: " & row("Semester").ToString()
+            currentAY = row("AcademicYear").ToString()
+            currentSem = row("Semester").ToString()
+            lblTermText.Text = "Academic Year: " & currentAY & "  |  Semester: " & currentSem
         Else
             lblTermText.Text = "Current Term"
         End If
 
+        lblCurrentTermValue.Text = currentAY & " | " & currentSem
+
+        ' Previous Semester information determined chronologically
+        Dim prevTerm = ClearanceWorkflowHelper.GetPreviousAcademicTerm(termID, db)
+        lblPrevTermValue.Text = prevTerm.DisplayText
+
+        ' Previous Semester Enrollment Status (Enrolled, Not Enrolled, No Record)
+        Dim prevEnrollStatus = ClearanceWorkflowHelper.GetStudentPreviousEnrollment(AppSession.UserID, prevTerm.TermID, db)
+        lblPrevEnrollBadge.Text = prevEnrollStatus
+        Select Case prevEnrollStatus.ToLowerInvariant()
+            Case "enrolled"
+                lblPrevEnrollBadge.BackColor = Color.FromArgb(220, 252, 231)
+                lblPrevEnrollBadge.ForeColor = Color.FromArgb(21, 128, 61)
+            Case "not enrolled"
+                lblPrevEnrollBadge.BackColor = Color.FromArgb(254, 243, 199)
+                lblPrevEnrollBadge.ForeColor = Color.FromArgb(146, 64, 14)
+            Case Else ' "no record"
+                lblPrevEnrollBadge.BackColor = Color.FromArgb(241, 245, 249)
+                lblPrevEnrollBadge.ForeColor = Color.FromArgb(71, 85, 105)
+        End Select
+
+    End Sub
+
+    ' ============================================================
+    ' PROGRESS DISPLAY & STEPPER BINDING
+    ' ============================================================
+    Private Sub UpdateProgressDisplay(items As List(Of ClearanceWorkflowHelper.ClearanceItemInfo))
+        Dim progress = ClearanceWorkflowHelper.ComputeClearanceProgress(items)
+        lblProgressCount.Text = progress.ProgressSummary
+        lblNextStep.Text = "Next step: " & progress.NextStepText
+
+        ' Clearance Status Badge
+        lblClearanceStatusBadge.Text = progress.OverallStatus
+        Select Case progress.OverallStatus.ToLowerInvariant()
+            Case "cleared"
+                lblClearanceStatusBadge.BackColor = Color.FromArgb(220, 252, 231)
+                lblClearanceStatusBadge.ForeColor = Color.FromArgb(21, 128, 61)
+            Case "needs attention"
+                lblClearanceStatusBadge.BackColor = Color.FromArgb(254, 226, 226)
+                lblClearanceStatusBadge.ForeColor = Color.FromArgb(185, 28, 28)
+            Case Else ' "in progress"
+                lblClearanceStatusBadge.BackColor = Color.FromArgb(239, 246, 255)
+                lblClearanceStatusBadge.ForeColor = Color.FromArgb(29, 78, 216)
+        End Select
+
+        ' Progress bar fill width
+        Dim fillWidth As Integer = 0
+        If pnlProgressBarBg.Width > 0 AndAlso progress.Percentage > 0 Then
+            fillWidth = CInt(Math.Round((pnlProgressBarBg.Width * progress.Percentage) / 100.0))
+        End If
+        pnlProgressBarFill.Width = Math.Min(pnlProgressBarBg.Width, fillWidth)
+
+        ' Stepper nodes
+        UpdateStepperDisplay(items)
+    End Sub
+
+    Private Sub UpdateStepperDisplay(items As List(Of ClearanceWorkflowHelper.ClearanceItemInfo))
+        If items Is Nothing Then Return
+
+        ' 1. Guidance
+        Dim itemGuidance = items.FirstOrDefault(Function(i) i.DepartmentID = 6 OrElse (i.DepartmentName IsNot Nothing AndAlso i.DepartmentName.ToLowerInvariant().Contains("guidance")))
+        SetStepperNode(1, lblStepCircle1, lblStepStatus1, pnlStepLine1, itemGuidance)
+
+        ' 2. Library
+        Dim itemLibrary = items.FirstOrDefault(Function(i) i.DepartmentID = 3 OrElse (i.DepartmentName IsNot Nothing AndAlso i.DepartmentName.ToLowerInvariant().Contains("library")))
+        SetStepperNode(2, lblStepCircle2, lblStepStatus2, pnlStepLine2, itemLibrary)
+
+        ' 3. OSA (Office of Student Affairs)
+        Dim itemOSA = items.FirstOrDefault(Function(i) i.DepartmentID = 4 OrElse (i.DepartmentName IsNot Nothing AndAlso (i.DepartmentName.ToLowerInvariant().Contains("student affairs") OrElse i.DepartmentName.Equals("OSA", StringComparison.OrdinalIgnoreCase))))
+        SetStepperNode(3, lblStepCircle3, lblStepStatus3, pnlStepLine3, itemOSA)
+
+        ' 4. Clinic
+        Dim itemClinic = items.FirstOrDefault(Function(i) i.DepartmentID = 9 OrElse (i.DepartmentName IsNot Nothing AndAlso i.DepartmentName.ToLowerInvariant().Contains("clinic")))
+        SetStepperNode(4, lblStepCircle4, lblStepStatus4, pnlStepLine4, itemClinic)
+
+        ' 5. College Dean (CCS, CTHM, CBA, COE)
+        Dim itemDean = items.FirstOrDefault(Function(i) i.SequenceOrder = 6 OrElse (i.DepartmentName IsNot Nothing AndAlso (i.DepartmentName.ToLowerInvariant().Contains("dean") OrElse i.DepartmentName.Equals("CCS", StringComparison.OrdinalIgnoreCase) OrElse i.DepartmentName.Equals("CTHM", StringComparison.OrdinalIgnoreCase) OrElse i.DepartmentName.Equals("CBA", StringComparison.OrdinalIgnoreCase) OrElse i.DepartmentName.Equals("COE", StringComparison.OrdinalIgnoreCase))))
+        If itemDean IsNot Nothing Then
+            Dim dName = itemDean.DepartmentName.Replace("College Dean", "").Replace("Dean", "").Trim()
+            If Not String.IsNullOrWhiteSpace(dName) Then
+                lblStepName5.Text = dName
+            Else
+                lblStepName5.Text = "Dean"
+            End If
+        End If
+        SetStepperNode(5, lblStepCircle5, lblStepStatus5, pnlStepLine5, itemDean)
+
+        ' 6. Finance
+        Dim itemFinance = items.FirstOrDefault(Function(i) i.DepartmentID = 1 OrElse (i.DepartmentName IsNot Nothing AndAlso i.DepartmentName.ToLowerInvariant().Contains("finance")))
+        SetStepperNode(6, lblStepCircle6, lblStepStatus6, pnlStepLine6, itemFinance)
+
+        ' 7. Registrar
+        Dim itemRegistrar = items.FirstOrDefault(Function(i) i.DepartmentID = 2 OrElse (i.DepartmentName IsNot Nothing AndAlso i.DepartmentName.ToLowerInvariant().Contains("registrar")))
+        SetStepperNode(7, lblStepCircle7, lblStepStatus7, pnlStepLine7, itemRegistrar)
+
+        ' 8. OAA
+        Dim itemOAA = items.FirstOrDefault(Function(i) i.DepartmentID = 5 OrElse (i.DepartmentName IsNot Nothing AndAlso i.DepartmentName.ToLowerInvariant().Contains("oaa")))
+        SetStepperNode(8, lblStepCircle8, lblStepStatus8, Nothing, itemOAA)
+
+        ApplyStepperLayout()
+    End Sub
+
+    Private Sub SetStepperNode(
+        stepNum As Integer,
+        circle As Label,
+        statusLbl As Label,
+        line As Panel,
+        item As ClearanceWorkflowHelper.ClearanceItemInfo
+    )
+        Dim status = If(item IsNot Nothing, item.EffectiveStatus, "Pending")
+        Select Case status.ToLowerInvariant()
+            Case "cleared"
+                circle.BackColor = Color.FromArgb(22, 163, 74)
+                circle.ForeColor = Color.White
+                circle.Text = "✓"
+                statusLbl.Text = "Cleared"
+                statusLbl.ForeColor = Color.FromArgb(22, 163, 74)
+                If line IsNot Nothing Then line.BackColor = Color.FromArgb(22, 163, 74)
+
+            Case "under review"
+                circle.BackColor = Color.FromArgb(37, 99, 235)
+                circle.ForeColor = Color.White
+                circle.Text = "⏳"
+                statusLbl.Text = "In Progress"
+                statusLbl.ForeColor = Color.FromArgb(37, 99, 235)
+                If line IsNot Nothing Then line.BackColor = Color.FromArgb(226, 232, 240)
+
+            Case "rejected"
+                circle.BackColor = Color.FromArgb(239, 68, 68)
+                circle.ForeColor = Color.White
+                circle.Text = "!"
+                statusLbl.Text = "Attention"
+                statusLbl.ForeColor = Color.FromArgb(220, 38, 38)
+                If line IsNot Nothing Then line.BackColor = Color.FromArgb(226, 232, 240)
+
+            Case "locked"
+                circle.BackColor = Color.FromArgb(241, 245, 249)
+                circle.ForeColor = Color.FromArgb(148, 163, 184)
+                circle.Text = "🔒"
+                statusLbl.Text = "Locked"
+                statusLbl.ForeColor = Color.FromArgb(148, 163, 184)
+                If line IsNot Nothing Then line.BackColor = Color.FromArgb(226, 232, 240)
+
+            Case Else ' "pending"
+                circle.BackColor = Color.FromArgb(241, 245, 249)
+                circle.ForeColor = Color.FromArgb(71, 85, 105)
+                circle.Text = stepNum.ToString()
+                statusLbl.Text = "Pending"
+                statusLbl.ForeColor = Color.FromArgb(100, 116, 139)
+                If line IsNot Nothing Then line.BackColor = Color.FromArgb(226, 232, 240)
+        End Select
+    End Sub
+
+    Private Sub ApplyStepperLayout()
+        Try
+            If pnlStepper Is Nothing Then Return
+            Dim totalStepperWidth As Integer = pnlStepper.ClientSize.Width
+            If totalStepperWidth < 800 Then totalStepperWidth = 800
+
+            Dim colWidth As Integer = totalStepperWidth \ 8
+            Dim stepPanels = {pnlStep1, pnlStep2, pnlStep3, pnlStep4, pnlStep5, pnlStep6, pnlStep7, pnlStep8}
+            Dim stepCircles = {lblStepCircle1, lblStepCircle2, lblStepCircle3, lblStepCircle4, lblStepCircle5, lblStepCircle6, lblStepCircle7, lblStepCircle8}
+            Dim stepNames = {lblStepName1, lblStepName2, lblStepName3, lblStepName4, lblStepName5, lblStepName6, lblStepName7, lblStepName8}
+            Dim stepStatuses = {lblStepStatus1, lblStepStatus2, lblStepStatus3, lblStepStatus4, lblStepStatus5, lblStepStatus6, lblStepStatus7, lblStepStatus8}
+            Dim stepLines = {pnlStepLine1, pnlStepLine2, pnlStepLine3, pnlStepLine4, pnlStepLine5, pnlStepLine6, pnlStepLine7}
+
+            For idx As Integer = 0 To 7
+                Dim sPanel = stepPanels(idx)
+                sPanel.Location = New Point(idx * colWidth, 0)
+                sPanel.Size = New Size(colWidth, pnlStepper.ClientSize.Height)
+
+                Dim circle = stepCircles(idx)
+                Dim circleX = (colWidth - circle.Width) \ 2
+                circle.Location = New Point(circleX, 2)
+
+                Dim nameLbl = stepNames(idx)
+                nameLbl.Location = New Point(0, 30)
+                nameLbl.Size = New Size(colWidth, 16)
+
+                Dim statLbl = stepStatuses(idx)
+                statLbl.Location = New Point(0, 46)
+                statLbl.Size = New Size(colWidth, 16)
+
+                If idx < 7 Then
+                    Dim line = stepLines(idx)
+                    line.Location = New Point(circleX + circle.Width, 14)
+                    line.Size = New Size(colWidth - circle.Width, 2)
+                End If
+            Next
+        Catch ex As Exception
+        End Try
     End Sub
 
     ' ============================================================
@@ -338,6 +545,8 @@ Public Class StudentClearanceForm
                 div.Location = New Point(0, rowHeight - 1)
                 div.Size = New Size(totalWidth, 1)
             Next
+
+            ApplyStepperLayout()
         Catch ex As Exception
         End Try
     End Sub
@@ -467,9 +676,13 @@ Public Class StudentClearanceForm
 
         rowPanel.Visible = True
         lblNum.Text = (rowIndex + 1).ToString()
-        lblDept.Text = item.DepartmentName
+        Dim deptName As String = item.DepartmentName
+        If String.Equals(deptName, "OSA", StringComparison.OrdinalIgnoreCase) Then
+            deptName = "Office of Student Affairs"
+        End If
+        lblDept.Text = deptName
         lblReq.Text = If(String.IsNullOrWhiteSpace(item.Instructions), item.RequirementName, item.RequirementName & " — " & item.Instructions)
-        If item.IsStudentAffairs Then lblReq.Text = item.RequirementName & " — Approval is subject to staff verification of any outstanding concerns."
+        If item.IsStudentAffairs Then lblReq.Text = item.RequirementName & " — Approval is subject to department head verification of any outstanding concerns."
         lblStatus.Text = item.DisplayStatus
         ApplyStatusStyle(lblStatus, item.DisplayStatus)
 
@@ -946,8 +1159,8 @@ Public Class StudentClearanceForm
     ' ============================================================
     Private Sub RequestOfficeVerification(item As ClearanceWorkflowHelper.ClearanceItemInfo)
         Dim message = If(item.DBStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase),
-            "Have you completed the instructions in the staff remarks? Request verification of your compliance?",
-            If(item.IsFinance, "Request Finance clearance? Staff will check your payment status.", If(item.IsStudentAffairs, "Request clearance verification from the Office of Student Affairs? No office visit is required unless staff identify an unresolved concern.", "Request clearance from " & item.DepartmentName & "?")))
+            "Have you completed the instructions in the department head remarks? Request verification of your compliance?",
+            If(item.IsFinance, "Request Finance clearance? The Department Head will verify your payment status.", If(item.IsStudentAffairs, "Request clearance verification from the Office of Student Affairs? No office visit is required unless the Department Head identifies an unresolved concern.", "Request clearance from " & item.DepartmentName & "?")))
         If MessageBox.Show(message, item.DepartmentName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then Return
         Try
             ClearanceWorkflowHelper.SubmitOfficeVerificationRequest(item.RecordID, db)

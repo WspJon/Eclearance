@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StaffHistoryForm
     Inherits System.Windows.Forms.Form
 
@@ -208,7 +208,7 @@ Partial Class StaffHistoryForm
         lblNavSection.Name = "lblNavSection"
         lblNavSection.Size = New Size(74, 12)
         lblNavSection.TabIndex = 1
-        lblNavSection.Text = "STAFF PORTAL"
+        lblNavSection.Text = "DEPARTMENT HEAD PORTAL"
         ' 
         ' pnlLogo
         ' 
@@ -1075,7 +1075,7 @@ Partial Class StaffHistoryForm
         lblStaffRole.Name = "lblStaffRole"
         lblStaffRole.Size = New Size(101, 12)
         lblStaffRole.TabIndex = 2
-        lblStaffRole.Text = "Staff / Clearing Officer"
+        lblStaffRole.Text = "Department Head / Clearing Officer"
         ' 
         ' lblStaffName
         ' 
@@ -1086,7 +1086,7 @@ Partial Class StaffHistoryForm
         lblStaffName.Name = "lblStaffName"
         lblStaffName.Size = New Size(80, 15)
         lblStaffName.TabIndex = 1
-        lblStaffName.Text = "Staff Member"
+        lblStaffName.Text = "Department Head"
         ' 
         ' lblStaffIcon
         ' 
@@ -1163,9 +1163,9 @@ Partial Class StaffHistoryForm
         lblHeaderTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblHeaderTitle.Location = New Point(24, 16)
         lblHeaderTitle.Name = "lblHeaderTitle"
-        lblHeaderTitle.Size = New Size(180, 37)
+        lblHeaderTitle.Size = New Size(360, 37)
         lblHeaderTitle.TabIndex = 0
-        lblHeaderTitle.Text = "Staff History"
+        lblHeaderTitle.Text = "Department Head History"
         ' 
         ' StaffHistoryForm
         ' 

@@ -82,7 +82,7 @@ Public Class ReviewClearanceForm
     End Sub
 
     Private Sub InitializeStaffInfo()
-        lblStaffName.Text = If(String.IsNullOrWhiteSpace(AppSession.FullName), "Staff Officer", AppSession.FullName)
+        lblStaffName.Text = If(String.IsNullOrWhiteSpace(AppSession.FullName), "Department Head", AppSession.FullName)
         lblDateTimeBadge.Text = "📅 " & DateTime.Now.ToString("dddd, MMM dd, yyyy")
 
         If AppSession.DepartmentID.HasValue Then
@@ -307,8 +307,8 @@ Public Class ReviewClearanceForm
                 pnlSequentialReview.Visible = True
                 lblSequentialReviewTitle.Text = deptName & " Clearance Review"
                 lblSequentialReviewInstructions.Text = If(deptName.Equals("Registrar", StringComparison.OrdinalIgnoreCase),
-                    "Registrar staff will review your clearance after Finance approval.",
-                    "OAA staff will review your clearance after Registrar approval.")
+                    "Registrar will review your clearance after Finance approval.",
+                    "OAA will review your clearance after Registrar approval.")
                 lblStatusSubText.Text = lblSequentialReviewInstructions.Text
                 lblFileTitle.Visible = False
                 lblFileVal.Visible = False
@@ -339,7 +339,7 @@ Public Class ReviewClearanceForm
                 btnReject.Text = "Return for Completion"
                 btnReject.BackColor = Color.FromArgb(234, 88, 12)
                 btnReject.ForeColor = Color.White
-                lblStatusSubText.Text = "Review the submitted assessment. Supporting documents are only required when requested by Clinic staff."
+                lblStatusSubText.Text = "Review the submitted assessment. Supporting documents are only required when requested by Clinic Department Head."
                 LoadClinicAssessment()
             Else
                 ' Standard file-based offices: Show document preview, hide guidance panel
@@ -489,7 +489,7 @@ Public Class ReviewClearanceForm
         lblPrerequisiteApprovalDetails.Visible = Not approved
         If approved Then
             Dim separator = metadata.LastIndexOf(" · ", StringComparison.Ordinal)
-            lblPrerequisiteApproverName.Text = If(separator < 0, "Approving staff not recorded", metadata.Substring(0, separator))
+            lblPrerequisiteApproverName.Text = If(separator < 0, "Approving Department Head not recorded", metadata.Substring(0, separator))
             lblPrerequisiteApprovalDate.Text = If(separator < 0, "Approval date not recorded", metadata.Substring(separator + 3).Replace(" am", " AM").Replace(" pm", " PM"))
         Else
             lblPrerequisiteApprovalDetails.Text = "Status: " & status
@@ -512,7 +512,7 @@ Public Class ReviewClearanceForm
 
     Private Shared Function FormatApprovalMetadata(row As DataRow) As String
         Dim name = If(row Is Nothing OrElse IsDBNull(row("ApproverName")), "", row("ApproverName").ToString().Trim())
-        If String.IsNullOrWhiteSpace(name) Then name = "Approving staff not recorded"
+        If String.IsNullOrWhiteSpace(name) Then name = "Approving Department Head not recorded"
         Dim dateText = If(row Is Nothing OrElse IsDBNull(row("ApprovedAt")), "Approval date not recorded", Convert.ToDateTime(row("ApprovedAt")).ToString("MMM dd, yyyy hh:mm tt"))
         Return name & " · " & dateText
     End Function
@@ -1021,7 +1021,7 @@ Public Class ReviewClearanceForm
                             histCmd.Parameters.AddWithValue("@OldStatus", currentStatus)
                             histCmd.Parameters.AddWithValue("@NewStatus", newStatus)
                             Dim historyRemarks = If(_isOfficeVerification AndAlso newStatus = "Cleared",
-                                If(_isFinance, "Finance verified: all balances settled. ", "Staff verified: no unresolved concerns. ") & remarks,
+                                If(_isFinance, "Finance verified: all balances settled. ", "Department Head verified: no unresolved concerns. ") & remarks,
                                 If(String.IsNullOrWhiteSpace(remarks), actionTypeName, remarks))
                             histCmd.Parameters.AddWithValue("@Remarks", historyRemarks.Substring(0, Math.Min(500, historyRemarks.Length)))
                             histCmd.ExecuteNonQuery()

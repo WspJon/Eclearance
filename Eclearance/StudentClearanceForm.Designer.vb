@@ -151,6 +151,62 @@ Partial Class StudentClearanceForm
         lblColNum = New Label()
         pnlTermBanner = New Panel()
         lblTermText = New Label()
+        lblCurrentTermTitle = New Label()
+        lblCurrentTermValue = New Label()
+        pnlTermSep1 = New Panel()
+        lblPrevTermTitle = New Label()
+        lblPrevTermValue = New Label()
+        pnlTermSep2 = New Panel()
+        lblPrevEnrollTitle = New Label()
+        lblPrevEnrollBadge = New Label()
+        lblClearanceStatusTitle = New Label()
+        lblClearanceStatusBadge = New Label()
+        pnlProgressCard = New Panel()
+        lblProgressTitle = New Label()
+        lblProgressCount = New Label()
+        lblNextStep = New Label()
+        pnlProgressBarBg = New Panel()
+        pnlProgressBarFill = New Panel()
+        pnlStepper = New Panel()
+        pnlStep1 = New Panel()
+        lblStepCircle1 = New Label()
+        lblStepName1 = New Label()
+        lblStepStatus1 = New Label()
+        pnlStepLine1 = New Panel()
+        pnlStep2 = New Panel()
+        lblStepCircle2 = New Label()
+        lblStepName2 = New Label()
+        lblStepStatus2 = New Label()
+        pnlStepLine2 = New Panel()
+        pnlStep3 = New Panel()
+        lblStepCircle3 = New Label()
+        lblStepName3 = New Label()
+        lblStepStatus3 = New Label()
+        pnlStepLine3 = New Panel()
+        pnlStep4 = New Panel()
+        lblStepCircle4 = New Label()
+        lblStepName4 = New Label()
+        lblStepStatus4 = New Label()
+        pnlStepLine4 = New Panel()
+        pnlStep5 = New Panel()
+        lblStepCircle5 = New Label()
+        lblStepName5 = New Label()
+        lblStepStatus5 = New Label()
+        pnlStepLine5 = New Panel()
+        pnlStep6 = New Panel()
+        lblStepCircle6 = New Label()
+        lblStepName6 = New Label()
+        lblStepStatus6 = New Label()
+        pnlStepLine6 = New Panel()
+        pnlStep7 = New Panel()
+        lblStepCircle7 = New Label()
+        lblStepName7 = New Label()
+        lblStepStatus7 = New Label()
+        pnlStepLine7 = New Panel()
+        pnlStep8 = New Panel()
+        lblStepCircle8 = New Label()
+        lblStepName8 = New Label()
+        lblStepStatus8 = New Label()
         pnlHeader = New Panel()
         lblStudentDetails = New Label()
         lblStudentName = New Label()
@@ -183,6 +239,17 @@ Partial Class StudentClearanceForm
         pnlAction1.SuspendLayout()
         pnlTableHeader.SuspendLayout()
         pnlTermBanner.SuspendLayout()
+        pnlProgressCard.SuspendLayout()
+        pnlProgressBarBg.SuspendLayout()
+        pnlStepper.SuspendLayout()
+        pnlStep1.SuspendLayout()
+        pnlStep2.SuspendLayout()
+        pnlStep3.SuspendLayout()
+        pnlStep4.SuspendLayout()
+        pnlStep5.SuspendLayout()
+        pnlStep6.SuspendLayout()
+        pnlStep7.SuspendLayout()
+        pnlStep8.SuspendLayout()
         pnlHeader.SuspendLayout()
         SuspendLayout()
         ' 
@@ -311,8 +378,9 @@ Partial Class StudentClearanceForm
         ' 
         pnlMain.AutoScroll = True
         pnlMain.BackColor = Color.FromArgb(CByte(248), CByte(250), CByte(252))
-        pnlMain.Controls.Add(pnlCompletionBanner)
         pnlMain.Controls.Add(pnlClearanceTable)
+        pnlMain.Controls.Add(pnlCompletionBanner)
+        pnlMain.Controls.Add(pnlProgressCard)
         pnlMain.Controls.Add(pnlTermBanner)
         pnlMain.Controls.Add(pnlHeader)
         pnlMain.Dock = DockStyle.Fill
@@ -325,9 +393,9 @@ Partial Class StudentClearanceForm
         pnlCompletionBanner.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         pnlCompletionBanner.BackColor = Color.FromArgb(240, 253, 244)
         pnlCompletionBanner.BorderStyle = BorderStyle.FixedSingle
-        pnlCompletionBanner.Location = New Point(28, 128)
+        pnlCompletionBanner.Location = New Point(28, 300)
         pnlCompletionBanner.Name = "pnlCompletionBanner"
-        pnlCompletionBanner.Size = New Size(934, 76)
+        pnlCompletionBanner.Size = New Size(934, 74)
         pnlCompletionBanner.Visible = False
         pnlCompletionBanner.Controls.Add(lblCompletionTitle)
         pnlCompletionBanner.Controls.Add(lblCompletionMessage)
@@ -340,7 +408,7 @@ Partial Class StudentClearanceForm
         lblCompletionTitle.Text = "✓ Clearance Completed"
         lblCompletionMessage.Font = New Font("Segoe UI", 9.0F)
         lblCompletionMessage.ForeColor = Color.FromArgb(22, 101, 52)
-        lblCompletionMessage.Location = New Point(16, 40)
+        lblCompletionMessage.Location = New Point(16, 38)
         lblCompletionMessage.Name = "lblCompletionMessage"
         lblCompletionMessage.Size = New Size(896, 26)
         lblCompletionMessage.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
@@ -363,10 +431,11 @@ Partial Class StudentClearanceForm
         pnlClearanceTable.Controls.Add(pnlRow2)
         pnlClearanceTable.Controls.Add(pnlRow1)
         pnlClearanceTable.Controls.Add(pnlTableHeader)
-        pnlClearanceTable.Location = New Point(28, 128)
+        pnlClearanceTable.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlClearanceTable.Location = New Point(28, 300)
         pnlClearanceTable.Name = "pnlClearanceTable"
-        pnlClearanceTable.Size = New Size(934, 650)
-        pnlClearanceTable.TabIndex = 2
+        pnlClearanceTable.Size = New Size(934, 476)
+        pnlClearanceTable.TabIndex = 3
         ' 
         ' pnlRow10
         '
@@ -1830,23 +1899,638 @@ Partial Class StudentClearanceForm
         ' pnlTermBanner
         ' 
         pnlTermBanner.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        pnlTermBanner.BackColor = Color.FromArgb(CByte(239), CByte(246), CByte(255))
+        pnlTermBanner.BackColor = Color.White
+        pnlTermBanner.BorderStyle = BorderStyle.FixedSingle
+        pnlTermBanner.Controls.Add(lblClearanceStatusBadge)
+        pnlTermBanner.Controls.Add(lblClearanceStatusTitle)
+        pnlTermBanner.Controls.Add(lblPrevEnrollBadge)
+        pnlTermBanner.Controls.Add(lblPrevEnrollTitle)
+        pnlTermBanner.Controls.Add(pnlTermSep2)
+        pnlTermBanner.Controls.Add(lblPrevTermValue)
+        pnlTermBanner.Controls.Add(lblPrevTermTitle)
+        pnlTermBanner.Controls.Add(pnlTermSep1)
+        pnlTermBanner.Controls.Add(lblCurrentTermValue)
+        pnlTermBanner.Controls.Add(lblCurrentTermTitle)
         pnlTermBanner.Controls.Add(lblTermText)
-        pnlTermBanner.Location = New Point(28, 80)
+        pnlTermBanner.Location = New Point(28, 76)
         pnlTermBanner.Name = "pnlTermBanner"
-        pnlTermBanner.Size = New Size(934, 38)
+        pnlTermBanner.Size = New Size(934, 64)
         pnlTermBanner.TabIndex = 1
         ' 
         ' lblTermText
         ' 
         lblTermText.AutoSize = True
-        lblTermText.Font = New Font("Segoe UI Semibold", 9F, FontStyle.Bold)
-        lblTermText.ForeColor = Color.FromArgb(CByte(30), CByte(41), CByte(59))
         lblTermText.Location = New Point(16, 11)
         lblTermText.Name = "lblTermText"
-        lblTermText.Size = New Size(293, 15)
+        lblTermText.Size = New Size(0, 15)
         lblTermText.TabIndex = 0
-        lblTermText.Text = "Academic Year: 2026 - 2027  |  Semester: 1st Semester"
+        lblTermText.Visible = False
+        ' 
+        ' lblCurrentTermTitle
+        ' 
+        lblCurrentTermTitle.AutoSize = True
+        lblCurrentTermTitle.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
+        lblCurrentTermTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblCurrentTermTitle.Location = New Point(18, 12)
+        lblCurrentTermTitle.Name = "lblCurrentTermTitle"
+        lblCurrentTermTitle.Size = New Size(130, 12)
+        lblCurrentTermTitle.TabIndex = 1
+        lblCurrentTermTitle.Text = "CURRENT ACADEMIC TERM"
+        ' 
+        ' lblCurrentTermValue
+        ' 
+        lblCurrentTermValue.AutoSize = True
+        lblCurrentTermValue.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold)
+        lblCurrentTermValue.ForeColor = Color.FromArgb(15, 23, 42)
+        lblCurrentTermValue.Location = New Point(18, 30)
+        lblCurrentTermValue.Name = "lblCurrentTermValue"
+        lblCurrentTermValue.Size = New Size(170, 17)
+        lblCurrentTermValue.TabIndex = 2
+        lblCurrentTermValue.Text = "2026–2027 | 1st Semester"
+        ' 
+        ' pnlTermSep1
+        ' 
+        pnlTermSep1.BackColor = Color.FromArgb(226, 232, 240)
+        pnlTermSep1.Location = New Point(230, 12)
+        pnlTermSep1.Name = "pnlTermSep1"
+        pnlTermSep1.Size = New Size(1, 40)
+        pnlTermSep1.TabIndex = 3
+        ' 
+        ' lblPrevTermTitle
+        ' 
+        lblPrevTermTitle.AutoSize = True
+        lblPrevTermTitle.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
+        lblPrevTermTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblPrevTermTitle.Location = New Point(250, 12)
+        lblPrevTermTitle.Name = "lblPrevTermTitle"
+        lblPrevTermTitle.Size = New Size(108, 12)
+        lblPrevTermTitle.TabIndex = 4
+        lblPrevTermTitle.Text = "PREVIOUS SEMESTER"
+        ' 
+        ' lblPrevTermValue
+        ' 
+        lblPrevTermValue.AutoSize = True
+        lblPrevTermValue.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold)
+        lblPrevTermValue.ForeColor = Color.FromArgb(15, 23, 42)
+        lblPrevTermValue.Location = New Point(250, 30)
+        lblPrevTermValue.Name = "lblPrevTermValue"
+        lblPrevTermValue.Size = New Size(170, 17)
+        lblPrevTermValue.TabIndex = 5
+        lblPrevTermValue.Text = "2025–2026 | 2nd Semester"
+        ' 
+        ' pnlTermSep2
+        ' 
+        pnlTermSep2.BackColor = Color.FromArgb(226, 232, 240)
+        pnlTermSep2.Location = New Point(460, 12)
+        pnlTermSep2.Name = "pnlTermSep2"
+        pnlTermSep2.Size = New Size(1, 40)
+        pnlTermSep2.TabIndex = 6
+        ' 
+        ' lblPrevEnrollTitle
+        ' 
+        lblPrevEnrollTitle.AutoSize = True
+        lblPrevEnrollTitle.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
+        lblPrevEnrollTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblPrevEnrollTitle.Location = New Point(480, 12)
+        lblPrevEnrollTitle.Name = "lblPrevEnrollTitle"
+        lblPrevEnrollTitle.Size = New Size(185, 12)
+        lblPrevEnrollTitle.TabIndex = 7
+        lblPrevEnrollTitle.Text = "PREVIOUS SEMESTER ENROLLMENT"
+        ' 
+        ' lblPrevEnrollBadge
+        ' 
+        lblPrevEnrollBadge.BackColor = Color.FromArgb(254, 243, 199)
+        lblPrevEnrollBadge.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblPrevEnrollBadge.ForeColor = Color.FromArgb(146, 64, 14)
+        lblPrevEnrollBadge.Location = New Point(480, 28)
+        lblPrevEnrollBadge.Name = "lblPrevEnrollBadge"
+        lblPrevEnrollBadge.Size = New Size(110, 24)
+        lblPrevEnrollBadge.TabIndex = 8
+        lblPrevEnrollBadge.Text = "Not Enrolled"
+        lblPrevEnrollBadge.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblClearanceStatusTitle
+        ' 
+        lblClearanceStatusTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        lblClearanceStatusTitle.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
+        lblClearanceStatusTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblClearanceStatusTitle.Location = New Point(740, 12)
+        lblClearanceStatusTitle.Name = "lblClearanceStatusTitle"
+        lblClearanceStatusTitle.Size = New Size(175, 14)
+        lblClearanceStatusTitle.TabIndex = 9
+        lblClearanceStatusTitle.Text = "CLEARANCE STATUS"
+        lblClearanceStatusTitle.TextAlign = ContentAlignment.MiddleRight
+        ' 
+        ' lblClearanceStatusBadge
+        ' 
+        lblClearanceStatusBadge.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        lblClearanceStatusBadge.BackColor = Color.FromArgb(239, 246, 255)
+        lblClearanceStatusBadge.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblClearanceStatusBadge.ForeColor = Color.FromArgb(29, 78, 216)
+        lblClearanceStatusBadge.Location = New Point(805, 27)
+        lblClearanceStatusBadge.Name = "lblClearanceStatusBadge"
+        lblClearanceStatusBadge.Size = New Size(110, 26)
+        lblClearanceStatusBadge.TabIndex = 10
+        lblClearanceStatusBadge.Text = "In Progress"
+        lblClearanceStatusBadge.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlProgressCard
+        ' 
+        pnlProgressCard.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlProgressCard.BackColor = Color.White
+        pnlProgressCard.BorderStyle = BorderStyle.FixedSingle
+        pnlProgressCard.Controls.Add(pnlStepper)
+        pnlProgressCard.Controls.Add(pnlProgressBarBg)
+        pnlProgressCard.Controls.Add(lblNextStep)
+        pnlProgressCard.Controls.Add(lblProgressCount)
+        pnlProgressCard.Controls.Add(lblProgressTitle)
+        pnlProgressCard.Location = New Point(28, 148)
+        pnlProgressCard.Name = "pnlProgressCard"
+        pnlProgressCard.Size = New Size(934, 144)
+        pnlProgressCard.TabIndex = 2
+        ' 
+        ' lblProgressTitle
+        ' 
+        lblProgressTitle.AutoSize = True
+        lblProgressTitle.Font = New Font("Segoe UI", 11.25F, FontStyle.Bold)
+        lblProgressTitle.ForeColor = Color.FromArgb(15, 23, 42)
+        lblProgressTitle.Location = New Point(18, 10)
+        lblProgressTitle.Name = "lblProgressTitle"
+        lblProgressTitle.Size = New Size(140, 20)
+        lblProgressTitle.TabIndex = 0
+        lblProgressTitle.Text = "Clearance Progress"
+        ' 
+        ' lblProgressCount
+        ' 
+        lblProgressCount.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        lblProgressCount.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblProgressCount.ForeColor = Color.FromArgb(71, 85, 105)
+        lblProgressCount.Location = New Point(680, 10)
+        lblProgressCount.Name = "lblProgressCount"
+        lblProgressCount.Size = New Size(235, 20)
+        lblProgressCount.TabIndex = 1
+        lblProgressCount.Text = "1 of 8 offices cleared · 13%"
+        lblProgressCount.TextAlign = ContentAlignment.MiddleRight
+        ' 
+        ' lblNextStep
+        ' 
+        lblNextStep.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        lblNextStep.Font = New Font("Segoe UI", 8.5F)
+        lblNextStep.ForeColor = Color.FromArgb(100, 116, 139)
+        lblNextStep.Location = New Point(18, 32)
+        lblNextStep.Name = "lblNextStep"
+        lblNextStep.Size = New Size(898, 16)
+        lblNextStep.TabIndex = 2
+        lblNextStep.Text = "Next step: Submit requirements to Dean's Office / Principal"
+        ' 
+        ' pnlProgressBarBg
+        ' 
+        pnlProgressBarBg.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlProgressBarBg.BackColor = Color.FromArgb(226, 232, 240)
+        pnlProgressBarBg.Controls.Add(pnlProgressBarFill)
+        pnlProgressBarBg.Location = New Point(18, 52)
+        pnlProgressBarBg.Name = "pnlProgressBarBg"
+        pnlProgressBarBg.Size = New Size(898, 7)
+        pnlProgressBarBg.TabIndex = 3
+        ' 
+        ' pnlProgressBarFill
+        ' 
+        pnlProgressBarFill.BackColor = Color.FromArgb(22, 163, 74)
+        pnlProgressBarFill.Location = New Point(0, 0)
+        pnlProgressBarFill.Name = "pnlProgressBarFill"
+        pnlProgressBarFill.Size = New Size(117, 7)
+        pnlProgressBarFill.TabIndex = 0
+        ' 
+        ' pnlStepper
+        ' 
+        pnlStepper.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        pnlStepper.Controls.Add(pnlStep8)
+        pnlStepper.Controls.Add(pnlStep7)
+        pnlStepper.Controls.Add(pnlStep6)
+        pnlStepper.Controls.Add(pnlStep5)
+        pnlStepper.Controls.Add(pnlStep4)
+        pnlStepper.Controls.Add(pnlStep3)
+        pnlStepper.Controls.Add(pnlStep2)
+        pnlStepper.Controls.Add(pnlStep1)
+        pnlStepper.Location = New Point(18, 65)
+        pnlStepper.Name = "pnlStepper"
+        pnlStepper.Size = New Size(898, 70)
+        pnlStepper.TabIndex = 4
+        ' 
+        ' pnlStep1
+        ' 
+        pnlStep1.Controls.Add(pnlStepLine1)
+        pnlStep1.Controls.Add(lblStepStatus1)
+        pnlStep1.Controls.Add(lblStepName1)
+        pnlStep1.Controls.Add(lblStepCircle1)
+        pnlStep1.Location = New Point(0, 2)
+        pnlStep1.Name = "pnlStep1"
+        pnlStep1.Size = New Size(112, 65)
+        pnlStep1.TabIndex = 0
+        ' 
+        ' lblStepCircle1
+        ' 
+        lblStepCircle1.BackColor = Color.FromArgb(22, 163, 74)
+        lblStepCircle1.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblStepCircle1.ForeColor = Color.White
+        lblStepCircle1.Location = New Point(42, 2)
+        lblStepCircle1.Name = "lblStepCircle1"
+        lblStepCircle1.Size = New Size(26, 26)
+        lblStepCircle1.TabIndex = 0
+        lblStepCircle1.Text = "✓"
+        lblStepCircle1.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepName1
+        ' 
+        lblStepName1.Font = New Font("Segoe UI", 8.0F, FontStyle.Bold)
+        lblStepName1.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStepName1.Location = New Point(0, 30)
+        lblStepName1.Name = "lblStepName1"
+        lblStepName1.Size = New Size(112, 16)
+        lblStepName1.TabIndex = 1
+        lblStepName1.Text = "Guidance"
+        lblStepName1.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepStatus1
+        ' 
+        lblStepStatus1.Font = New Font("Segoe UI", 7.5F)
+        lblStepStatus1.ForeColor = Color.FromArgb(22, 163, 74)
+        lblStepStatus1.Location = New Point(0, 46)
+        lblStepStatus1.Name = "lblStepStatus1"
+        lblStepStatus1.Size = New Size(112, 16)
+        lblStepStatus1.TabIndex = 2
+        lblStepStatus1.Text = "Cleared"
+        lblStepStatus1.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlStepLine1
+        ' 
+        pnlStepLine1.BackColor = Color.FromArgb(226, 232, 240)
+        pnlStepLine1.Location = New Point(70, 14)
+        pnlStepLine1.Name = "pnlStepLine1"
+        pnlStepLine1.Size = New Size(42, 2)
+        pnlStepLine1.TabIndex = 3
+        ' 
+        ' pnlStep2
+        ' 
+        pnlStep2.Controls.Add(pnlStepLine2)
+        pnlStep2.Controls.Add(lblStepStatus2)
+        pnlStep2.Controls.Add(lblStepName2)
+        pnlStep2.Controls.Add(lblStepCircle2)
+        pnlStep2.Location = New Point(112, 2)
+        pnlStep2.Name = "pnlStep2"
+        pnlStep2.Size = New Size(112, 65)
+        pnlStep2.TabIndex = 1
+        ' 
+        ' lblStepCircle2
+        ' 
+        lblStepCircle2.BackColor = Color.FromArgb(37, 99, 235)
+        lblStepCircle2.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblStepCircle2.ForeColor = Color.White
+        lblStepCircle2.Location = New Point(42, 2)
+        lblStepCircle2.Name = "lblStepCircle2"
+        lblStepCircle2.Size = New Size(26, 26)
+        lblStepCircle2.TabIndex = 0
+        lblStepCircle2.Text = "⏳"
+        lblStepCircle2.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepName2
+        ' 
+        lblStepName2.Font = New Font("Segoe UI", 8.0F, FontStyle.Bold)
+        lblStepName2.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStepName2.Location = New Point(0, 30)
+        lblStepName2.Name = "lblStepName2"
+        lblStepName2.Size = New Size(112, 16)
+        lblStepName2.TabIndex = 1
+        lblStepName2.Text = "Library"
+        lblStepName2.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepStatus2
+        ' 
+        lblStepStatus2.Font = New Font("Segoe UI", 7.5F)
+        lblStepStatus2.ForeColor = Color.FromArgb(37, 99, 235)
+        lblStepStatus2.Location = New Point(0, 46)
+        lblStepStatus2.Name = "lblStepStatus2"
+        lblStepStatus2.Size = New Size(112, 16)
+        lblStepStatus2.TabIndex = 2
+        lblStepStatus2.Text = "In Progress"
+        lblStepStatus2.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlStepLine2
+        ' 
+        pnlStepLine2.BackColor = Color.FromArgb(226, 232, 240)
+        pnlStepLine2.Location = New Point(70, 14)
+        pnlStepLine2.Name = "pnlStepLine2"
+        pnlStepLine2.Size = New Size(42, 2)
+        pnlStepLine2.TabIndex = 3
+        ' 
+        ' pnlStep3
+        ' 
+        pnlStep3.Controls.Add(pnlStepLine3)
+        pnlStep3.Controls.Add(lblStepStatus3)
+        pnlStep3.Controls.Add(lblStepName3)
+        pnlStep3.Controls.Add(lblStepCircle3)
+        pnlStep3.Location = New Point(224, 2)
+        pnlStep3.Name = "pnlStep3"
+        pnlStep3.Size = New Size(112, 65)
+        pnlStep3.TabIndex = 2
+        ' 
+        ' lblStepCircle3
+        ' 
+        lblStepCircle3.BackColor = Color.FromArgb(241, 245, 249)
+        lblStepCircle3.Font = New Font("Segoe UI", 8.5F, FontStyle.Bold)
+        lblStepCircle3.ForeColor = Color.FromArgb(71, 85, 105)
+        lblStepCircle3.Location = New Point(42, 2)
+        lblStepCircle3.Name = "lblStepCircle3"
+        lblStepCircle3.Size = New Size(26, 26)
+        lblStepCircle3.TabIndex = 0
+        lblStepCircle3.Text = "3"
+        lblStepCircle3.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepName3
+        ' 
+        lblStepName3.Font = New Font("Segoe UI", 8.0F, FontStyle.Bold)
+        lblStepName3.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStepName3.Location = New Point(0, 30)
+        lblStepName3.Name = "lblStepName3"
+        lblStepName3.Size = New Size(112, 16)
+        lblStepName3.TabIndex = 1
+        lblStepName3.Text = "OSA"
+        lblStepName3.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepStatus3
+        ' 
+        lblStepStatus3.Font = New Font("Segoe UI", 7.5F)
+        lblStepStatus3.ForeColor = Color.FromArgb(100, 116, 139)
+        lblStepStatus3.Location = New Point(0, 46)
+        lblStepStatus3.Name = "lblStepStatus3"
+        lblStepStatus3.Size = New Size(112, 16)
+        lblStepStatus3.TabIndex = 2
+        lblStepStatus3.Text = "Pending"
+        lblStepStatus3.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlStepLine3
+        ' 
+        pnlStepLine3.BackColor = Color.FromArgb(226, 232, 240)
+        pnlStepLine3.Location = New Point(70, 14)
+        pnlStepLine3.Name = "pnlStepLine3"
+        pnlStepLine3.Size = New Size(42, 2)
+        pnlStepLine3.TabIndex = 3
+        ' 
+        ' pnlStep4
+        ' 
+        pnlStep4.Controls.Add(pnlStepLine4)
+        pnlStep4.Controls.Add(lblStepStatus4)
+        pnlStep4.Controls.Add(lblStepName4)
+        pnlStep4.Controls.Add(lblStepCircle4)
+        pnlStep4.Location = New Point(336, 2)
+        pnlStep4.Name = "pnlStep4"
+        pnlStep4.Size = New Size(112, 65)
+        pnlStep4.TabIndex = 3
+        ' 
+        ' lblStepCircle4
+        ' 
+        lblStepCircle4.BackColor = Color.FromArgb(241, 245, 249)
+        lblStepCircle4.Font = New Font("Segoe UI", 8.5F, FontStyle.Bold)
+        lblStepCircle4.ForeColor = Color.FromArgb(71, 85, 105)
+        lblStepCircle4.Location = New Point(42, 2)
+        lblStepCircle4.Name = "lblStepCircle4"
+        lblStepCircle4.Size = New Size(26, 26)
+        lblStepCircle4.TabIndex = 0
+        lblStepCircle4.Text = "4"
+        lblStepCircle4.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepName4
+        ' 
+        lblStepName4.Font = New Font("Segoe UI", 8.0F, FontStyle.Bold)
+        lblStepName4.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStepName4.Location = New Point(0, 30)
+        lblStepName4.Name = "lblStepName4"
+        lblStepName4.Size = New Size(112, 16)
+        lblStepName4.TabIndex = 1
+        lblStepName4.Text = "Clinic"
+        lblStepName4.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepStatus4
+        ' 
+        lblStepStatus4.Font = New Font("Segoe UI", 7.5F)
+        lblStepStatus4.ForeColor = Color.FromArgb(100, 116, 139)
+        lblStepStatus4.Location = New Point(0, 46)
+        lblStepStatus4.Name = "lblStepStatus4"
+        lblStepStatus4.Size = New Size(112, 16)
+        lblStepStatus4.TabIndex = 2
+        lblStepStatus4.Text = "Pending"
+        lblStepStatus4.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlStepLine4
+        ' 
+        pnlStepLine4.BackColor = Color.FromArgb(226, 232, 240)
+        pnlStepLine4.Location = New Point(70, 14)
+        pnlStepLine4.Name = "pnlStepLine4"
+        pnlStepLine4.Size = New Size(42, 2)
+        pnlStepLine4.TabIndex = 3
+        ' 
+        ' pnlStep5
+        ' 
+        pnlStep5.Controls.Add(pnlStepLine5)
+        pnlStep5.Controls.Add(lblStepStatus5)
+        pnlStep5.Controls.Add(lblStepName5)
+        pnlStep5.Controls.Add(lblStepCircle5)
+        pnlStep5.Location = New Point(448, 2)
+        pnlStep5.Name = "pnlStep5"
+        pnlStep5.Size = New Size(112, 65)
+        pnlStep5.TabIndex = 4
+        ' 
+        ' lblStepCircle5
+        ' 
+        lblStepCircle5.BackColor = Color.FromArgb(241, 245, 249)
+        lblStepCircle5.Font = New Font("Segoe UI", 8.0F)
+        lblStepCircle5.ForeColor = Color.FromArgb(148, 163, 184)
+        lblStepCircle5.Location = New Point(42, 2)
+        lblStepCircle5.Name = "lblStepCircle5"
+        lblStepCircle5.Size = New Size(26, 26)
+        lblStepCircle5.TabIndex = 0
+        lblStepCircle5.Text = "🔒"
+        lblStepCircle5.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepName5
+        ' 
+        lblStepName5.Font = New Font("Segoe UI", 8.0F, FontStyle.Bold)
+        lblStepName5.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStepName5.Location = New Point(0, 30)
+        lblStepName5.Name = "lblStepName5"
+        lblStepName5.Size = New Size(112, 16)
+        lblStepName5.TabIndex = 1
+        lblStepName5.Text = "Dean"
+        lblStepName5.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepStatus5
+        ' 
+        lblStepStatus5.Font = New Font("Segoe UI", 7.5F)
+        lblStepStatus5.ForeColor = Color.FromArgb(148, 163, 184)
+        lblStepStatus5.Location = New Point(0, 46)
+        lblStepStatus5.Name = "lblStepStatus5"
+        lblStepStatus5.Size = New Size(112, 16)
+        lblStepStatus5.TabIndex = 2
+        lblStepStatus5.Text = "Locked"
+        lblStepStatus5.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlStepLine5
+        ' 
+        pnlStepLine5.BackColor = Color.FromArgb(226, 232, 240)
+        pnlStepLine5.Location = New Point(70, 14)
+        pnlStepLine5.Name = "pnlStepLine5"
+        pnlStepLine5.Size = New Size(42, 2)
+        pnlStepLine5.TabIndex = 3
+        ' 
+        ' pnlStep6
+        ' 
+        pnlStep6.Controls.Add(pnlStepLine6)
+        pnlStep6.Controls.Add(lblStepStatus6)
+        pnlStep6.Controls.Add(lblStepName6)
+        pnlStep6.Controls.Add(lblStepCircle6)
+        pnlStep6.Location = New Point(560, 2)
+        pnlStep6.Name = "pnlStep6"
+        pnlStep6.Size = New Size(112, 65)
+        pnlStep6.TabIndex = 5
+        ' 
+        ' lblStepCircle6
+        ' 
+        lblStepCircle6.BackColor = Color.FromArgb(241, 245, 249)
+        lblStepCircle6.Font = New Font("Segoe UI", 8.0F)
+        lblStepCircle6.ForeColor = Color.FromArgb(148, 163, 184)
+        lblStepCircle6.Location = New Point(42, 2)
+        lblStepCircle6.Name = "lblStepCircle6"
+        lblStepCircle6.Size = New Size(26, 26)
+        lblStepCircle6.TabIndex = 0
+        lblStepCircle6.Text = "🔒"
+        lblStepCircle6.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepName6
+        ' 
+        lblStepName6.Font = New Font("Segoe UI", 8.0F, FontStyle.Bold)
+        lblStepName6.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStepName6.Location = New Point(0, 30)
+        lblStepName6.Name = "lblStepName6"
+        lblStepName6.Size = New Size(112, 16)
+        lblStepName6.TabIndex = 1
+        lblStepName6.Text = "Finance"
+        lblStepName6.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepStatus6
+        ' 
+        lblStepStatus6.Font = New Font("Segoe UI", 7.5F)
+        lblStepStatus6.ForeColor = Color.FromArgb(148, 163, 184)
+        lblStepStatus6.Location = New Point(0, 46)
+        lblStepStatus6.Name = "lblStepStatus6"
+        lblStepStatus6.Size = New Size(112, 16)
+        lblStepStatus6.TabIndex = 2
+        lblStepStatus6.Text = "Locked"
+        lblStepStatus6.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlStepLine6
+        ' 
+        pnlStepLine6.BackColor = Color.FromArgb(226, 232, 240)
+        pnlStepLine6.Location = New Point(70, 14)
+        pnlStepLine6.Name = "pnlStepLine6"
+        pnlStepLine6.Size = New Size(42, 2)
+        pnlStepLine6.TabIndex = 3
+        ' 
+        ' pnlStep7
+        ' 
+        pnlStep7.Controls.Add(pnlStepLine7)
+        pnlStep7.Controls.Add(lblStepStatus7)
+        pnlStep7.Controls.Add(lblStepName7)
+        pnlStep7.Controls.Add(lblStepCircle7)
+        pnlStep7.Location = New Point(672, 2)
+        pnlStep7.Name = "pnlStep7"
+        pnlStep7.Size = New Size(112, 65)
+        pnlStep7.TabIndex = 6
+        ' 
+        ' lblStepCircle7
+        ' 
+        lblStepCircle7.BackColor = Color.FromArgb(241, 245, 249)
+        lblStepCircle7.Font = New Font("Segoe UI", 8.0F)
+        lblStepCircle7.ForeColor = Color.FromArgb(148, 163, 184)
+        lblStepCircle7.Location = New Point(42, 2)
+        lblStepCircle7.Name = "lblStepCircle7"
+        lblStepCircle7.Size = New Size(26, 26)
+        lblStepCircle7.TabIndex = 0
+        lblStepCircle7.Text = "🔒"
+        lblStepCircle7.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepName7
+        ' 
+        lblStepName7.Font = New Font("Segoe UI", 8.0F, FontStyle.Bold)
+        lblStepName7.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStepName7.Location = New Point(0, 30)
+        lblStepName7.Name = "lblStepName7"
+        lblStepName7.Size = New Size(112, 16)
+        lblStepName7.TabIndex = 1
+        lblStepName7.Text = "Registrar"
+        lblStepName7.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepStatus7
+        ' 
+        lblStepStatus7.Font = New Font("Segoe UI", 7.5F)
+        lblStepStatus7.ForeColor = Color.FromArgb(148, 163, 184)
+        lblStepStatus7.Location = New Point(0, 46)
+        lblStepStatus7.Name = "lblStepStatus7"
+        lblStepStatus7.Size = New Size(112, 16)
+        lblStepStatus7.TabIndex = 2
+        lblStepStatus7.Text = "Locked"
+        lblStepStatus7.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlStepLine7
+        ' 
+        pnlStepLine7.BackColor = Color.FromArgb(226, 232, 240)
+        pnlStepLine7.Location = New Point(70, 14)
+        pnlStepLine7.Name = "pnlStepLine7"
+        pnlStepLine7.Size = New Size(42, 2)
+        pnlStepLine7.TabIndex = 3
+        ' 
+        ' pnlStep8
+        ' 
+        pnlStep8.Controls.Add(lblStepStatus8)
+        pnlStep8.Controls.Add(lblStepName8)
+        pnlStep8.Controls.Add(lblStepCircle8)
+        pnlStep8.Location = New Point(784, 2)
+        pnlStep8.Name = "pnlStep8"
+        pnlStep8.Size = New Size(112, 65)
+        pnlStep8.TabIndex = 7
+        ' 
+        ' lblStepCircle8
+        ' 
+        lblStepCircle8.BackColor = Color.FromArgb(241, 245, 249)
+        lblStepCircle8.Font = New Font("Segoe UI", 8.0F)
+        lblStepCircle8.ForeColor = Color.FromArgb(148, 163, 184)
+        lblStepCircle8.Location = New Point(42, 2)
+        lblStepCircle8.Name = "lblStepCircle8"
+        lblStepCircle8.Size = New Size(26, 26)
+        lblStepCircle8.TabIndex = 0
+        lblStepCircle8.Text = "🔒"
+        lblStepCircle8.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepName8
+        ' 
+        lblStepName8.Font = New Font("Segoe UI", 8.0F, FontStyle.Bold)
+        lblStepName8.ForeColor = Color.FromArgb(15, 23, 42)
+        lblStepName8.Location = New Point(0, 30)
+        lblStepName8.Name = "lblStepName8"
+        lblStepName8.Size = New Size(112, 16)
+        lblStepName8.TabIndex = 1
+        lblStepName8.Text = "OAA"
+        lblStepName8.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblStepStatus8
+        ' 
+        lblStepStatus8.Font = New Font("Segoe UI", 7.5F)
+        lblStepStatus8.ForeColor = Color.FromArgb(148, 163, 184)
+        lblStepStatus8.Location = New Point(0, 46)
+        lblStepStatus8.Name = "lblStepStatus8"
+        lblStepStatus8.Size = New Size(112, 16)
+        lblStepStatus8.TabIndex = 2
+        lblStepStatus8.Text = "Locked"
+        lblStepStatus8.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' pnlHeader
         ' 
@@ -1954,6 +2638,18 @@ Partial Class StudentClearanceForm
         pnlTableHeader.ResumeLayout(False)
         pnlTermBanner.ResumeLayout(False)
         pnlTermBanner.PerformLayout()
+        pnlStep1.ResumeLayout(False)
+        pnlStep2.ResumeLayout(False)
+        pnlStep3.ResumeLayout(False)
+        pnlStep4.ResumeLayout(False)
+        pnlStep5.ResumeLayout(False)
+        pnlStep6.ResumeLayout(False)
+        pnlStep7.ResumeLayout(False)
+        pnlStep8.ResumeLayout(False)
+        pnlStepper.ResumeLayout(False)
+        pnlProgressBarBg.ResumeLayout(False)
+        pnlProgressCard.ResumeLayout(False)
+        pnlProgressCard.PerformLayout()
         pnlHeader.ResumeLayout(False)
         pnlHeader.PerformLayout()
         ResumeLayout(False)
@@ -2101,4 +2797,60 @@ Partial Class StudentClearanceForm
     Friend WithEvents pnlDivider10 As Panel
     Friend WithEvents btnReeval10 As Button
     Friend WithEvents pnlContentViewport As Panel
+    Friend WithEvents lblCurrentTermTitle As Label
+    Friend WithEvents lblCurrentTermValue As Label
+    Friend WithEvents pnlTermSep1 As Panel
+    Friend WithEvents lblPrevTermTitle As Label
+    Friend WithEvents lblPrevTermValue As Label
+    Friend WithEvents pnlTermSep2 As Panel
+    Friend WithEvents lblPrevEnrollTitle As Label
+    Friend WithEvents lblPrevEnrollBadge As Label
+    Friend WithEvents lblClearanceStatusTitle As Label
+    Friend WithEvents lblClearanceStatusBadge As Label
+    Friend WithEvents pnlProgressCard As Panel
+    Friend WithEvents lblProgressTitle As Label
+    Friend WithEvents lblProgressCount As Label
+    Friend WithEvents lblNextStep As Label
+    Friend WithEvents pnlProgressBarBg As Panel
+    Friend WithEvents pnlProgressBarFill As Panel
+    Friend WithEvents pnlStepper As Panel
+    Friend WithEvents pnlStep1 As Panel
+    Friend WithEvents lblStepCircle1 As Label
+    Friend WithEvents lblStepName1 As Label
+    Friend WithEvents lblStepStatus1 As Label
+    Friend WithEvents pnlStepLine1 As Panel
+    Friend WithEvents pnlStep2 As Panel
+    Friend WithEvents lblStepCircle2 As Label
+    Friend WithEvents lblStepName2 As Label
+    Friend WithEvents lblStepStatus2 As Label
+    Friend WithEvents pnlStepLine2 As Panel
+    Friend WithEvents pnlStep3 As Panel
+    Friend WithEvents lblStepCircle3 As Label
+    Friend WithEvents lblStepName3 As Label
+    Friend WithEvents lblStepStatus3 As Label
+    Friend WithEvents pnlStepLine3 As Panel
+    Friend WithEvents pnlStep4 As Panel
+    Friend WithEvents lblStepCircle4 As Label
+    Friend WithEvents lblStepName4 As Label
+    Friend WithEvents lblStepStatus4 As Label
+    Friend WithEvents pnlStepLine4 As Panel
+    Friend WithEvents pnlStep5 As Panel
+    Friend WithEvents lblStepCircle5 As Label
+    Friend WithEvents lblStepName5 As Label
+    Friend WithEvents lblStepStatus5 As Label
+    Friend WithEvents pnlStepLine5 As Panel
+    Friend WithEvents pnlStep6 As Panel
+    Friend WithEvents lblStepCircle6 As Label
+    Friend WithEvents lblStepName6 As Label
+    Friend WithEvents lblStepStatus6 As Label
+    Friend WithEvents pnlStepLine6 As Panel
+    Friend WithEvents pnlStep7 As Panel
+    Friend WithEvents lblStepCircle7 As Label
+    Friend WithEvents lblStepName7 As Label
+    Friend WithEvents lblStepStatus7 As Label
+    Friend WithEvents pnlStepLine7 As Panel
+    Friend WithEvents pnlStep8 As Panel
+    Friend WithEvents lblStepCircle8 As Label
+    Friend WithEvents lblStepName8 As Label
+    Friend WithEvents lblStepStatus8 As Label
 End Class

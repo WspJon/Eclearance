@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class ViewRequirementModalForm
     Inherits System.Windows.Forms.Form
 
@@ -104,7 +104,7 @@ Partial Class ViewRequirementModalForm
         lblStudentAffairsRemarks.Size = New Size(638, 28)
         lblStudentAffairsRemarks.Name = "lblStudentAffairsRemarks"
         lblStudentAffairsRemarks.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
-        lblStudentAffairsRemarks.Text = "Staff Remarks / Compliance Instructions"
+        lblStudentAffairsRemarks.Text = "Department Head Remarks / Compliance Instructions"
         txtStudentAffairsRemarks.Location = New Point(14, 50)
         txtStudentAffairsRemarks.Size = New Size(638, 150)
         txtStudentAffairsRemarks.Name = "txtStudentAffairsRemarks"

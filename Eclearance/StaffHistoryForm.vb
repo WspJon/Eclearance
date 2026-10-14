@@ -16,7 +16,7 @@ Public Class StaffHistoryForm
     End Sub
 
     Private Sub InitializeUserData()
-        lblStaffName.Text = If(String.IsNullOrWhiteSpace(AppSession.FullName), "Staff Member", AppSession.FullName)
+        lblStaffName.Text = If(String.IsNullOrWhiteSpace(AppSession.FullName), "Department Head", AppSession.FullName)
         lblDateTimeBadge.Text = "📅 " & DateTime.Now.ToString("dddd, MMM dd, yyyy")
 
         If AppSession.DepartmentID.HasValue Then

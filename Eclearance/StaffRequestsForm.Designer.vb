@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StaffRequestsForm
     Inherits System.Windows.Forms.Form
 
@@ -196,7 +196,7 @@ Partial Class StaffRequestsForm
         lblNavSection.Name = "lblNavSection"
         lblNavSection.Size = New Size(74, 12)
         lblNavSection.TabIndex = 1
-        lblNavSection.Text = "STAFF PORTAL"
+        lblNavSection.Text = "DEPARTMENT HEAD PORTAL"
         ' 
         ' pnlLogo
         ' 
@@ -951,7 +951,7 @@ Partial Class StaffRequestsForm
         lblStaffName.Name = "lblStaffName"
         lblStaffName.Size = New Size(80, 15)
         lblStaffName.TabIndex = 1
-        lblStaffName.Text = "Staff Member"
+        lblStaffName.Text = "Department Head"
         ' 
         ' lblStaffIcon
         ' 

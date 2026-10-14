@@ -1,4 +1,4 @@
-﻿Imports System.Data
+Imports System.Data
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports MySql.Data.MySqlClient
@@ -67,7 +67,7 @@ Public Class StaffRequestsForm
     End Sub
 
     Private Sub InitializeStaffInfo()
-        lblStaffName.Text = If(String.IsNullOrWhiteSpace(AppSession.FullName), "Staff Officer", AppSession.FullName)
+        lblStaffName.Text = If(String.IsNullOrWhiteSpace(AppSession.FullName), "Department Head", AppSession.FullName)
         lblDateTimeBadge.Text = "📅 " & DateTime.Now.ToString("dddd, MMM dd, yyyy")
 
         If AppSession.DepartmentID.HasValue Then

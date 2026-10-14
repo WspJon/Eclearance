@@ -457,7 +457,7 @@ Partial Class ReviewClearanceForm
         lblStaffName.Size = New Size(154, 28)
         lblStaffName.TextAlign = ContentAlignment.MiddleLeft
         lblStaffName.TabIndex = 1
-        lblStaffName.Text = "Staff Member"
+        lblStaffName.Text = "Department Head"
         ' 
         ' lblStaffRole
         ' 

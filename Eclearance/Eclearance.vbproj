@@ -207,4 +207,16 @@
 
 	</ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="ReportsForm.vb" />
+    <Compile Update="ReportsForm.Designer.vb">
+      <DependentUpon>ReportsForm.vb</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ManageEnrollmentModalForm.vb" />
+    <Compile Update="ManageEnrollmentModalForm.Designer.vb">
+      <DependentUpon>ManageEnrollmentModalForm.vb</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

@@ -95,7 +95,7 @@ Partial Class CreateStaffForm
         lblModalTitle.Name = "lblModalTitle"
         lblModalTitle.Size = New Size(198, 28)
         lblModalTitle.TabIndex = 1
-        lblModalTitle.Text = "Create staff account"
+        lblModalTitle.Text = "Create Department Head account"
         ' 
         ' lblBadge01
         ' 
@@ -116,9 +116,9 @@ Partial Class CreateStaffForm
         lblSec01.ForeColor = Color.FromArgb(15, 23, 42)
         lblSec01.Location = New Point(58, 70)
         lblSec01.Name = "lblSec01"
-        lblSec01.Size = New Size(126, 20)
+        lblSec01.Size = New Size(180, 20)
         lblSec01.TabIndex = 3
-        lblSec01.Text = "Staff information"
+        lblSec01.Text = "Department Head information"
         ' 
         ' lblFullName
         ' 
@@ -270,7 +270,7 @@ Partial Class CreateStaffForm
         lblOfficeHintText.Name = "lblOfficeHintText"
         lblOfficeHintText.Size = New Size(442, 13)
         lblOfficeHintText.TabIndex = 2
-        lblOfficeHintText.Text = "This staff account can review, approve, and manage clearance requests for the assigned office."
+        lblOfficeHintText.Text = "This Department Head account can review, approve, and manage clearance requests for the assigned office."
         ' 
         ' btnClearForm
         ' 

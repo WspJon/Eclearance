@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class ClearanceHistoryForm
     Inherits System.Windows.Forms.Form
 
@@ -23,6 +23,7 @@ Partial Class ClearanceHistoryForm
         lblNavSection = New Label()
         btnNavStudents = New Button()
         btnNavStaff = New Button()
+        btnNavReports = New Button()
         btnNavHistory = New Button()
         btnNavStartTerm = New Button()
         btnNavLogout = New Button()
@@ -81,6 +82,7 @@ Partial Class ClearanceHistoryForm
         pnlSidebar.Controls.Add(lblNavSection)
         pnlSidebar.Controls.Add(btnNavStudents)
         pnlSidebar.Controls.Add(btnNavStaff)
+        pnlSidebar.Controls.Add(btnNavReports)
         pnlSidebar.Controls.Add(btnNavHistory)
         pnlSidebar.Controls.Add(btnNavStartTerm)
         pnlSidebar.Controls.Add(btnNavLogout)
@@ -130,18 +132,31 @@ Partial Class ClearanceHistoryForm
         btnNavStaff.Padding = New Padding(12, 0, 0, 0)
         btnNavStaff.Size = New Size(196, 42)
         btnNavStaff.TabIndex = 3
-        btnNavStaff.Text = "  Staff & offices"
+        btnNavStaff.Text = "  Department Heads & Offices"
         btnNavStaff.TextAlign = ContentAlignment.MiddleLeft
         btnNavStaff.UseVisualStyleBackColor = False
         ' 
         ' btnNavHistory
         ' 
+        btnNavReports.BackColor = Color.FromArgb(15, 39, 74)
+        btnNavReports.FlatAppearance.BorderSize = 0
+        btnNavReports.FlatStyle = FlatStyle.Flat
+        btnNavReports.Font = New Font("Segoe UI", 9.5F)
+        btnNavReports.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavReports.Location = New Point(12, 211)
+        btnNavReports.Name = "btnNavReports"
+        btnNavReports.Padding = New Padding(12, 0, 0, 0)
+        btnNavReports.Size = New Size(196, 42)
+        btnNavReports.TabIndex = 4
+        btnNavReports.Text = "  Reports"
+        btnNavReports.TextAlign = ContentAlignment.MiddleLeft
+        btnNavReports.UseVisualStyleBackColor = False
         btnNavHistory.BackColor = Color.FromArgb(CByte(28), CByte(91), CByte(184))
         btnNavHistory.FlatAppearance.BorderSize = 0
         btnNavHistory.FlatStyle = FlatStyle.Flat
         btnNavHistory.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnNavHistory.ForeColor = Color.White
-        btnNavHistory.Location = New Point(12, 211)
+        btnNavHistory.Location = New Point(12, 259)
         btnNavHistory.Name = "btnNavHistory"
         btnNavHistory.Padding = New Padding(12, 0, 0, 0)
         btnNavHistory.Size = New Size(196, 42)
@@ -157,7 +172,7 @@ Partial Class ClearanceHistoryForm
         btnNavStartTerm.FlatStyle = FlatStyle.Flat
         btnNavStartTerm.Font = New Font("Segoe UI", 9.5F)
         btnNavStartTerm.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
-        btnNavStartTerm.Location = New Point(12, 259)
+        btnNavStartTerm.Location = New Point(12, 307)
         btnNavStartTerm.Name = "btnNavStartTerm"
         btnNavStartTerm.Padding = New Padding(12, 0, 0, 0)
         btnNavStartTerm.Size = New Size(196, 42)
@@ -665,6 +680,7 @@ Partial Class ClearanceHistoryForm
     Friend WithEvents lblNavSection As Label
     Friend WithEvents btnNavStudents As Button
     Friend WithEvents btnNavStaff As Button
+    Friend WithEvents btnNavReports As Button
     Friend WithEvents btnNavHistory As Button
     Friend WithEvents btnNavStartTerm As Button
     Friend WithEvents btnNavLogout As Button

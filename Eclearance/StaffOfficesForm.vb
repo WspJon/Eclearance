@@ -5,6 +5,7 @@ Public Class StaffOfficesForm
     Private ReadOnly db As New DatabaseHelper()
 
     Private Sub StaffOfficesForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        btnNavReports.Visible = String.Equals(AppSession.Role, "Admin", StringComparison.OrdinalIgnoreCase)
         ApplySchoolLogo(picSchoolLogo)
         LoadStaff()
     End Sub
@@ -53,8 +54,8 @@ Public Class StaffOfficesForm
 
         Catch ex As Exception
             MessageBox.Show(
-                "Unable to load staff members." & Environment.NewLine & Environment.NewLine & ex.Message,
-                "Staff Error",
+                "Unable to load Department Heads." & Environment.NewLine & Environment.NewLine & ex.Message,
+                "Department Head Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error
             )
@@ -65,7 +66,7 @@ Public Class StaffOfficesForm
         lblSelectedStaffVal.Text = "--"
         lblSelectedUsernameVal.Text = "--"
         lblSelectedOfficeVal.Text = "--"
-        btnRemoveStaff.Text = "Deactivate Staff"
+        btnRemoveStaff.Text = "Deactivate Department Head"
         btnRemoveStaff.BackColor = Color.FromArgb(220, 38, 38)
     End Sub
 
@@ -82,10 +83,10 @@ Public Class StaffOfficesForm
 
         Dim statusText As String = If(row.Cells(colStatus.Index).Value IsNot Nothing, row.Cells(colStatus.Index).Value.ToString(), "Active")
         If statusText.Equals("Inactive", StringComparison.OrdinalIgnoreCase) Then
-            btnRemoveStaff.Text = "Reactivate Staff"
+            btnRemoveStaff.Text = "Reactivate Department Head"
             btnRemoveStaff.BackColor = Color.FromArgb(16, 185, 129)
         Else
-            btnRemoveStaff.Text = "Deactivate Staff"
+            btnRemoveStaff.Text = "Deactivate Department Head"
             btnRemoveStaff.BackColor = Color.FromArgb(220, 38, 38)
         End If
     End Sub
@@ -131,7 +132,7 @@ Public Class StaffOfficesForm
 
     Private Sub btnResetPassword_Click(sender As Object, e As EventArgs) Handles btnResetPassword.Click
         If dgvStaff.SelectedRows.Count = 0 OrElse dgvStaff.SelectedRows(0).Tag Is Nothing Then
-            MessageBox.Show("Please select a staff member first.", "Reset Password", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Please select a Department Head first.", "Reset Password", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return
         End If
 
@@ -140,7 +141,7 @@ Public Class StaffOfficesForm
 
         Dim answer As DialogResult = MessageBox.Show(
             "Are you sure you want to reset the password for " & staffName & " to default (password123)?",
-            "Reset Staff Password",
+            "Reset Department Head Password",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question
         )
@@ -172,7 +173,7 @@ Public Class StaffOfficesForm
 
     Private Sub btnEditStaff_Click(sender As Object, e As EventArgs) Handles btnEditStaff.Click
         If dgvStaff.SelectedRows.Count = 0 OrElse dgvStaff.SelectedRows(0).Tag Is Nothing Then
-            MessageBox.Show("Please select a staff member first.", "Edit Staff", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Please select a Department Head first.", "Edit Department Head", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return
         End If
 
@@ -205,7 +206,7 @@ Public Class StaffOfficesForm
 
     Private Sub btnRemoveStaff_Click(sender As Object, e As EventArgs) Handles btnRemoveStaff.Click
         If dgvStaff.SelectedRows.Count = 0 OrElse dgvStaff.SelectedRows(0).Tag Is Nothing Then
-            MessageBox.Show("Please select a staff member first.", "Staff Action", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Please select a Department Head first.", "Department Head Action", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return
         End If
 
@@ -231,11 +232,11 @@ Public Class StaffOfficesForm
             ' Reactivate account
             Dim confirmMsg As String =
                 "Reactivate " & staffName & "?" & Environment.NewLine & Environment.NewLine &
-                "This will restore access and allow the staff member to log in."
+                "This will restore access and allow the Department Head to log in."
 
             Dim answer As DialogResult = MessageBox.Show(
                 confirmMsg,
-                "Confirm Reactivate Staff",
+                "Confirm Reactivate Department Head",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             )
@@ -269,7 +270,7 @@ Public Class StaffOfficesForm
 
                 MessageBox.Show(
                     staffName & " has been successfully reactivated.",
-                    "Staff Reactivated",
+                    "Department Head Reactivated",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 )
@@ -278,7 +279,7 @@ Public Class StaffOfficesForm
 
             Catch ex As Exception
                 MessageBox.Show(
-                    "Unable to reactivate staff member." & Environment.NewLine & Environment.NewLine & ex.Message,
+                    "Unable to reactivate Department Head." & Environment.NewLine & Environment.NewLine & ex.Message,
                     "Reactivate Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -294,7 +295,7 @@ Public Class StaffOfficesForm
 
             Dim answer As DialogResult = MessageBox.Show(
                 confirmMsg,
-                "Confirm Deactivate Staff",
+                "Confirm Deactivate Department Head",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning
             )
@@ -328,7 +329,7 @@ Public Class StaffOfficesForm
 
                 MessageBox.Show(
                     staffName & " has been successfully deactivated.",
-                    "Staff Deactivated",
+                    "Department Head Deactivated",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 )
@@ -337,7 +338,7 @@ Public Class StaffOfficesForm
 
             Catch ex As Exception
                 MessageBox.Show(
-                    "Unable to deactivate staff member." & Environment.NewLine & Environment.NewLine & ex.Message,
+                    "Unable to deactivate Department Head." & Environment.NewLine & Environment.NewLine & ex.Message,
                     "Deactivate Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -345,6 +346,11 @@ Public Class StaffOfficesForm
             End Try
 
         End If
+    End Sub
+
+
+    Private Sub btnNavReports_Click(sender As Object, e As EventArgs) Handles btnNavReports.Click
+        AdminStudentsForm.OpenReportsFrom(Me)
     End Sub
 
 End Class

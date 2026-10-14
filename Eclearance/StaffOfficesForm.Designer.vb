@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StaffOfficesForm
     Inherits System.Windows.Forms.Form
 
@@ -23,6 +23,7 @@ Partial Class StaffOfficesForm
         lblNavSection = New Label()
         btnNavStudents = New Button()
         btnNavStaff = New Button()
+        btnNavReports = New Button()
         btnNavHistory = New Button()
         btnNavStartTerm = New Button()
         btnNavLogout = New Button()
@@ -77,6 +78,7 @@ Partial Class StaffOfficesForm
         pnlSidebar.Controls.Add(lblNavSection)
         pnlSidebar.Controls.Add(btnNavStudents)
         pnlSidebar.Controls.Add(btnNavStaff)
+        pnlSidebar.Controls.Add(btnNavReports)
         pnlSidebar.Controls.Add(btnNavHistory)
         pnlSidebar.Controls.Add(btnNavStartTerm)
         pnlSidebar.Controls.Add(btnNavLogout)
@@ -126,18 +128,31 @@ Partial Class StaffOfficesForm
         btnNavStaff.Padding = New Padding(12, 0, 0, 0)
         btnNavStaff.Size = New Size(196, 42)
         btnNavStaff.TabIndex = 3
-        btnNavStaff.Text = "  Staff & offices"
+        btnNavStaff.Text = "  Department Heads & Offices"
         btnNavStaff.TextAlign = ContentAlignment.MiddleLeft
         btnNavStaff.UseVisualStyleBackColor = False
         ' 
         ' btnNavHistory
         ' 
+        btnNavReports.BackColor = Color.FromArgb(15, 39, 74)
+        btnNavReports.FlatAppearance.BorderSize = 0
+        btnNavReports.FlatStyle = FlatStyle.Flat
+        btnNavReports.Font = New Font("Segoe UI", 9.5F)
+        btnNavReports.ForeColor = Color.FromArgb(160, 180, 208)
+        btnNavReports.Location = New Point(12, 211)
+        btnNavReports.Name = "btnNavReports"
+        btnNavReports.Padding = New Padding(12, 0, 0, 0)
+        btnNavReports.Size = New Size(196, 42)
+        btnNavReports.TabIndex = 4
+        btnNavReports.Text = "  Reports"
+        btnNavReports.TextAlign = ContentAlignment.MiddleLeft
+        btnNavReports.UseVisualStyleBackColor = False
         btnNavHistory.BackColor = Color.FromArgb(CByte(15), CByte(39), CByte(74))
         btnNavHistory.FlatAppearance.BorderSize = 0
         btnNavHistory.FlatStyle = FlatStyle.Flat
         btnNavHistory.Font = New Font("Segoe UI", 9.5F)
         btnNavHistory.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
-        btnNavHistory.Location = New Point(12, 211)
+        btnNavHistory.Location = New Point(12, 259)
         btnNavHistory.Name = "btnNavHistory"
         btnNavHistory.Padding = New Padding(12, 0, 0, 0)
         btnNavHistory.Size = New Size(196, 42)
@@ -153,7 +168,7 @@ Partial Class StaffOfficesForm
         btnNavStartTerm.FlatStyle = FlatStyle.Flat
         btnNavStartTerm.Font = New Font("Segoe UI", 9.5F)
         btnNavStartTerm.ForeColor = Color.FromArgb(CByte(160), CByte(180), CByte(208))
-        btnNavStartTerm.Location = New Point(12, 259)
+        btnNavStartTerm.Location = New Point(12, 307)
         btnNavStartTerm.Name = "btnNavStartTerm"
         btnNavStartTerm.Padding = New Padding(12, 0, 0, 0)
         btnNavStartTerm.Size = New Size(196, 42)
@@ -260,7 +275,7 @@ Partial Class StaffOfficesForm
         btnRemoveStaff.Name = "btnRemoveStaff"
         btnRemoveStaff.Size = New Size(260, 36)
         btnRemoveStaff.TabIndex = 4
-        btnRemoveStaff.Text = "Deactivate Staff"
+        btnRemoveStaff.Text = "Deactivate Department Head"
         btnRemoveStaff.UseVisualStyleBackColor = False
         ' 
         ' btnResetPassword
@@ -290,7 +305,7 @@ Partial Class StaffOfficesForm
         btnEditStaff.Name = "btnEditStaff"
         btnEditStaff.Size = New Size(260, 36)
         btnEditStaff.TabIndex = 2
-        btnEditStaff.Text = "✏ Edit staff account"
+        btnEditStaff.Text = "✏ Edit Department Head account"
         btnEditStaff.UseVisualStyleBackColor = False
         ' 
         ' lblActionsSub
@@ -394,9 +409,9 @@ Partial Class StaffOfficesForm
         lblSelectedStaff.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSelectedStaff.Location = New Point(20, 55)
         lblSelectedStaff.Name = "lblSelectedStaff"
-        lblSelectedStaff.Size = New Size(64, 15)
+        lblSelectedStaff.Size = New Size(140, 15)
         lblSelectedStaff.TabIndex = 1
-        lblSelectedStaff.Text = "Staff name"
+        lblSelectedStaff.Text = "Department Head name"
         ' 
         ' lblDetailsTitle
         ' 
@@ -405,9 +420,9 @@ Partial Class StaffOfficesForm
         lblDetailsTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblDetailsTitle.Location = New Point(20, 18)
         lblDetailsTitle.Name = "lblDetailsTitle"
-        lblDetailsTitle.Size = New Size(93, 20)
+        lblDetailsTitle.Size = New Size(180, 20)
         lblDetailsTitle.TabIndex = 0
-        lblDetailsTitle.Text = "Staff details"
+        lblDetailsTitle.Text = "Department Head details"
         ' 
         ' dgvStaff
         ' 
@@ -538,11 +553,11 @@ Partial Class StaffOfficesForm
         btnAddStaff.FlatStyle = FlatStyle.Flat
         btnAddStaff.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
         btnAddStaff.ForeColor = Color.White
-        btnAddStaff.Location = New Point(804, 12)
+        btnAddStaff.Location = New Point(740, 12)
         btnAddStaff.Name = "btnAddStaff"
-        btnAddStaff.Size = New Size(120, 38)
+        btnAddStaff.Size = New Size(184, 38)
         btnAddStaff.TabIndex = 2
-        btnAddStaff.Text = "+ Add staff"
+        btnAddStaff.Text = "+ Add Department Head"
         btnAddStaff.UseVisualStyleBackColor = False
         ' 
         ' lblSubHeader
@@ -552,9 +567,9 @@ Partial Class StaffOfficesForm
         lblSubHeader.ForeColor = Color.FromArgb(CByte(100), CByte(116), CByte(139))
         lblSubHeader.Location = New Point(0, 38)
         lblSubHeader.Name = "lblSubHeader"
-        lblSubHeader.Size = New Size(340, 17)
+        lblSubHeader.Size = New Size(420, 17)
         lblSubHeader.TabIndex = 1
-        lblSubHeader.Text = "Manage staff accounts and clearance office assignments."
+        lblSubHeader.Text = "Manage Department Head accounts and clearance office assignments."
         ' 
         ' lblHeaderTitle
         ' 
@@ -563,9 +578,9 @@ Partial Class StaffOfficesForm
         lblHeaderTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblHeaderTitle.Location = New Point(-3, 0)
         lblHeaderTitle.Name = "lblHeaderTitle"
-        lblHeaderTitle.Size = New Size(176, 37)
+        lblHeaderTitle.Size = New Size(390, 37)
         lblHeaderTitle.TabIndex = 0
-        lblHeaderTitle.Text = "Staff & offices"
+        lblHeaderTitle.Text = "Department Heads & Offices"
         ' 
         ' StaffOfficesForm
         ' 
@@ -612,6 +627,7 @@ Partial Class StaffOfficesForm
     Friend WithEvents lblNavSection As Label
     Friend WithEvents btnNavStudents As Button
     Friend WithEvents btnNavStaff As Button
+    Friend WithEvents btnNavReports As Button
     Friend WithEvents btnNavHistory As Button
     Friend WithEvents btnNavStartTerm As Button
     Friend WithEvents btnNavLogout As Button

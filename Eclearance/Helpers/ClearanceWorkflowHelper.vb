@@ -1,4 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 Imports System.Data
 
 Public Class ClearanceWorkflowHelper
@@ -456,7 +456,23 @@ Public Class ClearanceWorkflowHelper
                 {"@TermID", termID}
             })
 
-            For Each row As DataRow In dt.Rows
+            result = GetStudentClearanceItems(dt.AsEnumerable(), studentCourse, studentYearLevel, enrolledInNSTP)
+
+        Catch ex As Exception
+        End Try
+
+        Return result
+    End Function
+
+    ''' <summary>
+    ''' Computes overall student clearance status based on active-term requirements:
+    ''' - Cleared: all applicable requirements are Cleared (Not Applicable counts as satisfied).
+    ''' - Needs Attention: at least one applicable requirement is Rejected.
+    ''' - In Progress: at least one applicable requirement is Pending or Under Review.
+    ''' </summary>
+    Public Shared Function GetStudentClearanceItems(rows As IEnumerable(Of DataRow), studentCourse As String, studentYearLevel As String, enrolledInNSTP As Boolean) As List(Of ClearanceItemInfo)
+        Dim result As New List(Of ClearanceItemInfo)()
+            For Each row As DataRow In rows
                 Dim item As New ClearanceItemInfo With {
                     .RecordID = Convert.ToInt32(row("RecordID")),
                     .RequirementID = Convert.ToInt32(row("RequirementID")),
@@ -524,18 +540,9 @@ Public Class ClearanceWorkflowHelper
 
             EvaluateSequentialWorkflow(result, studentCourse, studentYearLevel, enrolledInNSTP)
 
-        Catch ex As Exception
-        End Try
-
         Return result
     End Function
 
-    ''' <summary>
-    ''' Computes overall student clearance status based on active-term requirements:
-    ''' - Cleared: all applicable requirements are Cleared (Not Applicable counts as satisfied).
-    ''' - Needs Attention: at least one applicable requirement is Rejected.
-    ''' - In Progress: at least one applicable requirement is Pending or Under Review.
-    ''' </summary>
     Public Shared Function ComputeStudentOverallStatus(
         studentID As Integer,
         termID As Integer,
@@ -547,6 +554,14 @@ Public Class ClearanceWorkflowHelper
         If termID <= 0 Then Return "No Term"
 
         Dim items = GetStudentClearanceItems(studentID, termID, studentCourse, studentYearLevel, db)
+        Return ComputeStudentOverallStatus(items)
+    End Function
+
+    ''' <summary>
+    ''' Formats student clearance progress as "ClearedCount / TotalApplicableCount".
+    ''' Non-applicable requirements do not inflate total requirement count.
+    ''' </summary>
+    Public Shared Function ComputeStudentOverallStatus(items As List(Of ClearanceItemInfo)) As String
         If items Is Nothing OrElse items.Count = 0 Then Return "Pending"
 
         Dim applicableItems = items.Where(Function(i) i.IsApplicable).ToList()
@@ -571,10 +586,11 @@ Public Class ClearanceWorkflowHelper
         Return "In Progress"
     End Function
 
-    ''' <summary>
-    ''' Formats student clearance progress as "ClearedCount / TotalApplicableCount".
-    ''' Non-applicable requirements do not inflate total requirement count.
-    ''' </summary>
+    Public Shared Function GetStudentProgressText(items As List(Of ClearanceItemInfo)) As String
+        Dim applicable = If(items, New List(Of ClearanceItemInfo)()).Where(Function(i) i.IsApplicable).ToList()
+        Return Enumerable.Count(applicable, Function(i) i.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase)).ToString() & " / " & applicable.Count.ToString()
+    End Function
+
     Public Shared Function GetStudentProgressText(
         studentID As Integer,
         termID As Integer,
@@ -586,12 +602,7 @@ Public Class ClearanceWorkflowHelper
         If termID <= 0 Then Return "0 / 0"
 
         Dim items = GetStudentClearanceItems(studentID, termID, studentCourse, studentYearLevel, db)
-        If items Is Nothing OrElse items.Count = 0 Then Return "0 / 0"
-
-        Dim applicableItems = items.Where(Function(i) i.IsApplicable).ToList()
-        Dim clearedCount = applicableItems.Where(Function(i) i.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase)).Count()
-
-        Return clearedCount.ToString() & " / " & applicableItems.Count.ToString()
+        Return GetStudentProgressText(items)
     End Function
 
     ''' <summary>
@@ -986,6 +997,328 @@ Public Class ClearanceWorkflowHelper
             End Try
         End If
         Return 0
+    End Function
+
+    ' ============================================================
+    ' ENROLLMENT & TERM CHRONOLOGY HELPERS
+    ' ============================================================
+
+    Public Class AcademicTermChronologyInfo
+        Public Property TermID As Integer
+        Public Property AcademicYear As String
+        Public Property Semester As String
+        Public Property IsActive As Boolean
+        Public Property ChronologicalOrder As Integer
+        Public ReadOnly Property DisplayText As String
+            Get
+                Return AcademicYear & " | " & Semester
+            End Get
+        End Property
+    End Class
+
+    Public Class PreviousTermInfo
+        Public Property TermID As Integer
+        Public Property AcademicYear As String
+        Public Property Semester As String
+        Public Property IsSimulated As Boolean = False
+        Public ReadOnly Property DisplayText As String
+            Get
+                Return AcademicYear & " | " & Semester
+            End Get
+        End Property
+    End Class
+
+    Public Class ClearanceProgressInfo
+        Public Property ClearedCount As Integer
+        Public Property ApplicableCount As Integer
+        Public Property Percentage As Integer
+        Public Property OverallStatus As String
+        Public Property NextStepText As String
+        Public Property NextDepartmentName As String
+        Public ReadOnly Property ProgressSummary As String
+            Get
+                Return ClearedCount.ToString() & " of " & ApplicableCount.ToString() & " offices cleared · " & Percentage.ToString() & "%"
+            End Get
+        End Property
+    End Class
+
+    Public Shared Sub EnsureEnrollmentTableExists(db As DatabaseHelper)
+        Try
+            Dim sql As String =
+                "CREATE TABLE IF NOT EXISTS `studenttermenrollments` (" &
+                "  `EnrollmentID` int(11) NOT NULL AUTO_INCREMENT," &
+                "  `StudentID` int(11) NOT NULL," &
+                "  `TermID` int(11) NOT NULL," &
+                "  `EnrollmentStatus` varchar(30) NOT NULL," &
+                "  `Remarks` varchar(255) DEFAULT NULL," &
+                "  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP," &
+                "  `UpdatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," &
+                "  PRIMARY KEY (`EnrollmentID`)," &
+                "  UNIQUE KEY `uq_student_term_enrollment` (`StudentID`,`TermID`)," &
+                "  KEY `idx_enrollment_student` (`StudentID`)," &
+                "  KEY `idx_enrollment_term` (`TermID`)," &
+                "  CONSTRAINT `fk_enrollment_student` FOREIGN KEY (`StudentID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE," &
+                "  CONSTRAINT `fk_enrollment_term` FOREIGN KEY (`TermID`) REFERENCES `academicterms` (`TermID`) ON DELETE CASCADE ON UPDATE CASCADE" &
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
+            db.ExecuteNonQuery(sql)
+        Catch
+        End Try
+    End Sub
+
+    Public Shared Function ParseTermChronologicalValue(academicYear As String, semester As String) As Integer
+        Dim startYear As Integer = 2000
+        Try
+            If Not String.IsNullOrWhiteSpace(academicYear) Then
+                Dim parts = academicYear.Split(New Char() {"-"c, "–"c, "/"c}, StringSplitOptions.RemoveEmptyEntries)
+                If parts.Length > 0 Then
+                    Dim yrStr = New String(parts(0).Where(AddressOf Char.IsDigit).ToArray())
+                    If Not String.IsNullOrWhiteSpace(yrStr) Then
+                        startYear = Convert.ToInt32(yrStr)
+                    End If
+                End If
+            End If
+        Catch
+        End Try
+
+        Dim semVal As Integer = 1
+        Dim cleanSem = If(semester, "").Trim().ToLowerInvariant()
+        If cleanSem.Contains("1st") OrElse cleanSem.Contains("first") Then
+            semVal = 1
+        ElseIf cleanSem.Contains("2nd") OrElse cleanSem.Contains("second") Then
+            semVal = 2
+        ElseIf cleanSem.Contains("summer") OrElse cleanSem.Contains("midyear") OrElse cleanSem.Contains("3rd") Then
+            semVal = 3
+        End If
+
+        Return (startYear * 10) + semVal
+    End Function
+
+    Public Shared Function GetPreviousAcademicTerm(activeTermID As Integer, db As DatabaseHelper) As PreviousTermInfo
+        EnsureEnrollmentTableExists(db)
+        Dim terms As New List(Of AcademicTermChronologyInfo)()
+        Try
+            Dim dt = db.ExecuteQuery("SELECT TermID, AcademicYear, Semester, IsActive FROM AcademicTerms ORDER BY TermID ASC;")
+            For Each r As DataRow In dt.Rows
+                Dim tID = Convert.ToInt32(r("TermID"))
+                Dim ay = r("AcademicYear").ToString()
+                Dim sem = r("Semester").ToString()
+                Dim isAct = Convert.ToBoolean(r("IsActive"))
+                Dim orderVal = ParseTermChronologicalValue(ay, sem)
+                terms.Add(New AcademicTermChronologyInfo With {
+                    .TermID = tID,
+                    .AcademicYear = ay,
+                    .Semester = sem,
+                    .IsActive = isAct,
+                    .ChronologicalOrder = orderVal
+                })
+            Next
+        Catch
+        End Try
+
+        Dim sorted = terms.OrderBy(Function(t) t.ChronologicalOrder).ThenBy(Function(t) t.TermID).ToList()
+        Dim activeIndex As Integer = -1
+
+        If activeTermID > 0 Then
+            activeIndex = sorted.FindIndex(Function(t) t.TermID = activeTermID)
+        End If
+
+        If activeIndex = -1 Then
+            activeIndex = sorted.FindIndex(Function(t) t.IsActive)
+        End If
+
+        If activeIndex > 0 Then
+            Dim prev = sorted(activeIndex - 1)
+            Return New PreviousTermInfo With {
+                .TermID = prev.TermID,
+                .AcademicYear = prev.AcademicYear,
+                .Semester = prev.Semester,
+                .IsSimulated = False
+            }
+        End If
+
+        ' Derivation when predecessor not yet entered into AcademicTerms:
+        Dim currentAY As String = "2026-2027"
+        Dim currentSem As String = "1st Semester"
+
+        If activeIndex >= 0 Then
+            currentAY = sorted(activeIndex).AcademicYear
+            currentSem = sorted(activeIndex).Semester
+        Else
+            Try
+                Dim dtCur = db.ExecuteQuery("SELECT AcademicYear, Semester FROM AcademicTerms WHERE IsActive = 1 LIMIT 1;")
+                If dtCur.Rows.Count > 0 Then
+                    currentAY = dtCur.Rows(0)("AcademicYear").ToString()
+                    currentSem = dtCur.Rows(0)("Semester").ToString()
+                End If
+            Catch
+            End Try
+        End If
+
+        Dim startYr As Integer = 2026
+        Dim endYr As Integer = 2027
+        Try
+            Dim parts = currentAY.Split(New Char() {"-"c, "–"c, "/"c}, StringSplitOptions.RemoveEmptyEntries)
+            If parts.Length >= 2 Then
+                Dim s1 = New String(parts(0).Where(AddressOf Char.IsDigit).ToArray())
+                Dim s2 = New String(parts(1).Where(AddressOf Char.IsDigit).ToArray())
+                startYr = Convert.ToInt32(s1)
+                endYr = Convert.ToInt32(s2)
+            End If
+        Catch
+        End Try
+
+        Dim prevAY As String
+        Dim prevSem As String
+
+        If currentSem.ToLowerInvariant().Contains("1st") OrElse currentSem.ToLowerInvariant().Contains("first") Then
+            prevAY = (startYr - 1).ToString() & "–" & startYr.ToString()
+            prevSem = "2nd Semester"
+        ElseIf currentSem.ToLowerInvariant().Contains("2nd") OrElse currentSem.ToLowerInvariant().Contains("second") Then
+            prevAY = startYr.ToString() & "–" & endYr.ToString()
+            prevSem = "1st Semester"
+        Else
+            prevAY = startYr.ToString() & "–" & endYr.ToString()
+            prevSem = "2nd Semester"
+        End If
+
+        Return New PreviousTermInfo With {
+            .TermID = 0,
+            .AcademicYear = prevAY,
+            .Semester = prevSem,
+            .IsSimulated = True
+        }
+    End Function
+
+    Public Shared Function GetStudentPreviousEnrollment(studentID As Integer, prevTermID As Integer, db As DatabaseHelper) As String
+        If studentID <= 0 OrElse prevTermID <= 0 Then
+            Return "No Record"
+        End If
+
+        EnsureEnrollmentTableExists(db)
+        Try
+            Dim dt = db.ExecuteQuery(
+                "SELECT EnrollmentStatus FROM studenttermenrollments WHERE StudentID = @StudentID AND TermID = @TermID LIMIT 1;",
+                New Dictionary(Of String, Object) From {
+                    {"@StudentID", studentID},
+                    {"@TermID", prevTermID}
+                }
+            )
+            If dt.Rows.Count > 0 Then
+                Dim stat = dt.Rows(0)("EnrollmentStatus").ToString().Trim()
+                If stat.Equals("Enrolled", StringComparison.OrdinalIgnoreCase) Then
+                    Return "Enrolled"
+                ElseIf stat.Equals("Not Enrolled", StringComparison.OrdinalIgnoreCase) Then
+                    Return "Not Enrolled"
+                End If
+            End If
+        Catch
+        End Try
+
+        Return "No Record"
+    End Function
+
+    Public Shared Function SetStudentTermEnrollment(studentID As Integer, termID As Integer, status As String, remarks As String, db As DatabaseHelper) As Boolean
+        If studentID <= 0 OrElse termID <= 0 Then Return False
+        EnsureEnrollmentTableExists(db)
+
+        Dim cleanStatus = If(status, "").Trim()
+        If String.IsNullOrWhiteSpace(cleanStatus) OrElse cleanStatus.Equals("No Record", StringComparison.OrdinalIgnoreCase) Then
+            ' Delete existing record so it is treated as No Record
+            Try
+                db.ExecuteNonQuery(
+                    "DELETE FROM studenttermenrollments WHERE StudentID = @StudentID AND TermID = @TermID;",
+                    New Dictionary(Of String, Object) From {
+                        {"@StudentID", studentID},
+                        {"@TermID", termID}
+                    }
+                )
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+        End If
+
+        Try
+            Dim query As String =
+                "INSERT INTO studenttermenrollments (StudentID, TermID, EnrollmentStatus, Remarks) " &
+                "VALUES (@StudentID, @TermID, @Status, @Remarks) " &
+                "ON DUPLICATE KEY UPDATE EnrollmentStatus = @Status, Remarks = @Remarks, UpdatedAt = CURRENT_TIMESTAMP;"
+            Dim rows = db.ExecuteNonQuery(
+                query,
+                New Dictionary(Of String, Object) From {
+                    {"@StudentID", studentID},
+                    {"@TermID", termID},
+                    {"@Status", cleanStatus},
+                    {"@Remarks", If(remarks, "")}
+                }
+            )
+            Return rows > 0
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    Public Shared Function ComputeClearanceProgress(items As List(Of ClearanceItemInfo)) As ClearanceProgressInfo
+        Dim info As New ClearanceProgressInfo With {
+            .ClearedCount = 0,
+            .ApplicableCount = 0,
+            .Percentage = 0,
+            .OverallStatus = "In Progress",
+            .NextStepText = "Complete pending requirements",
+            .NextDepartmentName = ""
+        }
+
+        If items Is Nothing OrElse items.Count = 0 Then
+            info.OverallStatus = "In Progress"
+            Return info
+        End If
+
+        Dim applicable = items.Where(Function(i) i.IsApplicable).ToList()
+        info.ApplicableCount = applicable.Count
+
+        Dim cleared = applicable.Where(Function(i) i.EffectiveStatus.Equals("Cleared", StringComparison.OrdinalIgnoreCase)).ToList()
+        info.ClearedCount = cleared.Count
+
+        If info.ApplicableCount > 0 Then
+            info.Percentage = CInt(Math.Round((CDbl(info.ClearedCount) / CDbl(info.ApplicableCount)) * 100))
+        Else
+            info.Percentage = 0
+        End If
+
+        Dim hasRejected = applicable.Any(Function(i) i.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase))
+        If info.ApplicableCount > 0 AndAlso info.ClearedCount = info.ApplicableCount Then
+            info.OverallStatus = "Cleared"
+            info.NextStepText = "All required departments cleared. You may proceed with enrollment."
+        ElseIf hasRejected Then
+            info.OverallStatus = "Needs Attention"
+            Dim rejectedItem = applicable.FirstOrDefault(Function(i) i.EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase))
+            If rejectedItem IsNot Nothing Then
+                info.NextDepartmentName = rejectedItem.DepartmentName
+                info.NextStepText = "Address remarks and resubmit to " & rejectedItem.DepartmentName
+            Else
+                info.NextStepText = "Address returned requirements and resubmit."
+            End If
+        Else
+            info.OverallStatus = "In Progress"
+            Dim pendingSubmit = applicable.FirstOrDefault(Function(i) i.EffectiveStatus.Equals("Pending", StringComparison.OrdinalIgnoreCase) AndAlso i.CanSubmit)
+            Dim underReview = applicable.FirstOrDefault(Function(i) i.EffectiveStatus.Equals("Under Review", StringComparison.OrdinalIgnoreCase))
+            Dim lockedItem = applicable.FirstOrDefault(Function(i) i.EffectiveStatus.Equals("Locked", StringComparison.OrdinalIgnoreCase))
+
+            If pendingSubmit IsNot Nothing Then
+                info.NextDepartmentName = pendingSubmit.DepartmentName
+                info.NextStepText = "Submit requirements to " & pendingSubmit.DepartmentName
+            ElseIf underReview IsNot Nothing Then
+                info.NextDepartmentName = underReview.DepartmentName
+                info.NextStepText = "Awaiting verification from " & underReview.DepartmentName
+            ElseIf lockedItem IsNot Nothing Then
+                info.NextDepartmentName = lockedItem.DepartmentName
+                info.NextStepText = "Complete earlier departments to unlock " & lockedItem.DepartmentName
+            Else
+                info.NextStepText = "Process your remaining clearance obligations."
+            End If
+        End If
+
+        Return info
     End Function
 
 End Class

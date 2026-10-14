@@ -13,6 +13,7 @@ Public Class AdminStudentsForm
         e As EventArgs
     ) Handles MyBase.Load
 
+        btnNavReports.Visible = String.Equals(AppSession.Role, "Admin", StringComparison.OrdinalIgnoreCase)
         ApplySchoolLogo(picSchoolLogo)
         LoadCurrentTermLabel()
         InitializeFilters()
@@ -623,6 +624,34 @@ Public Class AdminStudentsForm
 
     End Sub
 
+    ' ============================================================
+    ' MANAGE PREVIOUS-SEMESTER ENROLLMENT
+    ' ============================================================
+    Private Sub btnManageEnrollment_Click(
+        sender As Object,
+        e As EventArgs
+    ) Handles btnManageEnrollment.Click
+
+        If dgvStudents.SelectedRows.Count = 0 OrElse dgvStudents.SelectedRows(0).Tag Is Nothing Then
+            MessageBox.Show(
+                "Please select a student from the table first.",
+                "Previous Enrollment Maintenance",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            )
+            Return
+        End If
+
+        Dim studentID As Integer = Convert.ToInt32(dgvStudents.SelectedRows(0).Tag)
+        Dim studentNo As String = If(dgvStudents.SelectedRows(0).Cells(colStudentNo.Index).Value, "").ToString()
+        Dim studentName As String = If(dgvStudents.SelectedRows(0).Cells(colStudentName.Index).Value, "").ToString()
+        Dim course As String = If(dgvStudents.SelectedRows(0).Cells(colCourse.Index).Value, "").ToString()
+
+        Using modal As New ManageEnrollmentModalForm(studentID, studentNo, studentName, course)
+            modal.ShowDialog(Me)
+        End Using
+
+    End Sub
 
     ' ============================================================
     ' RESET CURRENT TERM
@@ -898,10 +927,37 @@ Public Class AdminStudentsForm
         End If
     End Sub
 
+    Public Sub ShowReportsView()
+        If Not String.Equals(AppSession.Role, "Admin", StringComparison.OrdinalIgnoreCase) Then
+            MessageBox.Show("Only administrators can open reports.", "Access denied", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+        SetActiveNavButton(btnNavReports)
+        LoadChildFormView(New ReportsForm())
+    End Sub
+
+    Public Shared Sub OpenReportsFrom(source As Form)
+        If Not String.Equals(AppSession.Role, "Admin", StringComparison.OrdinalIgnoreCase) Then
+            MessageBox.Show("Only administrators can open reports.", "Access denied", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+        Dim host = Application.OpenForms.OfType(Of AdminStudentsForm)().FirstOrDefault()
+        If host Is Nothing Then
+            host = New AdminStudentsForm()
+            host.Show()
+        End If
+        host.ShowReportsView()
+        host.BringToFront()
+        If source IsNot host AndAlso source.TopLevel Then source.Close()
+    End Sub
+
     Public Sub ShowStudentsView()
         SetActiveNavButton(btnNavStudents)
         If pnlViewHost IsNot Nothing Then
             pnlViewHost.Visible = False
+            For Each report In pnlViewHost.Controls.OfType(Of ReportsForm)().ToArray()
+                report.Dispose()
+            Next
             pnlViewHost.Controls.Clear()
         End If
         pnlMain.Visible = True
@@ -941,6 +997,9 @@ Public Class AdminStudentsForm
             childSidebar.Visible = False
         End If
 
+        For Each report In pnlViewHost.Controls.OfType(Of ReportsForm)().ToArray()
+            report.Dispose()
+        Next
         pnlViewHost.Controls.Clear()
         pnlViewHost.Controls.Add(childForm)
         pnlMain.Visible = False
@@ -950,7 +1009,7 @@ Public Class AdminStudentsForm
     End Sub
 
     Private Sub SetActiveNavButton(activeBtn As Button)
-        Dim navButtons As Button() = {btnNavStudents, btnNavStaff, btnNavHistory, btnNavStartTerm}
+        Dim navButtons As Button() = {btnNavStudents, btnNavStaff, btnNavReports, btnNavHistory, btnNavStartTerm}
 
         For Each btn In navButtons
             If btn Is activeBtn Then
@@ -1035,6 +1094,11 @@ Public Class AdminStudentsForm
         Catch ex As Exception
             MessageBox.Show("Error exporting report: " & ex.Message, "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+    End Sub
+
+
+    Private Sub btnNavReports_Click(sender As Object, e As EventArgs) Handles btnNavReports.Click
+        AdminStudentsForm.OpenReportsFrom(Me)
     End Sub
 
 End Class

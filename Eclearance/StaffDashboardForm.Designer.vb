@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class StaffDashboardForm
     Inherits System.Windows.Forms.Form
 
@@ -228,7 +228,7 @@ Partial Class StaffDashboardForm
         lblNavSection.Name = "lblNavSection"
         lblNavSection.Size = New Size(74, 12)
         lblNavSection.TabIndex = 1
-        lblNavSection.Text = "STAFF PORTAL"
+        lblNavSection.Text = "DEPARTMENT HEAD PORTAL"
         ' 
         ' pnlLogo
         ' 
@@ -976,7 +976,7 @@ Partial Class StaffDashboardForm
         lblStaffName.Name = "lblStaffName"
         lblStaffName.Size = New Size(80, 15)
         lblStaffName.TabIndex = 1
-        lblStaffName.Text = "Staff Member"
+        lblStaffName.Text = "Department Head"
         ' 
         ' lblStaffIcon
         ' 
@@ -1053,9 +1053,9 @@ Partial Class StaffDashboardForm
         lblHeaderTitle.ForeColor = Color.FromArgb(CByte(15), CByte(23), CByte(42))
         lblHeaderTitle.Location = New Point(24, 16)
         lblHeaderTitle.Name = "lblHeaderTitle"
-        lblHeaderTitle.Size = New Size(224, 37)
+        lblHeaderTitle.Size = New Size(380, 37)
         lblHeaderTitle.TabIndex = 0
-        lblHeaderTitle.Text = "Staff Dashboard"
+        lblHeaderTitle.Text = "Department Head Dashboard"
         ' 
         ' StaffDashboardForm
         ' 
