@@ -57,6 +57,7 @@ Partial Class ViewRequirementModalForm
         lblRequirementTitle = New Label()
         lblStepOrder = New Label()
         btnDismiss = New Button()
+        btnUploadProof = New Button()
         pnlMainCard.SuspendLayout()
         pnlDetails.SuspendLayout()
         pnlGuidanceSection.SuspendLayout()
@@ -71,6 +72,7 @@ Partial Class ViewRequirementModalForm
         pnlMainCard.BorderStyle = BorderStyle.FixedSingle
         pnlMainCard.Controls.Add(lblModalHeader)
         pnlMainCard.Controls.Add(pnlDetails)
+        pnlMainCard.Controls.Add(btnUploadProof)
         pnlMainCard.Controls.Add(btnDismiss)
         pnlMainCard.Dock = DockStyle.Fill
         pnlMainCard.Location = New Point(0, 0)
@@ -415,7 +417,7 @@ Partial Class ViewRequirementModalForm
         pnlLinkSection.Margin = New Padding(4, 5, 4, 5)
         pnlLinkSection.Name = "pnlLinkSection"
         pnlLinkSection.Padding = New Padding(18, 20, 18, 20)
-        pnlLinkSection.Size = New Size(671, 107)
+        pnlLinkSection.Size = New Size(671, 115)
         pnlLinkSection.TabIndex = 5
         pnlLinkSection.Visible = False
         ' 
@@ -438,13 +440,12 @@ Partial Class ViewRequirementModalForm
         ' 
         ' lblLinkDesc
         ' 
-        lblLinkDesc.AutoSize = True
         lblLinkDesc.Font = New Font("Segoe UI", 8.5F)
         lblLinkDesc.ForeColor = Color.FromArgb(CByte(30), CByte(64), CByte(175))
-        lblLinkDesc.Location = New Point(18, 56)
+        lblLinkDesc.Location = New Point(18, 48)
         lblLinkDesc.Margin = New Padding(4, 0, 4, 0)
         lblLinkDesc.Name = "lblLinkDesc"
-        lblLinkDesc.Size = New Size(343, 20)
+        lblLinkDesc.Size = New Size(440, 56)
         lblLinkDesc.TabIndex = 1
         lblLinkDesc.Text = "Click the button to access the external survey form."
         ' 
@@ -577,6 +578,24 @@ Partial Class ViewRequirementModalForm
         lblStepOrder.Text = "Step 1"
         lblStepOrder.TextAlign = ContentAlignment.MiddleCenter
         ' 
+        ' btnUploadProof
+        ' 
+        btnUploadProof.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        btnUploadProof.BackColor = Color.FromArgb(CByte(2), CByte(132), CByte(199))
+        btnUploadProof.Cursor = Cursors.Hand
+        btnUploadProof.FlatAppearance.BorderSize = 0
+        btnUploadProof.FlatStyle = FlatStyle.Flat
+        btnUploadProof.Font = New Font("Segoe UI Semibold", 9.5F, FontStyle.Bold)
+        btnUploadProof.ForeColor = Color.White
+        btnUploadProof.Location = New Point(420, 724)
+        btnUploadProof.Margin = New Padding(4, 5, 4, 5)
+        btnUploadProof.Name = "btnUploadProof"
+        btnUploadProof.Size = New Size(183, 60)
+        btnUploadProof.TabIndex = 2
+        btnUploadProof.Text = "Upload Screenshot"
+        btnUploadProof.UseVisualStyleBackColor = False
+        btnUploadProof.Visible = False
+        ' 
         ' btnDismiss
         ' 
         btnDismiss.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
@@ -667,6 +686,7 @@ Partial Class ViewRequirementModalForm
     Friend WithEvents btnSaveGuidanceInfo As Button
 
     Friend WithEvents btnDismiss As Button
+    Friend WithEvents btnUploadProof As Button
 
     Friend WithEvents pnlStudentAffairsRemarks As Panel
     Friend WithEvents lblStudentAffairsRemarks As Label

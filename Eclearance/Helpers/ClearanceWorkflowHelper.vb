@@ -54,6 +54,7 @@ Public Class ClearanceWorkflowHelper
 
         Public ReadOnly Property IsOfficeRequest As Boolean
             Get
+                If RequiresFile Then Return False
                 Return IsStudentAffairs OrElse IsFinance OrElse
                     String.Equals(DepartmentName, "Registrar", StringComparison.OrdinalIgnoreCase) OrElse
                     String.Equals(DepartmentName, "OAA", StringComparison.OrdinalIgnoreCase)

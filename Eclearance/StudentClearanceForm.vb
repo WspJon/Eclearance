@@ -690,7 +690,7 @@ Public Class StudentClearanceForm
         End If
         lblDept.Text = deptName
         lblReq.Text = If(String.IsNullOrWhiteSpace(item.Instructions), item.RequirementName, item.RequirementName & " — " & item.Instructions)
-        If item.IsStudentAffairs Then lblReq.Text = item.RequirementName & " — Approval is subject to office head verification of any outstanding concerns."
+        If item.IsStudentAffairs AndAlso Not item.RequiresFile Then lblReq.Text = item.RequirementName & " — Approval is subject to office head verification of any outstanding concerns."
         lblStatus.Text = item.DisplayStatus
         ApplyStatusStyle(lblStatus, item.DisplayStatus)
 
@@ -1110,6 +1110,8 @@ Public Class StudentClearanceForm
             modal.IsGuidanceOffice = (item.SequenceOrder = 1 OrElse item.DepartmentName.ToLowerInvariant().Contains("guidance"))
             modal.AcademicYear = GetCurrentAcademicYear()
             modal.TermID = GetActiveTermID()
+            modal.RecordID = item.RecordID
+            modal.CanSubmit = item.CanSubmit
 
             modal.ShowDialog(Me)
         End Using
@@ -1154,6 +1156,8 @@ Public Class StudentClearanceForm
             modal.IsGuidanceOffice = True
             modal.AcademicYear = GetCurrentAcademicYear()
             modal.TermID = GetActiveTermID()
+            modal.RecordID = item.RecordID
+            modal.CanSubmit = item.CanSubmit
 
             modal.ShowDialog(Me)
         End Using

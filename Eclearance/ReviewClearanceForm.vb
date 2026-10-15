@@ -189,7 +189,7 @@ Public Class ReviewClearanceForm
 
             _isStudentAffairs = deptName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase)
             _isFinance = deptName.Equals("Finance Office", StringComparison.OrdinalIgnoreCase)
-            _isOfficeVerification = _isStudentAffairs OrElse _isFinance
+            _isOfficeVerification = (_isStudentAffairs AndAlso Not requiresFile) OrElse _isFinance
             pnlStudentAffairs.Visible = False
             pnlFinanceVerification.Visible = False
             pnlSequentialReview.Visible = False

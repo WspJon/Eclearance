@@ -17,36 +17,92 @@ Public Class ViewRequirementModalForm
     Public Property IsGuidanceOffice As Boolean = False
     Public Property AcademicYear As String = ""
     Public Property TermID As Integer = 0
+    Public Property RecordID As Integer = 0
+    Public Property CanSubmit As Boolean = False
 
     Private Sub ViewRequirementModalForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lblModalHeader.Text = If(String.IsNullOrWhiteSpace(DepartmentName), "Requirement Instructions", DepartmentName & " - Instructions")
         lblRequirementTitle.Text = RequirementName
         lblStepOrder.Text = "Step " & SequenceOrder.ToString()
         lblStatusBadge.Text = EffectiveStatus
-        pnlStudentAffairsRemarks.Visible = DepartmentName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase) OrElse DepartmentName.Equals("Finance Office", StringComparison.OrdinalIgnoreCase) OrElse DepartmentName.Equals("Registrar", StringComparison.OrdinalIgnoreCase) OrElse DepartmentName.Equals("OAA", StringComparison.OrdinalIgnoreCase)
-        txtStudentAffairsRemarks.Text = If(String.IsNullOrWhiteSpace(StaffRemarks), "No office head remarks yet.", StaffRemarks)
 
         ApplyStatusStyle(lblStatusBadge, EffectiveStatus)
 
         lblInstructionsValue.Text = If(String.IsNullOrWhiteSpace(InstructionsText), "No special instructions provided.", InstructionsText)
 
-        If RequiresFile Then
+        ' Proof / Upload Requirement
+        Dim isEvaluation As Boolean = RequirementName.IndexOf("Evaluation", StringComparison.OrdinalIgnoreCase) >= 0 OrElse
+                                      InstructionsText.IndexOf("evaluation survey", StringComparison.OrdinalIgnoreCase) >= 0 OrElse
+                                      DepartmentName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase) OrElse
+                                      DepartmentName.Equals("CCS", StringComparison.OrdinalIgnoreCase) OrElse
+                                      DepartmentName.Equals("CTHM", StringComparison.OrdinalIgnoreCase) OrElse
+                                      DepartmentName.Equals("CBA", StringComparison.OrdinalIgnoreCase) OrElse
+                                      DepartmentName.Equals("COE", StringComparison.OrdinalIgnoreCase) OrElse
+                                      DepartmentName.ToLowerInvariant().Contains("dean")
+
+        If isEvaluation Then
+            lblProofHeader.Text = "Required Proof:"
+            lblProofValue.Text = "Screenshot of submission confirmation page (Supported formats: PNG, JPG, JPEG under 10MB)."
+        ElseIf RequiresFile Then
+            lblProofHeader.Text = "Required Proof:"
             lblProofValue.Text = "Document / image file upload is required (PDF, JPG, PNG under 10MB)."
         Else
+            lblProofHeader.Text = "Required Proof:"
             lblProofValue.Text = "No document upload required for this office."
         End If
 
         ' External Link / Survey
-        If Not String.IsNullOrWhiteSpace(RequirementLink) Then
+        Dim activeUrl As String = If(RequirementLink, "").Trim()
+        If isEvaluation AndAlso String.IsNullOrWhiteSpace(activeUrl) Then
+            activeUrl = "https://example.com/student-evaluation"
+        End If
+
+        If Not String.IsNullOrWhiteSpace(activeUrl) Then
             pnlLinkSection.Visible = True
-            btnOpenLink.Tag = RequirementLink
+            btnOpenLink.Tag = activeUrl
+
+            If IsDemoLink(activeUrl) Then
+                lblLinkHeader.Text = "Evaluation Survey Link: Not Yet Configured (Demo)"
+                lblLinkDesc.Text = "Demo URL: " & activeUrl & vbCrLf &
+                                   "Note: This URL is a demonstration placeholder only. Complete the survey and upload a screenshot of your confirmation page."
+                btnOpenLink.Text = "Open Demo Link"
+            Else
+                lblLinkHeader.Text = "Official Evaluation Survey Link"
+                lblLinkDesc.Text = "Survey URL: " & activeUrl & vbCrLf &
+                                   "Click to access the official evaluation survey form, then take a screenshot of the confirmation page."
+                btnOpenLink.Text = "Open Survey"
+            End If
         Else
             pnlLinkSection.Visible = False
+        End If
+
+        ' Department Head Remarks
+        Dim showRemarks As Boolean = Not String.IsNullOrWhiteSpace(StaffRemarks) OrElse
+                                     DepartmentName.Equals("Office of Student Affairs", StringComparison.OrdinalIgnoreCase) OrElse
+                                     DepartmentName.Equals("Finance Office", StringComparison.OrdinalIgnoreCase) OrElse
+                                     DepartmentName.Equals("Registrar", StringComparison.OrdinalIgnoreCase) OrElse
+                                     DepartmentName.Equals("OAA", StringComparison.OrdinalIgnoreCase)
+        pnlStudentAffairsRemarks.Visible = showRemarks
+        lblStudentAffairsRemarks.Text = "Department Head Remarks / Compliance Instructions"
+        txtStudentAffairsRemarks.Text = If(String.IsNullOrWhiteSpace(StaffRemarks), "No department head remarks yet.", StaffRemarks)
+
+        ' Sequential layout adjustment for panels inside pnlDetails
+        Dim currentTop As Integer = pnlProofSection.Bottom + 16
+
+        If pnlLinkSection.Visible Then
+            pnlLinkSection.Top = currentTop
+            currentTop = pnlLinkSection.Bottom + 16
+        End If
+
+        If pnlStudentAffairsRemarks.Visible Then
+            pnlStudentAffairsRemarks.Top = currentTop
+            currentTop = pnlStudentAffairsRemarks.Bottom + 16
         End If
 
         ' Guidance Personal Information Section
         If IsGuidanceOffice Then
             pnlGuidanceSection.Visible = True
+            pnlGuidanceSection.Top = currentTop
             LoadGuidanceStudentInfo()
 
             ' Under Review or Cleared: do not allow editing
@@ -66,6 +122,18 @@ Public Class ViewRequirementModalForm
             End If
         Else
             pnlGuidanceSection.Visible = False
+        End If
+
+        ' Upload button configuration
+        If RequiresFile AndAlso CanSubmit AndAlso RecordID > 0 Then
+            btnUploadProof.Visible = True
+            If isEvaluation Then
+                btnUploadProof.Text = If(EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase), "Resubmit Screenshot", "Upload Screenshot")
+            Else
+                btnUploadProof.Text = If(EffectiveStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase), "Resubmit Document", "Upload Requirement")
+            End If
+        Else
+            btnUploadProof.Visible = False
         End If
     End Sub
 
@@ -398,14 +466,48 @@ Public Class ViewRequirementModalForm
         End Try
     End Sub
 
+    Private Function IsDemoLink(url As String) As Boolean
+        If String.IsNullOrWhiteSpace(url) Then Return True
+        Dim clean = url.Trim().ToLowerInvariant()
+        Return clean.Contains("example.com") OrElse clean.Contains("placeholder") OrElse clean.Contains("demo")
+    End Function
+
     Private Sub btnOpenLink_Click(sender As Object, e As EventArgs) Handles btnOpenLink.Click
         Dim url As String = If(btnOpenLink.Tag, "").ToString().Trim()
-        If Not String.IsNullOrWhiteSpace(url) Then
-            Try
-                Process.Start(New ProcessStartInfo(url) With {.UseShellExecute = True})
-            Catch ex As Exception
-                MessageBox.Show("Unable to open the link: " & ex.Message, "Browser Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            End Try
+        If String.IsNullOrWhiteSpace(url) Then Return
+
+        If IsDemoLink(url) Then
+            Dim confirmDemo = MessageBox.Show(
+                "Evaluation Survey Link: Not Yet Configured (Demo)" & Environment.NewLine & Environment.NewLine &
+                "The configured URL (" & url & ") is a demonstration placeholder." & Environment.NewLine &
+                "An official evaluation survey has not yet been linked." & Environment.NewLine & Environment.NewLine &
+                "Would you like to open this demo placeholder link in your browser anyway for testing?",
+                "Demo Evaluation Survey Link",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information
+            )
+            If confirmDemo <> DialogResult.Yes Then Return
+        End If
+
+        Try
+            Process.Start(New ProcessStartInfo(url) With {.UseShellExecute = True})
+        Catch ex As Exception
+            MessageBox.Show("Unable to open the link: " & ex.Message, "Browser Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End Try
+    End Sub
+
+    Private Sub btnUploadProof_Click(sender As Object, e As EventArgs) Handles btnUploadProof.Click
+        If RecordID > 0 AndAlso RequiresFile AndAlso CanSubmit Then
+            Using uploadModal As New UploadClearanceModalForm()
+                uploadModal.RecordID = RecordID
+                uploadModal.DepartmentName = DepartmentName
+                uploadModal.RequirementName = RequirementName
+
+                If uploadModal.ShowDialog(Me) = DialogResult.OK Then
+                    Me.DialogResult = DialogResult.OK
+                    Me.Close()
+                End If
+            End Using
         End If
     End Sub
 

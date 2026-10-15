@@ -1926,42 +1926,12 @@ Partial Class StudentClearanceForm
         lblTermText.TabIndex = 0
         lblTermText.Visible = False
         ' 
-        ' lblCurrentTermTitle
-        ' 
-        lblCurrentTermTitle.AutoSize = True
-        lblCurrentTermTitle.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
-        lblCurrentTermTitle.ForeColor = Color.FromArgb(100, 116, 139)
-        lblCurrentTermTitle.Location = New Point(18, 12)
-        lblCurrentTermTitle.Name = "lblCurrentTermTitle"
-        lblCurrentTermTitle.Size = New Size(130, 12)
-        lblCurrentTermTitle.TabIndex = 1
-        lblCurrentTermTitle.Text = "CURRENT ACADEMIC TERM"
-        ' 
-        ' lblCurrentTermValue
-        ' 
-        lblCurrentTermValue.AutoSize = True
-        lblCurrentTermValue.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold)
-        lblCurrentTermValue.ForeColor = Color.FromArgb(15, 23, 42)
-        lblCurrentTermValue.Location = New Point(18, 30)
-        lblCurrentTermValue.Name = "lblCurrentTermValue"
-        lblCurrentTermValue.Size = New Size(170, 17)
-        lblCurrentTermValue.TabIndex = 2
-        lblCurrentTermValue.Text = "2026–2027 | 1st Semester"
-        ' 
-        ' pnlTermSep1
-        ' 
-        pnlTermSep1.BackColor = Color.FromArgb(226, 232, 240)
-        pnlTermSep1.Location = New Point(230, 12)
-        pnlTermSep1.Name = "pnlTermSep1"
-        pnlTermSep1.Size = New Size(1, 40)
-        pnlTermSep1.TabIndex = 3
-        ' 
         ' lblPrevTermTitle
         ' 
         lblPrevTermTitle.AutoSize = True
         lblPrevTermTitle.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
         lblPrevTermTitle.ForeColor = Color.FromArgb(100, 116, 139)
-        lblPrevTermTitle.Location = New Point(250, 12)
+        lblPrevTermTitle.Location = New Point(18, 12)
         lblPrevTermTitle.Name = "lblPrevTermTitle"
         lblPrevTermTitle.Size = New Size(108, 12)
         lblPrevTermTitle.TabIndex = 4
@@ -1972,26 +1942,26 @@ Partial Class StudentClearanceForm
         lblPrevTermValue.AutoSize = True
         lblPrevTermValue.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold)
         lblPrevTermValue.ForeColor = Color.FromArgb(15, 23, 42)
-        lblPrevTermValue.Location = New Point(250, 30)
+        lblPrevTermValue.Location = New Point(18, 30)
         lblPrevTermValue.Name = "lblPrevTermValue"
         lblPrevTermValue.Size = New Size(170, 17)
         lblPrevTermValue.TabIndex = 5
         lblPrevTermValue.Text = "2025–2026 | 2nd Semester"
         ' 
-        ' pnlTermSep2
+        ' pnlTermSep1
         ' 
-        pnlTermSep2.BackColor = Color.FromArgb(226, 232, 240)
-        pnlTermSep2.Location = New Point(460, 12)
-        pnlTermSep2.Name = "pnlTermSep2"
-        pnlTermSep2.Size = New Size(1, 40)
-        pnlTermSep2.TabIndex = 6
+        pnlTermSep1.BackColor = Color.FromArgb(226, 232, 240)
+        pnlTermSep1.Location = New Point(210, 12)
+        pnlTermSep1.Name = "pnlTermSep1"
+        pnlTermSep1.Size = New Size(1, 40)
+        pnlTermSep1.TabIndex = 3
         ' 
         ' lblPrevEnrollTitle
         ' 
         lblPrevEnrollTitle.AutoSize = True
         lblPrevEnrollTitle.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
         lblPrevEnrollTitle.ForeColor = Color.FromArgb(100, 116, 139)
-        lblPrevEnrollTitle.Location = New Point(480, 12)
+        lblPrevEnrollTitle.Location = New Point(230, 12)
         lblPrevEnrollTitle.Name = "lblPrevEnrollTitle"
         lblPrevEnrollTitle.Size = New Size(185, 12)
         lblPrevEnrollTitle.TabIndex = 7
@@ -2002,12 +1972,42 @@ Partial Class StudentClearanceForm
         lblPrevEnrollBadge.BackColor = Color.FromArgb(254, 243, 199)
         lblPrevEnrollBadge.Font = New Font("Segoe UI", 8.5F, FontStyle.Bold)
         lblPrevEnrollBadge.ForeColor = Color.FromArgb(146, 64, 14)
-        lblPrevEnrollBadge.Location = New Point(480, 28)
+        lblPrevEnrollBadge.Location = New Point(230, 28)
         lblPrevEnrollBadge.Name = "lblPrevEnrollBadge"
         lblPrevEnrollBadge.Size = New Size(215, 24)
         lblPrevEnrollBadge.TabIndex = 8
         lblPrevEnrollBadge.Text = "Not Enrolled"
         lblPrevEnrollBadge.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' pnlTermSep2
+        ' 
+        pnlTermSep2.BackColor = Color.FromArgb(226, 232, 240)
+        pnlTermSep2.Location = New Point(465, 12)
+        pnlTermSep2.Name = "pnlTermSep2"
+        pnlTermSep2.Size = New Size(1, 40)
+        pnlTermSep2.TabIndex = 6
+        ' 
+        ' lblCurrentTermTitle
+        ' 
+        lblCurrentTermTitle.AutoSize = True
+        lblCurrentTermTitle.Font = New Font("Segoe UI", 7.5F, FontStyle.Bold)
+        lblCurrentTermTitle.ForeColor = Color.FromArgb(100, 116, 139)
+        lblCurrentTermTitle.Location = New Point(485, 12)
+        lblCurrentTermTitle.Name = "lblCurrentTermTitle"
+        lblCurrentTermTitle.Size = New Size(130, 12)
+        lblCurrentTermTitle.TabIndex = 1
+        lblCurrentTermTitle.Text = "CURRENT ACADEMIC TERM"
+        ' 
+        ' lblCurrentTermValue
+        ' 
+        lblCurrentTermValue.AutoSize = True
+        lblCurrentTermValue.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold)
+        lblCurrentTermValue.ForeColor = Color.FromArgb(15, 23, 42)
+        lblCurrentTermValue.Location = New Point(485, 30)
+        lblCurrentTermValue.Name = "lblCurrentTermValue"
+        lblCurrentTermValue.Size = New Size(170, 17)
+        lblCurrentTermValue.TabIndex = 2
+        lblCurrentTermValue.Text = "2026–2027 | 1st Semester"
         ' 
         ' lblClearanceStatusTitle
         ' 

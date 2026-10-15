@@ -56,6 +56,11 @@ Public Class UploadClearanceModalForm
                         Continue For
                     End If
 
+                    If Not IsValidFileSignature(selectedPath, ext) Then
+                        MessageBox.Show("File '" & fi.Name & "' does not match its expected file type signature and could not be verified.", "Invalid File Format", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        Continue For
+                    End If
+
                     selectedFilePaths.Add(selectedPath)
                 Next
 
@@ -63,6 +68,30 @@ Public Class UploadClearanceModalForm
             End If
         End Using
     End Sub
+
+    Private Function IsValidFileSignature(filePath As String, ext As String) As Boolean
+        Try
+            Using fs As New FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                If fs.Length < 4 Then Return False
+                Dim header(3) As Byte
+                Dim bytesRead As Integer = fs.Read(header, 0, 4)
+                If bytesRead < 4 Then Return False
+
+                Select Case ext.ToLowerInvariant()
+                    Case ".png"
+                        Return header(0) = &H89 AndAlso header(1) = &H50 AndAlso header(2) = &H4E AndAlso header(3) = &H47
+                    Case ".jpg", ".jpeg"
+                        Return header(0) = &HFF AndAlso header(1) = &HD8 AndAlso header(2) = &HFF
+                    Case ".pdf"
+                        Return header(0) = &H25 AndAlso header(1) = &H50 AndAlso header(2) = &H44 AndAlso header(3) = &H46
+                    Case Else
+                        Return False
+                End Select
+            End Using
+        Catch
+            Return False
+        End Try
+    End Function
 
     Private Sub btnRemoveFile_Click(sender As Object, e As EventArgs) Handles btnRemoveFile.Click
         Dim selectedIdx As Integer = lstSelectedFiles.SelectedIndex
